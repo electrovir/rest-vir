@@ -15,3 +15,6 @@ export const NoParam = Symbol('no type parameter');
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type NoParam = typeof NoParam;
+
+export type ExcludeNoParamWithFallback<IncludesNoParam, NoParamFallback> =
+    IncludesNoParam extends NoParamFallback ? Exclude<IncludesNoParam, NoParam> : NoParamFallback;

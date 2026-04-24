@@ -14,9 +14,33 @@ import {
 } from './route.js';
 
 /**
- * Define a single endpoint.
+ * Define a single Endpoint.
  *
  * @category Define API
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+ * import {defineShape} from 'object-shape-tester';
+ *
+ * const usersEndpoint = defineEndpoint({
+ *     path: '/users',
+ *     requests: {
+ *         [HttpMethod.Get]: {
+ *             responses: {
+ *                 [HttpStatus.Ok]: {
+ *                     responseData: defineShape({
+ *                         users: [''],
+ *                     }),
+ *                 },
+ *             },
+ *         },
+ *     },
+ * });
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function defineEndpoint<const Endpoint extends EndpointDefinition>(
     endpoint: Readonly<Endpoint>,
@@ -25,9 +49,11 @@ export function defineEndpoint<const Endpoint extends EndpointDefinition>(
 }
 
 /**
- * An individual endpoint definition.
+ * An individual Endpoint definition.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointDefinition = {
     path: BaseRoutePath;
@@ -37,9 +63,46 @@ export type EndpointDefinition = {
 };
 
 /**
+ * Extract an Endpoint definition's method definition.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type ExtractEndpointMethodDefinition<
+    Endpoint extends EndpointDefinition | NoParam,
+    Method extends DefinableHttpMethod | NoParam,
+> = Endpoint extends EndpointDefinition
+    ? Method extends DefinableHttpMethod
+        ? Extract<Endpoint['requests'][Method], EndpointMethodDefinition>
+        : EndpointMethodDefinition
+    : EndpointMethodDefinition;
+
+/**
+ * Extract an Endpoint definition's method definition.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export function extractEndpointMethodDefinition<
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
+>(
+    endpoint: Endpoint,
+    method: Method,
+): ExtractEndpointMethodDefinition<Endpoint, Method> | undefined {
+    return endpoint.requests[method] satisfies EndpointMethodDefinition | undefined as
+        | ExtractEndpointMethodDefinition<Endpoint, Method>
+        | undefined;
+}
+
+/**
  * All HttpMethods that we can define requests for.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const definableHttpMethods = [
     HttpMethod.Get,
@@ -54,6 +117,8 @@ export const definableHttpMethods = [
  * A union of all HttpMethods that we can define requests for.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type DefinableHttpMethod = ArrayElement<typeof definableHttpMethods>;
 
@@ -61,6 +126,8 @@ export type DefinableHttpMethod = ArrayElement<typeof definableHttpMethods>;
  * All HttpMethods that allow request bodies.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const httpMethodsWithBodies = [
     HttpMethod.Post,
@@ -73,9 +140,19 @@ export const httpMethodsWithBodies = [
  * A union of all HttpMethods that allow request bodies.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type HttpMethodsWithBodies = ArrayElement<typeof httpMethodsWithBodies>;
 
+/**
+ * The definition of a single HTTP method on an Endpoint, including its request and response
+ * expectations plus the shared route properties from {@link CommonRouteDefinition}.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type EndpointMethodDefinition<Method extends DefinableHttpMethod = DefinableHttpMethod> = {
     /**
      * - Omit to disable checking entirely.
@@ -96,20 +173,59 @@ export type EndpointMethodDefinition<Method extends DefinableHttpMethod = Defina
  * - Success HTTP statuses: undefined (no body)
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ResponseDefinitions = Partial<Record<HttpStatus, ResponseStatusDefinition>>;
 
+/**
+ * The definition of an individual response status's output information.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type ResponseStatusDefinition = {
     responseData?: Shape | undefined;
     requiredResponseHeaders?: BaseRequiredResponseHeaders | undefined;
 };
 
+/**
+ * Base, not undefined, required headers type.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type BaseRequiredResponseHeaders = Record<string, Shape | RegExp>;
 
 /**
  * Extracts an endpoint's request type.
  *
  * @category Define API
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {defineEndpoint, HttpMethod, type EndpointRequestType} from '@rest-vir/api';
+ * import {defineShape} from 'object-shape-tester';
+ *
+ * const usersEndpoint = defineEndpoint({
+ *     path: '/users',
+ *     requests: {
+ *         [HttpMethod.Post]: {
+ *             requestData: defineShape({name: ''}),
+ *             responses: {},
+ *         },
+ *     },
+ * });
+ *
+ * type CreateUserRequest = EndpointRequestType<
+ *     (typeof usersEndpoint.requests)[HttpMethod.Post]
+ * >;
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointRequestType<MethodDefinition extends EndpointMethodDefinition | NoParam> =
     MethodDefinition extends NoParam
@@ -122,6 +238,38 @@ export type EndpointRequestType<MethodDefinition extends EndpointMethodDefinitio
  * Extracts an endpoint's response type.
  *
  * @category Define API
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {
+ *     defineEndpoint,
+ *     HttpMethod,
+ *     HttpStatus,
+ *     type EndpointResponseType,
+ * } from '@rest-vir/api';
+ * import {defineShape} from 'object-shape-tester';
+ *
+ * const usersEndpoint = defineEndpoint({
+ *     path: '/users',
+ *     requests: {
+ *         [HttpMethod.Get]: {
+ *             responses: {
+ *                 [HttpStatus.Ok]: {
+ *                     responseData: defineShape({users: [{id: ''}]}),
+ *                 },
+ *             },
+ *         },
+ *     },
+ * });
+ *
+ * type OkResponse = EndpointResponseType<
+ *     (typeof usersEndpoint.requests)[HttpMethod.Get],
+ *     HttpStatus.Ok
+ * >;
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointResponseType<
     MethodDefinition extends EndpointMethodDefinition,
@@ -137,11 +285,20 @@ export type EndpointResponseType<
  * for the endpoint.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type DefaultResponseType<Status extends HttpStatus> = Status extends ErrorHttpStatus
     ? undefined | string
     : unknown;
 
+/**
+ * Extract an endpoint's response headers type, including required response headers (if any).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type ExtractResponseHeadersType<
     ResponseDefinition extends
         | undefined

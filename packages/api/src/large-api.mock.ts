@@ -1,14 +1,11 @@
 /**
- * A large mock file to push Typescript to its limits with `defineApi`. As of the writing of this
- * file, the number of endpoint and websocket inputs to `defineApi` is completely unbounded if
- * `endpointsList` and `webSocketsList` are used. This file stopped at 1000 routes so that it's not
- * unreasonably large for TypeScript to compile (even though it _will_ compile it).
+ * A large mock file to push Typescript to its limits with `defineApi`.
  */
 
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {defineShape, enumShape} from 'object-shape-tester';
 import {structuredRenderDataShape} from 'structured-render';
-import {defineApi, endpointsList, webSocketsList} from './api.js';
+import {defineApi} from './api.js';
 import {defineEndpoint} from './endpoint.js';
 import {defineWebSocket} from './web-socket.js';
 
@@ -38424,7 +38421,7 @@ const webSocket399 = defineWebSocket({
 });
 
 export const largeApi = defineApi({
-    endpoints: endpointsList(
+    endpoints: [
         endpoint0,
         endpoint1,
         endpoint2,
@@ -40025,8 +40022,8 @@ export const largeApi = defineApi({
         endpoint1597,
         endpoint1598,
         endpoint1599,
-    ),
-    webSockets: webSocketsList(
+    ],
+    webSockets: [
         webSocket0,
         webSocket1,
         webSocket2,
@@ -40427,5 +40424,5 @@ export const largeApi = defineApi({
         webSocket397,
         webSocket398,
         webSocket399,
-    ),
+    ],
 });

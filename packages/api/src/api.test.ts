@@ -2,12 +2,12 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, type Values} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineShape} from 'object-shape-tester';
-import {DefineApiError, defineApi, type ApiDefinition, type ApiInit} from './api.js';
+import {defineApi, DefineApiError, type ApiDefinition, type ApiInit} from './api.js';
 import {defineEndpoint, type EndpointDefinition} from './endpoint.js';
 import {type BaseRoutePath} from './route.js';
 import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
 
-describe('ApiDefinition', () => {
+describe('ApiInit', () => {
     it('allows omitting both endpoints and webSockets', () => {
         const api: ApiInit = {};
     });
@@ -96,7 +96,7 @@ describe('ApiDefinition', () => {
 });
 
 describe(defineApi.name, () => {
-    it('does not preserve endpoint types (required to prevent TypeScript explosion)', () => {
+    it('narrows path keys from an inline endpoint array', () => {
         const usersEndpoint = defineEndpoint({
             path: '/users',
             requests: {
@@ -117,21 +117,34 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            endpoints: [
-                usersEndpoint,
-                itemsEndpoint,
-            ],
+            endpoints: [usersEndpoint, itemsEndpoint],
         });
 
-        assert.tsType<Values<typeof result.endpoints>>().equals<Readonly<EndpointDefinition>>();
         assert
-            .tsType<typeof result.webSockets>()
-            .equals<Readonly<Record<`/${string}`, Readonly<WebSocketDefinition>>>>();
-
-        assert.tsType<Values<typeof result.endpoints>['path']>().notMatches<'/users'>();
-        assert.tsType<Values<typeof result.endpoints>['path']>().notMatches<'/items'>();
+            .tsType<keyof typeof result.endpoints>()
+            .equals<typeof usersEndpoint.path | typeof itemsEndpoint.path>();
     });
-    it('knows if websockets or endpoints were defined', () => {
+
+    it('narrows path keys from an inline web socket array', () => {
+        const chatSocket = defineWebSocket({
+            path: '/chat',
+            clientMessage: defineShape(''),
+        });
+        const eventsSocket = defineWebSocket({
+            path: '/events',
+            hostMessage: defineShape(''),
+        });
+
+        const result = defineApi({
+            webSockets: [chatSocket, eventsSocket],
+        });
+
+        assert
+            .tsType<keyof typeof result.webSockets>()
+            .equals<typeof chatSocket.path | typeof eventsSocket.path>();
+    });
+
+    it('widens stored endpoint value types to EndpointDefinition', () => {
         const usersEndpoint = defineEndpoint({
             path: '/users',
             requests: {
@@ -141,34 +154,25 @@ describe(defineApi.name, () => {
                 },
             },
         });
-        const itemsEndpoint = defineEndpoint({
-            path: '/items',
-            requests: {
-                [HttpMethod.Get]: {
-                    clientOrigin: '',
-                    responses: {},
-                },
-            },
+
+        const result = defineApi({
+            endpoints: [usersEndpoint],
         });
-        const socket = defineWebSocket({
-            path: '/updates',
+
+        assert.tsType<Values<typeof result.endpoints>>().equals<Readonly<EndpointDefinition>>();
+    });
+
+    it('widens stored web socket value types to WebSocketDefinition', () => {
+        const chatSocket = defineWebSocket({
+            path: '/chat',
             clientMessage: defineShape(''),
         });
 
         const result = defineApi({
-            endpoints: [
-                usersEndpoint,
-                itemsEndpoint,
-            ],
-            webSockets: [socket],
+            webSockets: [chatSocket],
         });
 
-        assert
-            .tsType(result.endpoints)
-            .equals<Readonly<Record<BaseRoutePath, Readonly<EndpointDefinition>>>>();
-        assert
-            .tsType(result.webSockets)
-            .equals<Readonly<Record<BaseRoutePath, Readonly<WebSocketDefinition>>>>();
+        assert.tsType<Values<typeof result.webSockets>>().equals<Readonly<WebSocketDefinition>>();
     });
 
     it('accepts an api with unique endpoint paths', () => {
@@ -192,10 +196,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            endpoints: [
-                usersEndpoint,
-                itemsEndpoint,
-            ],
+            endpoints: [usersEndpoint, itemsEndpoint],
         });
 
         assert.isLengthExactly(result.endpoints, 2);
@@ -212,10 +213,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            webSockets: [
-                chatSocket,
-                eventsSocket,
-            ],
+            webSockets: [chatSocket, eventsSocket],
         });
 
         assert.isLengthExactly(result.webSockets, 2);
@@ -268,10 +266,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    endpoints: [
-                        firstEndpoint,
-                        secondEndpoint,
-                    ],
+                    endpoints: [firstEndpoint, secondEndpoint],
                 }),
             {
                 matchConstructor: DefineApiError,
@@ -293,10 +288,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    webSockets: [
-                        firstSocket,
-                        secondSocket,
-                    ],
+                    webSockets: [firstSocket, secondSocket],
                 }),
             {
                 matchConstructor: DefineApiError,
@@ -327,10 +319,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    endpoints: [
-                        firstEndpoint,
-                        secondEndpoint,
-                    ],
+                    endpoints: [firstEndpoint, secondEndpoint],
                 }),
             {
                 matchMessage: '/orders',
@@ -351,10 +340,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    webSockets: [
-                        firstSocket,
-                        secondSocket,
-                    ],
+                    webSockets: [firstSocket, secondSocket],
                 }),
             {
                 matchMessage: '/updates',
@@ -363,48 +349,46 @@ describe(defineApi.name, () => {
     });
 
     it('detects multiple distinct duplicate endpoint paths', () => {
-        const endpoints: ReadonlyArray<EndpointDefinition> = [
-            {
-                path: '/a',
-                requests: {
-                    [HttpMethod.Get]: {
-                        clientOrigin: '',
-                        responses: {},
-                    },
+        const first = defineEndpoint({
+            path: '/a',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOrigin: '',
+                    responses: {},
                 },
             },
-            {
-                path: '/a',
-                requests: {
-                    [HttpMethod.Post]: {
-                        clientOrigin: '',
-                        responses: {},
-                    },
+        });
+        const second = defineEndpoint({
+            path: '/a',
+            requests: {
+                [HttpMethod.Post]: {
+                    clientOrigin: '',
+                    responses: {},
                 },
             },
-            {
-                path: '/b',
-                requests: {
-                    [HttpMethod.Get]: {
-                        clientOrigin: '',
-                        responses: {},
-                    },
+        });
+        const third = defineEndpoint({
+            path: '/b',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOrigin: '',
+                    responses: {},
                 },
             },
-            {
-                path: '/b',
-                requests: {
-                    [HttpMethod.Put]: {
-                        clientOrigin: '',
-                        responses: {},
-                    },
+        });
+        const fourth = defineEndpoint({
+            path: '/b',
+            requests: {
+                [HttpMethod.Put]: {
+                    clientOrigin: '',
+                    responses: {},
                 },
             },
-        ];
+        });
 
         try {
             defineApi({
-                endpoints,
+                endpoints: [first, second, third, fourth],
             });
             assert.fail('expected defineApi to throw');
         } catch (error) {
@@ -415,18 +399,16 @@ describe(defineApi.name, () => {
     });
 
     it('names thrown errors ApiDefinitionError', () => {
-        const sockets: ReadonlyArray<WebSocketDefinition> = [
-            {
-                path: '/same',
-            },
-            {
-                path: '/same',
-            },
-        ];
+        const first = defineWebSocket({
+            path: '/same',
+        });
+        const second = defineWebSocket({
+            path: '/same',
+        });
 
         try {
             defineApi({
-                webSockets: sockets,
+                webSockets: [first, second],
             });
             assert.fail('expected defineApi to throw');
         } catch (error) {
@@ -469,45 +451,61 @@ describe(defineApi.name, () => {
     });
 
     it('maps every endpoint and web socket into the returned definition', () => {
+        const usersEndpoint = defineEndpoint({
+            path: '/users',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOrigin: '',
+                    responses: {},
+                },
+            },
+        });
+        const itemsEndpoint = defineEndpoint({
+            path: '/items',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOrigin: '',
+                    responses: {},
+                },
+            },
+        });
+        const ordersEndpoint = defineEndpoint({
+            path: '/orders',
+            requests: {
+                [HttpMethod.Post]: {
+                    clientOrigin: '',
+                    responses: {},
+                },
+            },
+        });
         const endpoints = [
-            defineEndpoint({
-                path: '/users',
-                requests: {
-                    [HttpMethod.Get]: {clientOrigin: '', responses: {}},
-                },
-            }),
-            defineEndpoint({
-                path: '/items',
-                requests: {
-                    [HttpMethod.Get]: {clientOrigin: '', responses: {}},
-                },
-            }),
-            defineEndpoint({
-                path: '/orders',
-                requests: {
-                    [HttpMethod.Post]: {clientOrigin: '', responses: {}},
-                },
-            }),
+            usersEndpoint,
+            itemsEndpoint,
+            ordersEndpoint,
         ];
+
+        const chatSocket = defineWebSocket({
+            path: '/chat',
+            clientMessage: defineShape(''),
+        });
+        const updatesSocket = defineWebSocket({
+            path: '/updates',
+            hostMessage: defineShape(''),
+        });
+        const eventsSocket = defineWebSocket({
+            path: '/events',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
         const webSockets = [
-            defineWebSocket({
-                path: '/chat',
-                clientMessage: defineShape(''),
-            }),
-            defineWebSocket({
-                path: '/updates',
-                hostMessage: defineShape(''),
-            }),
-            defineWebSocket({
-                path: '/events',
-                clientMessage: defineShape(''),
-                hostMessage: defineShape(''),
-            }),
+            chatSocket,
+            updatesSocket,
+            eventsSocket,
         ];
 
         const result = defineApi({
-            endpoints,
-            webSockets,
+            endpoints: [usersEndpoint, itemsEndpoint, ordersEndpoint],
+            webSockets: [chatSocket, updatesSocket, eventsSocket],
         });
 
         assert.isLengthExactly(result.endpoints, endpoints.length);
@@ -519,6 +517,18 @@ describe(defineApi.name, () => {
         webSockets.forEach((webSocket) => {
             assert.strictEquals(result.webSockets[webSocket.path], webSocket);
         });
+    });
+
+    it('defaults path keys to BaseRoutePath when the lists are not used', () => {
+        const endpoints: ReadonlyArray<EndpointDefinition> = [];
+        const webSockets: ReadonlyArray<WebSocketDefinition> = [];
+        const result = defineApi({
+            endpoints,
+            webSockets,
+        });
+
+        assert.tsType<keyof typeof result.endpoints>().equals<BaseRoutePath>();
+        assert.tsType<keyof typeof result.webSockets>().equals<BaseRoutePath>();
     });
 
     it('is assignable to ApiDefinition', () => {

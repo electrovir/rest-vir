@@ -16,6 +16,13 @@ import {type OriginRequirement} from './origin-requirement.js';
  */
 export type BaseRoutePath = `/${string}` | '/';
 
+/**
+ * Properties shared between all route definitions (Endpoints and WebSockets).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type CommonRouteDefinition = {
     /**
      * Search params that this route supports.
@@ -70,6 +77,8 @@ export type BaseSearchParams = Readonly<Record<string, AllowedSearchParamValue>>
  * Set to `undefined` to omit the search param.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type AllowedSearchParamValue =
     | AllowedSingleSearchParamValue
@@ -81,9 +90,18 @@ export type AllowedSearchParamValue =
  * removed.
  *
  * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type AllowedSingleSearchParamValue = Exclude<Primitive, symbol>;
 
+/**
+ * Extracts the parsed search params object type from a route's definition.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type RouteSearchParamsType<RouteDefinition extends CommonRouteDefinition | NoParam> =
     'searchParams' extends keyof RouteDefinition
         ? IsNever<keyof RouteDefinition['searchParams']> extends true
@@ -96,15 +114,36 @@ export type RouteSearchParamsType<RouteDefinition extends CommonRouteDefinition 
                   BaseSearchParams
         : BaseSearchParams | undefined;
 
+/**
+ * Extract an expected search param value.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type ExtractSearchParamValue<T extends Shape | RegExp> = T extends Shape
     ? Extract<T['runtimeType'], AllowedSearchParamValue>
     : AllowedSearchParamValue;
 
+/**
+ * Extract an expected required header value.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type ExtractRequiredHeaderValue<T extends Shape | RegExp> = T extends Shape
     ? Extract<T['runtimeType'], string>
     : string;
 
-export type ExtractRequiredRequestHeadersType<
+/**
+ * Extract a route's request headers type, including required request headers (if any).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type ExtractRequestHeadersType<
     RouteDefinition extends CommonRouteDefinition | NoParam = NoParam,
 > = RouteDefinition extends NoParam
     ? Record<string, string> | undefined

@@ -194,7 +194,7 @@ describe(checkOriginRequirement.name, () => {
             originToCheck === 'https://allowed.com';
 
         const asyncCallbackRequirement: OriginCheckCallback = async (originToCheck) => {
-            return originToCheck === 'https://async-allowed.com';
+            return Promise.resolve(originToCheck === 'https://async-allowed.com');
         };
 
         itCases(checkOriginRequirement, [

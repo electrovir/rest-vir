@@ -1,17 +1,16 @@
 import {type AnyObject} from '@augment-vir/common';
 import {
-    ApiInit,
-    type EndpointMethodDefinition,
+    type DefinableHttpMethod,
+    type EndpointDefinition,
     type EndpointRequestType,
-    type ExtractRequiredRequestHeadersType,
+    type ExcludeNoParamWithFallback,
+    type ExtractEndpointMethodDefinition,
+    type ExtractRequestHeadersType,
     type NoParam,
     type RouteSearchParamsType,
-    type HttpMethod,
 } from '@rest-vir/api';
 import {type HasRequiredKeys, type IsAny} from 'type-fest';
 import {type ExtractPathParams} from './path-params.js';
-
-export type ExtractEndpointMethodDefinition<Path extends PropertyKey, Method extends HttpMethod, Api extends ApiInit> = Path extends keyof Api['endpoints'] ? 
 
 /**
  * Used to define a function's rest params. The params object is only required if it has any
@@ -20,12 +19,12 @@ export type ExtractEndpointMethodDefinition<Path extends PropertyKey, Method ext
  * @category Internal
  */
 export type EndpointParams<
-    Path extends PropertyKey,
-    EndpointMethod extends EndpointMethodDefinition,
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
 > =
-    HasRequiredKeys<EndpointParamObject<Path, EndpointMethod>> extends true
-        ? [EndpointParamObject<Path, EndpointMethod>]
-        : [EndpointParamObject<Path, EndpointMethod>?];
+    HasRequiredKeys<EndpointParamObject<Endpoint, Method>> extends true
+        ? [EndpointParamObject<Endpoint, Method>]
+        : [EndpointParamObject<Endpoint, Method>?];
 
 /**
  * An client params object for calling an endpoint. Only the params that have required options to
@@ -35,13 +34,13 @@ export type EndpointParams<
  * @category Internal
  */
 export type EndpointParamObject<
-    Path extends PropertyKey | NoParam = NoParam,
-    EndpointMethod extends EndpointMethodDefinition | NoParam = NoParam,
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
 > = SetNullishPropertiesAsOptional<{
     /** Set the endpoint fetch's request data, if allowed by the endpoint. */
-    requestData: EndpointRequestType<EndpointMethod>;
+    requestData: EndpointRequestType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
     /** Set search params on the endpoint's URL. */
-    searchParams: RouteSearchParamsType<EndpointMethod>;
+    searchParams: RouteSearchParamsType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
     /** Set the standard request init options that `fetch` allows. */
     options: Omit<RequestInit, 'body' | 'method'> | undefined;
     /**
@@ -57,12 +56,12 @@ export type EndpointParamObject<
      * headers can be supplied in the `options` property, but any headers provided in both will
      * instead use the values from here here (in `requiredHeaders`).
      */
-    requiredHeaders: ExtractRequiredRequestHeadersType<EndpointMethod>;
+    requiredHeaders: ExtractRequestHeadersType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
     /**
      * Set the required path params, if any. These are only allowed if the endpoint's path has param
      * or wildcard strings.
      */
-    pathParams: ExtractPathParams<Path>;
+    pathParams: ExtractPathParams<ExcludeNoParamWithFallback<Endpoint, EndpointDefinition>['path']>;
 }>;
 
 /**

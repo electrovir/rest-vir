@@ -2,6 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {largeApi} from './large-api.mock.js';
+import {type BaseRoutePath} from './route.js';
 
 describe('large API definition', () => {
     it('defines 1600 endpoints keyed by path', () => {
@@ -48,5 +49,15 @@ describe('large API definition', () => {
         assert.isDefined(socket);
         assert.isDefined(socket.clientMessage);
         assert.isDefined(socket.hostMessage);
+    });
+
+    it('narrows endpoint path keys to the declared path union', () => {
+        assert.tsType<keyof typeof largeApi.endpoints>().notEquals<BaseRoutePath>();
+        assert.tsType<'/reports/item-0'>().matches<keyof typeof largeApi.endpoints>();
+    });
+
+    it('narrows web socket path keys to the declared path union', () => {
+        assert.tsType<keyof typeof largeApi.webSockets>().notEquals<BaseRoutePath>();
+        assert.tsType<'/ws/stream-0'>().matches<keyof typeof largeApi.webSockets>();
     });
 });

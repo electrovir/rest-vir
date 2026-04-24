@@ -1,8 +1,10 @@
 import {check} from '@augment-vir/assert';
-import {addPrefix, type HttpStatus, mapObject} from '@augment-vir/common';
+import {addPrefix, mapObject, type HttpStatus, type Values} from '@augment-vir/common';
 import {
-    type ApiInit,
-    type EndpointMethodDefinition,
+    extractEndpointMethodDefinition,
+    type ApiDefinition,
+    type DefinableHttpMethod,
+    type EndpointDefinition,
     type NoParam,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
@@ -19,7 +21,7 @@ import {type ExtractPathParams} from './path-params.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
 
-export class RestVirClient<const ClientApi extends ApiInit> {
+export class RestVirClient<const ClientApi extends ApiDefinition> {
     constructor(
         public readonly api: Readonly<ClientApi>,
         /** All route paths are joined to this URL. */
@@ -29,27 +31,22 @@ export class RestVirClient<const ClientApi extends ApiInit> {
     ) {}
 
     public async fetch<
-        const Path extends keyof ClientApi['endpoints'],
-        const Method extends keyof ClientApi['endpoints'][NoInfer<Path>],
+        const Endpoint extends Extract<Values<ClientApi['endpoints']>, EndpointDefinition>,
+        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
     >(
-        path: Path,
+        endpoint: Endpoint,
         method: Method,
-        ...restParams: EndpointParams<Path, ClientApi['endpoints'][NoInfer<Path>][NoInfer<Method>]>
+        ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
     ) {
-        const fdjkla: EndpointMethodDefinition | undefined =
-            {} as any as ClientApi['endpoints'][NoInfer<Path>][NoInfer<Method>];
-
         const params = restParams[0];
 
-        if (!this.api.endpoints) {
-            throw new Error('Cannot fetch: this api has no endpoints.');
-        } else if (!check.hasKey(this.api.endpoints, path)) {
-            throw new Error(`Cannot fetch: this api has no '${String(path)}' endpoint.`);
+        if (!check.hasKey(this.api.endpoints, endpoint.path)) {
+            throw new Error(`Cannot fetch: this api has no '${endpoint.path}' endpoint.`);
         }
 
-        const endpointMethodDefinition = this.extractEndpointMethodDefinition(path, method);
+        const endpointMethodDefinition = extractEndpointMethodDefinition(endpoint, method);
 
-        const {requestInit, url} = this.buildEndpointRequestInit(path, method, params);
+        const {requestInit, url} = this.buildEndpointRequestInit(endpoint.path, method, params);
 
         const response = await (params?.fetchOverride || this.fetchOverride || fetch)(
             url,
@@ -89,29 +86,6 @@ export class RestVirClient<const ClientApi extends ApiInit> {
                 response,
             };
         }
-    }
-
-    public extractEndpointMethodDefinition<
-        const Path extends keyof ClientApi['endpoints'],
-        const Method extends keyof ClientApi['endpoints'][NoInfer<Path>],
-    >(path: Path, method: Method) {
-        if (!this.api.endpoints) {
-            throw new Error('Cannot fetch: this api has no endpoints.');
-        } else if (!check.hasKey(this.api.endpoints, path)) {
-            throw new Error(`Cannot fetch: this api has no '${String(path)}' endpoint.`);
-        }
-
-        const endpointMethodDefinition = this.api.endpoints[path][method] as
-            | EndpointMethodDefinition
-            | undefined;
-
-        if (!endpointMethodDefinition) {
-            throw new Error(
-                `Cannot fetch: the '${String(path)}' endpoint does not support method '${String(method)}'.`,
-            );
-        }
-
-        return endpointMethodDefinition;
     }
 
     /**

@@ -6,8 +6,66 @@ import {
     defineEndpoint,
     type EndpointDefinition,
     type EndpointMethodDefinition,
+    type ExtractEndpointMethodDefinition,
     type ResponseDefinitions,
 } from './endpoint.js';
+import {type NoParam} from './no-param.js';
+
+describe('ExtractEndpointMethodDefinition', () => {
+    it('falls back to plain definition', () => {
+        assert
+            .tsType<ExtractEndpointMethodDefinition<NoParam, NoParam>>()
+            .equals<EndpointMethodDefinition>();
+    });
+    it('extracts an existing endpoint method definition', () => {
+        const endpoint = defineEndpoint({
+            path: '/users',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOrigin: '',
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape({
+                                users: [''],
+                            }),
+                        },
+                    },
+                },
+                [HttpMethod.Post]: {
+                    clientOrigin: '',
+                    requestData: defineShape({
+                        name: '',
+                    }),
+                    responses: {
+                        [HttpStatus.Created]: {
+                            responseData: defineShape({
+                                id: '',
+                            }),
+                        },
+                    },
+                },
+            },
+        });
+
+        type ExtractedEndpointMethodDefinition = ExtractEndpointMethodDefinition<
+            typeof endpoint,
+            HttpMethod.Get
+        >;
+
+        assert.tsType<ExtractedEndpointMethodDefinition>().equals<
+            Readonly<{
+                clientOrigin: '';
+                responses: Readonly<{
+                    [HttpStatus.Ok]: Readonly<{
+                        responseData: Shape<{
+                            users: string[];
+                        }>;
+                    }>;
+                }>;
+            }>
+        >();
+    });
+});
 
 describe('EndpointMethodDefinition', () => {
     it('allows requestData for POST', () => {

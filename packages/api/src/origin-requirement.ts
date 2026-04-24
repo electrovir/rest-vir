@@ -8,6 +8,10 @@ import {type RequireExactlyOne} from 'type-fest';
  * - A string: requires the incoming origin to exactly match this string.
  * - A RegExp: requires the incoming origin to match this RegExp.
  * - A function: requires the incoming origin to result in a `true` return value from this function.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type OriginRequirement =
     | RequireExactlyOne<{
@@ -24,6 +28,14 @@ export type OriginRequirement =
     | RegExp
     | OriginCheckCallback;
 
+/**
+ * Callback form of an {@link OriginRequirement}. Returns `true` to accept the origin, `false` to
+ * reject it.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export type OriginCheckCallback = (originToCheck: string | undefined) => MaybePromise<boolean>;
 
 /**

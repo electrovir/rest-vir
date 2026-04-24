@@ -3,43 +3,132 @@ import {type EndpointDefinition} from './endpoint.js';
 import {type BaseRoutePath} from './route.js';
 import {type WebSocketDefinition} from './web-socket.js';
 
+/**
+ * Thrown from {@link defineApi} when a known runtime error is encountered while defining an API.
+ *
+ * @category Error
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {defineApi, DefineApiError} from '@rest-vir/api';
+ *
+ * try {
+ *     defineApi({
+ *         endpoints: [
+ *             {path: '/users', requests: {}},
+ *             {path: '/users', requests: {}},
+ *         ],
+ *     });
+ * } catch (error) {
+ *     if (error instanceof DefineApiError) {
+ *         console.error('API definition problem:', error.message);
+ *     }
+ * }
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
 export class DefineApiError extends Error {
     public override readonly name = 'ApiDefinitionError';
 }
 
-export function defineApi(apiInit: Readonly<ApiInit>): Readonly<ApiDefinition> {
+/**
+ * Define an API from arrays of Endpoints and WebSockets. Each array's path literals are captured
+ * into the returned {@link ApiDefinition}'s record keys without also capturing each route's full
+ * shape, which keeps TypeScript from getting overwhelmed on large APIs.
+ *
+ * @category Define Api
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {defineEndpoint, defineApi, HttpMethod} from '@rest-vir/api';
+ *
+ * const usersEndpoint = defineEndpoint({
+ *     path: '/users',
+ *     requests: {
+ *         [HttpMethod.Get]: {
+ *             clientOrigin: '',
+ *             responses: {},
+ *         },
+ *     },
+ * });
+ * const itemsEndpoint = defineEndpoint({
+ *     path: '/items',
+ *     requests: {
+ *         [HttpMethod.Get]: {
+ *             clientOrigin: '',
+ *             responses: {},
+ *         },
+ *     },
+ * });
+ *
+ * const result = defineApi({
+ *     endpoints: [usersEndpoint, itemsEndpoint],
+ * });
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export function defineApi<
+    const EndpointPaths extends ReadonlyArray<BaseRoutePath> = [],
+    const WebSocketPaths extends ReadonlyArray<BaseRoutePath> = [],
+>(
+    apiInit: Readonly<ApiInit<EndpointPaths, WebSocketPaths>>,
+): ApiDefinition<EndpointPaths[number], WebSocketPaths[number]> {
     return {
-        endpoints: apiInit.endpoints ? mapRouteByPath('endpoints', apiInit.endpoints) : {},
-        webSockets: apiInit.webSockets ? mapRouteByPath('webSockets', apiInit.webSockets) : {},
+        endpoints: apiInit.endpoints
+            ? mapRouteByPath(
+                  'endpoints',
+                  apiInit.endpoints as ReadonlyArray<Readonly<EndpointDefinition>>,
+              )
+            : {},
+        webSockets: apiInit.webSockets
+            ? mapRouteByPath(
+                  'webSockets',
+                  apiInit.webSockets as ReadonlyArray<Readonly<WebSocketDefinition>>,
+              )
+            : {},
     };
 }
 
 /**
- * Widens a list of endpoints so the array's element type collapses to {@link EndpointDefinition}
- * rather than a union of each endpoint's literal type. Use this at large endpoint counts to keep
- * TypeScript from forming a huge element union on the {@link defineApi} call.
+ * Input type for {@link defineApi}. Generic over each list's inferred path union so the returned
+ * {@link ApiDefinition} can narrow its path keys accordingly.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export function endpointsList(
-    ...endpoints: ReadonlyArray<EndpointDefinition>
-): ReadonlyArray<EndpointDefinition> {
-    return endpoints;
-}
-
-/** Widens a list of web sockets in the same way as {@link endpointsList}. */
-export function webSocketsList(
-    ...webSockets: ReadonlyArray<WebSocketDefinition>
-): ReadonlyArray<WebSocketDefinition> {
-    return webSockets;
-}
-
-export type ApiInit = PartialWithUndefined<{
-    webSockets: ReadonlyArray<Readonly<WebSocketDefinition>>;
-    endpoints: ReadonlyArray<Readonly<EndpointDefinition>>;
+export type ApiInit<
+    EndpointPaths extends ReadonlyArray<BaseRoutePath> = ReadonlyArray<BaseRoutePath>,
+    WebSocketPaths extends ReadonlyArray<BaseRoutePath> = ReadonlyArray<BaseRoutePath>,
+> = PartialWithUndefined<{
+    endpoints: {
+        readonly [K in keyof EndpointPaths]: Readonly<EndpointDefinition> &
+            Readonly<{path: EndpointPaths[K]}>;
+    };
+    webSockets: {
+        readonly [K in keyof WebSocketPaths]: Readonly<WebSocketDefinition> &
+            Readonly<{path: WebSocketPaths[K]}>;
+    };
 }>;
 
-export type ApiDefinition = {
-    endpoints: Readonly<Record<BaseRoutePath, Readonly<EndpointDefinition>>>;
-    webSockets: Readonly<Record<BaseRoutePath, Readonly<WebSocketDefinition>>>;
+/**
+ * Output of {@link defineApi}. Path-keyed records of Endpoints and WebSockets, narrowed to the path
+ * literals found in the input arrays.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type ApiDefinition<
+    EndpointPaths extends BaseRoutePath = BaseRoutePath,
+    WebSocketPaths extends BaseRoutePath = BaseRoutePath,
+> = {
+    endpoints: Readonly<Record<EndpointPaths, Readonly<EndpointDefinition>>>;
+    webSockets: Readonly<Record<WebSocketPaths, Readonly<WebSocketDefinition>>>;
 };
 
 function mapRouteByPath<Route extends Readonly<{path: BaseRoutePath}>>(

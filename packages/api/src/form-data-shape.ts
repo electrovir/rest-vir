@@ -7,6 +7,22 @@ const formDataShapeKind = 'FormData' as string;
  *
  * @category Shape
  * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {defineEndpoint, formDataShape, HttpMethod} from '@rest-vir/api';
+ *
+ * const uploadEndpoint = defineEndpoint({
+ *     path: '/upload',
+ *     requests: {
+ *         [HttpMethod.Post]: {
+ *             requestData: formDataShape,
+ *             responses: {},
+ *         },
+ *     },
+ * });
+ * ```
+ *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const formDataShape = createCustomShape<FormData>({
