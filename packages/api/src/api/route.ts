@@ -1,7 +1,7 @@
 import {type AnyObject, type UnknownObject} from '@augment-vir/common';
 import {type Shape} from 'object-shape-tester';
 import {type IsNever, type Primitive} from 'type-fest';
-import {type NoParam} from './no-param.js';
+import {type NoParam} from '../util/no-param.js';
 import {type OriginRequirement} from './origin-requirement.js';
 
 /**
@@ -102,18 +102,17 @@ export type AllowedSingleSearchParamValue = Exclude<Primitive, symbol>;
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type RouteSearchParamsType<
-    RouteDefinition extends CommonRouteDefinition | NoParam = NoParam,
-> = 'searchParams' extends keyof RouteDefinition
-    ? IsNever<keyof RouteDefinition['searchParams']> extends true
-        ? BaseSearchParams | undefined
-        : Partial<{
-              [SearchParamKey in keyof RouteDefinition['searchParams']]: ExtractSearchParamValue<
-                  Extract<RouteDefinition['searchParams'], AnyObject>[SearchParamKey]
-              >;
-          }> &
-              BaseSearchParams
-    : BaseSearchParams | undefined;
+export type RouteSearchParamsType<RouteDefinition extends AnyObject | NoParam = NoParam> =
+    'searchParams' extends keyof RouteDefinition
+        ? IsNever<keyof RouteDefinition['searchParams']> extends true
+            ? BaseSearchParams | undefined
+            : Partial<{
+                  [SearchParamKey in keyof RouteDefinition['searchParams']]: ExtractSearchParamValue<
+                      Extract<RouteDefinition['searchParams'], AnyObject>[SearchParamKey]
+                  >;
+              }> &
+                  BaseSearchParams
+        : BaseSearchParams | undefined;
 
 /**
  * Extract an expected search param value.

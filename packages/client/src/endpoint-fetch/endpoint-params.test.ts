@@ -12,10 +12,10 @@ import {
     type protectedEndpoint,
     type searchEndpoint,
     type usersCreateEndpoint,
-} from '@rest-vir/api/src/api.mock.js';
+} from '@rest-vir/api/src/api/api.mock.js';
 import {defineShape} from 'object-shape-tester';
+import {type GenericPathParams} from '../path-params.js';
 import type {EndpointParamObject, EndpointParams} from './endpoint-params.js';
-import {type GenericPathParams} from './path-params.js';
 
 describe('EndpointParamObject', () => {
     it('has default values', () => {
@@ -235,7 +235,11 @@ const multipleRequiredHeadersEndpoint = defineEndpoint({
                 authorization: defineShape(''),
                 'x-api-key': defineShape(''),
             },
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -244,7 +248,11 @@ const wildcardEndpoint = defineEndpoint({
     path: '/files/*',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -253,7 +261,11 @@ const namedParamsAndWildcardEndpoint = defineEndpoint({
     path: '/files/:category/*',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -265,7 +277,11 @@ const withBodyEndpoint = defineEndpoint({
             requestData: defineShape({
                 name: '',
             }),
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -275,7 +291,11 @@ const noBodyEndpoint = defineEndpoint({
     requests: {
         [HttpMethod.Post]: {
             requestData: undefined,
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -300,7 +320,11 @@ const userByIdEndpoint = defineEndpoint({
     path: '/users/:userId',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -309,7 +333,11 @@ const userPostEndpoint = defineEndpoint({
     path: '/users/:userId/posts/:postId',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -318,7 +346,11 @@ const simpleEndpoint = defineEndpoint({
     path: '/simple',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -330,7 +362,11 @@ const singleRequiredHeaderEndpoint = defineEndpoint({
             requiredRequestHeaders: {
                 authorization: defineShape(''),
             },
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });
@@ -339,7 +375,11 @@ const publicEndpoint = defineEndpoint({
     path: '/public',
     requests: {
         [HttpMethod.Get]: {
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         },
     },
 });

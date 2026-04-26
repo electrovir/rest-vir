@@ -79,6 +79,11 @@ describe('ApiInit', () => {
                             requestData: defineShape({
                                 payload: '',
                             }),
+                            responses: {
+                                [HttpStatus.Ok]: {
+                                    responseData: undefined,
+                                },
+                            },
                         },
                     },
                 },
@@ -102,7 +107,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -111,7 +120,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -156,7 +169,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -187,7 +204,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -196,7 +217,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -237,7 +262,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -261,7 +290,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -270,7 +303,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -320,7 +357,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -329,7 +370,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -378,7 +423,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -387,7 +436,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -396,7 +449,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -405,7 +462,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Put]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -455,7 +516,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -488,7 +553,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -497,7 +566,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -506,7 +579,11 @@ describe(defineApi.name, () => {
             requests: {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
                 },
             },
         });
@@ -579,7 +656,11 @@ describe(defineApi.name, () => {
                     requests: {
                         [HttpMethod.Get]: {
                             clientOrigin: '',
-                            responses: {},
+                            responses: {
+                                [HttpStatus.Ok]: {
+                                    responseData: undefined,
+                                },
+                            },
                         },
                     },
                 }),

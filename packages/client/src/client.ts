@@ -1,5 +1,11 @@
-import {check} from '@augment-vir/assert';
-import {addPrefix, mapObject, type HttpStatus} from '@augment-vir/common';
+import {assertWrap, check} from '@augment-vir/assert';
+import {
+    addPrefix,
+    HttpStatus,
+    isErrorHttpStatus,
+    mapObject,
+    type RequiredAndNotNull,
+} from '@augment-vir/common';
 import {
     extractEndpointMethodDefinition,
     type ApiDefinition,
@@ -8,15 +14,18 @@ import {
     type ExtractEndpointMethodDefinition,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
+import {parseJsonWithUndefined} from '@rest-vir/api/src/augments/json.js';
+import {type SetNullishPropertiesAsOptional} from '@rest-vir/api/src/augments/object.js';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {assertValidShape} from 'object-shape-tester';
 import {buildUrl} from 'url-vir';
-import {parseJsonWithUndefined} from './augments/json.js';
+import {type EndpointParamObject, type EndpointParams} from './endpoint-fetch/endpoint-params.js';
 import {
-    type EndpointParamObject,
-    type EndpointParams,
-    type SetNullishPropertiesAsOptional,
-} from './endpoint-params.js';
+    httpStatusToKey,
+    readResponseHeaders,
+    type EndpointFetchOutput,
+    type UnknownFetchOutput,
+} from './endpoint-fetch/endpoint-response.js';
 import {type ExtractPathParams} from './path-params.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
@@ -37,7 +46,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         endpoint: Endpoint,
         method: Method,
         ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
-    ) {
+    ): Promise<EndpointFetchOutput<Endpoint, Method>> {
         const params: EndpointParamObject | undefined = restParams[0];
 
         if (!check.hasKey(this.api.endpoints, endpoint.path)) {
@@ -63,39 +72,79 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             requestInit,
         );
 
-        const responseText = await response.clone().text();
+        const responseText = (await response.clone().text()) || undefined;
+
+        console.log({
+            responseText,
+        });
+
         const responseDefinition =
-            endpointMethodDefinition.responses?.[response.status as HttpStatus];
+            endpointMethodDefinition.responses[response.status as HttpStatus];
+        const headers = readResponseHeaders(response.headers);
+        const status = assertWrap.isEnumValue(
+            response.status,
+            HttpStatus,
+            `Received unexpected HTTP status from '${endpoint.path}': ${response.status}`,
+        );
+        
 
-        const responseData = responseDefinition?.responseData
-            ? parseJsonWithUndefined(responseText)
-            : undefined;
+        const responseData: unknown =
+            headers['content-type']?.includes('json') &&
+            responseText
+                ? parseJsonWithUndefined(responseText)
+                : undefined;
 
-        if (response.ok) {
-            if (responseDefinition?.responseData) {
-                assertValidShape(responseData, responseDefinition.responseData, {
-                    allowExtraKeys: true,
-                });
+        if (!responseDefinition) {
+            if (isErrorHttpStatus(status)) {
+                return {
+                    unexpectedError: {
+                        status,
+                        responseData: responseData || responseText,
+                        headers,
+                        response,
+                    },
+                } satisfies Pick<
+                    RequiredAndNotNull<EndpointFetchOutput<Endpoint, Method>>,
+                    'unexpectedError'
+                > as EndpointFetchOutput<Endpoint, Method>;
+            } else {
+                throw new Error(
+                    `Received unexpected successful response status from '${endpoint.path}': ${response.status}`,
+                );
             }
-
-            return {
-                ok: true,
-                data: responseData,
-                response,
-            };
-        } else {
-            if (responseDefinition?.responseData) {
-                assertValidShape(responseData, responseDefinition.responseData, {
-                    allowExtraKeys: true,
-                });
-            }
-
-            return {
-                ok: false,
-                data: responseData || responseText || undefined,
-                response,
-            };
         }
+
+        console.log({
+            responseData,
+        });
+
+        if (responseDefinition.responseData) {
+            assertValidShape(
+                responseData,
+                responseDefinition.responseData,
+                {
+                    allowExtraKeys: true,
+                },
+                `Response from endpoint '${endpoint.path}' has invalid data.`,
+            );
+        } else if (responseData) {
+            throw new Error(
+                `Response from endpoint '${endpoint.path}' has unexpectedly present data.`,
+            );
+        }
+
+        const fetchOutput: UnknownFetchOutput = {
+            status,
+            headers,
+            response,
+            responseData: responseData as any,
+        };
+
+        const statusKey = httpStatusToKey[status];
+
+        return {
+            [statusKey]: fetchOutput,
+        } as EndpointFetchOutput<Endpoint, Method>;
     }
 
     /**

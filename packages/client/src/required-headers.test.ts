@@ -1,6 +1,13 @@
+import {HttpStatus} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {defineShape} from 'object-shape-tester';
 import {extractRequiredHeaders} from './required-headers.js';
+
+const stubResponses = {
+    [HttpStatus.Ok]: {
+        responseData: undefined,
+    },
+};
 
 describe(extractRequiredHeaders.name, () => {
     it('accepts matching header values for shape requirements', () => {
@@ -10,6 +17,7 @@ describe(extractRequiredHeaders.name, () => {
                 requiredRequestHeaders: {
                     authorization: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 requiredHeaders: {
@@ -26,6 +34,7 @@ describe(extractRequiredHeaders.name, () => {
                 requiredRequestHeaders: {
                     'x-api-key': /^key-.+$/,
                 },
+                responses: stubResponses,
             },
             {
                 requiredHeaders: {
@@ -36,13 +45,21 @@ describe(extractRequiredHeaders.name, () => {
     });
 
     it('allows omitting params when endpoint has no required headers', () => {
-        extractRequiredHeaders('/test', {}, {});
+        extractRequiredHeaders(
+            '/test',
+            {
+                responses: stubResponses,
+            },
+            {},
+        );
     });
 
     it('allows omitting requiredHeaders in params when endpoint has no requirements', () => {
         extractRequiredHeaders(
             '/test',
-            {},
+            {
+                responses: stubResponses,
+            },
             {
                 requiredHeaders: undefined,
             },
@@ -57,6 +74,7 @@ describe(extractRequiredHeaders.name, () => {
                     authorization: defineShape(''),
                     'x-request-id': /^[a-f0-9-]+$/,
                 },
+                responses: stubResponses,
             },
             {
                 requiredHeaders: {
@@ -72,7 +90,9 @@ describe(extractRequiredHeaders.name, () => {
             it: 'returns empty object when no headers are required',
             inputs: [
                 '/test',
-                {},
+                {
+                    responses: stubResponses,
+                },
                 {},
             ],
             expect: {},
@@ -83,6 +103,7 @@ describe(extractRequiredHeaders.name, () => {
                 '/test',
                 {
                     requiredRequestHeaders: undefined,
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: undefined,
@@ -98,6 +119,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -117,6 +139,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-api-key': /^key-[a-z0-9]+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -137,6 +160,7 @@ describe(extractRequiredHeaders.name, () => {
                         authorization: defineShape(''),
                         'x-request-id': /^[0-9a-f-]+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -158,6 +182,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {},
             ],
@@ -173,6 +198,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: undefined,
@@ -186,7 +212,9 @@ describe(extractRequiredHeaders.name, () => {
             it: 'throws when headers are set but endpoint has no requirements',
             inputs: [
                 '/public',
-                {},
+                {
+                    responses: stubResponses,
+                },
                 {
                     requiredHeaders: {
                         authorization: 'Bearer sneaky',
@@ -203,6 +231,7 @@ describe(extractRequiredHeaders.name, () => {
                 '/public',
                 {
                     requiredRequestHeaders: undefined,
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -222,6 +251,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-api-key': /^key-[a-z0-9]+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -241,6 +271,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-api-key': /^key-.+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -261,6 +292,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-api-key': /^key-.+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -280,6 +312,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'content-type': defineShape(0),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -299,6 +332,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-required': defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -317,6 +351,7 @@ describe(extractRequiredHeaders.name, () => {
                 '/open',
                 {
                     requiredRequestHeaders: undefined,
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {},
@@ -332,6 +367,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         token: defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {},
             ],
@@ -347,6 +383,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-custom-header': /^valid$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -366,6 +403,7 @@ describe(extractRequiredHeaders.name, () => {
                     requiredRequestHeaders: {
                         'x-typed-header': defineShape(0),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -387,6 +425,7 @@ describe(extractRequiredHeaders.name, () => {
                         'x-request-id': /^[a-f0-9-]+$/,
                         'x-api-version': defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {
@@ -411,6 +450,7 @@ describe(extractRequiredHeaders.name, () => {
                         good: defineShape(''),
                         bad: /^must-match$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     requiredHeaders: {

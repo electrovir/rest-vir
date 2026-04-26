@@ -201,7 +201,11 @@ export const partnerApiEndpoint = defineEndpoint({
             requestData: defineShape({
                 action: '',
             }),
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
         },
     },
 });
@@ -253,7 +257,11 @@ export const traceEndpoint = defineEndpoint({
     requests: {
         [HttpMethod.Trace]: {
             clientOrigin: 'https://app.example.com',
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
         },
     },
 });

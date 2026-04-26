@@ -1,12 +1,6 @@
-## Required
+## touch-ups
 
--   add a `searchParams` object to `fetchEndpoint` options
-
-## Not required
-
--   add more info logging
--   support raw buffers in socket message
--   omit `HttpMethod.Options` from an endpoint init's methods object because it is always allowed anyway
+-   make sure all shape validation uses "allowExtraKeys: true"
 
 ## Rewrite
 

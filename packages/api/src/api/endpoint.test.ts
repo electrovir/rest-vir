@@ -2,6 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineShape, type Shape} from 'object-shape-tester';
+import {type NoParam} from '../util/no-param.js';
 import {
     defineEndpoint,
     type EndpointDefinition,
@@ -9,7 +10,6 @@ import {
     type ExtractEndpointMethodDefinition,
     type ResponseDefinitions,
 } from './endpoint.js';
-import {type NoParam} from './no-param.js';
 
 describe('ExtractEndpointMethodDefinition', () => {
     it('falls back to plain definition', () => {
@@ -74,7 +74,11 @@ describe('EndpointMethodDefinition', () => {
             requestData: defineShape({
                 name: '',
             }),
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
     });
 
@@ -85,11 +89,19 @@ describe('EndpointMethodDefinition', () => {
             requestData: defineShape({
                 name: '',
             }),
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
         const definition2: EndpointMethodDefinition<HttpMethod.Get> = {
             clientOrigin: 'https://example.com',
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
     });
 
@@ -100,7 +112,11 @@ describe('EndpointMethodDefinition', () => {
                 query: defineShape(''),
                 page: defineShape(0),
             },
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
     });
 
@@ -110,14 +126,22 @@ describe('EndpointMethodDefinition', () => {
             customProps: {
                 someProp: 'hello',
             },
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
     });
 
     it('allows omitting optional fields', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Post> = {
             clientOrigin: '',
-            responses: {},
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape(''),
+                },
+            },
         };
     });
 });
@@ -207,7 +231,11 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         } as const;
@@ -258,12 +286,22 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: 'https://get.com',
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
                 [HttpMethod.Post]: {
                     clientOrigin: 'https://post.com',
                     requestData: defineShape({
                         value: 0,
                     }),
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -278,7 +316,11 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: 'https://my-app.com',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -292,7 +334,11 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -310,7 +356,11 @@ describe(defineEndpoint.name, () => {
                         requiresAuth: true,
                         role: 'admin',
                     },
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -334,7 +384,11 @@ describe(defineEndpoint.name, () => {
                         query: queryShape,
                         limit: limitShape,
                     },
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -357,7 +411,11 @@ describe(defineEndpoint.name, () => {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
                     requestData: bodyShape,
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -372,7 +430,11 @@ describe(defineEndpoint.name, () => {
                 [HttpMethod.Post]: {
                     clientOrigin: '',
                     requestData: undefined,
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -386,7 +448,11 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });
@@ -400,18 +466,30 @@ describe(defineEndpoint.name, () => {
             requests: {
                 [HttpMethod.Get]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
                 [HttpMethod.Put]: {
                     clientOrigin: '',
                     requestData: defineShape({
                         updated: true,
                     }),
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
                 [HttpMethod.Delete]: {
                     clientOrigin: '',
-                    responses: {},
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
                 },
             },
         });

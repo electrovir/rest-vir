@@ -7,7 +7,10 @@ import {
     type PartialWithUndefined,
 } from '@augment-vir/common';
 import {
+    mergeHeaders,
     type BaseRequiredResponseHeaders,
+    type DefinableHttpMethod,
+    type EndpointDefinition,
     type EndpointMethodDefinition,
     type EndpointResponseHeadersType,
     type ResponseStatusDefinition,
@@ -22,23 +25,25 @@ import {type Shape} from 'object-shape-tester';
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
 export type MockEndpointResponseOptions<
-    EndpointMethodToMock extends EndpointMethodDefinition,
-    ResponseStatus extends keyof NoInfer<EndpointMethodToMock>['responses'],
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
+    Status extends HttpStatus,
 > = Overwrite<
     Omit<MockResponseParams, 'status'>,
-    EndpointMethodToMock['responses'][ResponseStatus] extends ResponseStatusDefinition
-        ? (EndpointMethodToMock['responses'][ResponseStatus]['responseData'] extends Shape
+    Extract<
+        Endpoint['requests'][Method],
+        EndpointMethodDefinition
+    >['responses'][Status] extends infer StatusDefinition extends ResponseStatusDefinition
+        ? (StatusDefinition['responseData'] extends Shape
               ? {
-                    body: EndpointMethodToMock['responses'][ResponseStatus]['responseData']['runtimeType'];
+                    body: StatusDefinition['responseData']['runtimeType'];
                 }
               : {
                     body?: undefined;
                 }) &
-              (EndpointMethodToMock['responses'][ResponseStatus]['requiredResponseHeaders'] extends BaseRequiredResponseHeaders
+              (StatusDefinition['requiredResponseHeaders'] extends BaseRequiredResponseHeaders
                   ? {
-                        headers: EndpointResponseHeadersType<
-                            EndpointMethodToMock['responses'][ResponseStatus]['requiredResponseHeaders']
-                        >;
+                        headers: EndpointResponseHeadersType<Endpoint, Method, Status>;
                     }
                   : unknown)
         : unknown
@@ -53,21 +58,30 @@ export type MockEndpointResponseOptions<
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
 export function createMockEndpointResponse<
-    const EndpointMethodToMock extends EndpointMethodDefinition,
-    const ResponseStatus extends keyof NoInfer<EndpointMethodToMock>['responses'],
+    const Endpoint extends EndpointDefinition,
+    const Method extends keyof NoInfer<Endpoint>['requests'],
+    const Status extends keyof Extract<
+        NoInfer<Endpoint>['requests'][NoInfer<Method>],
+        EndpointMethodDefinition
+    >['responses'],
 >(
-    endpoint: EndpointMethodToMock,
-    responseStatus: ResponseStatus,
+    endpoint: Endpoint,
+    method: Method,
+    status: Status,
     params: Readonly<
-        MockEndpointResponseOptions<NoInfer<EndpointMethodToMock>, NoInfer<ResponseStatus>>
+        MockEndpointResponseOptions<
+            NoInfer<Endpoint>,
+            NoInfer<Extract<Method, DefinableHttpMethod>>,
+            NoInfer<Extract<Status, HttpStatus>>
+        >
     >,
 ) {
     return createMockResponse({
         ...params,
         status: assertWrap.isEnumValue(
-            responseStatus,
+            status,
             HttpStatus,
-            `Received invalid status: '${String(responseStatus)}'`,
+            `Received invalid status: '${String(status)}'`,
         ),
     });
 }
@@ -152,7 +166,12 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
     let bodyUsed = false;
 
     return {
-        headers: new Headers(headers),
+        headers: mergeHeaders(
+            {
+                'content-type': 'application/json',
+            },
+            headers,
+        ),
         ok: !isErrorHttpStatus(status),
         body: new MockResponseBodyStream(body, () => {
             if (bodyUsed) {
@@ -217,7 +236,7 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
                 throw new TypeError('Body is disturbed or locked.');
             }
             bodyUsed = true;
-            return Promise.resolve(check.isString(body) ? body : JSON.stringify(body));
+            return Promise.resolve(JSON.stringify(body));
         },
         json() {
             if (bodyUsed) {
@@ -259,14 +278,23 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
 export function createMockEndpointFetch<
-    const EndpointMethodToMock extends EndpointMethodDefinition,
-    const ResponseStatus extends keyof NoInfer<EndpointMethodToMock>['responses'],
+    const Endpoint extends EndpointDefinition,
+    const Method extends keyof NoInfer<Endpoint>['requests'],
+    const Status extends keyof Extract<
+        NoInfer<Endpoint>['requests'][NoInfer<Method>],
+        EndpointMethodDefinition
+    >['responses'],
 >(
-    endpoint: EndpointMethodToMock,
-    responseStatus: ResponseStatus,
+    endpoint: Endpoint,
+    method: Method,
+    status: Status,
     params: Readonly<
         Omit<
-            MockEndpointResponseOptions<NoInfer<EndpointMethodToMock>, NoInfer<ResponseStatus>>,
+            MockEndpointResponseOptions<
+                NoInfer<Endpoint>,
+                NoInfer<Extract<Method, DefinableHttpMethod>>,
+                NoInfer<Extract<Status, HttpStatus>>
+            >,
             'url'
         >
     >,
@@ -274,9 +302,9 @@ export function createMockEndpointFetch<
     return createMockFetch({
         ...params,
         status: assertWrap.isEnumValue(
-            responseStatus,
+            status,
             HttpStatus,
-            `Received invalid status: '${String(responseStatus)}'`,
+            `Received invalid status: '${String(status)}'`,
         ),
     });
 }

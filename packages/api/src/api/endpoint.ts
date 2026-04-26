@@ -1,12 +1,12 @@
 import {
     HttpMethod,
-    type AnyObject,
     type ArrayElement,
     type ErrorHttpStatus,
     type HttpStatus,
 } from '@augment-vir/common';
 import {type Shape} from 'object-shape-tester';
-import {type NoParam} from './no-param.js';
+import {type RequireAtLeastOne} from 'type-fest';
+import {type NoParam} from '../util/no-param.js';
 import {
     type BaseRoutePath,
     type CommonRouteDefinition,
@@ -179,7 +179,7 @@ export type EndpointMethodDefinition<Method extends DefinableHttpMethod = Defina
      * This is ignored entirely for http methods that do not allow request bodies.
      */
     requestData?: Method extends HttpMethodsWithBodies ? Shape | undefined : never;
-    responses?: ResponseDefinitions;
+    responses: ResponseDefinitions;
 } & CommonRouteDefinition;
 
 /**
@@ -193,7 +193,7 @@ export type EndpointMethodDefinition<Method extends DefinableHttpMethod = Defina
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type ResponseDefinitions = Partial<Record<HttpStatus, ResponseStatusDefinition>>;
+export type ResponseDefinitions = RequireAtLeastOne<Record<HttpStatus, ResponseStatusDefinition>>;
 
 /**
  * The definition of an individual response status's output information.
@@ -203,7 +203,7 @@ export type ResponseDefinitions = Partial<Record<HttpStatus, ResponseStatusDefin
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ResponseStatusDefinition = {
-    responseData?: Shape | undefined;
+    responseData: Shape | undefined;
     requiredResponseHeaders?: BaseRequiredResponseHeaders | undefined;
 };
 
@@ -312,8 +312,17 @@ export type EndpointResponseType<
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type DefaultResponseType<Status extends HttpStatus> = Status extends ErrorHttpStatus
-    ? undefined | string
+    ? DefaultErrorResponseType
     : unknown;
+
+/**
+ * The default response type for any error status.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type DefaultErrorResponseType = undefined | string;
 
 /**
  * Extract an endpoint's response headers type, including required response headers (if any).
@@ -323,20 +332,29 @@ export type DefaultResponseType<Status extends HttpStatus> = Status extends Erro
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointResponseHeadersType<
-    Endpoint extends EndpointDefinition,
-    Method extends DefinableHttpMethod,
-    Status extends HttpStatus,
-    ResponseDefinition extends
-        | undefined
-        | {requiredResponseHeaders?: Record<string, Shape>}
-        | NoParam,
-> = Extract<
-    ResponseDefinition,
-    AnyObject
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
+    Status extends HttpStatus | NoParam = NoParam,
+> = NonNullable<
+    NonNullable<
+        Extract<
+            Extract<Endpoint, EndpointDefinition>['requests'][Extract<Method, DefinableHttpMethod>],
+            EndpointMethodDefinition
+        >['responses']
+    >[Extract<Status, HttpStatus>]
 >['requiredResponseHeaders'] extends infer RequiredHeaders extends BaseRequiredResponseHeaders
     ? {
           [HeaderKey in keyof RequiredHeaders]: ExtractRequiredHeaderValue<
               RequiredHeaders[HeaderKey]
           >;
-      } & Record<string, string>
-    : Record<string, string>;
+      } & DefaultResponseHeadersType
+    : DefaultResponseHeadersType;
+
+/**
+ * Default response headers type.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type DefaultResponseHeadersType = Record<string, string>;

@@ -1,11 +1,24 @@
 import {assert} from '@augment-vir/assert';
+import {HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineShape} from 'object-shape-tester';
 import {extractSearchParams} from './search-params.js';
 
+const stubResponses = {
+    [HttpStatus.Ok]: {
+        responseData: undefined,
+    },
+};
+
 describe(extractSearchParams.name, () => {
     it('returns empty object when no search params are defined', () => {
-        const result = extractSearchParams('/test', {}, {});
+        const result = extractSearchParams(
+            '/test',
+            {
+                responses: stubResponses,
+            },
+            {},
+        );
 
         assert.deepEquals(result, {});
     });
@@ -13,7 +26,9 @@ describe(extractSearchParams.name, () => {
     it('returns empty object when endpoint has no searchParams', () => {
         const result = extractSearchParams(
             '/test',
-            {},
+            {
+                responses: stubResponses,
+            },
             {
                 searchParams: {
                     query: 'hello',
@@ -33,6 +48,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     query: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -53,6 +69,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     tags: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -74,6 +91,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         tags: defineShape(''),
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -94,6 +112,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     query: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {},
         );
@@ -109,6 +128,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         id: /^\d+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -127,6 +147,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     id: /^\d+$/,
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -148,6 +169,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         id: /^\d+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -166,6 +188,7 @@ describe(extractSearchParams.name, () => {
                     query: defineShape(''),
                     page: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -188,6 +211,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     query: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -211,6 +235,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         ids: /^\d+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -231,6 +256,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     ids: /^\d+$/,
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -255,6 +281,7 @@ describe(extractSearchParams.name, () => {
             '/test',
             {
                 searchParams: undefined,
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -269,7 +296,13 @@ describe(extractSearchParams.name, () => {
     });
 
     it('returns empty object when neither endpoint nor params have searchParams', () => {
-        const result = extractSearchParams('/test', {}, {});
+        const result = extractSearchParams(
+            '/test',
+            {
+                responses: stubResponses,
+            },
+            {},
+        );
 
         assert.deepEquals(result, {});
     });
@@ -282,6 +315,7 @@ describe(extractSearchParams.name, () => {
                     required: defineShape(''),
                     optional: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -302,6 +336,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     query: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: undefined,
@@ -318,6 +353,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     kept: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -340,6 +376,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     query: defineShape(''),
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -358,6 +395,7 @@ describe(extractSearchParams.name, () => {
                 searchParams: {
                     id: /^\d+$/,
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -377,6 +415,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         count: defineShape(0),
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -396,6 +435,7 @@ describe(extractSearchParams.name, () => {
                         searchParams: {
                             codes: /^[A-Z]{3}$/,
                         },
+                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -422,6 +462,7 @@ describe(extractSearchParams.name, () => {
                         searchParams: {
                             myParam: /^valid$/,
                         },
+                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -445,6 +486,7 @@ describe(extractSearchParams.name, () => {
                         searchParams: {
                             myField: defineShape(0),
                         },
+                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -467,6 +509,7 @@ describe(extractSearchParams.name, () => {
                     name: defineShape(''),
                     code: /^[A-Z]+$/,
                 },
+                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -491,6 +534,7 @@ describe(extractSearchParams.name, () => {
                         name: defineShape(0),
                         code: /^[A-Z]+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -511,6 +555,7 @@ describe(extractSearchParams.name, () => {
                         name: defineShape(''),
                         code: /^[A-Z]+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -530,6 +575,7 @@ describe(extractSearchParams.name, () => {
                     searchParams: {
                         count: /^\d+$/,
                     },
+                    responses: stubResponses,
                 },
                 {
                     searchParams: {

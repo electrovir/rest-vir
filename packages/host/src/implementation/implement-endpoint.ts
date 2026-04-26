@@ -1,26 +1,28 @@
 import {
-    type ErrorHttpStatusCategories,
+    type AnyObject,
+    type ErrorHttpStatus,
     type HttpStatus,
-    type HttpStatusByCategory,
     type MaybePromise,
-    type Values,
 } from '@augment-vir/common';
 import {
-    EndpointResponseHeadersType,
+    type DefaultErrorResponseType,
     type DefinableHttpMethod,
     type EndpointDefinition,
     type EndpointMethodDefinition,
     type EndpointRequestType,
+    type EndpointResponseHeadersType,
     type EndpointResponseType,
     type ExtractEndpointMethodDefinitionWithNoParam,
     type NoParam,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
 import {type SetNullishPropertiesAsOptional} from '@rest-vir/client';
-import {type IncomingHttpHeaders, type OutgoingHttpHeaders, type ServerResponse} from 'node:http';
+import {type IncomingHttpHeaders, type ServerResponse} from 'node:http';
+import {type RequireExactlyOne} from 'type-fest';
+import {type DefaultResponseHeadersType} from '../../../api/src/endpoint.js';
 import {type ServerRequest} from './raw-route-data.js';
 
-export function createEndpointImplementor<HostContext>() {
+export function createEndpointImplementor<HostContext>(this: void) {
     return <const Endpoint extends Readonly<EndpointDefinition>>(
         endpoint: Readonly<Endpoint>,
         implementation: Readonly<EndpointImplementation<NoInfer<Endpoint>, HostContext>>,
@@ -84,60 +86,48 @@ export type EndpointImplementation<
     : // todo: implement the generic version later
       any;
 
-/**
- * The part of {@link EndpointImplementationOutput} allowed for error responses.
- *
- * @category Internal
- * @category Package : @rest-vir/host
- * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
- */
-export type EndpointImplementationErrorOutput = {
-    statusCode: HttpStatusByCategory<ErrorHttpStatusCategories>;
-    /**
-     * An error message which will get sent to the frontend.
-     *
-     * DO NOT INCLUDE SENSITIVE INFORMATION IN HERE, it will be shown to the user.
-     */
-    responseErrorMessage?: string | undefined;
-    responseData?: undefined;
-    headers?: OutgoingHttpHeaders | undefined;
-    dataType?: undefined;
-    responseHandled?: never;
-};
-
-/**
- * Returned by an endpoint implementation that has taken full control of the response (e.g. SSE
- * streaming via `response.hijack()`). When the framework receives this, it skips response
- * validation, the post-hook, and the final `response.send()`.
- *
- * @category Internal
- * @category Package : @rest-vir/host
- * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
- */
-export type EndpointImplementationHandledOutput = {
-    /** The response has been fully handled by the endpoint implementation. */
-    responseHandled: true;
-    statusCode?: never;
-    responseData?: never;
-    dataType?: never;
-    headers?: never;
+export type EndpointMethodDefinedStatusOutputs<
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
+> = {
+    [Status in keyof Extract<
+        Endpoint['requests'][Method],
+        EndpointMethodDefinition
+    >['responses']]: Status extends HttpStatus
+        ? SetNullishPropertiesAsOptional<{
+              responseData: EndpointResponseType<Endpoint, Method, Status>;
+              headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
+              responseHandled?: never;
+          }>
+        : never;
 };
 
 export type EndpointMethodImplementationOutput<
     Endpoint extends EndpointDefinition,
     Method extends DefinableHttpMethod,
 > =
-    | EndpointImplementationHandledOutput
-    | Values<{
-          [Status in keyof Extract<
-              Endpoint['requests'][Method],
-              EndpointMethodDefinition
-          >['responses']]: Status extends HttpStatus
-              ? SetNullishPropertiesAsOptional<{
-                    statusCode: Status;
-                    responseData: EndpointResponseType<Endpoint, Method, Status>;
-                    headers?: EndpointResponseHeadersType<> | undefined;
-                    responseHandled?: never;
-                }>
-              : never;
-      }>;
+    EndpointMethodDefinedStatusOutputs<Endpoint, Method> extends infer DefinedStatuses extends
+        AnyObject
+        ? RequireExactlyOne<
+              DefinedStatuses &
+                  Record<
+                      Exclude<ErrorHttpStatus, keyof DefinedStatuses>,
+                      {
+                          responseData: DefaultErrorResponseType;
+                          headers?: DefaultResponseHeadersType | undefined;
+                          responseHandled?: never;
+                      }
+                  > & {
+                      [Status in Exclude<
+                          ErrorHttpStatus,
+                          keyof DefinedStatuses
+                      >]: SetNullishPropertiesAsOptional<{
+                          responseData: EndpointResponseType<Endpoint, Method, Status>;
+                          headers?:
+                              | EndpointResponseHeadersType<Endpoint, Method, Status>
+                              | undefined;
+                          responseHandled?: never;
+                      }>;
+                  } & {responseHandled: true}
+          >
+        : never;

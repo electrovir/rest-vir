@@ -8,9 +8,9 @@ import {
     type NoParam,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
+import {type SetNullishPropertiesAsOptional} from '@rest-vir/api/src/augments/object.js';
 import {type HasRequiredKeys} from 'type-fest';
-import {type SetNullishPropertiesAsOptional} from './augments/object.js';
-import {type ExtractPathParams} from './path-params.js';
+import {type ExtractPathParams} from '../path-params.js';
 
 /**
  * Used to define a function's rest params. The params object is only required if it has any

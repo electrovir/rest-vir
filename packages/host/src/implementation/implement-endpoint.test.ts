@@ -5,37 +5,60 @@ import {defineShape} from 'object-shape-tester';
 import {createEndpointImplementor} from './implement-endpoint.js';
 
 describe(createEndpointImplementor.name, () => {
-    it('implements an endpoint', () => {
-        const endpointDefinition = defineEndpoint({
-            path: '/test',
-            requests: {
-                [HttpMethod.Get]: {
-                    responses: {
-                        [HttpStatus.Ok]: {
-                            responseData: defineShape({
-                                hello: '',
-                            }),
-                        },
+    const mockEndpoint = defineEndpoint({
+        path: '/test',
+        requests: {
+            [HttpMethod.Get]: {
+                responses: {
+                    [HttpStatus.Ok]: {
+                        responseData: defineShape({
+                            hello: '',
+                        }),
                     },
                 },
             },
-        });
+        },
+    });
 
-        type MockContext = {
-            database: any;
-        };
+    type MockContext = {
+        database: any;
+    };
 
-        const implementation = createEndpointImplementor<MockContext>()(endpointDefinition, {
+    const implementMockEndpoint = createEndpointImplementor<MockContext>();
+
+    it('implements an endpoint', () => {
+        implementMockEndpoint(mockEndpoint, {
             [HttpMethod.Get]({context, method, endpoint}) {
                 assert.tsType(context).equals<MockContext>();
 
-                assert.tsType(endpoint).equals(endpointDefinition);
-                assert.strictEquals(endpoint, endpointDefinition);
+                assert.tsType(endpoint).equals(mockEndpoint);
+                assert.strictEquals(endpoint, mockEndpoint);
 
                 assert.tsType(method).equals(HttpMethod.Get);
                 assert.strictEquals(method, HttpMethod.Get);
 
-                return {};
+                return {
+                    '200': {
+                        responseData: {
+                            hello: 'hi',
+                        },
+                    },
+                };
+            },
+        });
+    });
+    it('prevents more than one return property', () => {
+        implementMockEndpoint(mockEndpoint, {
+            // @ts-expect-error: cannot define responseHandled and a status
+            [HttpMethod.Get]() {
+                return {
+                    responseHandled: true,
+                    '200': {
+                        responseData: {
+                            hello: 'hi',
+                        },
+                    },
+                };
             },
         });
     });

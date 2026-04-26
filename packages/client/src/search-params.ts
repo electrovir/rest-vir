@@ -7,7 +7,6 @@ import {
     type RouteSearchParamsType,
 } from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
-import {type SetNullishPropertiesAsOptional} from './endpoint-params.js';
 
 export function extractSearchParams(
     path: PropertyKey,
@@ -18,11 +17,9 @@ export function extractSearchParams(
         }>
     >,
 ): BaseSearchParams {
-    const genericParams: Readonly<
-        SetNullishPropertiesAsOptional<{
-            searchParams: RouteSearchParamsType;
-        }>
-    > = params;
+    const genericParams: Readonly<{
+        searchParams?: RouteSearchParamsType;
+    }> = params;
     const searchParamsRequirements: Record<string, Shape | RegExp> | undefined =
         endpoint.searchParams;
 

@@ -43,13 +43,9 @@ const mockResponseData = {
 
 describe(createMockEndpointResponse.name, () => {
     it('creates a mock response', async () => {
-        const response = createMockEndpointResponse(
-            testEndpoint.requests[HttpMethod.Post],
-            HttpStatus.Ok,
-            {
-                body: mockResponseData,
-            },
-        );
+        const response = createMockEndpointResponse(testEndpoint, HttpMethod.Post, HttpStatus.Ok, {
+            body: mockResponseData,
+        });
 
         assert.deepEquals(await response.json(), mockResponseData);
     });
@@ -57,13 +53,9 @@ describe(createMockEndpointResponse.name, () => {
 
 describe(createMockEndpointFetch.name, () => {
     it('creates a mock fetch', async () => {
-        const mockFetch = createMockEndpointFetch(
-            testEndpoint.requests[HttpMethod.Post],
-            HttpStatus.Ok,
-            {
-                body: mockResponseData,
-            },
-        );
+        const mockFetch = createMockEndpointFetch(testEndpoint, HttpMethod.Post, HttpStatus.Ok, {
+            body: mockResponseData,
+        });
 
         const response = await mockFetch('some-url');
 
@@ -73,13 +65,9 @@ describe(createMockEndpointFetch.name, () => {
     it('handles a URL object input', async () => {
         assert.strictEquals(
             (
-                await createMockEndpointFetch(
-                    testEndpoint.requests[HttpMethod.Post],
-                    HttpStatus.Ok,
-                    {
-                        body: mockResponseData,
-                    },
-                )(new URL('https://example.com/some-url2'))
+                await createMockEndpointFetch(testEndpoint, HttpMethod.Post, HttpStatus.Ok, {
+                    body: mockResponseData,
+                })(new URL('https://example.com/some-url2'))
             ).url,
             'https://example.com/some-url2',
         );
@@ -87,13 +75,9 @@ describe(createMockEndpointFetch.name, () => {
     it('handles a Request input', async () => {
         assert.strictEquals(
             (
-                await createMockEndpointFetch(
-                    testEndpoint.requests[HttpMethod.Post],
-                    HttpStatus.Ok,
-                    {
-                        body: mockResponseData,
-                    },
-                )(new Request('https://example.com/some-url3'))
+                await createMockEndpointFetch(testEndpoint, HttpMethod.Post, HttpStatus.Ok, {
+                    body: mockResponseData,
+                })(new Request('https://example.com/some-url3'))
             ).url,
             'https://example.com/some-url3',
         );
@@ -222,7 +206,7 @@ describe(createMockResponse.name, () => {
             body: 'hi',
         });
 
-        assert.strictEquals(await response.text(), 'hi');
+        assert.strictEquals(await response.text(), '"hi"');
         assert.isTrue(response.bodyUsed);
         await assert.throws(() => response.text());
     });

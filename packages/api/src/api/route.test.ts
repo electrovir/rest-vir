@@ -1,4 +1,5 @@
 import {assert} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineShape, tupleShape} from 'object-shape-tester';
 import {defineEndpoint} from './endpoint.js';
@@ -13,11 +14,16 @@ describe('RouteSearchParamsType', () => {
         const endpoint = defineEndpoint({
             path: '/search',
             requests: {
-                GET: {
+                [HttpMethod.Get]: {
                     searchParams: {
                         regExp: /hi+/,
                         stringShape: defineShape(''),
                         tupleShape: tupleShape('', ''),
+                    },
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
                     },
                 },
             },
@@ -40,7 +46,13 @@ describe('RouteSearchParamsType', () => {
         const endpoint = defineEndpoint({
             path: '/no-params',
             requests: {
-                GET: {},
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
             },
         });
 
