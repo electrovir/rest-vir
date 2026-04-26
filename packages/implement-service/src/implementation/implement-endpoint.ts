@@ -50,13 +50,6 @@ export type EndpointImplementationErrorOutput = {
 };
 
 /**
- * The object that all endpoint implementations should return.
- *
- * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
- */
-/**
  * Returned by an endpoint implementation that has taken full control of the response (e.g. SSE
  * streaming via `response.hijack()`). When the framework receives this, it skips response
  * validation, the post-hook, and the final `response.send()`.
@@ -75,6 +68,13 @@ export type EndpointImplementationHandledOutput = {
     headers?: never;
 };
 
+/**
+ * The object that all endpoint implementations should return.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
 export type EndpointImplementationOutput<ResponseDataType = unknown> =
     | EndpointImplementationErrorOutput
     | EndpointImplementationHandledOutput

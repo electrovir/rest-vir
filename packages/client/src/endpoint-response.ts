@@ -1,5 +1,5 @@
 import {type AnyObject, type HttpStatus} from '@augment-vir/common';
-import {type EndpointMethodDefinition, type ExtractResponseHeadersType} from '@rest-vir/api';
+import {type EndpointMethodDefinition, type EndpointResponseHeadersType} from '@rest-vir/api';
 import {type Shape} from 'object-shape-tester';
 import {type RequireExactlyOne} from 'type-fest';
 
@@ -10,7 +10,7 @@ export type EndpointFetchOutput<EndpointMethod extends EndpointMethodDefinition>
                   [Status in keyof EndpointMethod['responses']]: {
                       status: Status;
                       data: ResolveShapeType<EndpointMethod['responses'][Status]['responseData']>;
-                      headers: ExtractResponseHeadersType<EndpointMethod['responses'][Status]>;
+                      headers: EndpointResponseHeadersType<EndpointMethod['responses'][Status]>;
                   };
               } & {
                   other: {

@@ -9,7 +9,7 @@ import {
 import {
     type BaseRequiredResponseHeaders,
     type EndpointMethodDefinition,
-    type ExtractResponseHeadersType,
+    type EndpointResponseHeadersType,
     type ResponseStatusDefinition,
 } from '@rest-vir/api';
 import {type Shape} from 'object-shape-tester';
@@ -36,7 +36,7 @@ export type MockEndpointResponseOptions<
                 }) &
               (EndpointMethodToMock['responses'][ResponseStatus]['requiredResponseHeaders'] extends BaseRequiredResponseHeaders
                   ? {
-                        headers: ExtractResponseHeadersType<
+                        headers: EndpointResponseHeadersType<
                             EndpointMethodToMock['responses'][ResponseStatus]['requiredResponseHeaders']
                         >;
                     }

@@ -1,0 +1,54 @@
+{
+    "name": "@rest-vir/host",
+    "version": "1.7.2",
+    "description": "Implement a declarative and type safe REST API and host it.",
+    "keywords": [
+        "rest",
+        "api",
+        "fastify",
+        "service",
+        "backend",
+        "server",
+        "websocket",
+        "vir"
+    ],
+    "homepage": "https://github.com/electrovir/rest-vir",
+    "bugs": {
+        "url": "https://github.com/electrovir/rest-vir/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/rest-vir.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "start": "virmator frontend",
+        "test": "virmator test web",
+        "test:coverage": "npm run test coverage",
+        "test:update": "npm test update"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^31.68.4",
+        "@rest-vir/api": "^1.7.2",
+        "@rest-vir/client": "^1.7.2",
+        "@types/ws": "^8.18.1"
+    },
+    "peerDependencies": {
+        "object-shape-tester": ">=5"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

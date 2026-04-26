@@ -3,15 +3,15 @@ import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {type BaseSearchParams, defineEndpoint} from '@rest-vir/api';
 import {
-    adminSettingsEndpoint,
-    downloadEndpoint,
-    fullRouteEndpoint,
-    itemByIdEndpoint,
-    partnerApiEndpoint,
-    pingEndpoint,
-    protectedEndpoint,
-    searchEndpoint,
-    usersCreateEndpoint,
+    type adminSettingsEndpoint,
+    type downloadEndpoint,
+    type fullRouteEndpoint,
+    type itemByIdEndpoint,
+    type partnerApiEndpoint,
+    type pingEndpoint,
+    type protectedEndpoint,
+    type searchEndpoint,
+    type usersCreateEndpoint,
 } from '@rest-vir/api/src/api.mock.js';
 import {defineShape} from 'object-shape-tester';
 import type {EndpointParamObject, EndpointParams} from './endpoint-params.js';

@@ -1,4 +1,5 @@
 export * from './augments/json.js';
+export * from './augments/object.js';
 export * from './client.js';
 export * from './endpoint-params.js';
 export * from './endpoint-response.js';
