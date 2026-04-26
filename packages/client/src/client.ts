@@ -1,11 +1,11 @@
 import {check} from '@augment-vir/assert';
-import {addPrefix, mapObject, type HttpStatus, type Values} from '@augment-vir/common';
+import {addPrefix, mapObject, type HttpStatus} from '@augment-vir/common';
 import {
     extractEndpointMethodDefinition,
     type ApiDefinition,
     type DefinableHttpMethod,
     type EndpointDefinition,
-    type NoParam,
+    type ExtractEndpointMethodDefinition,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
 import {type OutgoingHttpHeaders} from 'node:http';
@@ -31,14 +31,14 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     ) {}
 
     public async fetch<
-        const Endpoint extends Extract<Values<ClientApi['endpoints']>, EndpointDefinition>,
+        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
         const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
     >(
         endpoint: Endpoint,
         method: Method,
         ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
     ) {
-        const params = restParams[0];
+        const params: EndpointParamObject | undefined = restParams[0];
 
         if (!check.hasKey(this.api.endpoints, endpoint.path)) {
             throw new Error(`Cannot fetch: this api has no '${endpoint.path}' endpoint.`);
@@ -46,7 +46,17 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
 
         const endpointMethodDefinition = extractEndpointMethodDefinition(endpoint, method);
 
-        const {requestInit, url} = this.buildEndpointRequestInit(endpoint.path, method, params);
+        if (!endpointMethodDefinition) {
+            throw new Error(`Endpoint '${endpoint.path}' does not support method '${method}'.`);
+        }
+
+        const {requestInit, url} = this.buildEndpointRequestInit(
+            endpoint,
+            method,
+            params satisfies EndpointParamObject | undefined as
+                | EndpointParamObject<NoInfer<Endpoint>, NoInfer<Method>>
+                | undefined,
+        );
 
         const response = await (params?.fetchOverride || this.fetchOverride || fetch)(
             url,
@@ -93,33 +103,41 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
      *   (respectively).
      */
     public buildEndpointUrl<
-        const Path extends keyof ClientApi['endpoints'],
-        const Method extends keyof ClientApi['endpoints'][NoInfer<Path>],
+        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
+        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
     >(
-        path: Path,
+        endpoint: Endpoint,
         method: Method,
         params: Readonly<
             SetNullishPropertiesAsOptional<{
-                searchParams: RouteSearchParamsType<NoInfer<EndpointMethod>>;
-                pathParams: ExtractPathParams<NoInfer<Path>>;
+                searchParams: RouteSearchParamsType<
+                    ExtractEndpointMethodDefinition<NoInfer<Endpoint>, NoInfer<Method>>
+                >;
+                pathParams: ExtractPathParams<NoInfer<Endpoint>['path']>;
             }>
         >,
     ) {
         let pathParamsCount = 0;
         const genericParams: Readonly<
             SetNullishPropertiesAsOptional<{
-                searchParams: RouteSearchParamsType<NoParam>;
+                searchParams: RouteSearchParamsType;
                 pathParams: ExtractPathParams;
             }>
         > = params;
 
-        const searchParams = extractSearchParams(endpointMethod, genericParams);
+        const endpointMethod = extractEndpointMethodDefinition(endpoint, method);
 
-        if (path.endsWith('/*') && genericParams.pathParams?.wildcard == undefined) {
+        if (!endpointMethod) {
+            throw new Error(`Method '${method}' does not exist on endpoint '${endpoint.path}'.`);
+        }
+
+        const searchParams = extractSearchParams(endpoint.path, endpointMethod, genericParams);
+
+        if (endpoint.path.endsWith('/*') && genericParams.pathParams?.wildcard == undefined) {
             throw new Error('Missing value for wildcard param.');
         }
 
-        const pathname = path
+        const pathname = endpoint.path
             .replaceAll(/\/:([^/]+)/g, (wholeMatch, paramName: string): string => {
                 pathParamsCount++;
                 if (
@@ -149,7 +167,9 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         }).href;
 
         if (!pathParamsCount && genericParams.pathParams) {
-            throw new Error(`'${path}' in does not allow any path params but some where set.`);
+            throw new Error(
+                `Endpoint '${endpoint.path}' does not allow any path params but some where set.`,
+            );
         }
 
         return builtUrl;
@@ -157,19 +177,25 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
 
     /** @throws Error if the given params are invalid for the given endpoint. */
     public buildEndpointRequestInit<
-        const Path extends keyof ClientApi['endpoints'],
-        const Method extends keyof ClientApi['endpoints'][NoInfer<Path>],
+        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
+        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
     >(
-        path: Path,
+        endpoint: Endpoint,
         method: Method,
-        params:
-            | EndpointParamObject<ClientApi['endpoints'][NoInfer<Path>][NoInfer<Method>]>
-            | undefined,
+        params: EndpointParamObject<NoInfer<Endpoint>, NoInfer<Method>> | undefined,
     ) {
         const genericParams: EndpointParamObject | undefined = params;
-        const endpointMethod = this.extractEndpointMethodDefinition(path, method);
+        const endpointMethod = extractEndpointMethodDefinition(endpoint, method);
 
-        const requiredHeaders = extractRequiredHeaders(path, endpointMethod, genericParams || {});
+        if (!endpointMethod) {
+            throw new Error(`Method '${method}' does not exist on endpoint '${endpoint.path}'.`);
+        }
+
+        const requiredHeaders = extractRequiredHeaders(
+            endpoint.path,
+            endpointMethod,
+            genericParams || {},
+        );
 
         const optionsHeaders: OutgoingHttpHeaders & Record<string, string> = mapObject(
             genericParams?.options?.headers instanceof Headers
@@ -209,17 +235,19 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const shouldStringify: boolean = !!allHeaders['content-type']?.match(/\bjson\b/i);
 
         const url = this.buildEndpointUrl(
-            path,
+            endpoint,
             method,
             (genericParams || {}) satisfies Readonly<
                 SetNullishPropertiesAsOptional<{
-                    searchParams: RouteSearchParamsType<NoParam>;
+                    searchParams: RouteSearchParamsType;
                     pathParams: ExtractPathParams;
                 }>
             > as Readonly<
                 SetNullishPropertiesAsOptional<{
-                    searchParams: RouteSearchParamsType<EndpointMethod>;
-                    pathParams: ExtractPathParams<Path>;
+                    searchParams: RouteSearchParamsType<
+                        ExtractEndpointMethodDefinition<NoInfer<Endpoint>, NoInfer<Method>>
+                    >;
+                    pathParams: ExtractPathParams<NoInfer<Endpoint>['path']>;
                 }>
             >,
         );
@@ -227,7 +255,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const requestInit: RequestInit = {
             ...genericParams?.options,
             headers: allHeaders,
-            method: endpoint.method,
+            method,
             ...(genericParams?.requestData
                 ? shouldStringify
                     ? {

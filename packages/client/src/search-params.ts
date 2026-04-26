@@ -4,26 +4,23 @@ import {
     type AllowedSingleSearchParamValue,
     type BaseSearchParams,
     type EndpointMethodDefinition,
-    type NoParam,
     type RouteSearchParamsType,
-    type WithPath,
 } from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
 import {type SetNullishPropertiesAsOptional} from './endpoint-params.js';
 
-export function extractSearchParams<
-    const EndpointMethod extends WithPath<EndpointMethodDefinition>,
->(
-    endpoint: Readonly<EndpointMethod>,
+export function extractSearchParams(
+    path: PropertyKey,
+    endpoint: Readonly<EndpointMethodDefinition>,
     params: Readonly<
         PartialWithUndefined<{
-            searchParams: RouteSearchParamsType<NoInfer<EndpointMethod>>;
+            searchParams: RouteSearchParamsType;
         }>
     >,
 ): BaseSearchParams {
     const genericParams: Readonly<
         SetNullishPropertiesAsOptional<{
-            searchParams: RouteSearchParamsType<NoParam>;
+            searchParams: RouteSearchParamsType;
         }>
     > = params;
     const searchParamsRequirements: Record<string, Shape | RegExp> | undefined =

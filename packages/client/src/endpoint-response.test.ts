@@ -1,13 +1,72 @@
 import {assert} from '@augment-vir/assert';
-import {HttpStatus} from '@augment-vir/common';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {type mockApi} from '@rest-vir/api/src/api.mock.js';
-import {type largeApi} from '@rest-vir/api/src/large-api.mock.js';
-import {type defineShape} from 'object-shape-tester';
+import {defineEndpoint} from '@rest-vir/api';
+import {
+    downloadEndpoint,
+    itemByIdEndpoint,
+    partnerApiEndpoint,
+    protectedEndpoint,
+    usersCreateEndpoint,
+    usersEndpoint,
+} from '@rest-vir/api/src/api.mock.js';
+import {defineShape} from 'object-shape-tester';
 import type {EndpointFetchOutput, ResolveShapeType} from './endpoint-response.js';
 
-type MockEndpoints = (typeof mockApi)['endpoints'];
-type LargeEndpoints = (typeof largeApi)['endpoints'];
+const authLoginEndpoint = defineEndpoint({
+    path: '/auth/login',
+    requests: {
+        [HttpMethod.Post]: {
+            requestData: defineShape({
+                email: '',
+                password: '',
+            }),
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        user: {
+                            id: '',
+                            emailAddress: '',
+                            displayName: '',
+                        },
+                        token: '',
+                        refreshToken: '',
+                        expiresAt: '',
+                    }),
+                },
+                [HttpStatus.Unauthorized]: {
+                    responseData: defineShape({
+                        error: '',
+                        remainingAttempts: 0,
+                    }),
+                },
+            },
+        },
+    },
+});
+
+const projectsListEndpoint = defineEndpoint({
+    path: '/projects/list',
+    requests: {
+        [HttpMethod.Post]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        pageIndex: 0,
+                        pageCount: 0,
+                        totalCount: 0,
+                        items: [
+                            {
+                                id: '',
+                                name: '',
+                            },
+                        ],
+                    }),
+                },
+            },
+        },
+    },
+});
 
 describe('ResolveShapeType', () => {
     it('resolves a string shape to string', () => {
@@ -27,7 +86,9 @@ describe('ResolveShapeType', () => {
 
 describe('EndpointFetchOutput', () => {
     it('handles single ok response status', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/users']['GET']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof usersEndpoint.requests)[HttpMethod.Get]
+        >;
 
         if (result[HttpStatus.Ok]) {
             assert.tsType(result[HttpStatus.Ok]).matches<{
@@ -48,7 +109,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles POST endpoint with multiple response statuses', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/users/create']['POST']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof usersCreateEndpoint.requests)[HttpMethod.Post]
+        >;
 
         if (result[HttpStatus.Created]) {
             assert.tsType(result[HttpStatus.Created]).matches<{
@@ -78,7 +141,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles GET endpoint with Ok and NotFound responses', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/items/:id']['GET']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof itemByIdEndpoint.requests)[HttpMethod.Get]
+        >;
 
         if (result[HttpStatus.Ok]) {
             assert.tsType(result[HttpStatus.Ok]).matches<{
@@ -104,7 +169,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles endpoint with empty responses', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/partner-api']['POST']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof partnerApiEndpoint.requests)[HttpMethod.Post]
+        >;
 
         assert.tsType(result.other).matches<{
             status: HttpStatus;
@@ -114,7 +181,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('includes headers as Record<string, string> for endpoint without response headers', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/protected']['GET']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof protectedEndpoint.requests)[HttpMethod.Get]
+        >;
 
         if (result[HttpStatus.Ok]) {
             assert.tsType(result[HttpStatus.Ok].headers).matches<Record<string, string>>();
@@ -122,7 +191,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles DELETE endpoint with NoContent response', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/items/:id']['DELETE']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof itemByIdEndpoint.requests)[HttpMethod.Delete]
+        >;
 
         if (result[HttpStatus.NoContent]) {
             assert.tsType(result[HttpStatus.NoContent]).matches<{
@@ -133,8 +204,10 @@ describe('EndpointFetchOutput', () => {
         }
     });
 
-    it('handles large api endpoint with complex nested response', () => {
-        const result = {} as EndpointFetchOutput<LargeEndpoints['/auth/login']['POST']>;
+    it('handles endpoint with complex nested response', () => {
+        const result = {} as EndpointFetchOutput<
+            (typeof authLoginEndpoint.requests)[HttpMethod.Post]
+        >;
 
         if (result[HttpStatus.Ok]) {
             const data = result[HttpStatus.Ok].data;
@@ -155,8 +228,10 @@ describe('EndpointFetchOutput', () => {
         }
     });
 
-    it('handles large api paginated endpoint', () => {
-        const result = {} as EndpointFetchOutput<LargeEndpoints['/projects/list']['POST']>;
+    it('handles paginated endpoint', () => {
+        const result = {} as EndpointFetchOutput<
+            (typeof projectsListEndpoint.requests)[HttpMethod.Post]
+        >;
 
         if (result[HttpStatus.Ok]) {
             const data = result[HttpStatus.Ok].data;
@@ -164,12 +239,14 @@ describe('EndpointFetchOutput', () => {
             assert.tsType(data.pageIndex).equals<number>();
             assert.tsType(data.pageCount).equals<number>();
             assert.tsType(data.totalCount).equals<number>();
-            assert.tsType(data.items).matches<unknown[]>();
+            assert.tsType(data.items).matches<{id: string; name: string}[]>();
         }
     });
 
     it('handles PUT endpoint with Ok response', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/items/:id']['PUT']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof itemByIdEndpoint.requests)[HttpMethod.Put]
+        >;
 
         if (result[HttpStatus.Ok]) {
             assert.tsType(result[HttpStatus.Ok]).matches<{
@@ -187,7 +264,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles download endpoint with string response data', () => {
-        const result = {} as EndpointFetchOutput<MockEndpoints['/download']['GET']>;
+        const result = {} as EndpointFetchOutput<
+            (typeof downloadEndpoint.requests)[HttpMethod.Get]
+        >;
 
         if (result[HttpStatus.Ok]) {
             assert.tsType(result[HttpStatus.Ok].data).equals<string>();
@@ -195,13 +274,15 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('has correct keys for single-response endpoint', () => {
-        type Result = EndpointFetchOutput<MockEndpoints['/users']['GET']>;
+        type Result = EndpointFetchOutput<(typeof usersEndpoint.requests)[HttpMethod.Get]>;
 
         assert.tsType<keyof Result>().matches<'other' | HttpStatus.Ok>();
     });
 
     it('has correct keys for multi-response endpoint', () => {
-        type Result = EndpointFetchOutput<MockEndpoints['/users/create']['POST']>;
+        type Result = EndpointFetchOutput<
+            (typeof usersCreateEndpoint.requests)[HttpMethod.Post]
+        >;
 
         assert
             .tsType<keyof Result>()
@@ -209,7 +290,9 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('has correct keys for endpoint with no responses', () => {
-        type Result = EndpointFetchOutput<MockEndpoints['/partner-api']['POST']>;
+        type Result = EndpointFetchOutput<
+            (typeof partnerApiEndpoint.requests)[HttpMethod.Post]
+        >;
 
         assert.tsType<keyof Result>().matches<'other'>();
     });

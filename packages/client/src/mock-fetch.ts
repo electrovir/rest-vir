@@ -6,13 +6,13 @@ import {
     type Overwrite,
     type PartialWithUndefined,
 } from '@augment-vir/common';
-import {type EndpointMethodDefinition} from '@rest-vir/api';
-import {type Shape} from 'object-shape-tester';
 import {
     type BaseRequiredResponseHeaders,
+    type EndpointMethodDefinition,
     type ExtractResponseHeadersType,
     type ResponseStatusDefinition,
-} from '../../api/src/endpoint.js';
+} from '@rest-vir/api';
+import {type Shape} from 'object-shape-tester';
 
 /**
  * Options for {@link createMockEndpointResponse} and {@link createMockEndpointFetch}.

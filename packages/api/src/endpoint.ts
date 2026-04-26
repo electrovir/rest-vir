@@ -79,6 +79,23 @@ export type ExtractEndpointMethodDefinition<
     : EndpointMethodDefinition;
 
 /**
+ * Like {@link ExtractEndpointMethodDefinition} but instead of falling back to the generic
+ * {@link EndpointMethodDefinition}, it falls back to {@link NoParam}.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type ExtractEndpointMethodDefinitionWithNoParam<
+    Endpoint extends EndpointDefinition | NoParam,
+    Method extends DefinableHttpMethod | NoParam,
+> = Endpoint extends EndpointDefinition
+    ? Method extends DefinableHttpMethod
+        ? Extract<Endpoint['requests'][Method], EndpointMethodDefinition>
+        : NoParam
+    : NoParam;
+
+/**
  * Extract an Endpoint definition's method definition.
  *
  * @category Internal
@@ -220,20 +237,23 @@ export type BaseRequiredResponseHeaders = Record<string, Shape | RegExp>;
  *     },
  * });
  *
- * type CreateUserRequest = EndpointRequestType<
- *     (typeof usersEndpoint.requests)[HttpMethod.Post]
- * >;
+ * type CreateUserRequest = EndpointRequestType<typeof usersEndpoint.requests, HttpMethod.Post>;
  * ```
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointRequestType<MethodDefinition extends EndpointMethodDefinition | NoParam> =
-    MethodDefinition extends NoParam
-        ? any
-        : Exclude<MethodDefinition, NoParam>['requestData'] extends Shape
-          ? NonNullable<Exclude<MethodDefinition, NoParam>['requestData']>['runtimeType']
-          : undefined;
-
+export type EndpointRequestType<
+    Endpoint extends EndpointDefinition | NoParam,
+    Method extends DefinableHttpMethod | NoParam,
+> = Endpoint extends EndpointDefinition
+    ? Method extends keyof Endpoint['requests']
+        ? Endpoint['requests'][Method] extends EndpointMethodDefinition
+            ? Endpoint['requests'][Method]['requestData'] extends Shape
+                ? Endpoint['requests'][Method]['requestData']['runtimeType']
+                : undefined
+            : any
+        : any
+    : any;
 /**
  * Extracts an endpoint's response type.
  *

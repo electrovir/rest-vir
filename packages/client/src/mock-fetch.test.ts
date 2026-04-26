@@ -1,6 +1,8 @@
 import {assert} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {mockService} from '../service/define-service.mock.js';
+import {defineEndpoint} from '@rest-vir/api';
+import {defineShape} from 'object-shape-tester';
 import {
     createMockEndpointFetch,
     createMockEndpointResponse,
@@ -8,7 +10,30 @@ import {
     createMockResponse,
 } from './mock-fetch.js';
 
-const mockResponseData: (typeof mockService.endpoints)['/test']['ResponseType'] = {
+const testEndpoint = defineEndpoint({
+    path: '/test',
+    requests: {
+        [HttpMethod.Post]: {
+            requestData: defineShape({
+                somethingHere: '',
+                testValue: 0,
+            }),
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        requestData: {
+                            somethingHere: '',
+                            testValue: 0,
+                        },
+                        result: 0,
+                    }),
+                },
+            },
+        },
+    },
+});
+
+const mockResponseData = {
     requestData: {
         somethingHere: 'hi',
         testValue: 4,
@@ -18,9 +43,13 @@ const mockResponseData: (typeof mockService.endpoints)['/test']['ResponseType'] 
 
 describe(createMockEndpointResponse.name, () => {
     it('creates a mock response', async () => {
-        const response = createMockEndpointResponse(mockService.endpoints['/test'], {
-            body: mockResponseData,
-        });
+        const response = createMockEndpointResponse(
+            testEndpoint.requests[HttpMethod.Post],
+            HttpStatus.Ok,
+            {
+                body: mockResponseData,
+            },
+        );
 
         assert.deepEquals(await response.json(), mockResponseData);
     });
@@ -28,9 +57,13 @@ describe(createMockEndpointResponse.name, () => {
 
 describe(createMockEndpointFetch.name, () => {
     it('creates a mock fetch', async () => {
-        const mockFetch = createMockEndpointFetch(mockService.endpoints['/test'], {
-            body: mockResponseData,
-        });
+        const mockFetch = createMockEndpointFetch(
+            testEndpoint.requests[HttpMethod.Post],
+            HttpStatus.Ok,
+            {
+                body: mockResponseData,
+            },
+        );
 
         const response = await mockFetch('some-url');
 
@@ -40,9 +73,13 @@ describe(createMockEndpointFetch.name, () => {
     it('handles a URL object input', async () => {
         assert.strictEquals(
             (
-                await createMockEndpointFetch(mockService.endpoints['/test'], {
-                    body: mockResponseData,
-                })(new URL('https://example.com/some-url2'))
+                await createMockEndpointFetch(
+                    testEndpoint.requests[HttpMethod.Post],
+                    HttpStatus.Ok,
+                    {
+                        body: mockResponseData,
+                    },
+                )(new URL('https://example.com/some-url2'))
             ).url,
             'https://example.com/some-url2',
         );
@@ -50,9 +87,13 @@ describe(createMockEndpointFetch.name, () => {
     it('handles a Request input', async () => {
         assert.strictEquals(
             (
-                await createMockEndpointFetch(mockService.endpoints['/test'], {
-                    body: mockResponseData,
-                })(new Request('https://example.com/some-url3'))
+                await createMockEndpointFetch(
+                    testEndpoint.requests[HttpMethod.Post],
+                    HttpStatus.Ok,
+                    {
+                        body: mockResponseData,
+                    },
+                )(new Request('https://example.com/some-url3'))
             ).url,
             'https://example.com/some-url3',
         );

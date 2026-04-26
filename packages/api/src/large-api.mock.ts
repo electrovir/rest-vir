@@ -1,6 +1,4 @@
-/**
- * A large mock file to push Typescript to its limits with `defineApi`.
- */
+/** A large mock file to push Typescript to its limits with `defineApi`. */
 
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {defineShape, enumShape} from 'object-shape-tester';

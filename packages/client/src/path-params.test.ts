@@ -210,19 +210,19 @@ describe('ResolveNamedParams', () => {
 
 describe('ExtractPathParams', () => {
     it('handles a simple path', () => {
-        assert.tsType<ExtractPathParams<{path: '/users'}>>().equals<undefined>();
+        assert.tsType<ExtractPathParams<'/users'>>().equals<undefined>();
     });
 
     it('handles root path', () => {
-        assert.tsType<ExtractPathParams<{path: '/'}>>().equals<undefined>();
+        assert.tsType<ExtractPathParams<'/'>>().equals<undefined>();
     });
 
     it('handles multi-segment simple path', () => {
-        assert.tsType<ExtractPathParams<{path: '/a/b/c'}>>().equals<undefined>();
+        assert.tsType<ExtractPathParams<'/a/b/c'>>().equals<undefined>();
     });
 
     it('requires pathParams for a single named param', () => {
-        assert.tsType<ExtractPathParams<{path: '/users/:id'}>>().equals<
+        assert.tsType<ExtractPathParams<'/users/:id'>>().equals<
             Readonly<{
                 wildcard?: undefined;
             }> &
@@ -233,7 +233,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('requires pathParams for multiple named params', () => {
-        assert.tsType<ExtractPathParams<{path: '/users/:userId/posts/:postId'}>>().equals<
+        assert.tsType<ExtractPathParams<'/users/:userId/posts/:postId'>>().equals<
             Readonly<{
                 wildcard?: undefined;
             }> &
@@ -244,7 +244,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('requires wildcard for wildcard-only path', () => {
-        assert.tsType<ExtractPathParams<{path: '/files/*'}>>().equals<
+        assert.tsType<ExtractPathParams<'/files/*'>>().equals<
             Readonly<{
                 wildcard: string;
             }> &
@@ -255,7 +255,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('requires both wildcard and pathParams', () => {
-        assert.tsType<ExtractPathParams<{path: '/files/:id/*'}>>().equals<
+        assert.tsType<ExtractPathParams<'/files/:id/*'>>().equals<
             Readonly<{
                 wildcard: string;
             }> &
@@ -266,7 +266,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('requires both wildcard and multiple pathParams', () => {
-        assert.tsType<ExtractPathParams<{path: '/a/:x/b/:y/*'}>>().equals<
+        assert.tsType<ExtractPathParams<'/a/:x/b/:y/*'>>().equals<
             Readonly<{
                 wildcard: string;
             }> &
@@ -277,7 +277,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('handles BaseRoutePath pattern type', () => {
-        assert.tsType<ExtractPathParams<{path: `/${string}`}>>().equals<
+        assert.tsType<ExtractPathParams<`/${string}`>>().equals<
             Readonly<{
                 wildcard?: string | undefined;
             }> &
@@ -298,7 +298,7 @@ describe('ExtractPathParams', () => {
     });
 
     it('extracts params from route with additional properties', () => {
-        assert.tsType<ExtractPathParams<{path: '/items/:itemId'}>>().equals<
+        assert.tsType<ExtractPathParams<'/items/:itemId'>>().equals<
             Readonly<{
                 wildcard?: undefined;
             }> &
@@ -309,6 +309,6 @@ describe('ExtractPathParams', () => {
     });
 
     it('returns no path params', () => {
-        assert.tsType<ExtractPathParams<{path: '/health'}>>().equals<undefined>();
+        assert.tsType<ExtractPathParams<'/health'>>().equals<undefined>();
     });
 });

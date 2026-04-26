@@ -1,9 +1,19 @@
 import {assert} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {type BaseSearchParams} from '@rest-vir/api';
-import {type mockApi} from '@rest-vir/api/src/api.mock.js';
-import {type largeApi} from '@rest-vir/api/src/large-api.mock.js';
-import {type defineShape} from 'object-shape-tester';
+import {type BaseSearchParams, defineEndpoint} from '@rest-vir/api';
+import {
+    adminSettingsEndpoint,
+    downloadEndpoint,
+    fullRouteEndpoint,
+    itemByIdEndpoint,
+    partnerApiEndpoint,
+    pingEndpoint,
+    protectedEndpoint,
+    searchEndpoint,
+    usersCreateEndpoint,
+} from '@rest-vir/api/src/api.mock.js';
+import {defineShape} from 'object-shape-tester';
 import type {EndpointParamObject, EndpointParams} from './endpoint-params.js';
 import {type GenericPathParams} from './path-params.js';
 
@@ -23,68 +33,58 @@ describe('EndpointParamObject', () => {
     });
 
     it('can be assigned to from specific implementations', () => {
-        const fromMinimalEndpoint: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/empty']
-        >;
         const fromNoRequestData: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/ping']
+            typeof pingEndpoint,
+            HttpMethod.Post
         >;
         const fromWithRequestData: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/users/create']
+            typeof usersCreateEndpoint,
+            HttpMethod.Post
         >;
         const fromWithSearchParams: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/search']
+            typeof searchEndpoint,
+            HttpMethod.Get
         >;
         const fromWithPathParams: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/items/:id']
+            typeof itemByIdEndpoint,
+            HttpMethod.Get
         >;
         const fromWithRequiredHeaders: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/protected']
+            typeof protectedEndpoint,
+            HttpMethod.Get
         >;
         const fromWithCustomProps: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/admin/settings']
+            typeof adminSettingsEndpoint,
+            HttpMethod.Get
         >;
         const fromWithResponseHeaders: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/download']
+            typeof downloadEndpoint,
+            HttpMethod.Get
         >;
         const fromWithAllCommonRouteFields: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/full-route']
+            typeof fullRouteEndpoint,
+            HttpMethod.Post
         >;
         const fromWithRegexClientOrigin: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof mockApi)['endpoints']['/partner-api']
+            typeof partnerApiEndpoint,
+            HttpMethod.Post
         >;
-        const fromComplexNestedResponse: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof largeApi)['endpoints']['/auth/login']
+        const fromMultipleRequiredHeaders: EndpointParamObject = {} as any as EndpointParamObject<
+            typeof multipleRequiredHeadersEndpoint,
+            HttpMethod.Get
         >;
-        const fromNestedPathParams: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof largeApi)['endpoints']['/projects/:projectId']
+        const fromWildcardPath: EndpointParamObject = {} as any as EndpointParamObject<
+            typeof wildcardEndpoint,
+            HttpMethod.Get
         >;
-        const fromDeepNestedPathParams: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof largeApi)['endpoints']['/projects/:projectId/comments/:commentId']
+        const fromNamedParamsAndWildcard: EndpointParamObject = {} as any as EndpointParamObject<
+            typeof namedParamsAndWildcardEndpoint,
+            HttpMethod.Get
         >;
-        const fromPaginatedRequest: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof largeApi)['endpoints']['/tickets/table']
-        >;
-        const fromRenderCardResponse: EndpointParamObject = {} as any as EndpointParamObject<
-            (typeof largeApi)['endpoints']['/reports/generate']
-        >;
-        const fromMultipleRequiredHeaders: EndpointParamObject = {} as any as EndpointParamObject<{
-            path: '/custom';
-            requiredHeaders: {
-                authorization: ReturnType<typeof defineShape<string>>;
-                'x-api-key': ReturnType<typeof defineShape<string>>;
-            };
-        }>;
-        const fromWildcardPath: EndpointParamObject = {} as any as EndpointParamObject<{
-            path: '/files/*';
-        }>;
-        const fromNamedParamsAndWildcard: EndpointParamObject = {} as any as EndpointParamObject<{
-            path: '/files/:category/*';
-        }>;
     });
 
     it('makes all properties optional for an endpoint with no request data or search params', () => {
-        type Result = EndpointParamObject<(typeof mockApi)['endpoints']['/ping']>;
+        type Result = EndpointParamObject<typeof pingEndpoint, HttpMethod.Post>;
 
         assert.tsType<Result>().matches<{
             requestData?: undefined;
@@ -98,19 +98,13 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires requestData when endpoint defines a request shape', () => {
-        type Result = EndpointParamObject<{
-            path: '/with-body';
-            requestData: ReturnType<typeof defineShape<{name: string}>>;
-        }>;
+        type Result = EndpointParamObject<typeof withBodyEndpoint, HttpMethod.Post>;
 
         assert.tsType<Result['requestData']>().equals<{name: string}>();
     });
 
     it('makes requestData optional when endpoint has undefined requestData', () => {
-        type Result = EndpointParamObject<{
-            path: '/no-body';
-            requestData: undefined;
-        }>;
+        type Result = EndpointParamObject<typeof noBodyEndpoint, HttpMethod.Post>;
 
         assert.tsType<Result>().matches<{
             requestData?: undefined;
@@ -118,12 +112,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires searchParams when endpoint defines search param shapes', () => {
-        type Result = EndpointParamObject<{
-            path: '/with-search';
-            searchParams: {
-                query: ReturnType<typeof defineShape<string>>;
-            };
-        }>;
+        type Result = EndpointParamObject<typeof withSearchEndpoint, HttpMethod.Get>;
 
         type SearchType = Result['searchParams'];
 
@@ -134,9 +123,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires pathParams for endpoints with named path parameters', () => {
-        type Result = EndpointParamObject<{
-            path: '/users/:userId';
-        }>;
+        type Result = EndpointParamObject<typeof userByIdEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -149,9 +136,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires pathParams with multiple named parameters', () => {
-        type Result = EndpointParamObject<{
-            path: '/users/:userId/posts/:postId';
-        }>;
+        type Result = EndpointParamObject<typeof userPostEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -164,9 +149,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('makes pathParams optional for endpoints with no path parameters', () => {
-        type Result = EndpointParamObject<{
-            path: '/simple';
-        }>;
+        type Result = EndpointParamObject<typeof simpleEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result>().matches<{
             pathParams?: undefined;
@@ -174,9 +157,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires wildcard in pathParams for wildcard endpoints', () => {
-        type Result = EndpointParamObject<{
-            path: '/files/*';
-        }>;
+        type Result = EndpointParamObject<typeof wildcardEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -189,12 +170,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires requiredHeaders when endpoint defines them', () => {
-        type Result = EndpointParamObject<{
-            path: '/protected';
-            requiredHeaders: {
-                authorization: ReturnType<typeof defineShape<string>>;
-            };
-        }>;
+        type Result = EndpointParamObject<typeof singleRequiredHeaderEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result>().matches<{
             requiredHeaders?: {
@@ -204,9 +180,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('makes requiredHeaders optional when not defined on endpoint', () => {
-        type Result = EndpointParamObject<{
-            path: '/public';
-        }>;
+        type Result = EndpointParamObject<typeof publicEndpoint, HttpMethod.Get>;
 
         assert.tsType<Result>().matches<{
             requiredHeaders?: undefined;
@@ -216,9 +190,7 @@ describe('EndpointParamObject', () => {
 
 describe('EndpointParams', () => {
     it('is an optional tuple when no required keys exist', () => {
-        type Result = EndpointParams<{
-            path: '/simple';
-        }>;
+        type Result = EndpointParams<typeof simpleEndpoint, HttpMethod.Get>;
 
         /**
          * When all properties are optional, the tuple itself should be optional (zero args
@@ -228,39 +200,146 @@ describe('EndpointParams', () => {
     });
 
     it('is a required tuple when requestData is required', () => {
-        type Result = EndpointParams<{
-            path: '/with-body';
-            requestData: ReturnType<typeof defineShape<{name: string}>>;
-        }>;
+        type Result = EndpointParams<typeof withBodyEndpoint, HttpMethod.Post>;
 
         /** When requestData is required, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is a required tuple when pathParams are required', () => {
-        type Result = EndpointParams<{
-            path: '/users/:userId';
-        }>;
+        type Result = EndpointParams<typeof userByIdEndpoint, HttpMethod.Get>;
 
         /** When path has named params, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is a required tuple when wildcard is required', () => {
-        type Result = EndpointParams<{
-            path: '/files/*';
-        }>;
+        type Result = EndpointParams<typeof wildcardEndpoint, HttpMethod.Get>;
 
         /** When path has a wildcard, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is an optional tuple when only optional features are used', () => {
-        type Result = EndpointParams<{
-            path: '/no-required';
-            requestData: undefined;
-        }>;
+        type Result = EndpointParams<typeof noBodyEndpoint, HttpMethod.Post>;
 
         assert.tsType<Result>().matches<[unknown?]>();
     });
+});
+
+const multipleRequiredHeadersEndpoint = defineEndpoint({
+    path: '/custom',
+    requests: {
+        [HttpMethod.Get]: {
+            requiredRequestHeaders: {
+                authorization: defineShape(''),
+                'x-api-key': defineShape(''),
+            },
+            responses: {},
+        },
+    },
+});
+
+const wildcardEndpoint = defineEndpoint({
+    path: '/files/*',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
+});
+
+const namedParamsAndWildcardEndpoint = defineEndpoint({
+    path: '/files/:category/*',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
+});
+
+const withBodyEndpoint = defineEndpoint({
+    path: '/with-body',
+    requests: {
+        [HttpMethod.Post]: {
+            requestData: defineShape({
+                name: '',
+            }),
+            responses: {},
+        },
+    },
+});
+
+const noBodyEndpoint = defineEndpoint({
+    path: '/no-body',
+    requests: {
+        [HttpMethod.Post]: {
+            requestData: undefined,
+            responses: {},
+        },
+    },
+});
+
+const withSearchEndpoint = defineEndpoint({
+    path: '/with-search',
+    requests: {
+        [HttpMethod.Get]: {
+            searchParams: {
+                query: defineShape(''),
+            },
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
+        },
+    },
+});
+
+const userByIdEndpoint = defineEndpoint({
+    path: '/users/:userId',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
+});
+
+const userPostEndpoint = defineEndpoint({
+    path: '/users/:userId/posts/:postId',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
+});
+
+const simpleEndpoint = defineEndpoint({
+    path: '/simple',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
+});
+
+const singleRequiredHeaderEndpoint = defineEndpoint({
+    path: '/protected',
+    requests: {
+        [HttpMethod.Get]: {
+            requiredRequestHeaders: {
+                authorization: defineShape(''),
+            },
+            responses: {},
+        },
+    },
+});
+
+const publicEndpoint = defineEndpoint({
+    path: '/public',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {},
+        },
+    },
 });

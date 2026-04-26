@@ -117,7 +117,10 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            endpoints: [usersEndpoint, itemsEndpoint],
+            endpoints: [
+                usersEndpoint,
+                itemsEndpoint,
+            ],
         });
 
         assert
@@ -136,7 +139,10 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            webSockets: [chatSocket, eventsSocket],
+            webSockets: [
+                chatSocket,
+                eventsSocket,
+            ],
         });
 
         assert
@@ -196,7 +202,10 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            endpoints: [usersEndpoint, itemsEndpoint],
+            endpoints: [
+                usersEndpoint,
+                itemsEndpoint,
+            ],
         });
 
         assert.isLengthExactly(result.endpoints, 2);
@@ -213,7 +222,10 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
-            webSockets: [chatSocket, eventsSocket],
+            webSockets: [
+                chatSocket,
+                eventsSocket,
+            ],
         });
 
         assert.isLengthExactly(result.webSockets, 2);
@@ -266,7 +278,10 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    endpoints: [firstEndpoint, secondEndpoint],
+                    endpoints: [
+                        firstEndpoint,
+                        secondEndpoint,
+                    ],
                 }),
             {
                 matchConstructor: DefineApiError,
@@ -288,7 +303,10 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    webSockets: [firstSocket, secondSocket],
+                    webSockets: [
+                        firstSocket,
+                        secondSocket,
+                    ],
                 }),
             {
                 matchConstructor: DefineApiError,
@@ -319,7 +337,10 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    endpoints: [firstEndpoint, secondEndpoint],
+                    endpoints: [
+                        firstEndpoint,
+                        secondEndpoint,
+                    ],
                 }),
             {
                 matchMessage: '/orders',
@@ -340,7 +361,10 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
-                    webSockets: [firstSocket, secondSocket],
+                    webSockets: [
+                        firstSocket,
+                        secondSocket,
+                    ],
                 }),
             {
                 matchMessage: '/updates',
@@ -388,7 +412,12 @@ describe(defineApi.name, () => {
 
         try {
             defineApi({
-                endpoints: [first, second, third, fourth],
+                endpoints: [
+                    first,
+                    second,
+                    third,
+                    fourth,
+                ],
             });
             assert.fail('expected defineApi to throw');
         } catch (error) {
@@ -408,7 +437,10 @@ describe(defineApi.name, () => {
 
         try {
             defineApi({
-                webSockets: [first, second],
+                webSockets: [
+                    first,
+                    second,
+                ],
             });
             assert.fail('expected defineApi to throw');
         } catch (error) {
@@ -504,8 +536,16 @@ describe(defineApi.name, () => {
         ];
 
         const result = defineApi({
-            endpoints: [usersEndpoint, itemsEndpoint, ordersEndpoint],
-            webSockets: [chatSocket, updatesSocket, eventsSocket],
+            endpoints: [
+                usersEndpoint,
+                itemsEndpoint,
+                ordersEndpoint,
+            ],
+            webSockets: [
+                chatSocket,
+                updatesSocket,
+                eventsSocket,
+            ],
         });
 
         assert.isLengthExactly(result.endpoints, endpoints.length);

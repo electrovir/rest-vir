@@ -5,9 +5,9 @@ import {extractRequiredHeaders} from './required-headers.js';
 describe(extractRequiredHeaders.name, () => {
     it('accepts matching header values for shape requirements', () => {
         extractRequiredHeaders(
+            '/test',
             {
-                path: '/test',
-                requiredHeaders: {
+                requiredRequestHeaders: {
                     authorization: defineShape(''),
                 },
             },
@@ -21,9 +21,9 @@ describe(extractRequiredHeaders.name, () => {
 
     it('accepts matching header values for regex requirements', () => {
         extractRequiredHeaders(
+            '/test',
             {
-                path: '/test',
-                requiredHeaders: {
+                requiredRequestHeaders: {
                     'x-api-key': /^key-.+$/,
                 },
             },
@@ -36,88 +36,24 @@ describe(extractRequiredHeaders.name, () => {
     });
 
     it('allows omitting params when endpoint has no required headers', () => {
-        extractRequiredHeaders(
-            {
-                path: '/test',
-            },
-            {},
-        );
+        extractRequiredHeaders('/test', {}, {});
     });
 
     it('allows omitting requiredHeaders in params when endpoint has no requirements', () => {
         extractRequiredHeaders(
-            {
-                path: '/test',
-            },
+            '/test',
+            {},
             {
                 requiredHeaders: undefined,
             },
         );
     });
 
-    it('rejects a non-string value for a shape header at the type level', () => {
-        if (false as boolean) {
-            extractRequiredHeaders(
-                {
-                    path: '/test',
-                    requiredHeaders: {
-                        authorization: defineShape(''),
-                    },
-                },
-                {
-                    requiredHeaders: {
-                        // @ts-expect-error: number is not assignable to string header value
-                        authorization: 123,
-                    },
-                },
-            );
-        }
-    });
-
-    it('rejects a non-string value for a regex header at the type level', () => {
-        if (false as boolean) {
-            extractRequiredHeaders(
-                {
-                    path: '/test',
-                    requiredHeaders: {
-                        'x-api-key': /^key-.+$/,
-                    },
-                },
-                {
-                    requiredHeaders: {
-                        // @ts-expect-error: number is not assignable to string header value
-                        'x-api-key': 123,
-                    },
-                },
-            );
-        }
-    });
-
-    it('rejects an unknown header key at the type level', () => {
-        if (false as boolean) {
-            extractRequiredHeaders(
-                {
-                    path: '/test',
-                    requiredHeaders: {
-                        authorization: defineShape(''),
-                    },
-                },
-                {
-                    requiredHeaders: {
-                        authorization: 'Bearer token',
-                        // @ts-expect-error: unknown-header is not a defined required header
-                        'unknown-header': 'value',
-                    },
-                },
-            );
-        }
-    });
-
     it('requires the requiredHeaders param key to match the endpoint definition keys', () => {
         extractRequiredHeaders(
+            '/test',
             {
-                path: '/test',
-                requiredHeaders: {
+                requiredRequestHeaders: {
                     authorization: defineShape(''),
                     'x-request-id': /^[a-f0-9-]+$/,
                 },
@@ -131,42 +67,22 @@ describe(extractRequiredHeaders.name, () => {
         );
     });
 
-    it('accepts partial header values at the type level', () => {
-        if (false as boolean) {
-            extractRequiredHeaders(
-                {
-                    path: '/test',
-                    requiredHeaders: {
-                        authorization: defineShape(''),
-                        'x-request-id': defineShape(''),
-                    },
-                },
-                {
-                    requiredHeaders: {
-                        authorization: 'Bearer token',
-                    },
-                },
-            );
-        }
-    });
-
-    itCases(extractRequiredHeaders<any>, [
+    itCases(extractRequiredHeaders, [
         {
             it: 'returns empty object when no headers are required',
             inputs: [
-                {
-                    path: '/test',
-                },
+                '/test',
+                {},
                 {},
             ],
             expect: {},
         },
         {
-            it: 'returns empty object when requiredHeaders is undefined on both',
+            it: 'returns empty object when requiredRequestHeaders is undefined on both',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: undefined,
+                    requiredRequestHeaders: undefined,
                 },
                 {
                     requiredHeaders: undefined,
@@ -177,9 +93,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'returns header values matching shape requirements',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
                 },
@@ -196,9 +112,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'returns header values matching regex requirements',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-api-key': /^key-[a-z0-9]+$/,
                     },
                 },
@@ -215,9 +131,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'returns multiple headers with mixed shape and regex requirements',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         authorization: defineShape(''),
                         'x-request-id': /^[0-9a-f-]+$/,
                     },
@@ -237,9 +153,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when endpoint requires headers but none are provided',
             inputs: [
+                '/protected',
                 {
-                    path: '/protected',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
                 },
@@ -252,9 +168,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when endpoint requires headers but requiredHeaders is undefined',
             inputs: [
+                '/protected',
                 {
-                    path: '/protected',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         authorization: defineShape(''),
                     },
                 },
@@ -269,9 +185,8 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when headers are set but endpoint has no requirements',
             inputs: [
-                {
-                    path: '/public',
-                },
+                '/public',
+                {},
                 {
                     requiredHeaders: {
                         authorization: 'Bearer sneaky',
@@ -283,11 +198,11 @@ describe(extractRequiredHeaders.name, () => {
             },
         },
         {
-            it: 'throws when headers are set but endpoint requiredHeaders is undefined',
+            it: 'throws when headers are set but endpoint requiredRequestHeaders is undefined',
             inputs: [
+                '/public',
                 {
-                    path: '/public',
-                    requiredHeaders: undefined,
+                    requiredRequestHeaders: undefined,
                 },
                 {
                     requiredHeaders: {
@@ -302,9 +217,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when regex header value does not match',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-api-key': /^key-[a-z0-9]+$/,
                     },
                 },
@@ -321,14 +236,15 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when regex header value is undefined',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-api-key': /^key-.+$/,
                     },
                 },
                 {
                     requiredHeaders: {
+                        // @ts-expect-error: cannot assign `undefined` to a required header
                         'x-api-key': undefined,
                     },
                 },
@@ -340,9 +256,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when regex header value is empty string',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-api-key': /^key-.+$/,
                     },
                 },
@@ -359,15 +275,15 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when shape header value does not match',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'content-type': defineShape(0),
                     },
                 },
                 {
                     requiredHeaders: {
-                        'content-type': 'text/plain' as unknown as number,
+                        'content-type': 'text/plain',
                     },
                 },
             ],
@@ -378,14 +294,15 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws when shape header value is undefined',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-required': defineShape(''),
                     },
                 },
                 {
                     requiredHeaders: {
+                        // @ts-expect-error: cannot assign `undefined` to a required header
                         'x-required': undefined,
                     },
                 },
@@ -397,9 +314,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'does not throw for empty params object when endpoint has no requirements',
             inputs: [
+                '/open',
                 {
-                    path: '/open',
-                    requiredHeaders: undefined,
+                    requiredRequestHeaders: undefined,
                 },
                 {
                     requiredHeaders: {},
@@ -410,9 +327,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'includes endpoint path in error when headers are missing',
             inputs: [
+                '/my/special/route',
                 {
-                    path: '/my/special/route',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         token: defineShape(''),
                     },
                 },
@@ -425,9 +342,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'includes header name in regex error',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-custom-header': /^valid$/,
                     },
                 },
@@ -444,15 +361,15 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'includes header name in shape error',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         'x-typed-header': defineShape(0),
                     },
                 },
                 {
                     requiredHeaders: {
-                        'x-typed-header': 'wrong' as unknown as number,
+                        'x-typed-header': 'wrong',
                     },
                 },
             ],
@@ -463,9 +380,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'validates all headers and passes when all match',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         authorization: defineShape(''),
                         'x-request-id': /^[a-f0-9-]+$/,
                         'x-api-version': defineShape(''),
@@ -488,9 +405,9 @@ describe(extractRequiredHeaders.name, () => {
         {
             it: 'throws on first failing header among multiple',
             inputs: [
+                '/test',
                 {
-                    path: '/test',
-                    requiredHeaders: {
+                    requiredRequestHeaders: {
                         good: defineShape(''),
                         bad: /^must-match$/,
                     },

@@ -65,7 +65,10 @@ export class DefineApiError extends Error {
  * });
  *
  * const result = defineApi({
- *     endpoints: [usersEndpoint, itemsEndpoint],
+ *     endpoints: [
+ *         usersEndpoint,
+ *         itemsEndpoint,
+ *     ],
  * });
  * ```
  *

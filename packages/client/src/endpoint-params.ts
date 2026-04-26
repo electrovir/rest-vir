@@ -3,8 +3,8 @@ import {
     type DefinableHttpMethod,
     type EndpointDefinition,
     type EndpointRequestType,
-    type ExcludeNoParamWithFallback,
     type ExtractEndpointMethodDefinition,
+    type ExtractEndpointMethodDefinitionWithNoParam,
     type ExtractRequestHeadersType,
     type NoParam,
     type RouteSearchParamsType,
@@ -38,7 +38,7 @@ export type EndpointParamObject<
     Method extends DefinableHttpMethod | NoParam = NoParam,
 > = SetNullishPropertiesAsOptional<{
     /** Set the endpoint fetch's request data, if allowed by the endpoint. */
-    requestData: EndpointRequestType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
+    requestData: EndpointRequestType<Endpoint, Method>;
     /** Set search params on the endpoint's URL. */
     searchParams: RouteSearchParamsType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
     /** Set the standard request init options that `fetch` allows. */
@@ -56,12 +56,14 @@ export type EndpointParamObject<
      * headers can be supplied in the `options` property, but any headers provided in both will
      * instead use the values from here here (in `requiredHeaders`).
      */
-    requiredHeaders: ExtractRequestHeadersType<ExtractEndpointMethodDefinition<Endpoint, Method>>;
+    requiredHeaders: ExtractRequestHeadersType<
+        ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>
+    >;
     /**
      * Set the required path params, if any. These are only allowed if the endpoint's path has param
      * or wildcard strings.
      */
-    pathParams: ExtractPathParams<ExcludeNoParamWithFallback<Endpoint, EndpointDefinition>['path']>;
+    pathParams: ExtractPathParams<Endpoint extends {path: string} ? Endpoint['path'] : NoParam>;
 }>;
 
 /**

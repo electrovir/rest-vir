@@ -5,7 +5,7 @@ import {assertValidShape, type Shape} from 'object-shape-tester';
 
 export function extractRequiredHeaders(
     path: PropertyKey,
-    endpoint: Readonly<EndpointMethodDefinition>,
+    endpointMethod: Readonly<EndpointMethodDefinition>,
     params: Readonly<
         PartialWithUndefined<{
             requiredHeaders: ExtractRequestHeadersType;
@@ -13,7 +13,7 @@ export function extractRequiredHeaders(
     >,
 ): Record<string, string> {
     const headerRequirements: Record<string, Shape | RegExp> | undefined =
-        endpoint.requiredRequestHeaders;
+        endpointMethod.requiredRequestHeaders;
     const setRequiredHeaderValues = params.requiredHeaders;
 
     if (headerRequirements) {
