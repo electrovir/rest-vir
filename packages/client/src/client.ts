@@ -4,14 +4,17 @@ import {
     HttpStatus,
     isErrorHttpStatus,
     mapObject,
+    type MaybePromise,
     type RequiredAndNotNull,
 } from '@augment-vir/common';
 import {
     extractEndpointMethodDefinition,
     type ApiDefinition,
+    type DefaultResponseHeadersType,
     type DefinableHttpMethod,
     type EndpointDefinition,
     type ExtractEndpointMethodDefinition,
+    type ResponseStatusDefinition,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
 import {parseJsonWithUndefined} from '@rest-vir/api/src/augments/json.js';
@@ -24,6 +27,7 @@ import {
     httpStatusToKey,
     readResponseHeaders,
     type EndpointFetchOutput,
+    type EndpointFetchStreamOutput,
     type UnknownFetchOutput,
 } from './endpoint-fetch/endpoint-response.js';
 import {type ExtractPathParams} from './path-params.js';
@@ -47,6 +51,79 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         method: Method,
         ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
     ): Promise<EndpointFetchOutput<Endpoint, Method>> {
+        return (await this.runEndpointRequest(
+            endpoint,
+            method,
+            restParams,
+            async ({response, headers, responseDefinition}) => {
+                const responseData = await readResponseBodyAsJsonOrText(response, headers);
+
+                if (responseDefinition.responseData) {
+                    assertValidShape(
+                        responseData,
+                        responseDefinition.responseData,
+                        {
+                            allowExtraKeys: true,
+                        },
+                        `Response from endpoint '${endpoint.path}' has invalid data.`,
+                    );
+                } else if (responseData) {
+                    throw new Error(
+                        `Response from endpoint '${endpoint.path}' has unexpectedly present data.`,
+                    );
+                }
+
+                return responseData;
+            },
+        )) as EndpointFetchOutput<Endpoint, Method>;
+    }
+
+    /**
+     * Send a request to an endpoint definition and return a `ReadableStream` instead of parsing the
+     * response body. Useful for consuming SSE (Server-Sent Events) endpoints from the frontend.
+     *
+     * Uses the same request-building flow as `.fetch()`, but skips response body and JSON
+     * validation.
+     */
+    public async fetchStream<
+        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
+        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
+    >(
+        endpoint: Endpoint,
+        method: Method,
+        ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
+    ): Promise<EndpointFetchStreamOutput<Endpoint, Method>> {
+        return (await this.runEndpointRequest(endpoint, method, restParams, ({response}) => {
+            if (!response.body) {
+                throw new Error(
+                    `Endpoint '${endpoint.path}' returned an ok response with no body to stream.`,
+                );
+            }
+
+            return response.body;
+        })) as EndpointFetchStreamOutput<Endpoint, Method>;
+    }
+
+    /**
+     * Validate that the endpoint is registered, build its request init, send the request, and shape
+     * the response into the status-keyed output. The body of {@link RestVirClient.fetch} and
+     * {@link RestVirClient.fetchStream}; their only divergent step is how they read `responseData`
+     * out of the response.
+     */
+    protected async runEndpointRequest<
+        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
+        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
+    >(
+        endpoint: Endpoint,
+        method: Method,
+        restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>,
+        getResponseData: (params: {
+            response: Response;
+            status: HttpStatus;
+            headers: DefaultResponseHeadersType;
+            responseDefinition: ResponseStatusDefinition;
+        }) => MaybePromise<unknown>,
+    ): Promise<Record<string, UnknownFetchOutput>> {
         const params: EndpointParamObject | undefined = restParams[0];
 
         if (!check.hasKey(this.api.endpoints, endpoint.path)) {
@@ -72,34 +149,22 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             requestInit,
         );
 
-        const responseText = (await response.clone().text()) || undefined;
-
-        console.log({
-            responseText,
-        });
-
-        const responseDefinition =
-            endpointMethodDefinition.responses[response.status as HttpStatus];
-        const headers = readResponseHeaders(response.headers);
         const status = assertWrap.isEnumValue(
             response.status,
             HttpStatus,
             `Received unexpected HTTP status from '${endpoint.path}': ${response.status}`,
         );
-        
-
-        const responseData: unknown =
-            headers['content-type']?.includes('json') &&
-            responseText
-                ? parseJsonWithUndefined(responseText)
-                : undefined;
+        const responseDefinition = endpointMethodDefinition.responses[status];
+        const headers = readResponseHeaders(response.headers);
 
         if (!responseDefinition) {
             if (isErrorHttpStatus(status)) {
+                const errorResponseData = await readResponseBodyAsJsonOrText(response, headers);
+
                 return {
                     unexpectedError: {
                         status,
-                        responseData: responseData || responseText,
+                        responseData: errorResponseData,
                         headers,
                         response,
                     },
@@ -109,42 +174,28 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
                 > as EndpointFetchOutput<Endpoint, Method>;
             } else {
                 throw new Error(
-                    `Received unexpected successful response status from '${endpoint.path}': ${response.status}`,
+                    `Received unexpected successful response status from '${endpoint.path}': ${status}`,
                 );
             }
         }
 
-        console.log({
-            responseData,
-        });
-
-        if (responseDefinition.responseData) {
-            assertValidShape(
-                responseData,
-                responseDefinition.responseData,
-                {
-                    allowExtraKeys: true,
-                },
-                `Response from endpoint '${endpoint.path}' has invalid data.`,
-            );
-        } else if (responseData) {
-            throw new Error(
-                `Response from endpoint '${endpoint.path}' has unexpectedly present data.`,
-            );
-        }
-
-        const fetchOutput: UnknownFetchOutput = {
+        const responseData = await getResponseData({
+            response,
             status,
             headers,
-            response,
-            responseData: responseData as any,
-        };
+            responseDefinition,
+        });
 
-        const statusKey = httpStatusToKey[status];
+        const outputKey = httpStatusToKey[status];
 
         return {
-            [statusKey]: fetchOutput,
-        } as EndpointFetchOutput<Endpoint, Method>;
+            [outputKey]: {
+                status,
+                headers,
+                response,
+                responseData: responseData as any,
+            },
+        };
     }
 
     /**
@@ -321,4 +372,22 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             requestInit,
         };
     }
+}
+
+/**
+ * Read the response body as text, then JSON-parse it if the response advertises a JSON
+ * `content-type`. Falls back to the raw text when JSON parsing yields nothing.
+ */
+export async function readResponseBodyAsJsonOrText(
+    response: Readonly<Response>,
+    headers: DefaultResponseHeadersType,
+): Promise<unknown> {
+    const responseText = (await response.clone().text()) || undefined;
+
+    const parsed: unknown =
+        headers['content-type']?.includes('json') && responseText
+            ? parseJsonWithUndefined(responseText)
+            : undefined;
+
+    return parsed || responseText;
 }

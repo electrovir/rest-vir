@@ -86,3 +86,37 @@ export const httpStatusToKey = typedObjectFromEntries(
 ) satisfies Record<HttpStatus, keyof typeof HttpStatus> as {
     [Status in HttpStatus]: ExtractKeysWithMatchingValues<typeof HttpStatus, Status>;
 };
+
+export type DefinedEndpointFetchStreamOutputs<
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
+> = Endpoint['requests'][Method] extends infer EndpointMethod extends EndpointMethodDefinition
+    ? EndpointMethod['responses'] extends AnyObject
+        ? {
+              [Status in Extract<
+                  keyof EndpointMethod['responses'],
+                  HttpStatus
+              > as HttpStatusByKey<Status>]: {
+                  status: Status;
+                  responseData:
+                      | ReadableStream<Uint8Array>
+                      | (Status extends ErrorHttpStatus ? string | undefined : never);
+                  headers: EndpointResponseHeadersType<
+                      Endpoint,
+                      Method,
+                      Extract<Status, HttpStatus>
+                  >;
+                  response: Response;
+              };
+          }
+        : {}
+    : {};
+
+export type EndpointFetchStreamOutput<
+    Endpoint extends EndpointDefinition,
+    Method extends DefinableHttpMethod,
+> = RequireExactlyOne<
+    DefinedEndpointFetchStreamOutputs<Endpoint, Method> & {
+        unexpectedError: UnknownFetchOutput;
+    }
+>;

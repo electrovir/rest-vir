@@ -1,9 +1,9 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, stringify} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {defineApi, defineEndpoint, formDataShape} from '@rest-vir/api';
 import {defineShape, exactShape} from 'object-shape-tester';
-import {RestVirClient} from './client.js';
+import {readResponseBodyAsJsonOrText, RestVirClient} from './client.js';
 import {type HttpStatusByKey} from './endpoint-fetch/endpoint-response.js';
 import {createMockFetch, createMockResponse} from './endpoint-fetch/mock-fetch.js';
 
@@ -232,6 +232,154 @@ describe('StatusByKey', () => {
 
         assert.tsType<Extracted>().equals<'Ok'>();
     });
+});
+
+describe(readResponseBodyAsJsonOrText.name, () => {
+    it('does not consume the original response body (uses clone)', async () => {
+        const response = new Response(
+            JSON.stringify({
+                n: 1,
+            }),
+        );
+
+        await readResponseBodyAsJsonOrText(response, {
+            'content-type': 'application/json',
+        });
+
+        /** Original is still readable because the helper clones before reading. */
+        assert.deepEquals(await response.json(), {
+            n: 1,
+        });
+    });
+
+    itCases(readResponseBodyAsJsonOrText, [
+        {
+            it: 'parses a JSON object body when content-type is application/json',
+            inputs: [
+                new Response(
+                    JSON.stringify({
+                        hello: 'world',
+                    }),
+                ),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: {
+                hello: 'world',
+            },
+        },
+        {
+            it: 'parses a JSON-encoded string when content-type is application/json',
+            inputs: [
+                new Response(JSON.stringify('hi')),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: 'hi',
+        },
+        {
+            it: 'parses a JSON-encoded number when content-type is application/json',
+            inputs: [
+                new Response(JSON.stringify(42)),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: 42,
+        },
+        {
+            it: 'parses when content-type advertises a JSON variant like application/vnd.api+json',
+            inputs: [
+                new Response(
+                    JSON.stringify({
+                        type: 'thing',
+                    }),
+                ),
+                {
+                    'content-type': 'application/vnd.api+json; charset=utf-8',
+                },
+            ],
+            expect: {
+                type: 'thing',
+            },
+        },
+        {
+            it: 'returns raw text when content-type is not JSON',
+            inputs: [
+                new Response('plain text body'),
+                {
+                    'content-type': 'text/plain',
+                },
+            ],
+            expect: 'plain text body',
+        },
+        {
+            it: 'returns raw text when content-type header is missing',
+            inputs: [
+                new Response('no header'),
+                {},
+            ],
+            expect: 'no header',
+        },
+        {
+            it: 'returns undefined for an empty body',
+            inputs: [
+                new Response(''),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: undefined,
+        },
+        {
+            it: 'returns undefined for a null body',
+            inputs: [
+                new Response(null),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: undefined,
+        },
+        {
+            it: 'falls back to the raw text when JSON parsing fails on a JSON content-type',
+            inputs: [
+                new Response('not really { json'),
+                {
+                    'content-type': 'application/json',
+                },
+            ],
+            expect: 'not really { json',
+        },
+        {
+            it: 'does not parse JSON-looking text when content-type is not JSON',
+            inputs: [
+                new Response('{"x":1}'),
+                {
+                    'content-type': 'text/plain',
+                },
+            ],
+            expect: '{"x":1}',
+        },
+        {
+            it: 'parses a JSON content-type with charset parameter',
+            inputs: [
+                new Response(
+                    JSON.stringify({
+                        a: 1,
+                    }),
+                ),
+                {
+                    'content-type': 'application/json; charset=utf-8',
+                },
+            ],
+            expect: {
+                a: 1,
+            },
+        },
+    ]);
 });
 
 describe(RestVirClient.name, () => {
