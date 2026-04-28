@@ -1,7 +1,12 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {defineShape, exactShape, tupleShape} from 'object-shape-tester';
-import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
+import {type NoParam} from '../util/no-param.js';
+import {
+    defineWebSocket,
+    type WebSocketConnectProtocolType,
+    type WebSocketDefinition,
+} from './web-socket.js';
 
 describe('WebSocketDefinition', () => {
     it('allows all optional message shapes', () => {
@@ -9,7 +14,7 @@ describe('WebSocketDefinition', () => {
             path: '/ws',
             clientMessage: defineShape(''),
             hostMessage: defineShape(''),
-            protocols: tupleShape(''),
+            connectProtocol: tupleShape(''),
         };
     });
 
@@ -24,7 +29,7 @@ describe('WebSocketDefinition', () => {
             path: '/ws',
             clientMessage: undefined,
             hostMessage: undefined,
-            protocols: undefined,
+            connectProtocol: undefined,
         };
     });
 
@@ -46,20 +51,23 @@ describe('WebSocketDefinition', () => {
         };
     });
 
-    it('allows requiredHeaders', () => {
-        const definition: WebSocketDefinition = {
-            path: '/ws',
-            requiredRequestHeaders: {
-                authorization: defineShape(''),
-            },
-        };
-    });
-
     it('allows requiredClientOrigin', () => {
         const definition: WebSocketDefinition = {
             path: '/ws',
             clientOrigin: 'https://example.com',
         };
+    });
+
+    it('is compatible with specific definition', () => {
+        function testFunction<const ThisWebSocket extends WebSocketDefinition | NoParam>(
+            webSocket: ThisWebSocket,
+        ) {
+            type Generic = ThisWebSocket extends WebSocketDefinition
+                ? ThisWebSocket
+                : WebSocketDefinition;
+
+            const generic: WebSocketDefinition = webSocket as Generic;
+        }
     });
 });
 
@@ -207,5 +215,275 @@ describe(defineWebSocket.name, () => {
         });
 
         const asBase: WebSocketDefinition = result;
+    });
+
+    it('a path-only definition is assignable to WebSocketDefinition', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/empty',
+        });
+    });
+
+    it('a definition with a string-shape connectProtocol is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/string-protocol',
+            connectProtocol: defineShape(''),
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with an exactShape connectProtocol is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/exact-protocol',
+            connectProtocol: exactShape('graphql-ws'),
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with searchParams is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/rooms',
+            searchParams: {
+                roomId: defineShape(''),
+                token: defineShape(''),
+            },
+            clientMessage: defineShape({
+                action: '',
+            }),
+            hostMessage: defineShape({
+                event: '',
+                data: '',
+            }),
+        });
+    });
+
+    it('a definition with customProps is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/admin',
+            customProps: {
+                requiresAuth: true,
+                maxConnections: 10,
+            },
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with requiredRequestHeaders is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/secure',
+            requiredRequestHeaders: {
+                authorization: defineShape(''),
+            },
+            clientMessage: defineShape({
+                command: '',
+            }),
+            hostMessage: defineShape({
+                result: '',
+            }),
+        });
+    });
+
+    it('a definition with a string-literal clientOrigin is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/partner',
+            clientOrigin: 'https://partner.example.com',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(0),
+        });
+    });
+
+    it('a definition with a regex clientOrigin is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/regex-origin',
+            clientOrigin: /^https:\/\/.*\.example\.com$/,
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with named path params is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/rooms/:roomId',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with multiple named path params is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/users/:userId/rooms/:roomId',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with a wildcard path is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/files/*',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition with combined named param and wildcard is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/files/:category/*',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+    });
+
+    it('a definition without messages is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/no-messages',
+        });
+    });
+
+    it('a definition with only a clientMessage is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/client-only',
+            clientMessage: defineShape({
+                value: '',
+            }),
+        });
+    });
+
+    it('a definition with only a hostMessage is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/host-only',
+            hostMessage: defineShape({
+                value: '',
+            }),
+        });
+    });
+
+    it('a definition with all CommonRouteDefinition fields and shapes is assignable', () => {
+        const asBase: WebSocketDefinition = defineWebSocket({
+            path: '/ws/full-route',
+            clientMessage: defineShape({
+                payload: '',
+            }),
+            hostMessage: defineShape({
+                response: '',
+            }),
+            connectProtocol: exactShape('graphql-ws'),
+            searchParams: {
+                token: defineShape(''),
+            },
+            customProps: {
+                maxMessageSize: 65_536,
+            },
+            requiredRequestHeaders: {
+                'sec-websocket-protocol': defineShape(''),
+            },
+            clientOrigin: /^https:\/\/.*\.example\.com$/,
+        });
+    });
+});
+
+describe('WebSocketConnectProtocolType', () => {
+    it('returns string[] | undefined for the NoParam default', () => {
+        type Result = WebSocketConnectProtocolType;
+
+        assert.tsType<Result>().equals<string[] | undefined>();
+    });
+
+    it('returns string[] | undefined when the definition omits connectProtocol', () => {
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+        }>;
+
+        assert.tsType<Result>().equals<string[] | undefined>();
+    });
+
+    it('returns string[] | undefined when connectProtocol is explicitly undefined', () => {
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+            connectProtocol: undefined;
+        }>;
+
+        assert.tsType<Result>().equals<string[] | undefined>();
+    });
+
+    it('narrows to string[] | undefined when connectProtocol is a generic string shape', () => {
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+            connectProtocol: ReturnType<typeof defineShape<string>>;
+        }>;
+
+        assert.tsType<Result>().equals<string[] | undefined>();
+    });
+
+    it('narrows to a string-literal array when connectProtocol is an exactShape literal', () => {
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+            connectProtocol: ReturnType<typeof exactShape<'v2'>>;
+        }>;
+
+        assert.tsType<Result>().equals<'v2'[] | undefined>();
+    });
+
+    it('collapses to never[] | undefined when the shape runtimeType is not assignable to string', () => {
+        /**
+         * `tupleShape` produces a Shape whose `runtimeType` is an array, not a string. After
+         * `Extract<runtimeType, string>` strips out the non-string members, nothing is left.
+         */
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+            connectProtocol: ReturnType<typeof tupleShape<['', 'v2']>>;
+        }>;
+
+        assert.tsType<Result>().equals<never[] | undefined>();
+    });
+
+    it('always allows undefined regardless of input', () => {
+        assert.tsType<undefined>().matches<
+            WebSocketConnectProtocolType<{
+                path: '/ws';
+                connectProtocol: ReturnType<typeof defineShape<string>>;
+            }>
+        >();
+
+        assert.tsType<undefined>().matches<WebSocketConnectProtocolType>();
+
+        assert.tsType<undefined>().matches<
+            WebSocketConnectProtocolType<{
+                path: '/ws';
+            }>
+        >();
+    });
+
+    it('produces an array (never a single value) for any input', () => {
+        type Result = WebSocketConnectProtocolType<{
+            path: '/ws';
+            connectProtocol: ReturnType<typeof defineShape<string>>;
+        }>;
+
+        /** Must be assignable to and from an array — never a non-array. */
+        assert.tsType<NonNullable<Result>>().matches<readonly unknown[]>();
+    });
+
+    it('narrows correctly through a real defineWebSocket value with a string connectProtocol', () => {
+        const fullDefinition = defineWebSocket({
+            path: '/ws',
+            connectProtocol: defineShape(''),
+        });
+
+        type Result = WebSocketConnectProtocolType<typeof fullDefinition>;
+
+        assert.tsType<Result>().equals<string[] | undefined>();
+    });
+
+    it('narrows correctly through a real defineWebSocket value with an exactShape connectProtocol', () => {
+        const fullDefinition = defineWebSocket({
+            path: '/ws',
+            connectProtocol: exactShape('graphql-ws'),
+        });
+
+        type Result = WebSocketConnectProtocolType<typeof fullDefinition>;
+
+        assert.tsType<Result>().equals<'graphql-ws'[] | undefined>();
     });
 });

@@ -32,14 +32,15 @@ describe('RouteSearchParamsType', () => {
         type TestTypes = RouteSearchParamsType<typeof endpoint.requests.GET>;
 
         assert.tsType<TestTypes>().equals<
-            Readonly<
-                Partial<{
-                    regExp: AllowedSearchParamValue;
-                    stringShape: string;
-                    tupleShape: [string, string];
-                }>
-            > &
-                BaseSearchParams
+            | (Readonly<
+                  Partial<{
+                      regExp: AllowedSearchParamValue;
+                      stringShape: string;
+                      tupleShape: [string, string];
+                  }>
+              > &
+                  BaseSearchParams)
+            | undefined
         >();
     });
     it('extracts default when no search params exist', () => {

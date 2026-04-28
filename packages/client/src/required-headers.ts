@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {mapObject, stringify, type PartialWithUndefined} from '@augment-vir/common';
-import {type EndpointMethodDefinition, type ExtractRequestHeadersType} from '@rest-vir/api';
+import {type EndpointMethodDefinition, type EndpointRequestHeadersType} from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
 
 export function extractRequiredHeaders(
@@ -8,7 +8,7 @@ export function extractRequiredHeaders(
     endpointMethod: Readonly<EndpointMethodDefinition>,
     params: Readonly<
         PartialWithUndefined<{
-            requiredHeaders: ExtractRequestHeadersType;
+            requiredHeaders: EndpointRequestHeadersType;
         }>
     >,
 ): Record<string, string> {

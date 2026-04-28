@@ -1,17 +1,14 @@
 import {
     HttpMethod,
+    type AnyObject,
     type ArrayElement,
     type ErrorHttpStatus,
     type HttpStatus,
 } from '@augment-vir/common';
 import {type Shape} from 'object-shape-tester';
-import {type RequireAtLeastOne} from 'type-fest';
+import {type IsNever, type RequireAtLeastOne} from 'type-fest';
 import {type NoParam} from '../util/no-param.js';
-import {
-    type BaseRoutePath,
-    type CommonRouteDefinition,
-    type ExtractRequiredHeaderValue,
-} from './route.js';
+import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
 
 /**
  * Define a single Endpoint.
@@ -180,6 +177,20 @@ export type EndpointMethodDefinition<Method extends DefinableHttpMethod = Defina
      */
     requestData?: Method extends HttpMethodsWithBodies ? Shape | undefined : never;
     responses: ResponseDefinitions;
+    /**
+     * Headers that are required to be sent with requests to this endpoint.
+     *
+     * - Omit or set to `undefined` to disable required headers (assigning arbitrary headers is still
+     *   allowed).
+     * - Set to an object to enforce headers for the given keys.
+     *
+     *   - Set a key's value to a shape shape to enforce shape validation on that header's value.
+     *   - Set a key's value to a `RegExp` to require each stringified value to match the given
+     *       `RegExp`.
+     *
+     * Note that header values are always converted to strings.
+     */
+    requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
 } & CommonRouteDefinition;
 
 /**
@@ -358,3 +369,35 @@ export type EndpointResponseHeadersType<
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type DefaultResponseHeadersType = Record<string, string>;
+
+/**
+ * Extract an expected required header value.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type ExtractRequiredHeaderValue<T extends Shape | RegExp> = T extends Shape
+    ? Extract<T['runtimeType'], string>
+    : string;
+
+/**
+ * Extract a route's request headers type, including required request headers (if any).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type EndpointRequestHeadersType<
+    RouteDefinition extends CommonRouteDefinition | NoParam = NoParam,
+> = RouteDefinition extends NoParam
+    ? Record<string, string> | undefined
+    : 'requiredRequestHeaders' extends keyof RouteDefinition
+      ? IsNever<keyof RouteDefinition['requiredRequestHeaders']> extends true
+          ? undefined
+          : Partial<{
+                [HeaderKey in keyof RouteDefinition['requiredRequestHeaders']]: ExtractRequiredHeaderValue<
+                    Extract<RouteDefinition['requiredRequestHeaders'], AnyObject>[HeaderKey]
+                >;
+            }>
+      : undefined;

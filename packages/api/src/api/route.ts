@@ -43,20 +43,6 @@ export type CommonRouteDefinition = {
     /** Custom props that can be attached to this route. */
     customProps?: UnknownObject | undefined;
     /**
-     * Headers that are required to be sent with this route.
-     *
-     * - Omit or set to `undefined` to disable required headers (assigning arbitrary headers is still
-     *   allowed).
-     * - Set to an object to enforce headers for the given keys.
-     *
-     *   - Set a key's value to a shape shape to enforce shape validation on that header's value.
-     *   - Set a key's value to a `RegExp` to require each stringified value to match the given
-     *       `RegExp`.
-     *
-     * Note that headers are always converted to strings.
-     */
-    requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
-    /**
      * The client origin requirement for this route. If this is `undefined` or omitted, the api's
      * overall client origin requirement is fallen back to.
      */
@@ -106,12 +92,16 @@ export type RouteSearchParamsType<RouteDefinition extends AnyObject | NoParam = 
     'searchParams' extends keyof RouteDefinition
         ? IsNever<keyof RouteDefinition['searchParams']> extends true
             ? BaseSearchParams | undefined
-            : Partial<{
-                  [SearchParamKey in keyof RouteDefinition['searchParams']]: ExtractSearchParamValue<
-                      Extract<RouteDefinition['searchParams'], AnyObject>[SearchParamKey]
-                  >;
-              }> &
-                  BaseSearchParams
+            :
+                  | (Readonly<
+                        Partial<{
+                            [SearchParamKey in keyof RouteDefinition['searchParams']]: ExtractSearchParamValue<
+                                Extract<RouteDefinition['searchParams'], AnyObject>[SearchParamKey]
+                            >;
+                        }>
+                    > &
+                        BaseSearchParams)
+                  | undefined
         : BaseSearchParams | undefined;
 
 /**
@@ -124,35 +114,3 @@ export type RouteSearchParamsType<RouteDefinition extends AnyObject | NoParam = 
 export type ExtractSearchParamValue<T extends Shape | RegExp> = T extends Shape
     ? Extract<T['runtimeType'], AllowedSearchParamValue>
     : AllowedSearchParamValue;
-
-/**
- * Extract an expected required header value.
- *
- * @category Internal
- * @category Package : @rest-vir/api
- * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
- */
-export type ExtractRequiredHeaderValue<T extends Shape | RegExp> = T extends Shape
-    ? Extract<T['runtimeType'], string>
-    : string;
-
-/**
- * Extract a route's request headers type, including required request headers (if any).
- *
- * @category Internal
- * @category Package : @rest-vir/api
- * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
- */
-export type ExtractRequestHeadersType<
-    RouteDefinition extends CommonRouteDefinition | NoParam = NoParam,
-> = RouteDefinition extends NoParam
-    ? Record<string, string> | undefined
-    : 'requiredRequestHeaders' extends keyof RouteDefinition
-      ? IsNever<keyof RouteDefinition['requiredRequestHeaders']> extends true
-          ? undefined
-          : Partial<{
-                [HeaderKey in keyof RouteDefinition['requiredRequestHeaders']]: ExtractRequiredHeaderValue<
-                    Extract<RouteDefinition['requiredRequestHeaders'], AnyObject>[HeaderKey]
-                >;
-            }>
-      : undefined;

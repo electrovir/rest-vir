@@ -1,6 +1,7 @@
 import {assertWrap, check} from '@augment-vir/assert';
 import {
     addPrefix,
+    HttpMethod,
     HttpStatus,
     isErrorHttpStatus,
     mapObject,
@@ -16,13 +17,18 @@ import {
     type ExtractEndpointMethodDefinition,
     type ResponseStatusDefinition,
     type RouteSearchParamsType,
+    type WebSocketDefinition,
 } from '@rest-vir/api';
 import {parseJsonWithUndefined} from '@rest-vir/api/src/augments/json.js';
 import {type SetNullishPropertiesAsOptional} from '@rest-vir/api/src/augments/object.js';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {assertValidShape} from 'object-shape-tester';
+import {type Constructor} from 'type-fest';
 import {buildUrl} from 'url-vir';
-import {type EndpointParamObject, type EndpointParams} from './endpoint-fetch/endpoint-params.js';
+import {
+    type EndpointFetchParamObject,
+    type EndpointFetchParams,
+} from './endpoint-fetch/endpoint-params.js';
 import {
     httpStatusToKey,
     readResponseHeaders,
@@ -33,6 +39,18 @@ import {
 import {type ExtractPathParams} from './path-params.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
+import {type CommonWebSocket} from './websocket-connect/common-web-socket.js';
+import {
+    WebSocketLocation,
+    type OverwriteWebSocketMethods,
+} from './websocket-connect/overwrite-web-socket-types.js';
+import {finalizeWebSocket} from './websocket-connect/overwrite-web-socket.js';
+import {assertValidWebSocketProtocols} from './websocket-connect/web-socket-protocols.js';
+import {
+    type WebSocketConnectParamObject,
+    type WebSocketConnectParams,
+    type WebSocketConnectWebSocketConstructor,
+} from './websocket-connect/websocket-params.js';
 
 export class RestVirClient<const ClientApi extends ApiDefinition> {
     constructor(
@@ -49,7 +67,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     >(
         endpoint: Endpoint,
         method: Method,
-        ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
+        ...restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>
     ): Promise<EndpointFetchOutput<Endpoint, Method>> {
         return (await this.runEndpointRequest(
             endpoint,
@@ -91,7 +109,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     >(
         endpoint: Endpoint,
         method: Method,
-        ...restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>
+        ...restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>
     ): Promise<EndpointFetchStreamOutput<Endpoint, Method>> {
         return (await this.runEndpointRequest(endpoint, method, restParams, ({response}) => {
             if (!response.body) {
@@ -116,7 +134,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     >(
         endpoint: Endpoint,
         method: Method,
-        restParams: EndpointParams<NoInfer<Endpoint>, NoInfer<Method>>,
+        restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>,
         getResponseData: (params: {
             response: Response;
             status: HttpStatus;
@@ -124,7 +142,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             responseDefinition: ResponseStatusDefinition;
         }) => MaybePromise<unknown>,
     ): Promise<Record<string, UnknownFetchOutput>> {
-        const params: EndpointParamObject | undefined = restParams[0];
+        const params: EndpointFetchParamObject | undefined = restParams[0];
 
         if (!check.hasKey(this.api.endpoints, endpoint.path)) {
             throw new Error(`Cannot fetch: this api has no '${endpoint.path}' endpoint.`);
@@ -139,8 +157,8 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const {requestInit, url} = this.buildEndpointRequestInit(
             endpoint,
             method,
-            params satisfies EndpointParamObject | undefined as
-                | EndpointParamObject<NoInfer<Endpoint>, NoInfer<Method>>
+            params satisfies EndpointFetchParamObject | undefined as
+                | EndpointFetchParamObject<NoInfer<Endpoint>, NoInfer<Method>>
                 | undefined,
         );
 
@@ -282,9 +300,9 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     >(
         endpoint: Endpoint,
         method: Method,
-        params: EndpointParamObject<NoInfer<Endpoint>, NoInfer<Method>> | undefined,
+        params: EndpointFetchParamObject<NoInfer<Endpoint>, NoInfer<Method>> | undefined,
     ) {
-        const genericParams: EndpointParamObject | undefined = params;
+        const genericParams: EndpointFetchParamObject | undefined = params;
         const endpointMethod = extractEndpointMethodDefinition(endpoint, method);
 
         if (!endpointMethod) {
@@ -372,6 +390,77 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             requestInit,
         };
     }
+    public async connectWebSocket<
+        const ThisWebSocket extends WebSocketDefinition & {path: keyof ClientApi['webSockets']},
+        WebSocketClass extends CommonWebSocket,
+    >(
+        webSocket: ThisWebSocket,
+        ...restParams: WebSocketConnectParams<NoInfer<ThisWebSocket>, WebSocketClass>
+    ) {
+        const params: WebSocketConnectParamObject | undefined = restParams[0];
+
+        assertValidWebSocketProtocols(params?.protocols, webSocket);
+
+        const url = this.buildWebSocketUrl(
+            webSocket,
+            params satisfies WebSocketConnectParamObject | undefined as
+                | WebSocketConnectParamObject<NoInfer<ThisWebSocket>, WebSocketClass>
+                | undefined,
+        );
+
+        const webSocketConstructor: Constructor<WebSocketClass> = (params?.webSocketConstructor ||
+            defaultWebSocket) as Constructor<WebSocketClass>;
+
+        const clientWebSocket: OverwriteWebSocketMethods<
+            WebSocketClass,
+            WebSocketLocation.OnClient,
+            ThisWebSocket
+        > = await finalizeWebSocket<ThisWebSocket, WebSocketClass, WebSocketLocation.OnClient>(
+            webSocket,
+            new webSocketConstructor(url, params?.protocols, webSocket),
+            params?.listeners,
+            WebSocketLocation.OnClient,
+        );
+
+        return clientWebSocket;
+    }
+
+    public buildWebSocketUrl<
+        const ThisWebSocket extends WebSocketDefinition & {path: keyof ClientApi['webSockets']},
+        WebSocketClass extends CommonWebSocket,
+    >(
+        webSocket: ThisWebSocket,
+        webSocketParams:
+            | WebSocketConnectParamObject<NoInfer<ThisWebSocket>, WebSocketClass>
+            | undefined,
+    ) {
+        const params: WebSocketConnectParamObject | undefined = webSocketParams;
+
+        const httpUrl = this.buildEndpointUrl(
+            {
+                path: webSocket.path as any,
+                requests: {
+                    [HttpMethod.Get]: {
+                        responses: {
+                            [HttpStatus.Ok]: {
+                                responseData: undefined,
+                            },
+                        },
+                        searchParams: webSocket.searchParams,
+                    },
+                },
+            },
+            HttpMethod.Get,
+            {
+                pathParams: params?.pathParams,
+                searchParams: params?.searchParams,
+            },
+        );
+
+        return buildUrl(httpUrl, {
+            protocol: httpUrl.startsWith('https') ? 'wss' : 'ws',
+        }).href;
+    }
 }
 
 /**
@@ -391,3 +480,13 @@ export async function readResponseBodyAsJsonOrText(
 
     return parsed || responseText;
 }
+
+const defaultWebSocket = function (
+    this: any,
+    ...[
+        url,
+        protocols,
+    ]: ConstructorParameters<WebSocketConnectWebSocketConstructor>
+): WebSocket {
+    return new globalThis.WebSocket(url, protocols);
+} as unknown as WebSocketConnectWebSocketConstructor;

@@ -9,5 +9,7 @@ module.exports = {
         ...baseConfig.words,
         'duplexify',
         'middie',
+        'bivariant',
+        'bivariantly',
     ],
 };

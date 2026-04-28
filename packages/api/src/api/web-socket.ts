@@ -1,4 +1,5 @@
 import {type Shape} from 'object-shape-tester';
+import {type NoParam} from '../util/no-param.js';
 import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
 
 /**
@@ -26,9 +27,9 @@ import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export function defineWebSocket<const WebSocket extends WebSocketDefinition>(
-    webSocket: Readonly<WebSocket>,
-): Readonly<WebSocket> {
+export function defineWebSocket<const ThisWebSocket extends WebSocketDefinition>(
+    webSocket: Readonly<ThisWebSocket>,
+): Readonly<ThisWebSocket> {
     return webSocket;
 }
 
@@ -45,10 +46,32 @@ export type WebSocketDefinition = {
     clientMessage?: Shape | undefined;
     /** Allowed messages from the WebSocket host. */
     hostMessage?: Shape | undefined;
-    /** Required protocols for this WebSocket. */
-    protocols?: Shape | undefined;
+    /**
+     * Allowed connection protocol for this WebSocket. Since multiple protocols can be used, each
+     * applied protocol is tested against the given shape, if any is provided.
+     */
+    connectProtocol?: Shape | undefined;
 } & CommonRouteDefinition;
 
+/**
+ * Extracts a WebSocket's protocol type.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type WebSocketConnectProtocolType<
+    ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
+> = ThisWebSocket extends NoParam
+    ? DefaultWebSocketProtocol
+    : Extract<
+            ThisWebSocket,
+            WebSocketDefinition
+        >['connectProtocol'] extends infer ProtocolShape extends Shape
+      ? Extract<ProtocolShape['runtimeType'], string>[] | undefined
+      : DefaultWebSocketProtocol;
+
+export type DefaultWebSocketProtocol = string[] | undefined;
 /**
  * Extracts a WebSocket's client message type.
  *
@@ -70,10 +93,10 @@ export type WebSocketDefinition = {
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type WebSocketClientMessageType<WebSocket extends WebSocketDefinition> =
-    WebSocket['clientMessage'] extends undefined
+export type WebSocketClientMessageType<ThisWebSocket extends WebSocketDefinition> =
+    ThisWebSocket['clientMessage'] extends undefined
         ? undefined
-        : NonNullable<WebSocket['clientMessage']>['runtimeType'];
+        : NonNullable<ThisWebSocket['clientMessage']>['runtimeType'];
 
 /**
  * Extracts a WebSocket's host message type.
@@ -96,7 +119,7 @@ export type WebSocketClientMessageType<WebSocket extends WebSocketDefinition> =
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type WebSocketHostMessageType<WebSocket extends WebSocketDefinition> =
-    WebSocket['hostMessage'] extends undefined
+export type WebSocketHostMessageType<ThisWebSocket extends WebSocketDefinition> =
+    ThisWebSocket['hostMessage'] extends undefined
         ? undefined
-        : NonNullable<WebSocket['hostMessage']>['runtimeType'];
+        : NonNullable<ThisWebSocket['hostMessage']>['runtimeType'];

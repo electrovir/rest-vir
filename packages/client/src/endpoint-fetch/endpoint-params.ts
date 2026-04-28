@@ -1,14 +1,14 @@
 import {
     type DefinableHttpMethod,
     type EndpointDefinition,
+    type EndpointRequestHeadersType,
     type EndpointRequestType,
     type ExtractEndpointMethodDefinition,
     type ExtractEndpointMethodDefinitionWithNoParam,
-    type ExtractRequestHeadersType,
     type NoParam,
     type RouteSearchParamsType,
+    type SetNullishPropertiesAsOptional,
 } from '@rest-vir/api';
-import {type SetNullishPropertiesAsOptional} from '@rest-vir/api/src/augments/object.js';
 import {type HasRequiredKeys} from 'type-fest';
 import {type ExtractPathParams} from '../path-params.js';
 
@@ -18,13 +18,13 @@ import {type ExtractPathParams} from '../path-params.js';
  *
  * @category Internal
  */
-export type EndpointParams<
+export type EndpointFetchParams<
     Endpoint extends EndpointDefinition,
     Method extends DefinableHttpMethod,
 > =
-    HasRequiredKeys<EndpointParamObject<Endpoint, Method>> extends true
-        ? [EndpointParamObject<Endpoint, Method>]
-        : [EndpointParamObject<Endpoint, Method>?];
+    HasRequiredKeys<EndpointFetchParamObject<Endpoint, Method>> extends true
+        ? [EndpointFetchParamObject<Endpoint, Method>]
+        : [EndpointFetchParamObject<Endpoint, Method>?];
 
 /**
  * An client params object for calling an endpoint. Only the params that have required options to
@@ -33,7 +33,7 @@ export type EndpointParams<
  *
  * @category Internal
  */
-export type EndpointParamObject<
+export type EndpointFetchParamObject<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
     Method extends DefinableHttpMethod | NoParam = NoParam,
 > = SetNullishPropertiesAsOptional<{
@@ -56,7 +56,7 @@ export type EndpointParamObject<
      * headers can be supplied in the `options` property, but any headers provided in both will
      * instead use the values from here here (in `requiredHeaders`).
      */
-    requiredHeaders: ExtractRequestHeadersType<
+    requiredHeaders: EndpointRequestHeadersType<
         ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>
     >;
     /**
