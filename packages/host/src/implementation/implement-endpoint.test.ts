@@ -1,34 +1,39 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
-import {createEndpointImplementor} from './implement-endpoint.js';
+import {type EndpointImplementation, type ImplementedEndpoint} from './implement-endpoint.js';
+import {createApiImplementor} from './implementor.js';
 
-describe(createEndpointImplementor.name, () => {
-    const mockEndpoint = defineEndpoint({
-        path: '/test',
-        requests: {
-            [HttpMethod.Get]: {
-                responses: {
-                    [HttpStatus.Ok]: {
-                        responseData: defineShape({
-                            hello: '',
-                        }),
-                    },
+const mockEndpoint = defineEndpoint({
+    path: '/test',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        hello: '',
+                    }),
                 },
             },
         },
-    });
+    },
+});
 
-    type MockContext = {
-        database: any;
-    };
+const mockApi = defineApi({
+    endpoints: [mockEndpoint],
+});
 
-    const implementMockEndpoint = createEndpointImplementor<MockContext>();
+type MockContext = {
+    database: any;
+};
 
+const implementMockEndpoint = createApiImplementor<MockContext>()(mockApi).implementEndpoint;
+
+describe('implementEndpoint', () => {
     it('implements an endpoint', () => {
-        implementMockEndpoint(mockEndpoint, {
-            [HttpMethod.Get]({context, method, endpoint}) {
+        const implemented = implementMockEndpoint(mockEndpoint, {
+            [HttpMethod.Get]({context, method, endpointDefinition: endpoint}) {
                 assert.tsType(context).equals<MockContext>();
 
                 assert.tsType(endpoint).equals(mockEndpoint);
@@ -46,6 +51,8 @@ describe(createEndpointImplementor.name, () => {
                 };
             },
         });
+
+        implemented.path;
     });
     it('prevents more than one return property', () => {
         implementMockEndpoint(mockEndpoint, {
@@ -61,5 +68,33 @@ describe(createEndpointImplementor.name, () => {
                 };
             },
         });
+    });
+});
+
+describe('EndpointImplementation', () => {
+    it('can be assigned to from a specific instance', () => {
+        const testAssignment: ImplementedEndpoint = implementMockEndpoint(mockEndpoint, {
+            [HttpMethod.Get]({context, method, endpointDefinition: endpoint}) {
+                assert.tsType(context).equals<MockContext>();
+
+                assert.tsType(endpoint).equals(mockEndpoint);
+                assert.strictEquals(endpoint, mockEndpoint);
+
+                assert.tsType(method).equals(HttpMethod.Get);
+                assert.strictEquals(method, HttpMethod.Get);
+
+                return {
+                    '200': {
+                        responseData: {
+                            hello: 'hi',
+                        },
+                    },
+                };
+            },
+        });
+
+        assert.tsType<keyof typeof testAssignment>().equals<'implementation' | 'path'>();
+        assert.tsType(testAssignment.implementation).equals<EndpointImplementation>();
+        assert.tsType(testAssignment.path).equals<PropertyKey>();
     });
 });

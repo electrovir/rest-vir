@@ -6,6 +6,7 @@ import {
 } from '@augment-vir/common';
 import {
     type DefaultErrorResponseType,
+    type DefaultResponseHeadersType,
     type DefinableHttpMethod,
     type EndpointDefinition,
     type EndpointMethodDefinition,
@@ -13,53 +14,30 @@ import {
     type EndpointResponseHeadersType,
     type EndpointResponseType,
     type ExtractEndpointMethodDefinitionWithNoParam,
+    type MakeBivariantFunction,
     type NoParam,
     type RouteSearchParamsType,
+    type SetNullishPropertiesAsOptional,
 } from '@rest-vir/api';
-import {type SetNullishPropertiesAsOptional} from '@rest-vir/client';
 import {type IncomingHttpHeaders, type ServerResponse} from 'node:http';
 import {type RequireExactlyOne} from 'type-fest';
-import {type DefaultResponseHeadersType} from '../../../api/src/endpoint.js';
-import {type ServerRequest} from './raw-route-data.js';
+import {type RunningServerInfo, type ServerRequest} from './raw-route-data.js';
 
-export function createEndpointImplementor<HostContext>(this: void) {
-    return <const Endpoint extends Readonly<EndpointDefinition>>(
-        endpoint: Readonly<Endpoint>,
-        implementation: Readonly<EndpointImplementation<NoInfer<Endpoint>, HostContext>>,
-    ): ImplementedEndpoint<Endpoint['path']> => {
-        return {
-            path: endpoint.path,
-            implementation,
-        };
-    };
-}
-
-export type ImplementedEndpoint<Path extends PropertyKey> = {
+export type ImplementedEndpoint<Path extends PropertyKey = PropertyKey> = {
     path: Path;
     implementation: EndpointImplementation;
 };
 
-/**
- * Information passed to an endpoint or WebSocket about the currently running server.
- *
- * @category Internal
- * @category Package : @rest-vir/host
- * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
- */
-export type RunningServerInfo = {
-    serviceOrigin: string;
-};
-
 export type EndpointMethodImplementationParams<
-    Endpoint extends Readonly<EndpointDefinition> | NoParam,
-    Method extends Readonly<DefinableHttpMethod> | NoParam,
+    Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
+    Method extends Readonly<DefinableHttpMethod> | NoParam = NoParam,
     HostContext = any,
 > = {
     context: HostContext;
     method: Method;
-    endpoint: Endpoint extends NoParam
-        ? Readonly<EndpointDefinition>
-        : Readonly<Exclude<Endpoint, NoParam>>;
+    endpointDefinition: Endpoint extends EndpointDefinition
+        ? Readonly<Exclude<Endpoint, NoParam>>
+        : Readonly<EndpointDefinition>;
     requestHeaders: IncomingHttpHeaders;
     request: ServerRequest;
     response: ServerResponse;
@@ -72,7 +50,7 @@ export type EndpointMethodImplementationParams<
 
 export type EndpointImplementation<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
-    HostContext = undefined,
+    HostContext = unknown,
 > = Endpoint extends EndpointDefinition
     ? {
           [Method in keyof Endpoint['requests'] as Method extends DefinableHttpMethod
@@ -83,28 +61,49 @@ export type EndpointImplementation<
                 ) => MaybePromise<EndpointMethodImplementationOutput<Endpoint, Method>>
               : never;
       }
-    : // todo: implement the generic version later
-      any;
+    : Partial<
+          Record<
+              DefinableHttpMethod | `${DefinableHttpMethod}`,
+              MakeBivariantFunction<
+                  EndpointMethodImplementationParams,
+                  MaybePromise<EndpointMethodImplementationOutput>
+              >
+          >
+      >;
 
 export type EndpointMethodDefinedStatusOutputs<
-    Endpoint extends EndpointDefinition,
-    Method extends DefinableHttpMethod,
-> = {
-    [Status in keyof Extract<
-        Endpoint['requests'][Method],
-        EndpointMethodDefinition
-    >['responses']]: Status extends HttpStatus
-        ? SetNullishPropertiesAsOptional<{
-              responseData: EndpointResponseType<Endpoint, Method, Status>;
-              headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
-              responseHandled?: never;
-          }>
-        : never;
-};
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
+> = Endpoint extends EndpointDefinition
+    ? Method extends DefinableHttpMethod
+        ? {
+              [Status in keyof Extract<
+                  Endpoint['requests'][Method],
+                  EndpointMethodDefinition
+              >['responses']]: Status extends HttpStatus
+                  ? EndpointImplementationStatusOutput<Endpoint, Method, Status>
+                  : never;
+          }
+        : DefaultEndpointMethodStatusOutputs
+    : DefaultEndpointMethodStatusOutputs;
+
+export type EndpointImplementationStatusOutput<
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
+    Status extends HttpStatus | NoParam = NoParam,
+> = SetNullishPropertiesAsOptional<{
+    responseData: EndpointResponseType<Endpoint, Method, Status>;
+    headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
+    responseHandled?: never;
+}>;
+
+export type DefaultEndpointMethodStatusOutputs = Partial<
+    Record<HttpStatus, EndpointImplementationStatusOutput>
+>;
 
 export type EndpointMethodImplementationOutput<
-    Endpoint extends EndpointDefinition,
-    Method extends DefinableHttpMethod,
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
 > =
     EndpointMethodDefinedStatusOutputs<Endpoint, Method> extends infer DefinedStatuses extends
         AnyObject

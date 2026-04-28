@@ -1,5 +1,6 @@
 import {type MaybePromise, type Overwrite} from '@augment-vir/common';
 import {
+    type MakeBivariantFunction,
     type NoParam,
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
@@ -27,17 +28,6 @@ export enum WebSocketLocation {
 }
 
 /**
- * Creates a function type in a single-method object so its parameter type is checked bivariantly
- * under `--strictFunctionTypes`. Method-syntax members are bivariant; bare function-typed
- * properties are contravariant.
- *
- * @category Internal
- */
-export type MakeFunctionBivariant<Params, Return> = {
-    callback(params: Params): Return;
-}['callback'];
-
-/**
  * An object defining declaratively created listeners that will be attached to a rest-vir WebSocket
  * connection
  *
@@ -50,7 +40,7 @@ export type ConnectWebSocketListeners<
     WebSocketClass extends CommonWebSocket | NoParam,
 > =
     | Partial<{
-          [EventName in keyof CommonWebSocketEventMap]: MakeFunctionBivariant<
+          [EventName in keyof CommonWebSocketEventMap]: MakeBivariantFunction<
               WebSocketListenerParams<
                   EventName,
                   ThisWebSocket,

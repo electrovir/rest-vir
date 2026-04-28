@@ -4,6 +4,7 @@ import {defineShape, exactShape, tupleShape} from 'object-shape-tester';
 import {type NoParam} from '../util/no-param.js';
 import {
     defineWebSocket,
+    type WebSocketClientMessageType,
     type WebSocketConnectProtocolType,
     type WebSocketDefinition,
 } from './web-socket.js';
@@ -485,5 +486,98 @@ describe('WebSocketConnectProtocolType', () => {
         type Result = WebSocketConnectProtocolType<typeof fullDefinition>;
 
         assert.tsType<Result>().equals<'graphql-ws'[] | undefined>();
+    });
+});
+
+describe('WebSocketClientMessageType', () => {
+    it('resolves to undefined when the websocket definition omits clientMessage entirely', () => {
+        const noClientMessage = defineWebSocket({
+            path: '/ws/no-client-message',
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof noClientMessage>;
+
+        assert.tsType<Result>().equals<undefined>();
+    });
+
+    it('resolves to undefined when clientMessage is explicitly undefined', () => {
+        const explicitUndefined = defineWebSocket({
+            path: '/ws/explicit-undefined',
+            clientMessage: undefined,
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof explicitUndefined>;
+
+        assert.tsType<Result>().equals<undefined>();
+    });
+
+    it('resolves to the runtime type of a string-shaped clientMessage', () => {
+        const stringClient = defineWebSocket({
+            path: '/ws/string-client',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof stringClient>;
+
+        assert.tsType<Result>().equals<string>();
+    });
+
+    it('resolves to the runtime type of a numeric-shaped clientMessage', () => {
+        const numericClient = defineWebSocket({
+            path: '/ws/numeric-client',
+            clientMessage: defineShape(0),
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof numericClient>;
+
+        assert.tsType<Result>().equals<number>();
+    });
+
+    it('resolves to the runtime object shape of a complex clientMessage', () => {
+        const objectClient = defineWebSocket({
+            path: '/ws/object-client',
+            clientMessage: defineShape({
+                action: '',
+                payload: 0,
+            }),
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof objectClient>;
+
+        assert.tsType<Result>().equals<{action: string; payload: number}>();
+    });
+
+    it('resolves to the literal runtime type of an exactShape clientMessage', () => {
+        const exactClient = defineWebSocket({
+            path: '/ws/exact-client',
+            clientMessage: exactShape('open'),
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketClientMessageType<typeof exactClient>;
+
+        assert.tsType<Result>().equals<'open'>();
+    });
+
+    it('handles NoParam', () => {
+        type Result = WebSocketClientMessageType<NoParam>;
+
+        assert.tsType<Result>().equals<unknown>();
+    });
+
+    it('does not narrow the result based on the wide WebSocketDefinition input', () => {
+        type Result = WebSocketClientMessageType<WebSocketDefinition>;
+
+        /**
+         * For the loose `WebSocketDefinition`, `clientMessage` is `Shape | undefined`. The
+         * conditional in `WebSocketClientMessageType` returns `NonNullable<Shape |
+         * undefined>['runtimeType']` = `Shape['runtimeType']` = `any`.
+         */
+        assert.tsType<Result>().matches<any>();
     });
 });

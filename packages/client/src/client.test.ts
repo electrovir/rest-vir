@@ -1,11 +1,235 @@
-import {assert} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus, stringify} from '@augment-vir/common';
+import {assert, assertWrap} from '@augment-vir/assert';
+import {
+    type AnyObject,
+    getOrSet,
+    HttpMethod,
+    HttpStatus,
+    type MaybePromise,
+    stringify,
+    wait,
+} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineApi, defineEndpoint, formDataShape} from '@rest-vir/api';
+import {
+    defineApi,
+    defineEndpoint,
+    defineWebSocket,
+    formDataShape,
+    parseJsonWithUndefined,
+    type WebSocketDefinition,
+} from '@rest-vir/api';
 import {defineShape, exactShape} from 'object-shape-tester';
 import {readResponseBodyAsJsonOrText, RestVirClient} from './client.js';
 import {type HttpStatusByKey} from './endpoint-fetch/endpoint-response.js';
 import {createMockFetch, createMockResponse} from './endpoint-fetch/mock-fetch.js';
+import {
+    type CommonWebSocket,
+    type CommonWebSocketEventMap,
+    CommonWebSocketState,
+} from './websocket-connect/common-web-socket.js';
+
+const mockWebSocketRegistry: {lastInstance: MockWebSocket | undefined} = {
+    lastInstance: undefined,
+};
+
+function getLastMockWebSocket() {
+    return assertWrap.isDefined(mockWebSocketRegistry.lastInstance);
+}
+
+class MockWebSocket implements CommonWebSocket {
+    public listeners: Partial<{
+        [EventName in keyof CommonWebSocketEventMap]: Set<
+            (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>
+        >;
+    }> = {};
+
+    public readyState: CommonWebSocketState = CommonWebSocketState.Connecting;
+
+    public capturedConstructorArgs: {
+        url: string;
+        protocols: string[] | undefined;
+        webSocket: WebSocketDefinition;
+    };
+
+    public sendCallback: ((data: unknown) => void) | undefined;
+
+    constructor(
+        url: string,
+        protocols: string[] | undefined,
+        webSocket: WebSocketDefinition,
+        options: {preventImmediateOpen?: boolean} = {},
+    ) {
+        this.capturedConstructorArgs = {
+            url,
+            protocols,
+            webSocket,
+        };
+        mockWebSocketRegistry.lastInstance = this;
+        if (!options.preventImmediateOpen) {
+            this.open();
+        }
+    }
+
+    public open() {
+        setTimeout(() => {
+            if (this.readyState === CommonWebSocketState.Connecting) {
+                this.readyState = CommonWebSocketState.Open;
+                this.dispatchEvent('open', {});
+            }
+        });
+    }
+
+    public close() {
+        this.dispatchEvent('close', {
+            code: 0,
+            reason: 'closed',
+            wasClean: true,
+        });
+        this.listeners = {};
+        this.readyState = CommonWebSocketState.Closed;
+    }
+
+    public dispatchEvent<const EventName extends keyof CommonWebSocketEventMap>(
+        eventName: EventName,
+        event: Omit<CommonWebSocketEventMap[EventName], 'type' | 'target'>,
+    ) {
+        this.listeners[eventName]?.forEach((listener) => {
+            void listener({
+                ...event,
+                target: this,
+                type: eventName,
+            } as AnyObject as CommonWebSocketEventMap[EventName]);
+        });
+    }
+
+    public addEventListener<const EventName extends keyof CommonWebSocketEventMap>(
+        eventName: EventName,
+        listener: (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>,
+    ): void {
+        getOrSet(this.listeners, eventName, () => new Set<any>()).add(listener as any);
+    }
+
+    public removeEventListener<const EventName extends keyof CommonWebSocketEventMap>(
+        eventName: EventName,
+        listener: (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>,
+    ): void {
+        this.listeners[eventName]?.delete(listener);
+    }
+
+    public send(data: any): void {
+        if (this.readyState !== CommonWebSocketState.Open) {
+            return;
+        }
+        this.sendCallback?.(parseJsonWithUndefined(String(data)));
+    }
+
+    /** Send a message as if it came from the host. */
+    public sendFromHost(data: unknown) {
+        if (this.readyState !== CommonWebSocketState.Open) {
+            return;
+        }
+        this.dispatchEvent('message', {
+            data: JSON.stringify(data),
+        });
+    }
+}
+
+const noMessagesWebSocket = defineWebSocket({
+    path: '/ws/no-messages',
+});
+
+const echoWebSocket = defineWebSocket({
+    path: '/ws/echo',
+    clientMessage: defineShape(''),
+    hostMessage: defineShape(''),
+});
+
+const noServerDataWebSocket = defineWebSocket({
+    path: '/ws/no-server-data',
+    clientMessage: defineShape(''),
+});
+
+const noClientDataWebSocket = defineWebSocket({
+    path: '/ws/no-client-data',
+    hostMessage: defineShape(''),
+});
+
+const arrayMessageWebSocket = defineWebSocket({
+    path: '/ws/array-messages',
+    clientMessage: defineShape([
+        '',
+    ]),
+    hostMessage: defineShape([
+        '',
+    ]),
+});
+
+const searchParamsWebSocket = defineWebSocket({
+    path: '/ws/search',
+    searchParams: {
+        roomId: defineShape(''),
+        token: defineShape(''),
+    },
+    clientMessage: defineShape({
+        action: '',
+    }),
+    hostMessage: defineShape({
+        event: '',
+    }),
+});
+
+const pathParamsWebSocket = defineWebSocket({
+    path: '/ws/rooms/:roomId',
+    clientMessage: defineShape(''),
+    hostMessage: defineShape(''),
+});
+
+const wildcardWebSocket = defineWebSocket({
+    path: '/ws/files/*',
+    clientMessage: defineShape(''),
+    hostMessage: defineShape(''),
+});
+
+const exactProtocolWebSocket = defineWebSocket({
+    path: '/ws/exact-protocol',
+    connectProtocol: exactShape('graphql-ws'),
+    clientMessage: defineShape(''),
+    hostMessage: defineShape(''),
+});
+
+/** Endpoint included only so we can construct a valid api. */
+const placeholderEndpoint = defineEndpoint({
+    path: '/placeholder',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
+        },
+    },
+});
+
+const wsApi = defineApi({
+    endpoints: [
+        placeholderEndpoint,
+    ],
+    webSockets: [
+        noMessagesWebSocket,
+        echoWebSocket,
+        noServerDataWebSocket,
+        noClientDataWebSocket,
+        arrayMessageWebSocket,
+        searchParamsWebSocket,
+        pathParamsWebSocket,
+        wildcardWebSocket,
+        exactProtocolWebSocket,
+    ],
+});
+
+function makeClient() {
+    return new RestVirClient(wsApi, 'https://example.com');
+}
 
 const simpleEndpoint = defineEndpoint({
     path: '/simple',
@@ -1060,5 +1284,541 @@ describe(RestVirClient.name, () => {
                 // @ts-expect-error: `otherEndpoint` is not in `otherApi`.
                 await client.fetch(otherEndpoint, HttpMethod.Get),
         );
+    });
+});
+
+describe('RestVirClient.connectWebSocket', () => {
+    it('opens a websocket and resolves with the wrapped client instance', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(noMessagesWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        assert.strictEquals(socket.readyState, CommonWebSocketState.Open);
+        await socket.close();
+    });
+
+    it('builds the url from the websocket definition path', async () => {
+        const client = makeClient();
+        await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        assert.strictEquals(
+            getLastMockWebSocket().capturedConstructorArgs.url,
+            'wss://example.com/ws/echo',
+        );
+    });
+
+    it('builds an http origin into a ws:// url', async () => {
+        const httpClient = new RestVirClient(wsApi, 'http://example.com');
+        await httpClient.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        assert.strictEquals(
+            getLastMockWebSocket().capturedConstructorArgs.url,
+            'ws://example.com/ws/echo',
+        );
+    });
+
+    it('forwards search params into the url', async () => {
+        const client = makeClient();
+        await client.connectWebSocket(searchParamsWebSocket, {
+            webSocketConstructor: MockWebSocket,
+            searchParams: {
+                roomId: 'r1',
+                token: 'abc',
+            },
+        });
+
+        const {url} = getLastMockWebSocket().capturedConstructorArgs;
+        assert.isTrue(url.startsWith('wss://example.com/ws/search?'));
+        assert.isTrue(url.includes('roomId=r1'));
+        assert.isTrue(url.includes('token=abc'));
+    });
+
+    it('interpolates path params into the url', async () => {
+        const client = makeClient();
+        await client.connectWebSocket(pathParamsWebSocket, {
+            webSocketConstructor: MockWebSocket,
+            pathParams: {
+                roomId: '42',
+            } as never,
+        });
+
+        assert.strictEquals(
+            getLastMockWebSocket().capturedConstructorArgs.url,
+            'wss://example.com/ws/rooms/42',
+        );
+    });
+
+    it('passes the protocols list to the WebSocket constructor', async () => {
+        const client = makeClient();
+        await client.connectWebSocket(noMessagesWebSocket, {
+            webSocketConstructor: MockWebSocket,
+            protocols: [
+                'a',
+                'b',
+                'c',
+            ],
+        });
+
+        assert.deepEquals(getLastMockWebSocket().capturedConstructorArgs.protocols, [
+            'a',
+            'b',
+            'c',
+        ]);
+    });
+
+    it('passes the webSocket definition to the WebSocket constructor', async () => {
+        const client = makeClient();
+        await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        assert.strictEquals(
+            getLastMockWebSocket().capturedConstructorArgs.webSocket,
+            echoWebSocket,
+        );
+    });
+
+    it('attaches declarative listeners and forwards events', async () => {
+        const client = makeClient();
+        const events: string[] = [];
+        const socket = await client.connectWebSocket(noClientDataWebSocket, {
+            webSocketConstructor: MockWebSocket,
+            listeners: {
+                open: ({event}) => {
+                    events.push(event.type);
+                },
+                message: ({event}) => {
+                    events.push(event.type);
+                },
+                close: ({event}) => {
+                    events.push(event.type);
+                },
+                error: ({event}) => {
+                    events.push(event.type);
+                },
+            },
+        });
+
+        getLastMockWebSocket().sendFromHost('ok');
+        getLastMockWebSocket().dispatchEvent('error', {});
+        await socket.close();
+
+        assert.deepEquals(events, [
+            'open',
+            'message',
+            'error',
+            'close',
+        ]);
+    });
+
+    it('respects addEventListener and removeEventListener for messages', async () => {
+        const client = makeClient();
+        const messages: unknown[] = [];
+        const socket = await client.connectWebSocket(noClientDataWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+        const listener = ({message}: {message: unknown}) => {
+            messages.push(message);
+        };
+        socket.addEventListener('message', listener);
+
+        getLastMockWebSocket().sendFromHost('one');
+        socket.removeEventListener('message', listener);
+        getLastMockWebSocket().sendFromHost('two');
+
+        await socket.close();
+
+        assert.deepEquals(messages, [
+            'one',
+        ]);
+    });
+
+    it('validates incoming host messages against the host shape', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(noClientDataWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        socket.addEventListener('message', () => {});
+        assert.throws(() => getLastMockWebSocket().sendFromHost(42 as never));
+
+        await socket.close();
+    });
+
+    it('rejects send() data when the socket is not expecting client data', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(noClientDataWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        assert.throws(
+            () => {
+                socket.send('disallowed' as never);
+            },
+            {
+                matchMessage: 'does not expect any message data',
+            },
+        );
+
+        await socket.close();
+    });
+
+    it('rejects messages from host when the socket is not expecting host data', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(noServerDataWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        socket.addEventListener('message', () => {});
+        assert.throws(() => getLastMockWebSocket().sendFromHost('unexpected'));
+
+        await socket.close();
+    });
+
+    it('serializes outgoing client messages through the client shape', async () => {
+        const client = makeClient();
+        const sent: unknown[] = [];
+        const socket = await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+        getLastMockWebSocket().sendCallback = (data) => {
+            sent.push(data);
+        };
+
+        socket.send('hello');
+        await socket.close();
+
+        assert.deepEquals(sent, [
+            'hello',
+        ]);
+    });
+
+    it('sendAndWaitForReply resolves with the next host message', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        const replyPromise = socket.sendAndWaitForReply({
+            message: 'ping',
+        });
+
+        await wait({
+            milliseconds: 50,
+        });
+        getLastMockWebSocket().sendFromHost('pong');
+
+        assert.strictEquals(await replyPromise, 'pong');
+        await socket.close();
+    });
+
+    it('sendAndWaitForReply honors a replyCheck and ignores non-matching replies', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(arrayMessageWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        const replyPromise = socket.sendAndWaitForReply({
+            message: [
+                'q',
+            ],
+            replyCheck: (msg) => msg[0] === 'c',
+        });
+
+        await wait({
+            milliseconds: 50,
+        });
+        getLastMockWebSocket().sendFromHost([
+            'a',
+        ]);
+        getLastMockWebSocket().sendFromHost([
+            'b',
+        ]);
+        getLastMockWebSocket().sendFromHost([
+            'c',
+        ]);
+
+        assert.deepEquals(await replyPromise, [
+            'c',
+        ]);
+        await socket.close();
+    });
+
+    it('sendAndWaitForReply rejects after the timeout if no reply arrives', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+
+        await assert.throws(
+            () =>
+                socket.sendAndWaitForReply({
+                    message: 'ping',
+                    timeout: {
+                        milliseconds: 50,
+                    },
+                }),
+            {
+                matchMessage: 'got no reply',
+            },
+        );
+
+        await socket.close();
+    });
+
+    it('does not send messages once the socket has closed', async () => {
+        const client = makeClient();
+        const sent: unknown[] = [];
+        const socket = await client.connectWebSocket(echoWebSocket, {
+            webSocketConstructor: MockWebSocket,
+        });
+        getLastMockWebSocket().sendCallback = (data) => {
+            sent.push(data);
+        };
+
+        socket.send('first');
+        await socket.close();
+        socket.send('after-close');
+
+        assert.deepEquals(sent, [
+            'first',
+        ]);
+    });
+
+    it('rejects an empty-string protocol', async () => {
+        const client = makeClient();
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: MockWebSocket,
+                    protocols: [
+                        '',
+                        'b',
+                    ],
+                }),
+            {
+                matchMessage: 'Invalid protocols given',
+            },
+        );
+    });
+
+    it('rejects duplicate protocols', async () => {
+        const client = makeClient();
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: MockWebSocket,
+                    protocols: [
+                        'a',
+                        'a',
+                    ],
+                }),
+            {
+                matchMessage: 'Invalid protocols given',
+            },
+        );
+    });
+
+    it('rejects a protocol that contains an illegal character', async () => {
+        const client = makeClient();
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: MockWebSocket,
+                    protocols: [
+                        ',',
+                        'b',
+                    ],
+                }),
+            {
+                matchMessage: 'Invalid protocols given',
+            },
+        );
+    });
+
+    it('rejects whitespace-only protocols', async () => {
+        const client = makeClient();
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: MockWebSocket,
+                    protocols: [
+                        ' ',
+                        'b',
+                    ],
+                }),
+            {
+                matchMessage: 'Invalid protocols given',
+            },
+        );
+    });
+
+    it('rejects protocols that fail the connectProtocol shape requirement', async () => {
+        const client = makeClient();
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(exactProtocolWebSocket, {
+                    webSocketConstructor: MockWebSocket,
+                    protocols: [
+                        'soap-ws',
+                    ] as never,
+                }),
+            {
+                matchMessage: 'failed protocol requirement',
+            },
+        );
+    });
+
+    it('accepts protocols that satisfy the connectProtocol shape requirement', async () => {
+        const client = makeClient();
+        const socket = await client.connectWebSocket(exactProtocolWebSocket, {
+            webSocketConstructor: MockWebSocket,
+            protocols: [
+                'graphql-ws',
+            ],
+        });
+        await socket.close();
+    });
+
+    it('fails if the websocket dispatches an error before opening', async () => {
+        const client = makeClient();
+        class ErrorMockWebSocket extends MockWebSocket {
+            constructor(
+                url: string,
+                protocols: string[] | undefined,
+                webSocket: WebSocketDefinition,
+            ) {
+                super(url, protocols, webSocket, {
+                    preventImmediateOpen: true,
+                });
+                setTimeout(() => this.dispatchEvent('error', {}), 5);
+            }
+        }
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: ErrorMockWebSocket,
+                }),
+            {
+                matchMessage: 'WebSocket connection failed',
+            },
+        );
+    });
+
+    it('fails if the websocket closes before it opens', async () => {
+        const client = makeClient();
+        class ImmediatelyClosedMockWebSocket extends MockWebSocket {
+            constructor(
+                url: string,
+                protocols: string[] | undefined,
+                webSocket: WebSocketDefinition,
+            ) {
+                super(url, protocols, webSocket, {
+                    preventImmediateOpen: true,
+                });
+                this.readyState = CommonWebSocketState.Closed;
+            }
+        }
+
+        await assert.throws(
+            () =>
+                client.connectWebSocket(noMessagesWebSocket, {
+                    webSocketConstructor: ImmediatelyClosedMockWebSocket,
+                }),
+            {
+                matchMessage: 'WebSocket closed while waiting for it to open',
+            },
+        );
+    });
+
+    it('uses the default WebSocket constructor when none is provided', async () => {
+        /**
+         * Connecting against a non-routable origin will fail at the global `WebSocket` level rather
+         * than reaching our mock. We just want to confirm `defaultWebSocket` is used as the
+         * fallback — i.e. the call doesn't throw a TypeError before construction. We catch the
+         * inevitable connection failure.
+         */
+        const offlineClient = new RestVirClient(wsApi, 'wss://nonexistent.invalid');
+        await assert.throws(() => offlineClient.connectWebSocket(echoWebSocket));
+    });
+});
+
+describe('RestVirClient.buildWebSocketUrl', () => {
+    it('builds a wss url for an https base origin', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        const url = client.buildWebSocketUrl(noMessagesWebSocket, undefined);
+        assert.strictEquals(url, 'wss://example.com/ws/no-messages');
+    });
+
+    it('builds a ws url for an http base origin', () => {
+        const client = new RestVirClient(wsApi, 'http://example.com');
+        const url = client.buildWebSocketUrl(noMessagesWebSocket, undefined);
+        assert.strictEquals(url, 'ws://example.com/ws/no-messages');
+    });
+
+    it('appends search params', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        const url = client.buildWebSocketUrl(searchParamsWebSocket, {
+            searchParams: {
+                roomId: '1',
+                token: 'abc',
+            },
+        });
+        assert.isTrue(url.startsWith('wss://example.com/ws/search?'));
+        assert.isTrue(url.includes('roomId=1'));
+        assert.isTrue(url.includes('token=abc'));
+    });
+
+    it('interpolates path params', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        const url = client.buildWebSocketUrl(pathParamsWebSocket, {
+            pathParams: {
+                roomId: 'r1',
+            } as never,
+        });
+        assert.strictEquals(url, 'wss://example.com/ws/rooms/r1');
+    });
+
+    it('throws when a path param is missing', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        assert.throws(
+            () =>
+                client.buildWebSocketUrl(pathParamsWebSocket, {
+                    pathParams: {} as never,
+                }),
+            {
+                matchMessage: 'roomId',
+            },
+        );
+    });
+
+    it('throws when a wildcard segment is missing', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        assert.throws(
+            () =>
+                client.buildWebSocketUrl(wildcardWebSocket, {
+                    pathParams: {} as never,
+                }),
+            {
+                matchMessage: 'wildcard',
+            },
+        );
+    });
+
+    it('returns undefined params untouched', () => {
+        const client = new RestVirClient(wsApi, 'https://example.com');
+        const url = client.buildWebSocketUrl(echoWebSocket, undefined);
+        assert.strictEquals(url, 'wss://example.com/ws/echo');
     });
 });

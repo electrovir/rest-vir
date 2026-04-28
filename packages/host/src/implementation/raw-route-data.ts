@@ -1,4 +1,5 @@
-import {type NoParam} from '@rest-vir/api';
+import {type NoParam, type WebSocketDefinition} from '@rest-vir/api';
+import {type OverwriteWebSocketMethods, type WebSocketLocation} from '@rest-vir/client';
 import {type FastifyReply, type FastifyRequest} from 'fastify';
 import {type WebSocket as WsWebSocket} from 'ws';
 
@@ -30,6 +31,16 @@ export type ServerResponse = FastifyReply;
  * @category Package : @rest-vir/host
  * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export type ServerWebSocket<
-    SpecificWebSocket extends GenericWebSocketDefinition | NoParam = NoParam,
-> = OverwriteWebSocketMethods<WsWebSocket, WebSocketLocation.OnHost, SpecificWebSocket>;
+export type ServerWebSocket<ThisWebSocket extends WebSocketDefinition | NoParam = NoParam> =
+    OverwriteWebSocketMethods<WsWebSocket, WebSocketLocation.OnHost, ThisWebSocket>;
+
+/**
+ * Information passed to an endpoint or WebSocket about the currently running server.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type RunningServerInfo = {
+    serviceOrigin: string;
+};

@@ -303,16 +303,22 @@ export type EndpointRequestType<
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointResponseType<
-    Endpoint extends EndpointDefinition,
-    Method extends DefinableHttpMethod,
-    Status extends HttpStatus,
-> = NonNullable<
-    NonNullable<
-        Extract<Endpoint['requests'][Method], EndpointMethodDefinition>['responses']
-    >[Status]
->['responseData'] extends infer ResponseDataShape extends Shape
-    ? ResponseDataShape['runtimeType']
-    : DefaultResponseType<Status>;
+    Endpoint extends EndpointDefinition | NoParam,
+    Method extends DefinableHttpMethod | NoParam,
+    Status extends HttpStatus | NoParam,
+> = Endpoint extends EndpointDefinition
+    ? Method extends DefinableHttpMethod
+        ? Status extends HttpStatus
+            ? NonNullable<
+                  NonNullable<
+                      Extract<Endpoint['requests'][Method], EndpointMethodDefinition>['responses']
+                  >[Status]
+              >['responseData'] extends infer ResponseDataShape extends Shape
+                ? ResponseDataShape['runtimeType']
+                : DefaultResponseType<Status>
+            : unknown
+        : unknown
+    : unknown;
 
 /**
  * The default response type for any status, used when a status response is not explicitly defined

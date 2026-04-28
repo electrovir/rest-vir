@@ -6,3 +6,8 @@ export * from './mock-host.js';
 export * from './path-params.js';
 export * from './required-headers.js';
 export * from './search-params.js';
+export * from './websocket-connect/common-web-socket.js';
+export * from './websocket-connect/overwrite-web-socket-types.js';
+export * from './websocket-connect/overwrite-web-socket.js';
+export * from './websocket-connect/web-socket-protocols.js';
+export * from './websocket-connect/websocket-params.js';

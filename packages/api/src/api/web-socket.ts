@@ -93,10 +93,14 @@ export type DefaultWebSocketProtocol = string[] | undefined;
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type WebSocketClientMessageType<ThisWebSocket extends WebSocketDefinition> =
-    ThisWebSocket['clientMessage'] extends undefined
-        ? undefined
-        : NonNullable<ThisWebSocket['clientMessage']>['runtimeType'];
+export type WebSocketClientMessageType<ThisWebSocket extends WebSocketDefinition | NoParam> =
+    ThisWebSocket extends WebSocketDefinition
+        ? 'clientMessage' extends keyof ThisWebSocket
+            ? ThisWebSocket['clientMessage'] extends undefined
+                ? undefined
+                : NonNullable<ThisWebSocket['clientMessage']>['runtimeType']
+            : undefined
+        : unknown;
 
 /**
  * Extracts a WebSocket's host message type.
