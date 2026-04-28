@@ -1,0 +1,87 @@
+import {describe, itCases} from '@augment-vir/test';
+import {extractRunningServerInfo} from './attach-service.js';
+
+describe(extractRunningServerInfo.name, () => {
+    itCases(extractRunningServerInfo, [
+        {
+            it: 'handles a missing address',
+            inputs: [
+                {
+                    serviceOrigin: 'http://localhost:4321',
+                },
+                {
+                    server: {
+                        address() {
+                            return null;
+                        },
+                    },
+                },
+            ],
+            expect: {
+                serviceOrigin: 'http://localhost:4321',
+            },
+        },
+        {
+            it: 'handles a string address',
+            inputs: [
+                {
+                    serviceOrigin: 'http://localhost:4321',
+                },
+                {
+                    server: {
+                        address() {
+                            return 'something';
+                        },
+                    },
+                },
+            ],
+            expect: {
+                serviceOrigin: 'http://localhost:4321',
+            },
+        },
+        {
+            it: 'handles an address with a port',
+            inputs: [
+                {
+                    serviceOrigin: 'http://localhost:4321',
+                },
+                {
+                    server: {
+                        address() {
+                            return {
+                                address: '',
+                                family: '',
+                                port: 1234,
+                            };
+                        },
+                    },
+                },
+            ],
+            expect: {
+                serviceOrigin: 'http://localhost:1234',
+            },
+        },
+        {
+            it: 'handles an service origin without a port',
+            inputs: [
+                {
+                    serviceOrigin: 'http://localhost',
+                },
+                {
+                    server: {
+                        address() {
+                            return {
+                                address: '',
+                                family: '',
+                                port: 1234,
+                            };
+                        },
+                    },
+                },
+            ],
+            expect: {
+                serviceOrigin: 'http://localhost',
+            },
+        },
+    ]);
+});
