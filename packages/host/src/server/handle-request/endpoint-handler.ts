@@ -1,14 +1,11 @@
 /* node:coverage disable: this file is just types */
 
 import {type HttpStatus, type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
-import {
-    type ImplementedEndpoint,
-    type ImplementedWebSocket,
-    type ServerRequest,
-    type ServerResponse,
-} from '@rest-vir/implement-service';
 import {type FastifyReply} from 'fastify';
 import {type OutgoingHttpHeaders} from 'node:http';
+import {type ImplementedEndpoint} from '../../implementation/implement-endpoint.js';
+import {type ImplementedWebSocket} from '../../implementation/implement-websocket.js';
+import {type ServerRequest, type ServerResponse} from '../../implementation/raw-route-data.js';
 import {setRawResponseHeaders, setResponseHeaders} from '../util/headers.js';
 
 /**
@@ -32,7 +29,7 @@ export type HandleRouteOptions = PartialWithUndefined<{
 }>;
 
 /**
- * Output from {@link EndpointHandler}.
+ * Output from {@link RouteHandler}.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
@@ -59,15 +56,16 @@ export type HandledOutput =
     | undefined;
 
 /**
- * Params for {@link EndpointHandler}.
+ * Params for {@link RouteHandler}.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type EndpointHandlerParams = {
+export type RouteHandlerParams = {
     request: ServerRequest;
     response: ServerResponse;
+    // todo: why accept both?
     route: Readonly<ImplementedEndpoint | ImplementedWebSocket>;
 };
 
@@ -78,9 +76,7 @@ export type EndpointHandlerParams = {
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type EndpointHandler = (
-    params: Readonly<EndpointHandlerParams>,
-) => MaybePromise<HandledOutput>;
+export type RouteHandler = (params: Readonly<RouteHandlerParams>) => MaybePromise<HandledOutput>;
 
 /**
  * Handle the output of a handler without sending the response. Similar to

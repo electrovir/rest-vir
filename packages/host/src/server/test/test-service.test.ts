@@ -1,31 +1,7 @@
-import {assert, waitUntil} from '@augment-vir/assert';
-import {DeferredPromise, extractErrorMessage, randomInteger} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {
-    AnyOrigin,
-    type BaseSearchParams,
-    buildEndpointUrl,
-    defineService,
-    HttpMethod,
-    HttpStatus,
-    type MinimalService,
-    restVirServiceNameHeader,
-} from '@rest-vir/define-service';
-import {
-    type EndpointImplementationHandledOutput,
-    implementService,
-    RejectRequestError,
-} from '@rest-vir/implement-service';
-import {mockServiceImplementation} from '@rest-vir/implement-service/src/implementation/implement-service.mock.js';
 import fastify from 'fastify';
 import {exactShape} from 'object-shape-tester';
 import {buildUrl, parseUrl} from 'url-vir';
-import {
-    condenseResponse,
-    describeService,
-    testExistingServer,
-    testService,
-} from './test-service.js';
+import {condenseResponse, describeService, testApi, testExistingServer} from './test-service.js';
 
 describeService(
     {
@@ -523,9 +499,9 @@ describeService(
     },
 );
 
-describe(testService.name, () => {
+describe(testApi.name, () => {
     it('works with an actual port', async () => {
-        const {fetchEndpoint, connectWebSocket, kill} = await testService(plainService, {
+        const {fetchEndpoint, connectWebSocket, kill} = await testApi(plainService, {
             port:
                 4500 +
                 randomInteger({
@@ -571,17 +547,14 @@ describe(testService.name, () => {
         }
     });
     it('can connect with search params', async () => {
-        const {fetchEndpoint, connectWebSocket, kill} = await testService(
-            mockServiceImplementation,
-            {
-                port:
-                    4500 +
-                    randomInteger({
-                        min: 0,
-                        max: 4000,
-                    }),
-            },
-        );
+        const {fetchEndpoint, connectWebSocket, kill} = await testApi(mockServiceImplementation, {
+            port:
+                4500 +
+                randomInteger({
+                    min: 0,
+                    max: 4000,
+                }),
+        });
 
         try {
             assert.deepEquals(
@@ -622,7 +595,7 @@ describe(testService.name, () => {
         }
     });
     it('works without a port', async () => {
-        const {fetchEndpoint, connectWebSocket, kill} = await testService(plainService);
+        const {fetchEndpoint, connectWebSocket, kill} = await testApi(plainService);
 
         try {
             assert.deepEquals(await condenseResponse(await fetchEndpoint['/health']()), {
@@ -714,7 +687,7 @@ describe('responseHandled (SSE)', () => {
                 min: 0,
                 max: 4000,
             });
-        const {fetchEndpoint, kill} = await testService(sseService, {
+        const {fetchEndpoint, kill} = await testApi(sseService, {
             port,
         });
 
@@ -740,7 +713,7 @@ describe('responseHandled (SSE)', () => {
                 min: 0,
                 max: 4000,
             });
-        const {fetchEndpoint, kill} = await testService(sseService, {
+        const {fetchEndpoint, kill} = await testApi(sseService, {
             port,
         });
 
@@ -815,7 +788,7 @@ describe('responseHandled skips post-hook', () => {
                 min: 0,
                 max: 4000,
             });
-        const {fetchEndpoint, kill} = await testService(sseServiceWithPostHook, {
+        const {fetchEndpoint, kill} = await testApi(sseServiceWithPostHook, {
             port,
         });
 

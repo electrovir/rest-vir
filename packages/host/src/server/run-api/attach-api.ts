@@ -13,19 +13,17 @@ import {
 } from '@augment-vir/common';
 import compressPlugin from '@fastify/compress';
 import fastifyWs from '@fastify/websocket';
-import {type BaseSearchParams, type MinimalService} from '@rest-vir/define-service';
-import {
-    RestVirHandlerError,
-    ServiceImplementation,
-    type GenericServiceImplementation,
-    type RunningServerInfo,
-} from '@rest-vir/implement-service';
+import {type BaseSearchParams} from '@rest-vir/api';
 import {type FastifyInstance} from 'fastify';
 import {buildUrl, parseUrl} from 'url-vir';
+import {type ImplementedApi} from '../../implementation/implement-api.js';
+import {type RunningServerInfo} from '../../implementation/raw-route-data.js';
+import {createServerLogger} from '../../implementation/server-logger.js';
 import {handleHandlerOutput, type HandleRouteOptions} from '../handle-request/endpoint-handler.js';
 import {handleRoute} from '../handle-request/handle-route.js';
 import {preHandler} from '../handle-request/pre-handler.js';
-import {runPostHook} from '../handle-request/run-post-hook.js';
+import {runPostRouteHook} from '../handle-request/run-post-route-hook.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
 
 /**
  * Context attached to each fastify request object.
@@ -65,6 +63,16 @@ const endpointFastifyMethods = getEnumValues(HttpMethod).filter((value) => {
     );
 });
 
+export type ApiServerOptions = {
+    /**
+     * The origin at which the api is hosted on. Fetch requests and WebSocket connections should be
+     * sent to this origin to connect with this server.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Location for help on which part of the URL is the origin (if necessary).
+     */
+    serviceOrigin: string;
+};
+
 /**
  * Attach all handlers for a {@link ServiceImplementation} to any existing Fastify server.
  *
@@ -84,25 +92,14 @@ const endpointFastifyMethods = getEnumValues(HttpMethod).filter((value) => {
  *
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export async function attachService(
+export async function attachApi(
     server: Readonly<FastifyInstance>,
-    service: Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                createContext: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-                logger: true;
-                postHook: true;
-            }
-        >
-    >,
+    implementedApi: Readonly<ImplementedApi>,
+    serverOptions: Readonly<ApiServerOptions>,
     options: Readonly<HandleRouteOptions> = {},
 ): Promise<void> {
+    const serverLogger = createServerLogger(implementedApi.implementation.serverLogger);
+
     try {
         const attachId = randomString(32);
 
@@ -122,15 +119,16 @@ export async function attachService(
             await server.register(fastifyWs, {
                 /* node:coverage ignore next 14: edge case handling */
                 errorHandler(error, webSocket, request) {
-                    service.logger.error(
+                    serverLogger.error(
                         new RestVirHandlerError(
                             {
                                 isEndpoint: false,
                                 isWebSocket: true,
                                 path: request.originalUrl,
-                                service,
+                                apiName: implementedApi.definition.apiName,
                             },
                             extractErrorMessage(error),
+                            HttpStatus.InternalServerError,
                         ),
                     );
                     webSocket.terminate();
@@ -138,28 +136,28 @@ export async function attachService(
             });
         }
 
-        const postHook = service.postHook;
+        const postHook = implementedApi.implementation.postRouteHook;
 
         server.addHook('preValidation', async (request, response) => {
             try {
                 const preHandlerResult = await preHandler({
                     request,
                     response,
-                    service,
-                    server: extractRunningServerInfo(service, server),
+                    service: implementedApi,
+                    server: extractRunningServerInfo(serverOptions, server),
                     attachId,
                 });
 
                 if (preHandlerResult?.statusCode && postHook) {
-                    const postHookResult = await runPostHook({
+                    const postHookResult = await runPostRouteHook({
                         attachId,
                         originalBody: preHandlerResult.body,
                         originalStatus: preHandlerResult.statusCode,
                         postHook,
                         request,
                         response,
-                        server: extractRunningServerInfo(service, server),
-                        service,
+                        server: extractRunningServerInfo(serverOptions, server),
+                        service: implementedApi,
                     });
 
                     if (postHookResult) {
@@ -169,7 +167,7 @@ export async function attachService(
 
                 return handleHandlerOutput(preHandlerResult, response);
             } catch (error) {
-                service.logger.error(
+                serverLogger.error(
                     ensureErrorClass(
                         error,
                         RestVirHandlerError,
@@ -177,9 +175,10 @@ export async function attachService(
                             isEndpoint: undefined,
                             isWebSocket: undefined,
                             path: request.originalUrl,
-                            service,
+                            apiName: implementedApi.definition.apiName,
                         },
                         combineErrorMessages('Unexpected error', extractErrorMessage(error)),
+                        HttpStatus.InternalServerError,
                     ),
                 );
                 if (options.throwErrorsForExternalHandling) {
@@ -197,15 +196,15 @@ export async function attachService(
         });
 
         const allPaths = new Set([
-            ...getObjectTypedKeys(service.webSockets),
-            ...getObjectTypedKeys(service.endpoints),
+            ...getObjectTypedKeys(implementedApi.implementation.webSockets),
+            ...getObjectTypedKeys(implementedApi.implementation.endpoints),
         ]);
 
         allPaths.forEach((path) => {
-            const webSocketDefinition = service.webSockets[path];
-            const endpoint = service.endpoints[path];
+            const webSocketImplementation = implementedApi.implementation.webSockets[path];
+            const endpointImplementation = implementedApi.implementation.endpoints[path];
 
-            if (endpoint && webSocketDefinition) {
+            if (endpointImplementation && webSocketImplementation) {
                 server.route({
                     method: endpointFastifyMethods,
                     url: path,
@@ -214,12 +213,12 @@ export async function attachService(
                             webSocket: undefined,
                             request,
                             response,
-                            route: endpoint,
+                            route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(service, server),
+                            server: extractRunningServerInfo(serverOptions, server),
                             options,
-                            postHook,
-                            service,
+                            postRouteHook: postHook,
+                            service: implementedApi,
                         });
                     },
                 });
@@ -231,12 +230,12 @@ export async function attachService(
                             webSocket: undefined,
                             request,
                             response,
-                            route: endpoint,
+                            route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(service, server),
+                            server: extractRunningServerInfo(serverOptions, server),
                             options,
-                            postHook,
-                            service,
+                            postRouteHook: postHook,
+                            service: implementedApi,
                         });
                     },
                     wsHandler(webSocket, request) {
@@ -244,16 +243,16 @@ export async function attachService(
                             webSocket,
                             request,
                             response: undefined,
-                            route: webSocketDefinition,
+                            route: webSocketImplementation,
                             attachId,
-                            server: extractRunningServerInfo(service, server),
+                            server: extractRunningServerInfo(serverOptions, server),
                             options,
-                            postHook,
-                            service,
+                            postRouteHook: postHook,
+                            service: implementedApi,
                         });
                     },
                 });
-            } else if (endpoint) {
+            } else if (endpointImplementation) {
                 server.route({
                     method: [
                         ...endpointFastifyMethods,
@@ -265,16 +264,16 @@ export async function attachService(
                             webSocket: undefined,
                             request,
                             response,
-                            route: endpoint,
+                            route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(service, server),
+                            server: extractRunningServerInfo(serverOptions, server),
                             options,
-                            postHook,
-                            service,
+                            postRouteHook: postHook,
+                            service: implementedApi,
                         });
                     },
                 });
-            } else if (webSocketDefinition) {
+            } else if (webSocketImplementation) {
                 server.route({
                     method: HttpMethod.Get,
                     url: path,
@@ -286,12 +285,12 @@ export async function attachService(
                             webSocket,
                             request,
                             response: undefined,
-                            route: webSocketDefinition,
+                            route: webSocketImplementation,
                             attachId,
-                            server: extractRunningServerInfo(service, server),
+                            server: extractRunningServerInfo(serverOptions, server),
                             options,
-                            postHook,
-                            service,
+                            postRouteHook: postHook,
+                            service: implementedApi,
                         });
                     },
                 });
@@ -300,7 +299,7 @@ export async function attachService(
 
         /* node:coverage ignore next 4: this is just here to cover edge cases. */
     } catch (error) {
-        service.logger.error(ensureError(error));
+        serverLogger.error(ensureError(error));
         throw error;
     }
 }
@@ -311,7 +310,7 @@ export async function attachService(
  * @category Internal
  */
 export function extractRunningServerInfo(
-    service: Readonly<Pick<MinimalService, 'serviceOrigin'>>,
+    serverOptions: Readonly<ApiServerOptions>,
     fastify: Readonly<
         SelectFrom<
             FastifyInstance,
@@ -325,14 +324,14 @@ export function extractRunningServerInfo(
 ): RunningServerInfo {
     const address = fastify.server.address();
 
-    const {port: originalPort} = parseUrl(service.serviceOrigin);
+    const {port: originalPort} = parseUrl(serverOptions.serviceOrigin);
 
     if (!originalPort || check.isString(address) || !address) {
         return {
-            serviceOrigin: service.serviceOrigin,
+            serviceOrigin: serverOptions.serviceOrigin,
         };
     } else {
-        const {origin} = buildUrl(service.serviceOrigin, {
+        const {origin} = buildUrl(serverOptions.serviceOrigin, {
             port: address.port,
         });
 

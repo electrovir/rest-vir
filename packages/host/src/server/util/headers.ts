@@ -1,6 +1,6 @@
 import {getObjectTypedEntries} from '@augment-vir/common';
-import {type ServerResponse} from '@rest-vir/implement-service';
 import {type ServerResponse as NodeServerResponse, type OutgoingHttpHeaders} from 'node:http';
+import {type ServerResponse} from '../../implementation/raw-route-data.js';
 
 /**
  * Easily apply an object of headers to a Response object. Setting a header to `undefined` removes

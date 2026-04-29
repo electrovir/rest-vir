@@ -14,8 +14,18 @@ import {
     type ServerRequest,
     type ServerWebSocket,
 } from './raw-route-data.js';
+import {type ServerLogger} from './server-logger.js';
 
-export type WebSocketImplementation<
+export type ImplementedWebSocket<Path extends PropertyKey = PropertyKey> = {
+    implementation: WebSocketListenerImplementations;
+    definition: WebSocketDefinition & {
+        path: Path;
+    };
+    isWebSocket: true;
+    isEndpoint: false;
+};
+
+export type WebSocketListenerImplementations<
     ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
     HostContext = unknown,
 > = Partial<{
@@ -45,7 +55,7 @@ export type WebSocketImplementation<
 }>;
 
 /**
- * Parameters for event callbacks in {@link WebSocketImplementation}.
+ * Parameters for event callbacks in {@link WebSocketListenerImplementations}.
  *
  * @category Internal
  * @category Package : @rest-vir/host
@@ -56,6 +66,7 @@ export type WebSocketImplementationParams<
     WithMessage extends boolean = boolean,
     HostContext = unknown,
 > = {
+    serverLogger: ServerLogger;
     context: HostContext;
     webSocket: ServerWebSocket<ThisWebSocket>;
     webSocketDefinition: ThisWebSocket extends WebSocketDefinition

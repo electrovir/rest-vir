@@ -1,19 +1,5 @@
 /* eslint-disable sonarjs/no-commented-code */
 
-import {assert, waitUntil} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus, mergeDeep} from '@augment-vir/common';
-import {runShellCommand} from '@augment-vir/node';
-import {describe, it} from '@augment-vir/test';
-import {
-    defineService,
-    fetchEndpoint,
-    mapServiceDevPort,
-    restVirServiceNameHeader,
-} from '@rest-vir/define-service';
-import {
-    mockService,
-    mockWebsiteOrigin,
-} from '@rest-vir/define-service/src/service/define-service.mock.js';
 import {buildUrl} from 'url-vir';
 import {condenseResponse} from '../test/test-service.js';
 import {startService} from './start-service.js';

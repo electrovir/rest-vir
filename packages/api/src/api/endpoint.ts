@@ -1,3 +1,4 @@
+import {check} from '@augment-vir/assert';
 import {
     HttpMethod,
     type AnyObject,
@@ -126,6 +127,16 @@ export const definableHttpMethods = [
     HttpMethod.Patch,
     HttpMethod.Trace,
 ] as const;
+
+export function extractHttpMethod(rawValue: string): DefinableHttpMethod | undefined {
+    const upperCase = rawValue.toUpperCase();
+
+    if (check.isIn(upperCase, definableHttpMethods)) {
+        return upperCase;
+    } else {
+        return undefined;
+    }
+}
 
 /**
  * A union of all HttpMethods that we can define requests for.

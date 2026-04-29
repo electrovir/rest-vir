@@ -1,8 +1,3 @@
-import {assert} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {restVirServiceNameHeader} from '@rest-vir/define-service';
-import {mockServiceImplementation} from '@rest-vir/implement-service/src/implementation/implement-service.mock.js';
 import {testEndpoint} from './test-endpoint.js';
 import {condenseResponse} from './test-service.js';
 

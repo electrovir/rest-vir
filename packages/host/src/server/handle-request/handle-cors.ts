@@ -1,17 +1,7 @@
-import {HttpMethod, type SelectFrom} from '@augment-vir/common';
-import {
-    AnyOrigin,
-    checkOriginRequirement,
-    type EndpointDefinition,
-    getAllowedEndpointMethods,
-    isAnyOrigin,
-    restVirServiceNameHeader,
-    type WebSocketDefinition,
-} from '@rest-vir/define-service';
-import {HttpStatus, RestVirHandlerError} from '@rest-vir/implement-service';
+import {type SelectFrom, HttpMethod, HttpStatus} from '@augment-vir/common';
 import {convertDuration} from 'date-vir';
 import {type OutgoingHttpHeaders} from 'node:http';
-import {type EndpointHandlerParams, type HandledOutput} from './endpoint-handler.js';
+import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js';
 
 /**
  * Determines the required origin for the endpoint and compares it with the given request.
@@ -36,7 +26,7 @@ export async function handleCors(
         request,
     }: Readonly<
         SelectFrom<
-            EndpointHandlerParams,
+            RouteHandlerParams,
             {
                 request: {
                     headers: true;

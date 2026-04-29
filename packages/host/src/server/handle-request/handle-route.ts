@@ -1,18 +1,19 @@
 import {assert, check} from '@augment-vir/assert';
-import {ensureError, HttpStatus, type SelectFrom} from '@augment-vir/common';
+import {ensureError, HttpStatus} from '@augment-vir/common';
+import cluster from 'node:cluster';
+import {type WebSocket as WsWebSocket} from 'ws';
+import {type ImplementedApi} from '../../implementation/implement-api.js';
+import {type ImplementedEndpoint} from '../../implementation/implement-endpoint.js';
+import {type ImplementedWebSocket} from '../../implementation/implement-websocket.js';
+import {type PostRouteHook} from '../../implementation/post-route-hook.js';
 import {
-    type GenericServiceImplementation,
-    type ImplementedEndpoint,
-    type ImplementedWebSocket,
-    type PostHook,
-    RejectRequestError,
-    RestVirHandlerError,
     type RunningServerInfo,
     type ServerRequest,
     type ServerResponse,
-} from '@rest-vir/implement-service';
-import cluster from 'node:cluster';
-import {type WebSocket as WsWebSocket} from 'ws';
+} from '../../implementation/raw-route-data.js';
+import {RejectRequestError} from '../../implementation/reject-request.error.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
 import {
     handleHandlerOutput,
     handleHandlerOutputWithoutSending,
@@ -20,7 +21,7 @@ import {
 } from './endpoint-handler.js';
 import {handleEndpointRequest} from './handle-endpoint.js';
 import {handleWebSocketRequest} from './handle-web-socket.js';
-import {runPostHook} from './run-post-hook.js';
+import {runPostRouteHook} from './run-post-route-hook.js';
 
 /**
  * Handles a WebSocket or Endpoint request.
@@ -37,29 +38,22 @@ export async function handleRoute({
     attachId,
     server,
     options,
-    postHook,
-    service,
+    postRouteHook,
+    serverLogger,
+    api,
 }: {
-    /** Endpoint requests won't have a `WebSocket`. */ webSocket: WsWebSocket | undefined;
-    request: ServerRequest /** `WebSocket` requests won't have a response. */;
+    /** Endpoint requests won't have a `WebSocket`. */
+    webSocket: WsWebSocket | undefined;
+    request: ServerRequest;
+    /** `WebSocket` requests won't have a response. */
     response: ServerResponse | undefined;
     route: Readonly<ImplementedEndpoint | ImplementedWebSocket>;
     attachId: string;
     server: Readonly<RunningServerInfo>;
-    options: Readonly<Pick<HandleRouteOptions, 'throwErrorsForExternalHandling'>>;
-    postHook: PostHook | undefined;
-    service: Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-            }
-        >
-    >;
+    options: Readonly<HandleRouteOptions>;
+    postRouteHook: PostRouteHook | undefined;
+    serverLogger: ServerLogger;
+    api: ImplementedApi;
 }) {
     try {
         const workerPid = cluster.isPrimary ? '' : process.pid;
@@ -71,7 +65,7 @@ export async function handleRoute({
             webSocketMarker,
             request.originalUrl,
         ].filter(check.isTruthy);
-        route.service.logger.info(logParts.join('\t'));
+        serverLogger.info(logParts.join('\t'));
 
         if (route.isEndpoint) {
             assert.isDefined(response, 'no response object');
@@ -92,13 +86,13 @@ export async function handleRoute({
             const endpointResult = handleHandlerOutputWithoutSending(result, response);
 
             const postHookResult =
-                (postHook &&
+                (postRouteHook &&
                     endpointResult?.statusCode &&
-                    (await runPostHook({
+                    (await runPostRouteHook({
                         attachId,
                         originalBody: endpointResult.body,
                         originalStatus: endpointResult.statusCode,
-                        postHook,
+                        postHook: postRouteHook,
                         request,
                         response,
                         server,
@@ -129,7 +123,16 @@ export async function handleRoute({
         }
 
         /* node:coverage ignore next: this can't actually be triggered but it should be covered as a potential future edge case. */
-        throw new RestVirHandlerError(route, 'Request was not handled.');
+        throw new RestVirHandlerError(
+            {
+                apiName: api.definition.apiName,
+                isEndpoint: route.isEndpoint,
+                isWebSocket: route.isWebSocket,
+                path: route.definition.path,
+            },
+            'Request was not handled.',
+            HttpStatus.InternalServerError,
+        );
     } catch (error) {
         if (error instanceof RejectRequestError) {
             assert.isDefined(response, 'no response object');
@@ -145,7 +148,7 @@ export async function handleRoute({
             return;
         }
 
-        route.service.logger.error(ensureError(error));
+        serverLogger.error(ensureError(error));
         if (options.throwErrorsForExternalHandling) {
             throw error;
         } else if (response && !response.sent) {

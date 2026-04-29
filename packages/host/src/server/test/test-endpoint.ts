@@ -1,6 +1,4 @@
-import {type CollapsedFetchEndpointParams, type EndpointDefinition} from '@rest-vir/define-service';
-import {type ImplementedEndpoint} from '@rest-vir/implement-service';
-import {testService} from './test-service.js';
+import {testApi} from './test-service.js';
 
 /**
  * The type definition for {@link testEndpoint}.
@@ -32,7 +30,7 @@ export type TestEndpoint = <EndpointToTest extends EndpointDefinition>(
 export const testEndpoint = async function testEndpoint<
     const EndpointToTest extends ImplementedEndpoint,
 >(endpoint: EndpointToTest, ...args: CollapsedFetchEndpointParams<EndpointToTest, false>) {
-    const {fetchEndpoint, kill} = await testService(
+    const {fetchEndpoint, kill} = await testApi(
         {
             ...endpoint.service,
             endpoints: {

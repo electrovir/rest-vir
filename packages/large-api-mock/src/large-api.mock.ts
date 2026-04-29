@@ -3,12 +3,9 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
+import {type BaseRoutePath, defineApi, defineEndpoint, defineWebSocket} from '@rest-vir/api';
 import {defineShape, enumShape} from 'object-shape-tester';
 import {structuredRenderDataShape} from 'structured-render';
-import {defineApi} from './api.js';
-import {defineEndpoint} from './endpoint.js';
-import {type BaseRoutePath} from './route.js';
-import {defineWebSocket} from './web-socket.js';
 
 export enum AuthLevel {
     Required = 'required',
@@ -21,7 +18,7 @@ const customProps = {
     requiredAuth: enumShape(AuthLevel),
 };
 
-const endpoint0 = defineEndpoint({
+export const endpoint0 = defineEndpoint({
     path: '/reports/item-0',
     requests: {
         [HttpMethod.Post]: {
@@ -42,7 +39,7 @@ const endpoint0 = defineEndpoint({
     },
 });
 
-const endpoint1 = defineEndpoint({
+export const endpoint1 = defineEndpoint({
     path: '/reports/item-1',
     requests: {
         [HttpMethod.Post]: {
@@ -63,7 +60,7 @@ const endpoint1 = defineEndpoint({
     },
 });
 
-const endpoint2 = defineEndpoint({
+export const endpoint2 = defineEndpoint({
     path: '/reports/item-2',
     requests: {
         [HttpMethod.Post]: {
@@ -84,7 +81,7 @@ const endpoint2 = defineEndpoint({
     },
 });
 
-const endpoint3 = defineEndpoint({
+export const endpoint3 = defineEndpoint({
     path: '/reports/item-3',
     requests: {
         [HttpMethod.Post]: {
@@ -105,7 +102,7 @@ const endpoint3 = defineEndpoint({
     },
 });
 
-const endpoint4 = defineEndpoint({
+export const endpoint4 = defineEndpoint({
     path: '/reports/item-4',
     requests: {
         [HttpMethod.Post]: {
@@ -126,7 +123,7 @@ const endpoint4 = defineEndpoint({
     },
 });
 
-const endpoint5 = defineEndpoint({
+export const endpoint5 = defineEndpoint({
     path: '/reports/item-5',
     requests: {
         [HttpMethod.Post]: {
@@ -147,7 +144,7 @@ const endpoint5 = defineEndpoint({
     },
 });
 
-const endpoint6 = defineEndpoint({
+export const endpoint6 = defineEndpoint({
     path: '/reports/item-6',
     requests: {
         [HttpMethod.Post]: {
@@ -168,7 +165,7 @@ const endpoint6 = defineEndpoint({
     },
 });
 
-const endpoint7 = defineEndpoint({
+export const endpoint7 = defineEndpoint({
     path: '/reports/item-7',
     requests: {
         [HttpMethod.Post]: {
@@ -189,7 +186,7 @@ const endpoint7 = defineEndpoint({
     },
 });
 
-const endpoint8 = defineEndpoint({
+export const endpoint8 = defineEndpoint({
     path: '/reports/item-8',
     requests: {
         [HttpMethod.Post]: {
@@ -210,7 +207,7 @@ const endpoint8 = defineEndpoint({
     },
 });
 
-const endpoint9 = defineEndpoint({
+export const endpoint9 = defineEndpoint({
     path: '/reports/item-9',
     requests: {
         [HttpMethod.Post]: {
@@ -231,7 +228,7 @@ const endpoint9 = defineEndpoint({
     },
 });
 
-const endpoint10 = defineEndpoint({
+export const endpoint10 = defineEndpoint({
     path: '/reports/item-10',
     requests: {
         [HttpMethod.Post]: {
@@ -252,7 +249,7 @@ const endpoint10 = defineEndpoint({
     },
 });
 
-const endpoint11 = defineEndpoint({
+export const endpoint11 = defineEndpoint({
     path: '/reports/item-11',
     requests: {
         [HttpMethod.Post]: {
@@ -273,7 +270,7 @@ const endpoint11 = defineEndpoint({
     },
 });
 
-const endpoint12 = defineEndpoint({
+export const endpoint12 = defineEndpoint({
     path: '/reports/item-12',
     requests: {
         [HttpMethod.Post]: {
@@ -294,7 +291,7 @@ const endpoint12 = defineEndpoint({
     },
 });
 
-const endpoint13 = defineEndpoint({
+export const endpoint13 = defineEndpoint({
     path: '/reports/item-13',
     requests: {
         [HttpMethod.Post]: {
@@ -315,7 +312,7 @@ const endpoint13 = defineEndpoint({
     },
 });
 
-const endpoint14 = defineEndpoint({
+export const endpoint14 = defineEndpoint({
     path: '/reports/item-14',
     requests: {
         [HttpMethod.Post]: {
@@ -336,7 +333,7 @@ const endpoint14 = defineEndpoint({
     },
 });
 
-const endpoint15 = defineEndpoint({
+export const endpoint15 = defineEndpoint({
     path: '/reports/item-15',
     requests: {
         [HttpMethod.Post]: {
@@ -357,7 +354,7 @@ const endpoint15 = defineEndpoint({
     },
 });
 
-const endpoint16 = defineEndpoint({
+export const endpoint16 = defineEndpoint({
     path: '/reports/item-16',
     requests: {
         [HttpMethod.Post]: {
@@ -378,7 +375,7 @@ const endpoint16 = defineEndpoint({
     },
 });
 
-const endpoint17 = defineEndpoint({
+export const endpoint17 = defineEndpoint({
     path: '/reports/item-17',
     requests: {
         [HttpMethod.Post]: {
@@ -399,7 +396,7 @@ const endpoint17 = defineEndpoint({
     },
 });
 
-const endpoint18 = defineEndpoint({
+export const endpoint18 = defineEndpoint({
     path: '/reports/item-18',
     requests: {
         [HttpMethod.Post]: {
@@ -420,7 +417,7 @@ const endpoint18 = defineEndpoint({
     },
 });
 
-const endpoint19 = defineEndpoint({
+export const endpoint19 = defineEndpoint({
     path: '/reports/item-19',
     requests: {
         [HttpMethod.Post]: {
@@ -441,7 +438,7 @@ const endpoint19 = defineEndpoint({
     },
 });
 
-const endpoint20 = defineEndpoint({
+export const endpoint20 = defineEndpoint({
     path: '/reports/item-20',
     requests: {
         [HttpMethod.Post]: {
@@ -462,7 +459,7 @@ const endpoint20 = defineEndpoint({
     },
 });
 
-const endpoint21 = defineEndpoint({
+export const endpoint21 = defineEndpoint({
     path: '/reports/item-21',
     requests: {
         [HttpMethod.Post]: {
@@ -483,7 +480,7 @@ const endpoint21 = defineEndpoint({
     },
 });
 
-const endpoint22 = defineEndpoint({
+export const endpoint22 = defineEndpoint({
     path: '/reports/item-22',
     requests: {
         [HttpMethod.Post]: {
@@ -504,7 +501,7 @@ const endpoint22 = defineEndpoint({
     },
 });
 
-const endpoint23 = defineEndpoint({
+export const endpoint23 = defineEndpoint({
     path: '/reports/item-23',
     requests: {
         [HttpMethod.Post]: {
@@ -525,7 +522,7 @@ const endpoint23 = defineEndpoint({
     },
 });
 
-const endpoint24 = defineEndpoint({
+export const endpoint24 = defineEndpoint({
     path: '/reports/item-24',
     requests: {
         [HttpMethod.Post]: {
@@ -546,7 +543,7 @@ const endpoint24 = defineEndpoint({
     },
 });
 
-const endpoint25 = defineEndpoint({
+export const endpoint25 = defineEndpoint({
     path: '/reports/item-25',
     requests: {
         [HttpMethod.Post]: {
@@ -567,7 +564,7 @@ const endpoint25 = defineEndpoint({
     },
 });
 
-const endpoint26 = defineEndpoint({
+export const endpoint26 = defineEndpoint({
     path: '/reports/item-26',
     requests: {
         [HttpMethod.Post]: {
@@ -588,7 +585,7 @@ const endpoint26 = defineEndpoint({
     },
 });
 
-const endpoint27 = defineEndpoint({
+export const endpoint27 = defineEndpoint({
     path: '/reports/item-27',
     requests: {
         [HttpMethod.Post]: {
@@ -609,7 +606,7 @@ const endpoint27 = defineEndpoint({
     },
 });
 
-const endpoint28 = defineEndpoint({
+export const endpoint28 = defineEndpoint({
     path: '/reports/item-28',
     requests: {
         [HttpMethod.Post]: {
@@ -630,7 +627,7 @@ const endpoint28 = defineEndpoint({
     },
 });
 
-const endpoint29 = defineEndpoint({
+export const endpoint29 = defineEndpoint({
     path: '/reports/item-29',
     requests: {
         [HttpMethod.Post]: {
@@ -651,7 +648,7 @@ const endpoint29 = defineEndpoint({
     },
 });
 
-const endpoint30 = defineEndpoint({
+export const endpoint30 = defineEndpoint({
     path: '/reports/item-30',
     requests: {
         [HttpMethod.Post]: {
@@ -672,7 +669,7 @@ const endpoint30 = defineEndpoint({
     },
 });
 
-const endpoint31 = defineEndpoint({
+export const endpoint31 = defineEndpoint({
     path: '/reports/item-31',
     requests: {
         [HttpMethod.Post]: {
@@ -693,7 +690,7 @@ const endpoint31 = defineEndpoint({
     },
 });
 
-const endpoint32 = defineEndpoint({
+export const endpoint32 = defineEndpoint({
     path: '/reports/item-32',
     requests: {
         [HttpMethod.Post]: {
@@ -714,7 +711,7 @@ const endpoint32 = defineEndpoint({
     },
 });
 
-const endpoint33 = defineEndpoint({
+export const endpoint33 = defineEndpoint({
     path: '/reports/item-33',
     requests: {
         [HttpMethod.Post]: {
@@ -735,7 +732,7 @@ const endpoint33 = defineEndpoint({
     },
 });
 
-const endpoint34 = defineEndpoint({
+export const endpoint34 = defineEndpoint({
     path: '/reports/item-34',
     requests: {
         [HttpMethod.Post]: {
@@ -756,7 +753,7 @@ const endpoint34 = defineEndpoint({
     },
 });
 
-const endpoint35 = defineEndpoint({
+export const endpoint35 = defineEndpoint({
     path: '/reports/item-35',
     requests: {
         [HttpMethod.Post]: {
@@ -777,7 +774,7 @@ const endpoint35 = defineEndpoint({
     },
 });
 
-const endpoint36 = defineEndpoint({
+export const endpoint36 = defineEndpoint({
     path: '/reports/item-36',
     requests: {
         [HttpMethod.Post]: {
@@ -798,7 +795,7 @@ const endpoint36 = defineEndpoint({
     },
 });
 
-const endpoint37 = defineEndpoint({
+export const endpoint37 = defineEndpoint({
     path: '/reports/item-37',
     requests: {
         [HttpMethod.Post]: {
@@ -819,7 +816,7 @@ const endpoint37 = defineEndpoint({
     },
 });
 
-const endpoint38 = defineEndpoint({
+export const endpoint38 = defineEndpoint({
     path: '/reports/item-38',
     requests: {
         [HttpMethod.Post]: {
@@ -840,7 +837,7 @@ const endpoint38 = defineEndpoint({
     },
 });
 
-const endpoint39 = defineEndpoint({
+export const endpoint39 = defineEndpoint({
     path: '/reports/item-39',
     requests: {
         [HttpMethod.Post]: {
@@ -861,7 +858,7 @@ const endpoint39 = defineEndpoint({
     },
 });
 
-const endpoint40 = defineEndpoint({
+export const endpoint40 = defineEndpoint({
     path: '/reports/item-40',
     requests: {
         [HttpMethod.Post]: {
@@ -882,7 +879,7 @@ const endpoint40 = defineEndpoint({
     },
 });
 
-const endpoint41 = defineEndpoint({
+export const endpoint41 = defineEndpoint({
     path: '/reports/item-41',
     requests: {
         [HttpMethod.Post]: {
@@ -903,7 +900,7 @@ const endpoint41 = defineEndpoint({
     },
 });
 
-const endpoint42 = defineEndpoint({
+export const endpoint42 = defineEndpoint({
     path: '/reports/item-42',
     requests: {
         [HttpMethod.Post]: {
@@ -924,7 +921,7 @@ const endpoint42 = defineEndpoint({
     },
 });
 
-const endpoint43 = defineEndpoint({
+export const endpoint43 = defineEndpoint({
     path: '/reports/item-43',
     requests: {
         [HttpMethod.Post]: {
@@ -945,7 +942,7 @@ const endpoint43 = defineEndpoint({
     },
 });
 
-const endpoint44 = defineEndpoint({
+export const endpoint44 = defineEndpoint({
     path: '/reports/item-44',
     requests: {
         [HttpMethod.Post]: {
@@ -966,7 +963,7 @@ const endpoint44 = defineEndpoint({
     },
 });
 
-const endpoint45 = defineEndpoint({
+export const endpoint45 = defineEndpoint({
     path: '/reports/item-45',
     requests: {
         [HttpMethod.Post]: {
@@ -987,7 +984,7 @@ const endpoint45 = defineEndpoint({
     },
 });
 
-const endpoint46 = defineEndpoint({
+export const endpoint46 = defineEndpoint({
     path: '/reports/item-46',
     requests: {
         [HttpMethod.Post]: {
@@ -1008,7 +1005,7 @@ const endpoint46 = defineEndpoint({
     },
 });
 
-const endpoint47 = defineEndpoint({
+export const endpoint47 = defineEndpoint({
     path: '/reports/item-47',
     requests: {
         [HttpMethod.Post]: {
@@ -1029,7 +1026,7 @@ const endpoint47 = defineEndpoint({
     },
 });
 
-const endpoint48 = defineEndpoint({
+export const endpoint48 = defineEndpoint({
     path: '/reports/item-48',
     requests: {
         [HttpMethod.Post]: {
@@ -1050,7 +1047,7 @@ const endpoint48 = defineEndpoint({
     },
 });
 
-const endpoint49 = defineEndpoint({
+export const endpoint49 = defineEndpoint({
     path: '/reports/item-49',
     requests: {
         [HttpMethod.Post]: {
@@ -1071,7 +1068,7 @@ const endpoint49 = defineEndpoint({
     },
 });
 
-const endpoint50 = defineEndpoint({
+export const endpoint50 = defineEndpoint({
     path: '/reports/item-50',
     requests: {
         [HttpMethod.Post]: {
@@ -1092,7 +1089,7 @@ const endpoint50 = defineEndpoint({
     },
 });
 
-const endpoint51 = defineEndpoint({
+export const endpoint51 = defineEndpoint({
     path: '/reports/item-51',
     requests: {
         [HttpMethod.Post]: {
@@ -1113,7 +1110,7 @@ const endpoint51 = defineEndpoint({
     },
 });
 
-const endpoint52 = defineEndpoint({
+export const endpoint52 = defineEndpoint({
     path: '/reports/item-52',
     requests: {
         [HttpMethod.Post]: {
@@ -1134,7 +1131,7 @@ const endpoint52 = defineEndpoint({
     },
 });
 
-const endpoint53 = defineEndpoint({
+export const endpoint53 = defineEndpoint({
     path: '/reports/item-53',
     requests: {
         [HttpMethod.Post]: {
@@ -1155,7 +1152,7 @@ const endpoint53 = defineEndpoint({
     },
 });
 
-const endpoint54 = defineEndpoint({
+export const endpoint54 = defineEndpoint({
     path: '/reports/item-54',
     requests: {
         [HttpMethod.Post]: {
@@ -1176,7 +1173,7 @@ const endpoint54 = defineEndpoint({
     },
 });
 
-const endpoint55 = defineEndpoint({
+export const endpoint55 = defineEndpoint({
     path: '/reports/item-55',
     requests: {
         [HttpMethod.Post]: {
@@ -1197,7 +1194,7 @@ const endpoint55 = defineEndpoint({
     },
 });
 
-const endpoint56 = defineEndpoint({
+export const endpoint56 = defineEndpoint({
     path: '/reports/item-56',
     requests: {
         [HttpMethod.Post]: {
@@ -1218,7 +1215,7 @@ const endpoint56 = defineEndpoint({
     },
 });
 
-const endpoint57 = defineEndpoint({
+export const endpoint57 = defineEndpoint({
     path: '/reports/item-57',
     requests: {
         [HttpMethod.Post]: {
@@ -1239,7 +1236,7 @@ const endpoint57 = defineEndpoint({
     },
 });
 
-const endpoint58 = defineEndpoint({
+export const endpoint58 = defineEndpoint({
     path: '/reports/item-58',
     requests: {
         [HttpMethod.Post]: {
@@ -1260,7 +1257,7 @@ const endpoint58 = defineEndpoint({
     },
 });
 
-const endpoint59 = defineEndpoint({
+export const endpoint59 = defineEndpoint({
     path: '/reports/item-59',
     requests: {
         [HttpMethod.Post]: {
@@ -1281,7 +1278,7 @@ const endpoint59 = defineEndpoint({
     },
 });
 
-const endpoint60 = defineEndpoint({
+export const endpoint60 = defineEndpoint({
     path: '/reports/item-60',
     requests: {
         [HttpMethod.Post]: {
@@ -1302,7 +1299,7 @@ const endpoint60 = defineEndpoint({
     },
 });
 
-const endpoint61 = defineEndpoint({
+export const endpoint61 = defineEndpoint({
     path: '/reports/item-61',
     requests: {
         [HttpMethod.Post]: {
@@ -1323,7 +1320,7 @@ const endpoint61 = defineEndpoint({
     },
 });
 
-const endpoint62 = defineEndpoint({
+export const endpoint62 = defineEndpoint({
     path: '/reports/item-62',
     requests: {
         [HttpMethod.Post]: {
@@ -1344,7 +1341,7 @@ const endpoint62 = defineEndpoint({
     },
 });
 
-const endpoint63 = defineEndpoint({
+export const endpoint63 = defineEndpoint({
     path: '/reports/item-63',
     requests: {
         [HttpMethod.Post]: {
@@ -1365,7 +1362,7 @@ const endpoint63 = defineEndpoint({
     },
 });
 
-const endpoint64 = defineEndpoint({
+export const endpoint64 = defineEndpoint({
     path: '/reports/item-64',
     requests: {
         [HttpMethod.Post]: {
@@ -1386,7 +1383,7 @@ const endpoint64 = defineEndpoint({
     },
 });
 
-const endpoint65 = defineEndpoint({
+export const endpoint65 = defineEndpoint({
     path: '/reports/item-65',
     requests: {
         [HttpMethod.Post]: {
@@ -1407,7 +1404,7 @@ const endpoint65 = defineEndpoint({
     },
 });
 
-const endpoint66 = defineEndpoint({
+export const endpoint66 = defineEndpoint({
     path: '/reports/item-66',
     requests: {
         [HttpMethod.Post]: {
@@ -1428,7 +1425,7 @@ const endpoint66 = defineEndpoint({
     },
 });
 
-const endpoint67 = defineEndpoint({
+export const endpoint67 = defineEndpoint({
     path: '/reports/item-67',
     requests: {
         [HttpMethod.Post]: {
@@ -1449,7 +1446,7 @@ const endpoint67 = defineEndpoint({
     },
 });
 
-const endpoint68 = defineEndpoint({
+export const endpoint68 = defineEndpoint({
     path: '/reports/item-68',
     requests: {
         [HttpMethod.Post]: {
@@ -1470,7 +1467,7 @@ const endpoint68 = defineEndpoint({
     },
 });
 
-const endpoint69 = defineEndpoint({
+export const endpoint69 = defineEndpoint({
     path: '/reports/item-69',
     requests: {
         [HttpMethod.Post]: {
@@ -1491,7 +1488,7 @@ const endpoint69 = defineEndpoint({
     },
 });
 
-const endpoint70 = defineEndpoint({
+export const endpoint70 = defineEndpoint({
     path: '/reports/item-70',
     requests: {
         [HttpMethod.Post]: {
@@ -1512,7 +1509,7 @@ const endpoint70 = defineEndpoint({
     },
 });
 
-const endpoint71 = defineEndpoint({
+export const endpoint71 = defineEndpoint({
     path: '/reports/item-71',
     requests: {
         [HttpMethod.Post]: {
@@ -1533,7 +1530,7 @@ const endpoint71 = defineEndpoint({
     },
 });
 
-const endpoint72 = defineEndpoint({
+export const endpoint72 = defineEndpoint({
     path: '/reports/item-72',
     requests: {
         [HttpMethod.Post]: {
@@ -1554,7 +1551,7 @@ const endpoint72 = defineEndpoint({
     },
 });
 
-const endpoint73 = defineEndpoint({
+export const endpoint73 = defineEndpoint({
     path: '/reports/item-73',
     requests: {
         [HttpMethod.Post]: {
@@ -1575,7 +1572,7 @@ const endpoint73 = defineEndpoint({
     },
 });
 
-const endpoint74 = defineEndpoint({
+export const endpoint74 = defineEndpoint({
     path: '/reports/item-74',
     requests: {
         [HttpMethod.Post]: {
@@ -1596,7 +1593,7 @@ const endpoint74 = defineEndpoint({
     },
 });
 
-const endpoint75 = defineEndpoint({
+export const endpoint75 = defineEndpoint({
     path: '/reports/item-75',
     requests: {
         [HttpMethod.Post]: {
@@ -1617,7 +1614,7 @@ const endpoint75 = defineEndpoint({
     },
 });
 
-const endpoint76 = defineEndpoint({
+export const endpoint76 = defineEndpoint({
     path: '/reports/item-76',
     requests: {
         [HttpMethod.Post]: {
@@ -1638,7 +1635,7 @@ const endpoint76 = defineEndpoint({
     },
 });
 
-const endpoint77 = defineEndpoint({
+export const endpoint77 = defineEndpoint({
     path: '/reports/item-77',
     requests: {
         [HttpMethod.Post]: {
@@ -1659,7 +1656,7 @@ const endpoint77 = defineEndpoint({
     },
 });
 
-const endpoint78 = defineEndpoint({
+export const endpoint78 = defineEndpoint({
     path: '/reports/item-78',
     requests: {
         [HttpMethod.Post]: {
@@ -1680,7 +1677,7 @@ const endpoint78 = defineEndpoint({
     },
 });
 
-const endpoint79 = defineEndpoint({
+export const endpoint79 = defineEndpoint({
     path: '/reports/item-79',
     requests: {
         [HttpMethod.Post]: {
@@ -1701,7 +1698,7 @@ const endpoint79 = defineEndpoint({
     },
 });
 
-const endpoint80 = defineEndpoint({
+export const endpoint80 = defineEndpoint({
     path: '/reports/item-80',
     requests: {
         [HttpMethod.Post]: {
@@ -1722,7 +1719,7 @@ const endpoint80 = defineEndpoint({
     },
 });
 
-const endpoint81 = defineEndpoint({
+export const endpoint81 = defineEndpoint({
     path: '/reports/item-81',
     requests: {
         [HttpMethod.Post]: {
@@ -1743,7 +1740,7 @@ const endpoint81 = defineEndpoint({
     },
 });
 
-const endpoint82 = defineEndpoint({
+export const endpoint82 = defineEndpoint({
     path: '/reports/item-82',
     requests: {
         [HttpMethod.Post]: {
@@ -1764,7 +1761,7 @@ const endpoint82 = defineEndpoint({
     },
 });
 
-const endpoint83 = defineEndpoint({
+export const endpoint83 = defineEndpoint({
     path: '/reports/item-83',
     requests: {
         [HttpMethod.Post]: {
@@ -1785,7 +1782,7 @@ const endpoint83 = defineEndpoint({
     },
 });
 
-const endpoint84 = defineEndpoint({
+export const endpoint84 = defineEndpoint({
     path: '/reports/item-84',
     requests: {
         [HttpMethod.Post]: {
@@ -1806,7 +1803,7 @@ const endpoint84 = defineEndpoint({
     },
 });
 
-const endpoint85 = defineEndpoint({
+export const endpoint85 = defineEndpoint({
     path: '/reports/item-85',
     requests: {
         [HttpMethod.Post]: {
@@ -1827,7 +1824,7 @@ const endpoint85 = defineEndpoint({
     },
 });
 
-const endpoint86 = defineEndpoint({
+export const endpoint86 = defineEndpoint({
     path: '/reports/item-86',
     requests: {
         [HttpMethod.Post]: {
@@ -1848,7 +1845,7 @@ const endpoint86 = defineEndpoint({
     },
 });
 
-const endpoint87 = defineEndpoint({
+export const endpoint87 = defineEndpoint({
     path: '/reports/item-87',
     requests: {
         [HttpMethod.Post]: {
@@ -1869,7 +1866,7 @@ const endpoint87 = defineEndpoint({
     },
 });
 
-const endpoint88 = defineEndpoint({
+export const endpoint88 = defineEndpoint({
     path: '/reports/item-88',
     requests: {
         [HttpMethod.Post]: {
@@ -1890,7 +1887,7 @@ const endpoint88 = defineEndpoint({
     },
 });
 
-const endpoint89 = defineEndpoint({
+export const endpoint89 = defineEndpoint({
     path: '/reports/item-89',
     requests: {
         [HttpMethod.Post]: {
@@ -1911,7 +1908,7 @@ const endpoint89 = defineEndpoint({
     },
 });
 
-const endpoint90 = defineEndpoint({
+export const endpoint90 = defineEndpoint({
     path: '/reports/item-90',
     requests: {
         [HttpMethod.Post]: {
@@ -1932,7 +1929,7 @@ const endpoint90 = defineEndpoint({
     },
 });
 
-const endpoint91 = defineEndpoint({
+export const endpoint91 = defineEndpoint({
     path: '/reports/item-91',
     requests: {
         [HttpMethod.Post]: {
@@ -1953,7 +1950,7 @@ const endpoint91 = defineEndpoint({
     },
 });
 
-const endpoint92 = defineEndpoint({
+export const endpoint92 = defineEndpoint({
     path: '/reports/item-92',
     requests: {
         [HttpMethod.Post]: {
@@ -1974,7 +1971,7 @@ const endpoint92 = defineEndpoint({
     },
 });
 
-const endpoint93 = defineEndpoint({
+export const endpoint93 = defineEndpoint({
     path: '/reports/item-93',
     requests: {
         [HttpMethod.Post]: {
@@ -1995,7 +1992,7 @@ const endpoint93 = defineEndpoint({
     },
 });
 
-const endpoint94 = defineEndpoint({
+export const endpoint94 = defineEndpoint({
     path: '/reports/item-94',
     requests: {
         [HttpMethod.Post]: {
@@ -2016,7 +2013,7 @@ const endpoint94 = defineEndpoint({
     },
 });
 
-const endpoint95 = defineEndpoint({
+export const endpoint95 = defineEndpoint({
     path: '/reports/item-95',
     requests: {
         [HttpMethod.Post]: {
@@ -2037,7 +2034,7 @@ const endpoint95 = defineEndpoint({
     },
 });
 
-const endpoint96 = defineEndpoint({
+export const endpoint96 = defineEndpoint({
     path: '/reports/item-96',
     requests: {
         [HttpMethod.Post]: {
@@ -2058,7 +2055,7 @@ const endpoint96 = defineEndpoint({
     },
 });
 
-const endpoint97 = defineEndpoint({
+export const endpoint97 = defineEndpoint({
     path: '/reports/item-97',
     requests: {
         [HttpMethod.Post]: {
@@ -2079,7 +2076,7 @@ const endpoint97 = defineEndpoint({
     },
 });
 
-const endpoint98 = defineEndpoint({
+export const endpoint98 = defineEndpoint({
     path: '/reports/item-98',
     requests: {
         [HttpMethod.Post]: {
@@ -2100,7 +2097,7 @@ const endpoint98 = defineEndpoint({
     },
 });
 
-const endpoint99 = defineEndpoint({
+export const endpoint99 = defineEndpoint({
     path: '/reports/item-99',
     requests: {
         [HttpMethod.Post]: {
@@ -2121,7 +2118,7 @@ const endpoint99 = defineEndpoint({
     },
 });
 
-const endpoint100 = defineEndpoint({
+export const endpoint100 = defineEndpoint({
     path: '/reports/item-100',
     requests: {
         [HttpMethod.Post]: {
@@ -2142,7 +2139,7 @@ const endpoint100 = defineEndpoint({
     },
 });
 
-const endpoint101 = defineEndpoint({
+export const endpoint101 = defineEndpoint({
     path: '/reports/item-101',
     requests: {
         [HttpMethod.Post]: {
@@ -2163,7 +2160,7 @@ const endpoint101 = defineEndpoint({
     },
 });
 
-const endpoint102 = defineEndpoint({
+export const endpoint102 = defineEndpoint({
     path: '/reports/item-102',
     requests: {
         [HttpMethod.Post]: {
@@ -2184,7 +2181,7 @@ const endpoint102 = defineEndpoint({
     },
 });
 
-const endpoint103 = defineEndpoint({
+export const endpoint103 = defineEndpoint({
     path: '/reports/item-103',
     requests: {
         [HttpMethod.Post]: {
@@ -2205,7 +2202,7 @@ const endpoint103 = defineEndpoint({
     },
 });
 
-const endpoint104 = defineEndpoint({
+export const endpoint104 = defineEndpoint({
     path: '/reports/item-104',
     requests: {
         [HttpMethod.Post]: {
@@ -2226,7 +2223,7 @@ const endpoint104 = defineEndpoint({
     },
 });
 
-const endpoint105 = defineEndpoint({
+export const endpoint105 = defineEndpoint({
     path: '/reports/item-105',
     requests: {
         [HttpMethod.Post]: {
@@ -2247,7 +2244,7 @@ const endpoint105 = defineEndpoint({
     },
 });
 
-const endpoint106 = defineEndpoint({
+export const endpoint106 = defineEndpoint({
     path: '/reports/item-106',
     requests: {
         [HttpMethod.Post]: {
@@ -2268,7 +2265,7 @@ const endpoint106 = defineEndpoint({
     },
 });
 
-const endpoint107 = defineEndpoint({
+export const endpoint107 = defineEndpoint({
     path: '/reports/item-107',
     requests: {
         [HttpMethod.Post]: {
@@ -2289,7 +2286,7 @@ const endpoint107 = defineEndpoint({
     },
 });
 
-const endpoint108 = defineEndpoint({
+export const endpoint108 = defineEndpoint({
     path: '/reports/item-108',
     requests: {
         [HttpMethod.Post]: {
@@ -2310,7 +2307,7 @@ const endpoint108 = defineEndpoint({
     },
 });
 
-const endpoint109 = defineEndpoint({
+export const endpoint109 = defineEndpoint({
     path: '/reports/item-109',
     requests: {
         [HttpMethod.Post]: {
@@ -2331,7 +2328,7 @@ const endpoint109 = defineEndpoint({
     },
 });
 
-const endpoint110 = defineEndpoint({
+export const endpoint110 = defineEndpoint({
     path: '/reports/item-110',
     requests: {
         [HttpMethod.Post]: {
@@ -2352,7 +2349,7 @@ const endpoint110 = defineEndpoint({
     },
 });
 
-const endpoint111 = defineEndpoint({
+export const endpoint111 = defineEndpoint({
     path: '/reports/item-111',
     requests: {
         [HttpMethod.Post]: {
@@ -2373,7 +2370,7 @@ const endpoint111 = defineEndpoint({
     },
 });
 
-const endpoint112 = defineEndpoint({
+export const endpoint112 = defineEndpoint({
     path: '/reports/item-112',
     requests: {
         [HttpMethod.Post]: {
@@ -2394,7 +2391,7 @@ const endpoint112 = defineEndpoint({
     },
 });
 
-const endpoint113 = defineEndpoint({
+export const endpoint113 = defineEndpoint({
     path: '/reports/item-113',
     requests: {
         [HttpMethod.Post]: {
@@ -2415,7 +2412,7 @@ const endpoint113 = defineEndpoint({
     },
 });
 
-const endpoint114 = defineEndpoint({
+export const endpoint114 = defineEndpoint({
     path: '/reports/item-114',
     requests: {
         [HttpMethod.Post]: {
@@ -2436,7 +2433,7 @@ const endpoint114 = defineEndpoint({
     },
 });
 
-const endpoint115 = defineEndpoint({
+export const endpoint115 = defineEndpoint({
     path: '/reports/item-115',
     requests: {
         [HttpMethod.Post]: {
@@ -2457,7 +2454,7 @@ const endpoint115 = defineEndpoint({
     },
 });
 
-const endpoint116 = defineEndpoint({
+export const endpoint116 = defineEndpoint({
     path: '/reports/item-116',
     requests: {
         [HttpMethod.Post]: {
@@ -2478,7 +2475,7 @@ const endpoint116 = defineEndpoint({
     },
 });
 
-const endpoint117 = defineEndpoint({
+export const endpoint117 = defineEndpoint({
     path: '/reports/item-117',
     requests: {
         [HttpMethod.Post]: {
@@ -2499,7 +2496,7 @@ const endpoint117 = defineEndpoint({
     },
 });
 
-const endpoint118 = defineEndpoint({
+export const endpoint118 = defineEndpoint({
     path: '/reports/item-118',
     requests: {
         [HttpMethod.Post]: {
@@ -2520,7 +2517,7 @@ const endpoint118 = defineEndpoint({
     },
 });
 
-const endpoint119 = defineEndpoint({
+export const endpoint119 = defineEndpoint({
     path: '/reports/item-119',
     requests: {
         [HttpMethod.Post]: {
@@ -2541,7 +2538,7 @@ const endpoint119 = defineEndpoint({
     },
 });
 
-const endpoint120 = defineEndpoint({
+export const endpoint120 = defineEndpoint({
     path: '/reports/item-120',
     requests: {
         [HttpMethod.Post]: {
@@ -2562,7 +2559,7 @@ const endpoint120 = defineEndpoint({
     },
 });
 
-const endpoint121 = defineEndpoint({
+export const endpoint121 = defineEndpoint({
     path: '/reports/item-121',
     requests: {
         [HttpMethod.Post]: {
@@ -2583,7 +2580,7 @@ const endpoint121 = defineEndpoint({
     },
 });
 
-const endpoint122 = defineEndpoint({
+export const endpoint122 = defineEndpoint({
     path: '/reports/item-122',
     requests: {
         [HttpMethod.Post]: {
@@ -2604,7 +2601,7 @@ const endpoint122 = defineEndpoint({
     },
 });
 
-const endpoint123 = defineEndpoint({
+export const endpoint123 = defineEndpoint({
     path: '/reports/item-123',
     requests: {
         [HttpMethod.Post]: {
@@ -2625,7 +2622,7 @@ const endpoint123 = defineEndpoint({
     },
 });
 
-const endpoint124 = defineEndpoint({
+export const endpoint124 = defineEndpoint({
     path: '/reports/item-124',
     requests: {
         [HttpMethod.Post]: {
@@ -2646,7 +2643,7 @@ const endpoint124 = defineEndpoint({
     },
 });
 
-const endpoint125 = defineEndpoint({
+export const endpoint125 = defineEndpoint({
     path: '/reports/item-125',
     requests: {
         [HttpMethod.Post]: {
@@ -2667,7 +2664,7 @@ const endpoint125 = defineEndpoint({
     },
 });
 
-const endpoint126 = defineEndpoint({
+export const endpoint126 = defineEndpoint({
     path: '/reports/item-126',
     requests: {
         [HttpMethod.Post]: {
@@ -2688,7 +2685,7 @@ const endpoint126 = defineEndpoint({
     },
 });
 
-const endpoint127 = defineEndpoint({
+export const endpoint127 = defineEndpoint({
     path: '/reports/item-127',
     requests: {
         [HttpMethod.Post]: {
@@ -2709,7 +2706,7 @@ const endpoint127 = defineEndpoint({
     },
 });
 
-const endpoint128 = defineEndpoint({
+export const endpoint128 = defineEndpoint({
     path: '/reports/item-128',
     requests: {
         [HttpMethod.Post]: {
@@ -2730,7 +2727,7 @@ const endpoint128 = defineEndpoint({
     },
 });
 
-const endpoint129 = defineEndpoint({
+export const endpoint129 = defineEndpoint({
     path: '/reports/item-129',
     requests: {
         [HttpMethod.Post]: {
@@ -2751,7 +2748,7 @@ const endpoint129 = defineEndpoint({
     },
 });
 
-const endpoint130 = defineEndpoint({
+export const endpoint130 = defineEndpoint({
     path: '/reports/item-130',
     requests: {
         [HttpMethod.Post]: {
@@ -2772,7 +2769,7 @@ const endpoint130 = defineEndpoint({
     },
 });
 
-const endpoint131 = defineEndpoint({
+export const endpoint131 = defineEndpoint({
     path: '/reports/item-131',
     requests: {
         [HttpMethod.Post]: {
@@ -2793,7 +2790,7 @@ const endpoint131 = defineEndpoint({
     },
 });
 
-const endpoint132 = defineEndpoint({
+export const endpoint132 = defineEndpoint({
     path: '/reports/item-132',
     requests: {
         [HttpMethod.Post]: {
@@ -2814,7 +2811,7 @@ const endpoint132 = defineEndpoint({
     },
 });
 
-const endpoint133 = defineEndpoint({
+export const endpoint133 = defineEndpoint({
     path: '/reports/item-133',
     requests: {
         [HttpMethod.Post]: {
@@ -2835,7 +2832,7 @@ const endpoint133 = defineEndpoint({
     },
 });
 
-const endpoint134 = defineEndpoint({
+export const endpoint134 = defineEndpoint({
     path: '/reports/item-134',
     requests: {
         [HttpMethod.Post]: {
@@ -2856,7 +2853,7 @@ const endpoint134 = defineEndpoint({
     },
 });
 
-const endpoint135 = defineEndpoint({
+export const endpoint135 = defineEndpoint({
     path: '/reports/item-135',
     requests: {
         [HttpMethod.Post]: {
@@ -2877,7 +2874,7 @@ const endpoint135 = defineEndpoint({
     },
 });
 
-const endpoint136 = defineEndpoint({
+export const endpoint136 = defineEndpoint({
     path: '/reports/item-136',
     requests: {
         [HttpMethod.Post]: {
@@ -2898,7 +2895,7 @@ const endpoint136 = defineEndpoint({
     },
 });
 
-const endpoint137 = defineEndpoint({
+export const endpoint137 = defineEndpoint({
     path: '/reports/item-137',
     requests: {
         [HttpMethod.Post]: {
@@ -2919,7 +2916,7 @@ const endpoint137 = defineEndpoint({
     },
 });
 
-const endpoint138 = defineEndpoint({
+export const endpoint138 = defineEndpoint({
     path: '/reports/item-138',
     requests: {
         [HttpMethod.Post]: {
@@ -2940,7 +2937,7 @@ const endpoint138 = defineEndpoint({
     },
 });
 
-const endpoint139 = defineEndpoint({
+export const endpoint139 = defineEndpoint({
     path: '/reports/item-139',
     requests: {
         [HttpMethod.Post]: {
@@ -2961,7 +2958,7 @@ const endpoint139 = defineEndpoint({
     },
 });
 
-const endpoint140 = defineEndpoint({
+export const endpoint140 = defineEndpoint({
     path: '/reports/item-140',
     requests: {
         [HttpMethod.Post]: {
@@ -2982,7 +2979,7 @@ const endpoint140 = defineEndpoint({
     },
 });
 
-const endpoint141 = defineEndpoint({
+export const endpoint141 = defineEndpoint({
     path: '/reports/item-141',
     requests: {
         [HttpMethod.Post]: {
@@ -3003,7 +3000,7 @@ const endpoint141 = defineEndpoint({
     },
 });
 
-const endpoint142 = defineEndpoint({
+export const endpoint142 = defineEndpoint({
     path: '/reports/item-142',
     requests: {
         [HttpMethod.Post]: {
@@ -3024,7 +3021,7 @@ const endpoint142 = defineEndpoint({
     },
 });
 
-const endpoint143 = defineEndpoint({
+export const endpoint143 = defineEndpoint({
     path: '/reports/item-143',
     requests: {
         [HttpMethod.Post]: {
@@ -3045,7 +3042,7 @@ const endpoint143 = defineEndpoint({
     },
 });
 
-const endpoint144 = defineEndpoint({
+export const endpoint144 = defineEndpoint({
     path: '/reports/item-144',
     requests: {
         [HttpMethod.Post]: {
@@ -3066,7 +3063,7 @@ const endpoint144 = defineEndpoint({
     },
 });
 
-const endpoint145 = defineEndpoint({
+export const endpoint145 = defineEndpoint({
     path: '/reports/item-145',
     requests: {
         [HttpMethod.Post]: {
@@ -3087,7 +3084,7 @@ const endpoint145 = defineEndpoint({
     },
 });
 
-const endpoint146 = defineEndpoint({
+export const endpoint146 = defineEndpoint({
     path: '/reports/item-146',
     requests: {
         [HttpMethod.Post]: {
@@ -3108,7 +3105,7 @@ const endpoint146 = defineEndpoint({
     },
 });
 
-const endpoint147 = defineEndpoint({
+export const endpoint147 = defineEndpoint({
     path: '/reports/item-147',
     requests: {
         [HttpMethod.Post]: {
@@ -3129,7 +3126,7 @@ const endpoint147 = defineEndpoint({
     },
 });
 
-const endpoint148 = defineEndpoint({
+export const endpoint148 = defineEndpoint({
     path: '/reports/item-148',
     requests: {
         [HttpMethod.Post]: {
@@ -3150,7 +3147,7 @@ const endpoint148 = defineEndpoint({
     },
 });
 
-const endpoint149 = defineEndpoint({
+export const endpoint149 = defineEndpoint({
     path: '/reports/item-149',
     requests: {
         [HttpMethod.Post]: {
@@ -3171,7 +3168,7 @@ const endpoint149 = defineEndpoint({
     },
 });
 
-const endpoint150 = defineEndpoint({
+export const endpoint150 = defineEndpoint({
     path: '/reports/item-150',
     requests: {
         [HttpMethod.Post]: {
@@ -3192,7 +3189,7 @@ const endpoint150 = defineEndpoint({
     },
 });
 
-const endpoint151 = defineEndpoint({
+export const endpoint151 = defineEndpoint({
     path: '/reports/item-151',
     requests: {
         [HttpMethod.Post]: {
@@ -3213,7 +3210,7 @@ const endpoint151 = defineEndpoint({
     },
 });
 
-const endpoint152 = defineEndpoint({
+export const endpoint152 = defineEndpoint({
     path: '/reports/item-152',
     requests: {
         [HttpMethod.Post]: {
@@ -3234,7 +3231,7 @@ const endpoint152 = defineEndpoint({
     },
 });
 
-const endpoint153 = defineEndpoint({
+export const endpoint153 = defineEndpoint({
     path: '/reports/item-153',
     requests: {
         [HttpMethod.Post]: {
@@ -3255,7 +3252,7 @@ const endpoint153 = defineEndpoint({
     },
 });
 
-const endpoint154 = defineEndpoint({
+export const endpoint154 = defineEndpoint({
     path: '/reports/item-154',
     requests: {
         [HttpMethod.Post]: {
@@ -3276,7 +3273,7 @@ const endpoint154 = defineEndpoint({
     },
 });
 
-const endpoint155 = defineEndpoint({
+export const endpoint155 = defineEndpoint({
     path: '/reports/item-155',
     requests: {
         [HttpMethod.Post]: {
@@ -3297,7 +3294,7 @@ const endpoint155 = defineEndpoint({
     },
 });
 
-const endpoint156 = defineEndpoint({
+export const endpoint156 = defineEndpoint({
     path: '/reports/item-156',
     requests: {
         [HttpMethod.Post]: {
@@ -3318,7 +3315,7 @@ const endpoint156 = defineEndpoint({
     },
 });
 
-const endpoint157 = defineEndpoint({
+export const endpoint157 = defineEndpoint({
     path: '/reports/item-157',
     requests: {
         [HttpMethod.Post]: {
@@ -3339,7 +3336,7 @@ const endpoint157 = defineEndpoint({
     },
 });
 
-const endpoint158 = defineEndpoint({
+export const endpoint158 = defineEndpoint({
     path: '/reports/item-158',
     requests: {
         [HttpMethod.Post]: {
@@ -3360,7 +3357,7 @@ const endpoint158 = defineEndpoint({
     },
 });
 
-const endpoint159 = defineEndpoint({
+export const endpoint159 = defineEndpoint({
     path: '/reports/item-159',
     requests: {
         [HttpMethod.Post]: {
@@ -3381,7 +3378,7 @@ const endpoint159 = defineEndpoint({
     },
 });
 
-const endpoint160 = defineEndpoint({
+export const endpoint160 = defineEndpoint({
     path: '/reports/item-160',
     requests: {
         [HttpMethod.Post]: {
@@ -3402,7 +3399,7 @@ const endpoint160 = defineEndpoint({
     },
 });
 
-const endpoint161 = defineEndpoint({
+export const endpoint161 = defineEndpoint({
     path: '/reports/item-161',
     requests: {
         [HttpMethod.Post]: {
@@ -3423,7 +3420,7 @@ const endpoint161 = defineEndpoint({
     },
 });
 
-const endpoint162 = defineEndpoint({
+export const endpoint162 = defineEndpoint({
     path: '/reports/item-162',
     requests: {
         [HttpMethod.Post]: {
@@ -3444,7 +3441,7 @@ const endpoint162 = defineEndpoint({
     },
 });
 
-const endpoint163 = defineEndpoint({
+export const endpoint163 = defineEndpoint({
     path: '/reports/item-163',
     requests: {
         [HttpMethod.Post]: {
@@ -3465,7 +3462,7 @@ const endpoint163 = defineEndpoint({
     },
 });
 
-const endpoint164 = defineEndpoint({
+export const endpoint164 = defineEndpoint({
     path: '/reports/item-164',
     requests: {
         [HttpMethod.Post]: {
@@ -3486,7 +3483,7 @@ const endpoint164 = defineEndpoint({
     },
 });
 
-const endpoint165 = defineEndpoint({
+export const endpoint165 = defineEndpoint({
     path: '/reports/item-165',
     requests: {
         [HttpMethod.Post]: {
@@ -3507,7 +3504,7 @@ const endpoint165 = defineEndpoint({
     },
 });
 
-const endpoint166 = defineEndpoint({
+export const endpoint166 = defineEndpoint({
     path: '/reports/item-166',
     requests: {
         [HttpMethod.Post]: {
@@ -3528,7 +3525,7 @@ const endpoint166 = defineEndpoint({
     },
 });
 
-const endpoint167 = defineEndpoint({
+export const endpoint167 = defineEndpoint({
     path: '/reports/item-167',
     requests: {
         [HttpMethod.Post]: {
@@ -3549,7 +3546,7 @@ const endpoint167 = defineEndpoint({
     },
 });
 
-const endpoint168 = defineEndpoint({
+export const endpoint168 = defineEndpoint({
     path: '/reports/item-168',
     requests: {
         [HttpMethod.Post]: {
@@ -3570,7 +3567,7 @@ const endpoint168 = defineEndpoint({
     },
 });
 
-const endpoint169 = defineEndpoint({
+export const endpoint169 = defineEndpoint({
     path: '/reports/item-169',
     requests: {
         [HttpMethod.Post]: {
@@ -3591,7 +3588,7 @@ const endpoint169 = defineEndpoint({
     },
 });
 
-const endpoint170 = defineEndpoint({
+export const endpoint170 = defineEndpoint({
     path: '/reports/item-170',
     requests: {
         [HttpMethod.Post]: {
@@ -3612,7 +3609,7 @@ const endpoint170 = defineEndpoint({
     },
 });
 
-const endpoint171 = defineEndpoint({
+export const endpoint171 = defineEndpoint({
     path: '/reports/item-171',
     requests: {
         [HttpMethod.Post]: {
@@ -3633,7 +3630,7 @@ const endpoint171 = defineEndpoint({
     },
 });
 
-const endpoint172 = defineEndpoint({
+export const endpoint172 = defineEndpoint({
     path: '/reports/item-172',
     requests: {
         [HttpMethod.Post]: {
@@ -3654,7 +3651,7 @@ const endpoint172 = defineEndpoint({
     },
 });
 
-const endpoint173 = defineEndpoint({
+export const endpoint173 = defineEndpoint({
     path: '/reports/item-173',
     requests: {
         [HttpMethod.Post]: {
@@ -3675,7 +3672,7 @@ const endpoint173 = defineEndpoint({
     },
 });
 
-const endpoint174 = defineEndpoint({
+export const endpoint174 = defineEndpoint({
     path: '/reports/item-174',
     requests: {
         [HttpMethod.Post]: {
@@ -3696,7 +3693,7 @@ const endpoint174 = defineEndpoint({
     },
 });
 
-const endpoint175 = defineEndpoint({
+export const endpoint175 = defineEndpoint({
     path: '/reports/item-175',
     requests: {
         [HttpMethod.Post]: {
@@ -3717,7 +3714,7 @@ const endpoint175 = defineEndpoint({
     },
 });
 
-const endpoint176 = defineEndpoint({
+export const endpoint176 = defineEndpoint({
     path: '/reports/item-176',
     requests: {
         [HttpMethod.Post]: {
@@ -3738,7 +3735,7 @@ const endpoint176 = defineEndpoint({
     },
 });
 
-const endpoint177 = defineEndpoint({
+export const endpoint177 = defineEndpoint({
     path: '/reports/item-177',
     requests: {
         [HttpMethod.Post]: {
@@ -3759,7 +3756,7 @@ const endpoint177 = defineEndpoint({
     },
 });
 
-const endpoint178 = defineEndpoint({
+export const endpoint178 = defineEndpoint({
     path: '/reports/item-178',
     requests: {
         [HttpMethod.Post]: {
@@ -3780,7 +3777,7 @@ const endpoint178 = defineEndpoint({
     },
 });
 
-const endpoint179 = defineEndpoint({
+export const endpoint179 = defineEndpoint({
     path: '/reports/item-179',
     requests: {
         [HttpMethod.Post]: {
@@ -3801,7 +3798,7 @@ const endpoint179 = defineEndpoint({
     },
 });
 
-const endpoint180 = defineEndpoint({
+export const endpoint180 = defineEndpoint({
     path: '/reports/item-180',
     requests: {
         [HttpMethod.Post]: {
@@ -3822,7 +3819,7 @@ const endpoint180 = defineEndpoint({
     },
 });
 
-const endpoint181 = defineEndpoint({
+export const endpoint181 = defineEndpoint({
     path: '/reports/item-181',
     requests: {
         [HttpMethod.Post]: {
@@ -3843,7 +3840,7 @@ const endpoint181 = defineEndpoint({
     },
 });
 
-const endpoint182 = defineEndpoint({
+export const endpoint182 = defineEndpoint({
     path: '/reports/item-182',
     requests: {
         [HttpMethod.Post]: {
@@ -3864,7 +3861,7 @@ const endpoint182 = defineEndpoint({
     },
 });
 
-const endpoint183 = defineEndpoint({
+export const endpoint183 = defineEndpoint({
     path: '/reports/item-183',
     requests: {
         [HttpMethod.Post]: {
@@ -3885,7 +3882,7 @@ const endpoint183 = defineEndpoint({
     },
 });
 
-const endpoint184 = defineEndpoint({
+export const endpoint184 = defineEndpoint({
     path: '/reports/item-184',
     requests: {
         [HttpMethod.Post]: {
@@ -3906,7 +3903,7 @@ const endpoint184 = defineEndpoint({
     },
 });
 
-const endpoint185 = defineEndpoint({
+export const endpoint185 = defineEndpoint({
     path: '/reports/item-185',
     requests: {
         [HttpMethod.Post]: {
@@ -3927,7 +3924,7 @@ const endpoint185 = defineEndpoint({
     },
 });
 
-const endpoint186 = defineEndpoint({
+export const endpoint186 = defineEndpoint({
     path: '/reports/item-186',
     requests: {
         [HttpMethod.Post]: {
@@ -3948,7 +3945,7 @@ const endpoint186 = defineEndpoint({
     },
 });
 
-const endpoint187 = defineEndpoint({
+export const endpoint187 = defineEndpoint({
     path: '/reports/item-187',
     requests: {
         [HttpMethod.Post]: {
@@ -3969,7 +3966,7 @@ const endpoint187 = defineEndpoint({
     },
 });
 
-const endpoint188 = defineEndpoint({
+export const endpoint188 = defineEndpoint({
     path: '/reports/item-188',
     requests: {
         [HttpMethod.Post]: {
@@ -3990,7 +3987,7 @@ const endpoint188 = defineEndpoint({
     },
 });
 
-const endpoint189 = defineEndpoint({
+export const endpoint189 = defineEndpoint({
     path: '/reports/item-189',
     requests: {
         [HttpMethod.Post]: {
@@ -4011,7 +4008,7 @@ const endpoint189 = defineEndpoint({
     },
 });
 
-const endpoint190 = defineEndpoint({
+export const endpoint190 = defineEndpoint({
     path: '/reports/item-190',
     requests: {
         [HttpMethod.Post]: {
@@ -4032,7 +4029,7 @@ const endpoint190 = defineEndpoint({
     },
 });
 
-const endpoint191 = defineEndpoint({
+export const endpoint191 = defineEndpoint({
     path: '/reports/item-191',
     requests: {
         [HttpMethod.Post]: {
@@ -4053,7 +4050,7 @@ const endpoint191 = defineEndpoint({
     },
 });
 
-const endpoint192 = defineEndpoint({
+export const endpoint192 = defineEndpoint({
     path: '/reports/item-192',
     requests: {
         [HttpMethod.Post]: {
@@ -4074,7 +4071,7 @@ const endpoint192 = defineEndpoint({
     },
 });
 
-const endpoint193 = defineEndpoint({
+export const endpoint193 = defineEndpoint({
     path: '/reports/item-193',
     requests: {
         [HttpMethod.Post]: {
@@ -4095,7 +4092,7 @@ const endpoint193 = defineEndpoint({
     },
 });
 
-const endpoint194 = defineEndpoint({
+export const endpoint194 = defineEndpoint({
     path: '/reports/item-194',
     requests: {
         [HttpMethod.Post]: {
@@ -4116,7 +4113,7 @@ const endpoint194 = defineEndpoint({
     },
 });
 
-const endpoint195 = defineEndpoint({
+export const endpoint195 = defineEndpoint({
     path: '/reports/item-195',
     requests: {
         [HttpMethod.Post]: {
@@ -4137,7 +4134,7 @@ const endpoint195 = defineEndpoint({
     },
 });
 
-const endpoint196 = defineEndpoint({
+export const endpoint196 = defineEndpoint({
     path: '/reports/item-196',
     requests: {
         [HttpMethod.Post]: {
@@ -4158,7 +4155,7 @@ const endpoint196 = defineEndpoint({
     },
 });
 
-const endpoint197 = defineEndpoint({
+export const endpoint197 = defineEndpoint({
     path: '/reports/item-197',
     requests: {
         [HttpMethod.Post]: {
@@ -4179,7 +4176,7 @@ const endpoint197 = defineEndpoint({
     },
 });
 
-const endpoint198 = defineEndpoint({
+export const endpoint198 = defineEndpoint({
     path: '/reports/item-198',
     requests: {
         [HttpMethod.Post]: {
@@ -4200,7 +4197,7 @@ const endpoint198 = defineEndpoint({
     },
 });
 
-const endpoint199 = defineEndpoint({
+export const endpoint199 = defineEndpoint({
     path: '/reports/item-199',
     requests: {
         [HttpMethod.Post]: {
@@ -4221,7 +4218,7 @@ const endpoint199 = defineEndpoint({
     },
 });
 
-const endpoint200 = defineEndpoint({
+export const endpoint200 = defineEndpoint({
     path: '/reports/item-200',
     requests: {
         [HttpMethod.Post]: {
@@ -4242,7 +4239,7 @@ const endpoint200 = defineEndpoint({
     },
 });
 
-const endpoint201 = defineEndpoint({
+export const endpoint201 = defineEndpoint({
     path: '/reports/item-201',
     requests: {
         [HttpMethod.Post]: {
@@ -4263,7 +4260,7 @@ const endpoint201 = defineEndpoint({
     },
 });
 
-const endpoint202 = defineEndpoint({
+export const endpoint202 = defineEndpoint({
     path: '/reports/item-202',
     requests: {
         [HttpMethod.Post]: {
@@ -4284,7 +4281,7 @@ const endpoint202 = defineEndpoint({
     },
 });
 
-const endpoint203 = defineEndpoint({
+export const endpoint203 = defineEndpoint({
     path: '/reports/item-203',
     requests: {
         [HttpMethod.Post]: {
@@ -4305,7 +4302,7 @@ const endpoint203 = defineEndpoint({
     },
 });
 
-const endpoint204 = defineEndpoint({
+export const endpoint204 = defineEndpoint({
     path: '/reports/item-204',
     requests: {
         [HttpMethod.Post]: {
@@ -4326,7 +4323,7 @@ const endpoint204 = defineEndpoint({
     },
 });
 
-const endpoint205 = defineEndpoint({
+export const endpoint205 = defineEndpoint({
     path: '/reports/item-205',
     requests: {
         [HttpMethod.Post]: {
@@ -4347,7 +4344,7 @@ const endpoint205 = defineEndpoint({
     },
 });
 
-const endpoint206 = defineEndpoint({
+export const endpoint206 = defineEndpoint({
     path: '/reports/item-206',
     requests: {
         [HttpMethod.Post]: {
@@ -4368,7 +4365,7 @@ const endpoint206 = defineEndpoint({
     },
 });
 
-const endpoint207 = defineEndpoint({
+export const endpoint207 = defineEndpoint({
     path: '/reports/item-207',
     requests: {
         [HttpMethod.Post]: {
@@ -4389,7 +4386,7 @@ const endpoint207 = defineEndpoint({
     },
 });
 
-const endpoint208 = defineEndpoint({
+export const endpoint208 = defineEndpoint({
     path: '/reports/item-208',
     requests: {
         [HttpMethod.Post]: {
@@ -4410,7 +4407,7 @@ const endpoint208 = defineEndpoint({
     },
 });
 
-const endpoint209 = defineEndpoint({
+export const endpoint209 = defineEndpoint({
     path: '/reports/item-209',
     requests: {
         [HttpMethod.Post]: {
@@ -4431,7 +4428,7 @@ const endpoint209 = defineEndpoint({
     },
 });
 
-const endpoint210 = defineEndpoint({
+export const endpoint210 = defineEndpoint({
     path: '/reports/item-210',
     requests: {
         [HttpMethod.Post]: {
@@ -4452,7 +4449,7 @@ const endpoint210 = defineEndpoint({
     },
 });
 
-const endpoint211 = defineEndpoint({
+export const endpoint211 = defineEndpoint({
     path: '/reports/item-211',
     requests: {
         [HttpMethod.Post]: {
@@ -4473,7 +4470,7 @@ const endpoint211 = defineEndpoint({
     },
 });
 
-const endpoint212 = defineEndpoint({
+export const endpoint212 = defineEndpoint({
     path: '/reports/item-212',
     requests: {
         [HttpMethod.Post]: {
@@ -4494,7 +4491,7 @@ const endpoint212 = defineEndpoint({
     },
 });
 
-const endpoint213 = defineEndpoint({
+export const endpoint213 = defineEndpoint({
     path: '/reports/item-213',
     requests: {
         [HttpMethod.Post]: {
@@ -4515,7 +4512,7 @@ const endpoint213 = defineEndpoint({
     },
 });
 
-const endpoint214 = defineEndpoint({
+export const endpoint214 = defineEndpoint({
     path: '/reports/item-214',
     requests: {
         [HttpMethod.Post]: {
@@ -4536,7 +4533,7 @@ const endpoint214 = defineEndpoint({
     },
 });
 
-const endpoint215 = defineEndpoint({
+export const endpoint215 = defineEndpoint({
     path: '/reports/item-215',
     requests: {
         [HttpMethod.Post]: {
@@ -4557,7 +4554,7 @@ const endpoint215 = defineEndpoint({
     },
 });
 
-const endpoint216 = defineEndpoint({
+export const endpoint216 = defineEndpoint({
     path: '/reports/item-216',
     requests: {
         [HttpMethod.Post]: {
@@ -4578,7 +4575,7 @@ const endpoint216 = defineEndpoint({
     },
 });
 
-const endpoint217 = defineEndpoint({
+export const endpoint217 = defineEndpoint({
     path: '/reports/item-217',
     requests: {
         [HttpMethod.Post]: {
@@ -4599,7 +4596,7 @@ const endpoint217 = defineEndpoint({
     },
 });
 
-const endpoint218 = defineEndpoint({
+export const endpoint218 = defineEndpoint({
     path: '/reports/item-218',
     requests: {
         [HttpMethod.Post]: {
@@ -4620,7 +4617,7 @@ const endpoint218 = defineEndpoint({
     },
 });
 
-const endpoint219 = defineEndpoint({
+export const endpoint219 = defineEndpoint({
     path: '/reports/item-219',
     requests: {
         [HttpMethod.Post]: {
@@ -4641,7 +4638,7 @@ const endpoint219 = defineEndpoint({
     },
 });
 
-const endpoint220 = defineEndpoint({
+export const endpoint220 = defineEndpoint({
     path: '/reports/item-220',
     requests: {
         [HttpMethod.Post]: {
@@ -4662,7 +4659,7 @@ const endpoint220 = defineEndpoint({
     },
 });
 
-const endpoint221 = defineEndpoint({
+export const endpoint221 = defineEndpoint({
     path: '/reports/item-221',
     requests: {
         [HttpMethod.Post]: {
@@ -4683,7 +4680,7 @@ const endpoint221 = defineEndpoint({
     },
 });
 
-const endpoint222 = defineEndpoint({
+export const endpoint222 = defineEndpoint({
     path: '/reports/item-222',
     requests: {
         [HttpMethod.Post]: {
@@ -4704,7 +4701,7 @@ const endpoint222 = defineEndpoint({
     },
 });
 
-const endpoint223 = defineEndpoint({
+export const endpoint223 = defineEndpoint({
     path: '/reports/item-223',
     requests: {
         [HttpMethod.Post]: {
@@ -4725,7 +4722,7 @@ const endpoint223 = defineEndpoint({
     },
 });
 
-const endpoint224 = defineEndpoint({
+export const endpoint224 = defineEndpoint({
     path: '/reports/item-224',
     requests: {
         [HttpMethod.Post]: {
@@ -4746,7 +4743,7 @@ const endpoint224 = defineEndpoint({
     },
 });
 
-const endpoint225 = defineEndpoint({
+export const endpoint225 = defineEndpoint({
     path: '/reports/item-225',
     requests: {
         [HttpMethod.Post]: {
@@ -4767,7 +4764,7 @@ const endpoint225 = defineEndpoint({
     },
 });
 
-const endpoint226 = defineEndpoint({
+export const endpoint226 = defineEndpoint({
     path: '/reports/item-226',
     requests: {
         [HttpMethod.Post]: {
@@ -4788,7 +4785,7 @@ const endpoint226 = defineEndpoint({
     },
 });
 
-const endpoint227 = defineEndpoint({
+export const endpoint227 = defineEndpoint({
     path: '/reports/item-227',
     requests: {
         [HttpMethod.Post]: {
@@ -4809,7 +4806,7 @@ const endpoint227 = defineEndpoint({
     },
 });
 
-const endpoint228 = defineEndpoint({
+export const endpoint228 = defineEndpoint({
     path: '/reports/item-228',
     requests: {
         [HttpMethod.Post]: {
@@ -4830,7 +4827,7 @@ const endpoint228 = defineEndpoint({
     },
 });
 
-const endpoint229 = defineEndpoint({
+export const endpoint229 = defineEndpoint({
     path: '/reports/item-229',
     requests: {
         [HttpMethod.Post]: {
@@ -4851,7 +4848,7 @@ const endpoint229 = defineEndpoint({
     },
 });
 
-const endpoint230 = defineEndpoint({
+export const endpoint230 = defineEndpoint({
     path: '/reports/item-230',
     requests: {
         [HttpMethod.Post]: {
@@ -4872,7 +4869,7 @@ const endpoint230 = defineEndpoint({
     },
 });
 
-const endpoint231 = defineEndpoint({
+export const endpoint231 = defineEndpoint({
     path: '/reports/item-231',
     requests: {
         [HttpMethod.Post]: {
@@ -4893,7 +4890,7 @@ const endpoint231 = defineEndpoint({
     },
 });
 
-const endpoint232 = defineEndpoint({
+export const endpoint232 = defineEndpoint({
     path: '/reports/item-232',
     requests: {
         [HttpMethod.Post]: {
@@ -4914,7 +4911,7 @@ const endpoint232 = defineEndpoint({
     },
 });
 
-const endpoint233 = defineEndpoint({
+export const endpoint233 = defineEndpoint({
     path: '/reports/item-233',
     requests: {
         [HttpMethod.Post]: {
@@ -4935,7 +4932,7 @@ const endpoint233 = defineEndpoint({
     },
 });
 
-const endpoint234 = defineEndpoint({
+export const endpoint234 = defineEndpoint({
     path: '/reports/item-234',
     requests: {
         [HttpMethod.Post]: {
@@ -4956,7 +4953,7 @@ const endpoint234 = defineEndpoint({
     },
 });
 
-const endpoint235 = defineEndpoint({
+export const endpoint235 = defineEndpoint({
     path: '/reports/item-235',
     requests: {
         [HttpMethod.Post]: {
@@ -4977,7 +4974,7 @@ const endpoint235 = defineEndpoint({
     },
 });
 
-const endpoint236 = defineEndpoint({
+export const endpoint236 = defineEndpoint({
     path: '/reports/item-236',
     requests: {
         [HttpMethod.Post]: {
@@ -4998,7 +4995,7 @@ const endpoint236 = defineEndpoint({
     },
 });
 
-const endpoint237 = defineEndpoint({
+export const endpoint237 = defineEndpoint({
     path: '/reports/item-237',
     requests: {
         [HttpMethod.Post]: {
@@ -5019,7 +5016,7 @@ const endpoint237 = defineEndpoint({
     },
 });
 
-const endpoint238 = defineEndpoint({
+export const endpoint238 = defineEndpoint({
     path: '/reports/item-238',
     requests: {
         [HttpMethod.Post]: {
@@ -5040,7 +5037,7 @@ const endpoint238 = defineEndpoint({
     },
 });
 
-const endpoint239 = defineEndpoint({
+export const endpoint239 = defineEndpoint({
     path: '/reports/item-239',
     requests: {
         [HttpMethod.Post]: {
@@ -5061,7 +5058,7 @@ const endpoint239 = defineEndpoint({
     },
 });
 
-const endpoint240 = defineEndpoint({
+export const endpoint240 = defineEndpoint({
     path: '/reports/item-240',
     requests: {
         [HttpMethod.Post]: {
@@ -5082,7 +5079,7 @@ const endpoint240 = defineEndpoint({
     },
 });
 
-const endpoint241 = defineEndpoint({
+export const endpoint241 = defineEndpoint({
     path: '/reports/item-241',
     requests: {
         [HttpMethod.Post]: {
@@ -5103,7 +5100,7 @@ const endpoint241 = defineEndpoint({
     },
 });
 
-const endpoint242 = defineEndpoint({
+export const endpoint242 = defineEndpoint({
     path: '/reports/item-242',
     requests: {
         [HttpMethod.Post]: {
@@ -5124,7 +5121,7 @@ const endpoint242 = defineEndpoint({
     },
 });
 
-const endpoint243 = defineEndpoint({
+export const endpoint243 = defineEndpoint({
     path: '/reports/item-243',
     requests: {
         [HttpMethod.Post]: {
@@ -5145,7 +5142,7 @@ const endpoint243 = defineEndpoint({
     },
 });
 
-const endpoint244 = defineEndpoint({
+export const endpoint244 = defineEndpoint({
     path: '/reports/item-244',
     requests: {
         [HttpMethod.Post]: {
@@ -5166,7 +5163,7 @@ const endpoint244 = defineEndpoint({
     },
 });
 
-const endpoint245 = defineEndpoint({
+export const endpoint245 = defineEndpoint({
     path: '/reports/item-245',
     requests: {
         [HttpMethod.Post]: {
@@ -5187,7 +5184,7 @@ const endpoint245 = defineEndpoint({
     },
 });
 
-const endpoint246 = defineEndpoint({
+export const endpoint246 = defineEndpoint({
     path: '/reports/item-246',
     requests: {
         [HttpMethod.Post]: {
@@ -5208,7 +5205,7 @@ const endpoint246 = defineEndpoint({
     },
 });
 
-const endpoint247 = defineEndpoint({
+export const endpoint247 = defineEndpoint({
     path: '/reports/item-247',
     requests: {
         [HttpMethod.Post]: {
@@ -5229,7 +5226,7 @@ const endpoint247 = defineEndpoint({
     },
 });
 
-const endpoint248 = defineEndpoint({
+export const endpoint248 = defineEndpoint({
     path: '/reports/item-248',
     requests: {
         [HttpMethod.Post]: {
@@ -5250,7 +5247,7 @@ const endpoint248 = defineEndpoint({
     },
 });
 
-const endpoint249 = defineEndpoint({
+export const endpoint249 = defineEndpoint({
     path: '/reports/item-249',
     requests: {
         [HttpMethod.Post]: {
@@ -5271,7 +5268,7 @@ const endpoint249 = defineEndpoint({
     },
 });
 
-const endpoint250 = defineEndpoint({
+export const endpoint250 = defineEndpoint({
     path: '/reports/item-250',
     requests: {
         [HttpMethod.Post]: {
@@ -5292,7 +5289,7 @@ const endpoint250 = defineEndpoint({
     },
 });
 
-const endpoint251 = defineEndpoint({
+export const endpoint251 = defineEndpoint({
     path: '/reports/item-251',
     requests: {
         [HttpMethod.Post]: {
@@ -5313,7 +5310,7 @@ const endpoint251 = defineEndpoint({
     },
 });
 
-const endpoint252 = defineEndpoint({
+export const endpoint252 = defineEndpoint({
     path: '/reports/item-252',
     requests: {
         [HttpMethod.Post]: {
@@ -5334,7 +5331,7 @@ const endpoint252 = defineEndpoint({
     },
 });
 
-const endpoint253 = defineEndpoint({
+export const endpoint253 = defineEndpoint({
     path: '/reports/item-253',
     requests: {
         [HttpMethod.Post]: {
@@ -5355,7 +5352,7 @@ const endpoint253 = defineEndpoint({
     },
 });
 
-const endpoint254 = defineEndpoint({
+export const endpoint254 = defineEndpoint({
     path: '/reports/item-254',
     requests: {
         [HttpMethod.Post]: {
@@ -5376,7 +5373,7 @@ const endpoint254 = defineEndpoint({
     },
 });
 
-const endpoint255 = defineEndpoint({
+export const endpoint255 = defineEndpoint({
     path: '/reports/item-255',
     requests: {
         [HttpMethod.Post]: {
@@ -5397,7 +5394,7 @@ const endpoint255 = defineEndpoint({
     },
 });
 
-const endpoint256 = defineEndpoint({
+export const endpoint256 = defineEndpoint({
     path: '/reports/item-256',
     requests: {
         [HttpMethod.Post]: {
@@ -5418,7 +5415,7 @@ const endpoint256 = defineEndpoint({
     },
 });
 
-const endpoint257 = defineEndpoint({
+export const endpoint257 = defineEndpoint({
     path: '/reports/item-257',
     requests: {
         [HttpMethod.Post]: {
@@ -5439,7 +5436,7 @@ const endpoint257 = defineEndpoint({
     },
 });
 
-const endpoint258 = defineEndpoint({
+export const endpoint258 = defineEndpoint({
     path: '/reports/item-258',
     requests: {
         [HttpMethod.Post]: {
@@ -5460,7 +5457,7 @@ const endpoint258 = defineEndpoint({
     },
 });
 
-const endpoint259 = defineEndpoint({
+export const endpoint259 = defineEndpoint({
     path: '/reports/item-259',
     requests: {
         [HttpMethod.Post]: {
@@ -5481,7 +5478,7 @@ const endpoint259 = defineEndpoint({
     },
 });
 
-const endpoint260 = defineEndpoint({
+export const endpoint260 = defineEndpoint({
     path: '/reports/item-260',
     requests: {
         [HttpMethod.Post]: {
@@ -5502,7 +5499,7 @@ const endpoint260 = defineEndpoint({
     },
 });
 
-const endpoint261 = defineEndpoint({
+export const endpoint261 = defineEndpoint({
     path: '/reports/item-261',
     requests: {
         [HttpMethod.Post]: {
@@ -5523,7 +5520,7 @@ const endpoint261 = defineEndpoint({
     },
 });
 
-const endpoint262 = defineEndpoint({
+export const endpoint262 = defineEndpoint({
     path: '/reports/item-262',
     requests: {
         [HttpMethod.Post]: {
@@ -5544,7 +5541,7 @@ const endpoint262 = defineEndpoint({
     },
 });
 
-const endpoint263 = defineEndpoint({
+export const endpoint263 = defineEndpoint({
     path: '/reports/item-263',
     requests: {
         [HttpMethod.Post]: {
@@ -5565,7 +5562,7 @@ const endpoint263 = defineEndpoint({
     },
 });
 
-const endpoint264 = defineEndpoint({
+export const endpoint264 = defineEndpoint({
     path: '/reports/item-264',
     requests: {
         [HttpMethod.Post]: {
@@ -5586,7 +5583,7 @@ const endpoint264 = defineEndpoint({
     },
 });
 
-const endpoint265 = defineEndpoint({
+export const endpoint265 = defineEndpoint({
     path: '/reports/item-265',
     requests: {
         [HttpMethod.Post]: {
@@ -5607,7 +5604,7 @@ const endpoint265 = defineEndpoint({
     },
 });
 
-const endpoint266 = defineEndpoint({
+export const endpoint266 = defineEndpoint({
     path: '/reports/item-266',
     requests: {
         [HttpMethod.Post]: {
@@ -5628,7 +5625,7 @@ const endpoint266 = defineEndpoint({
     },
 });
 
-const endpoint267 = defineEndpoint({
+export const endpoint267 = defineEndpoint({
     path: '/reports/item-267',
     requests: {
         [HttpMethod.Post]: {
@@ -5649,7 +5646,7 @@ const endpoint267 = defineEndpoint({
     },
 });
 
-const endpoint268 = defineEndpoint({
+export const endpoint268 = defineEndpoint({
     path: '/reports/item-268',
     requests: {
         [HttpMethod.Post]: {
@@ -5670,7 +5667,7 @@ const endpoint268 = defineEndpoint({
     },
 });
 
-const endpoint269 = defineEndpoint({
+export const endpoint269 = defineEndpoint({
     path: '/reports/item-269',
     requests: {
         [HttpMethod.Post]: {
@@ -5691,7 +5688,7 @@ const endpoint269 = defineEndpoint({
     },
 });
 
-const endpoint270 = defineEndpoint({
+export const endpoint270 = defineEndpoint({
     path: '/reports/item-270',
     requests: {
         [HttpMethod.Post]: {
@@ -5712,7 +5709,7 @@ const endpoint270 = defineEndpoint({
     },
 });
 
-const endpoint271 = defineEndpoint({
+export const endpoint271 = defineEndpoint({
     path: '/reports/item-271',
     requests: {
         [HttpMethod.Post]: {
@@ -5733,7 +5730,7 @@ const endpoint271 = defineEndpoint({
     },
 });
 
-const endpoint272 = defineEndpoint({
+export const endpoint272 = defineEndpoint({
     path: '/reports/item-272',
     requests: {
         [HttpMethod.Post]: {
@@ -5754,7 +5751,7 @@ const endpoint272 = defineEndpoint({
     },
 });
 
-const endpoint273 = defineEndpoint({
+export const endpoint273 = defineEndpoint({
     path: '/reports/item-273',
     requests: {
         [HttpMethod.Post]: {
@@ -5775,7 +5772,7 @@ const endpoint273 = defineEndpoint({
     },
 });
 
-const endpoint274 = defineEndpoint({
+export const endpoint274 = defineEndpoint({
     path: '/reports/item-274',
     requests: {
         [HttpMethod.Post]: {
@@ -5796,7 +5793,7 @@ const endpoint274 = defineEndpoint({
     },
 });
 
-const endpoint275 = defineEndpoint({
+export const endpoint275 = defineEndpoint({
     path: '/reports/item-275',
     requests: {
         [HttpMethod.Post]: {
@@ -5817,7 +5814,7 @@ const endpoint275 = defineEndpoint({
     },
 });
 
-const endpoint276 = defineEndpoint({
+export const endpoint276 = defineEndpoint({
     path: '/reports/item-276',
     requests: {
         [HttpMethod.Post]: {
@@ -5838,7 +5835,7 @@ const endpoint276 = defineEndpoint({
     },
 });
 
-const endpoint277 = defineEndpoint({
+export const endpoint277 = defineEndpoint({
     path: '/reports/item-277',
     requests: {
         [HttpMethod.Post]: {
@@ -5859,7 +5856,7 @@ const endpoint277 = defineEndpoint({
     },
 });
 
-const endpoint278 = defineEndpoint({
+export const endpoint278 = defineEndpoint({
     path: '/reports/item-278',
     requests: {
         [HttpMethod.Post]: {
@@ -5880,7 +5877,7 @@ const endpoint278 = defineEndpoint({
     },
 });
 
-const endpoint279 = defineEndpoint({
+export const endpoint279 = defineEndpoint({
     path: '/reports/item-279',
     requests: {
         [HttpMethod.Post]: {
@@ -5901,7 +5898,7 @@ const endpoint279 = defineEndpoint({
     },
 });
 
-const endpoint280 = defineEndpoint({
+export const endpoint280 = defineEndpoint({
     path: '/reports/item-280',
     requests: {
         [HttpMethod.Post]: {
@@ -5922,7 +5919,7 @@ const endpoint280 = defineEndpoint({
     },
 });
 
-const endpoint281 = defineEndpoint({
+export const endpoint281 = defineEndpoint({
     path: '/reports/item-281',
     requests: {
         [HttpMethod.Post]: {
@@ -5943,7 +5940,7 @@ const endpoint281 = defineEndpoint({
     },
 });
 
-const endpoint282 = defineEndpoint({
+export const endpoint282 = defineEndpoint({
     path: '/reports/item-282',
     requests: {
         [HttpMethod.Post]: {
@@ -5964,7 +5961,7 @@ const endpoint282 = defineEndpoint({
     },
 });
 
-const endpoint283 = defineEndpoint({
+export const endpoint283 = defineEndpoint({
     path: '/reports/item-283',
     requests: {
         [HttpMethod.Post]: {
@@ -5985,7 +5982,7 @@ const endpoint283 = defineEndpoint({
     },
 });
 
-const endpoint284 = defineEndpoint({
+export const endpoint284 = defineEndpoint({
     path: '/reports/item-284',
     requests: {
         [HttpMethod.Post]: {
@@ -6006,7 +6003,7 @@ const endpoint284 = defineEndpoint({
     },
 });
 
-const endpoint285 = defineEndpoint({
+export const endpoint285 = defineEndpoint({
     path: '/reports/item-285',
     requests: {
         [HttpMethod.Post]: {
@@ -6027,7 +6024,7 @@ const endpoint285 = defineEndpoint({
     },
 });
 
-const endpoint286 = defineEndpoint({
+export const endpoint286 = defineEndpoint({
     path: '/reports/item-286',
     requests: {
         [HttpMethod.Post]: {
@@ -6048,7 +6045,7 @@ const endpoint286 = defineEndpoint({
     },
 });
 
-const endpoint287 = defineEndpoint({
+export const endpoint287 = defineEndpoint({
     path: '/reports/item-287',
     requests: {
         [HttpMethod.Post]: {
@@ -6069,7 +6066,7 @@ const endpoint287 = defineEndpoint({
     },
 });
 
-const endpoint288 = defineEndpoint({
+export const endpoint288 = defineEndpoint({
     path: '/reports/item-288',
     requests: {
         [HttpMethod.Post]: {
@@ -6090,7 +6087,7 @@ const endpoint288 = defineEndpoint({
     },
 });
 
-const endpoint289 = defineEndpoint({
+export const endpoint289 = defineEndpoint({
     path: '/reports/item-289',
     requests: {
         [HttpMethod.Post]: {
@@ -6111,7 +6108,7 @@ const endpoint289 = defineEndpoint({
     },
 });
 
-const endpoint290 = defineEndpoint({
+export const endpoint290 = defineEndpoint({
     path: '/reports/item-290',
     requests: {
         [HttpMethod.Post]: {
@@ -6132,7 +6129,7 @@ const endpoint290 = defineEndpoint({
     },
 });
 
-const endpoint291 = defineEndpoint({
+export const endpoint291 = defineEndpoint({
     path: '/reports/item-291',
     requests: {
         [HttpMethod.Post]: {
@@ -6153,7 +6150,7 @@ const endpoint291 = defineEndpoint({
     },
 });
 
-const endpoint292 = defineEndpoint({
+export const endpoint292 = defineEndpoint({
     path: '/reports/item-292',
     requests: {
         [HttpMethod.Post]: {
@@ -6174,7 +6171,7 @@ const endpoint292 = defineEndpoint({
     },
 });
 
-const endpoint293 = defineEndpoint({
+export const endpoint293 = defineEndpoint({
     path: '/reports/item-293',
     requests: {
         [HttpMethod.Post]: {
@@ -6195,7 +6192,7 @@ const endpoint293 = defineEndpoint({
     },
 });
 
-const endpoint294 = defineEndpoint({
+export const endpoint294 = defineEndpoint({
     path: '/reports/item-294',
     requests: {
         [HttpMethod.Post]: {
@@ -6216,7 +6213,7 @@ const endpoint294 = defineEndpoint({
     },
 });
 
-const endpoint295 = defineEndpoint({
+export const endpoint295 = defineEndpoint({
     path: '/reports/item-295',
     requests: {
         [HttpMethod.Post]: {
@@ -6237,7 +6234,7 @@ const endpoint295 = defineEndpoint({
     },
 });
 
-const endpoint296 = defineEndpoint({
+export const endpoint296 = defineEndpoint({
     path: '/reports/item-296',
     requests: {
         [HttpMethod.Post]: {
@@ -6258,7 +6255,7 @@ const endpoint296 = defineEndpoint({
     },
 });
 
-const endpoint297 = defineEndpoint({
+export const endpoint297 = defineEndpoint({
     path: '/reports/item-297',
     requests: {
         [HttpMethod.Post]: {
@@ -6279,7 +6276,7 @@ const endpoint297 = defineEndpoint({
     },
 });
 
-const endpoint298 = defineEndpoint({
+export const endpoint298 = defineEndpoint({
     path: '/reports/item-298',
     requests: {
         [HttpMethod.Post]: {
@@ -6300,7 +6297,7 @@ const endpoint298 = defineEndpoint({
     },
 });
 
-const endpoint299 = defineEndpoint({
+export const endpoint299 = defineEndpoint({
     path: '/reports/item-299',
     requests: {
         [HttpMethod.Post]: {
@@ -6321,7 +6318,7 @@ const endpoint299 = defineEndpoint({
     },
 });
 
-const endpoint300 = defineEndpoint({
+export const endpoint300 = defineEndpoint({
     path: '/reports/item-300',
     requests: {
         [HttpMethod.Post]: {
@@ -6342,7 +6339,7 @@ const endpoint300 = defineEndpoint({
     },
 });
 
-const endpoint301 = defineEndpoint({
+export const endpoint301 = defineEndpoint({
     path: '/reports/item-301',
     requests: {
         [HttpMethod.Post]: {
@@ -6363,7 +6360,7 @@ const endpoint301 = defineEndpoint({
     },
 });
 
-const endpoint302 = defineEndpoint({
+export const endpoint302 = defineEndpoint({
     path: '/reports/item-302',
     requests: {
         [HttpMethod.Post]: {
@@ -6384,7 +6381,7 @@ const endpoint302 = defineEndpoint({
     },
 });
 
-const endpoint303 = defineEndpoint({
+export const endpoint303 = defineEndpoint({
     path: '/reports/item-303',
     requests: {
         [HttpMethod.Post]: {
@@ -6405,7 +6402,7 @@ const endpoint303 = defineEndpoint({
     },
 });
 
-const endpoint304 = defineEndpoint({
+export const endpoint304 = defineEndpoint({
     path: '/reports/item-304',
     requests: {
         [HttpMethod.Post]: {
@@ -6426,7 +6423,7 @@ const endpoint304 = defineEndpoint({
     },
 });
 
-const endpoint305 = defineEndpoint({
+export const endpoint305 = defineEndpoint({
     path: '/reports/item-305',
     requests: {
         [HttpMethod.Post]: {
@@ -6447,7 +6444,7 @@ const endpoint305 = defineEndpoint({
     },
 });
 
-const endpoint306 = defineEndpoint({
+export const endpoint306 = defineEndpoint({
     path: '/reports/item-306',
     requests: {
         [HttpMethod.Post]: {
@@ -6468,7 +6465,7 @@ const endpoint306 = defineEndpoint({
     },
 });
 
-const endpoint307 = defineEndpoint({
+export const endpoint307 = defineEndpoint({
     path: '/reports/item-307',
     requests: {
         [HttpMethod.Post]: {
@@ -6489,7 +6486,7 @@ const endpoint307 = defineEndpoint({
     },
 });
 
-const endpoint308 = defineEndpoint({
+export const endpoint308 = defineEndpoint({
     path: '/reports/item-308',
     requests: {
         [HttpMethod.Post]: {
@@ -6510,7 +6507,7 @@ const endpoint308 = defineEndpoint({
     },
 });
 
-const endpoint309 = defineEndpoint({
+export const endpoint309 = defineEndpoint({
     path: '/reports/item-309',
     requests: {
         [HttpMethod.Post]: {
@@ -6531,7 +6528,7 @@ const endpoint309 = defineEndpoint({
     },
 });
 
-const endpoint310 = defineEndpoint({
+export const endpoint310 = defineEndpoint({
     path: '/reports/item-310',
     requests: {
         [HttpMethod.Post]: {
@@ -6552,7 +6549,7 @@ const endpoint310 = defineEndpoint({
     },
 });
 
-const endpoint311 = defineEndpoint({
+export const endpoint311 = defineEndpoint({
     path: '/reports/item-311',
     requests: {
         [HttpMethod.Post]: {
@@ -6573,7 +6570,7 @@ const endpoint311 = defineEndpoint({
     },
 });
 
-const endpoint312 = defineEndpoint({
+export const endpoint312 = defineEndpoint({
     path: '/reports/item-312',
     requests: {
         [HttpMethod.Post]: {
@@ -6594,7 +6591,7 @@ const endpoint312 = defineEndpoint({
     },
 });
 
-const endpoint313 = defineEndpoint({
+export const endpoint313 = defineEndpoint({
     path: '/reports/item-313',
     requests: {
         [HttpMethod.Post]: {
@@ -6615,7 +6612,7 @@ const endpoint313 = defineEndpoint({
     },
 });
 
-const endpoint314 = defineEndpoint({
+export const endpoint314 = defineEndpoint({
     path: '/reports/item-314',
     requests: {
         [HttpMethod.Post]: {
@@ -6636,7 +6633,7 @@ const endpoint314 = defineEndpoint({
     },
 });
 
-const endpoint315 = defineEndpoint({
+export const endpoint315 = defineEndpoint({
     path: '/reports/item-315',
     requests: {
         [HttpMethod.Post]: {
@@ -6657,7 +6654,7 @@ const endpoint315 = defineEndpoint({
     },
 });
 
-const endpoint316 = defineEndpoint({
+export const endpoint316 = defineEndpoint({
     path: '/reports/item-316',
     requests: {
         [HttpMethod.Post]: {
@@ -6678,7 +6675,7 @@ const endpoint316 = defineEndpoint({
     },
 });
 
-const endpoint317 = defineEndpoint({
+export const endpoint317 = defineEndpoint({
     path: '/reports/item-317',
     requests: {
         [HttpMethod.Post]: {
@@ -6699,7 +6696,7 @@ const endpoint317 = defineEndpoint({
     },
 });
 
-const endpoint318 = defineEndpoint({
+export const endpoint318 = defineEndpoint({
     path: '/reports/item-318',
     requests: {
         [HttpMethod.Post]: {
@@ -6720,7 +6717,7 @@ const endpoint318 = defineEndpoint({
     },
 });
 
-const endpoint319 = defineEndpoint({
+export const endpoint319 = defineEndpoint({
     path: '/reports/item-319',
     requests: {
         [HttpMethod.Post]: {
@@ -6741,7 +6738,7 @@ const endpoint319 = defineEndpoint({
     },
 });
 
-const endpoint320 = defineEndpoint({
+export const endpoint320 = defineEndpoint({
     path: '/reports/item-320',
     requests: {
         [HttpMethod.Post]: {
@@ -6762,7 +6759,7 @@ const endpoint320 = defineEndpoint({
     },
 });
 
-const endpoint321 = defineEndpoint({
+export const endpoint321 = defineEndpoint({
     path: '/reports/item-321',
     requests: {
         [HttpMethod.Post]: {
@@ -6783,7 +6780,7 @@ const endpoint321 = defineEndpoint({
     },
 });
 
-const endpoint322 = defineEndpoint({
+export const endpoint322 = defineEndpoint({
     path: '/reports/item-322',
     requests: {
         [HttpMethod.Post]: {
@@ -6804,7 +6801,7 @@ const endpoint322 = defineEndpoint({
     },
 });
 
-const endpoint323 = defineEndpoint({
+export const endpoint323 = defineEndpoint({
     path: '/reports/item-323',
     requests: {
         [HttpMethod.Post]: {
@@ -6825,7 +6822,7 @@ const endpoint323 = defineEndpoint({
     },
 });
 
-const endpoint324 = defineEndpoint({
+export const endpoint324 = defineEndpoint({
     path: '/reports/item-324',
     requests: {
         [HttpMethod.Post]: {
@@ -6846,7 +6843,7 @@ const endpoint324 = defineEndpoint({
     },
 });
 
-const endpoint325 = defineEndpoint({
+export const endpoint325 = defineEndpoint({
     path: '/reports/item-325',
     requests: {
         [HttpMethod.Post]: {
@@ -6867,7 +6864,7 @@ const endpoint325 = defineEndpoint({
     },
 });
 
-const endpoint326 = defineEndpoint({
+export const endpoint326 = defineEndpoint({
     path: '/reports/item-326',
     requests: {
         [HttpMethod.Post]: {
@@ -6888,7 +6885,7 @@ const endpoint326 = defineEndpoint({
     },
 });
 
-const endpoint327 = defineEndpoint({
+export const endpoint327 = defineEndpoint({
     path: '/reports/item-327',
     requests: {
         [HttpMethod.Post]: {
@@ -6909,7 +6906,7 @@ const endpoint327 = defineEndpoint({
     },
 });
 
-const endpoint328 = defineEndpoint({
+export const endpoint328 = defineEndpoint({
     path: '/reports/item-328',
     requests: {
         [HttpMethod.Post]: {
@@ -6930,7 +6927,7 @@ const endpoint328 = defineEndpoint({
     },
 });
 
-const endpoint329 = defineEndpoint({
+export const endpoint329 = defineEndpoint({
     path: '/reports/item-329',
     requests: {
         [HttpMethod.Post]: {
@@ -6951,7 +6948,7 @@ const endpoint329 = defineEndpoint({
     },
 });
 
-const endpoint330 = defineEndpoint({
+export const endpoint330 = defineEndpoint({
     path: '/reports/item-330',
     requests: {
         [HttpMethod.Post]: {
@@ -6972,7 +6969,7 @@ const endpoint330 = defineEndpoint({
     },
 });
 
-const endpoint331 = defineEndpoint({
+export const endpoint331 = defineEndpoint({
     path: '/reports/item-331',
     requests: {
         [HttpMethod.Post]: {
@@ -6993,7 +6990,7 @@ const endpoint331 = defineEndpoint({
     },
 });
 
-const endpoint332 = defineEndpoint({
+export const endpoint332 = defineEndpoint({
     path: '/reports/item-332',
     requests: {
         [HttpMethod.Post]: {
@@ -7014,7 +7011,7 @@ const endpoint332 = defineEndpoint({
     },
 });
 
-const endpoint333 = defineEndpoint({
+export const endpoint333 = defineEndpoint({
     path: '/reports/item-333',
     requests: {
         [HttpMethod.Post]: {
@@ -7035,7 +7032,7 @@ const endpoint333 = defineEndpoint({
     },
 });
 
-const endpoint334 = defineEndpoint({
+export const endpoint334 = defineEndpoint({
     path: '/reports/item-334',
     requests: {
         [HttpMethod.Post]: {
@@ -7056,7 +7053,7 @@ const endpoint334 = defineEndpoint({
     },
 });
 
-const endpoint335 = defineEndpoint({
+export const endpoint335 = defineEndpoint({
     path: '/reports/item-335',
     requests: {
         [HttpMethod.Post]: {
@@ -7077,7 +7074,7 @@ const endpoint335 = defineEndpoint({
     },
 });
 
-const endpoint336 = defineEndpoint({
+export const endpoint336 = defineEndpoint({
     path: '/reports/item-336',
     requests: {
         [HttpMethod.Post]: {
@@ -7098,7 +7095,7 @@ const endpoint336 = defineEndpoint({
     },
 });
 
-const endpoint337 = defineEndpoint({
+export const endpoint337 = defineEndpoint({
     path: '/reports/item-337',
     requests: {
         [HttpMethod.Post]: {
@@ -7119,7 +7116,7 @@ const endpoint337 = defineEndpoint({
     },
 });
 
-const endpoint338 = defineEndpoint({
+export const endpoint338 = defineEndpoint({
     path: '/reports/item-338',
     requests: {
         [HttpMethod.Post]: {
@@ -7140,7 +7137,7 @@ const endpoint338 = defineEndpoint({
     },
 });
 
-const endpoint339 = defineEndpoint({
+export const endpoint339 = defineEndpoint({
     path: '/reports/item-339',
     requests: {
         [HttpMethod.Post]: {
@@ -7161,7 +7158,7 @@ const endpoint339 = defineEndpoint({
     },
 });
 
-const endpoint340 = defineEndpoint({
+export const endpoint340 = defineEndpoint({
     path: '/reports/item-340',
     requests: {
         [HttpMethod.Post]: {
@@ -7182,7 +7179,7 @@ const endpoint340 = defineEndpoint({
     },
 });
 
-const endpoint341 = defineEndpoint({
+export const endpoint341 = defineEndpoint({
     path: '/reports/item-341',
     requests: {
         [HttpMethod.Post]: {
@@ -7203,7 +7200,7 @@ const endpoint341 = defineEndpoint({
     },
 });
 
-const endpoint342 = defineEndpoint({
+export const endpoint342 = defineEndpoint({
     path: '/reports/item-342',
     requests: {
         [HttpMethod.Post]: {
@@ -7224,7 +7221,7 @@ const endpoint342 = defineEndpoint({
     },
 });
 
-const endpoint343 = defineEndpoint({
+export const endpoint343 = defineEndpoint({
     path: '/reports/item-343',
     requests: {
         [HttpMethod.Post]: {
@@ -7245,7 +7242,7 @@ const endpoint343 = defineEndpoint({
     },
 });
 
-const endpoint344 = defineEndpoint({
+export const endpoint344 = defineEndpoint({
     path: '/reports/item-344',
     requests: {
         [HttpMethod.Post]: {
@@ -7266,7 +7263,7 @@ const endpoint344 = defineEndpoint({
     },
 });
 
-const endpoint345 = defineEndpoint({
+export const endpoint345 = defineEndpoint({
     path: '/reports/item-345',
     requests: {
         [HttpMethod.Post]: {
@@ -7287,7 +7284,7 @@ const endpoint345 = defineEndpoint({
     },
 });
 
-const endpoint346 = defineEndpoint({
+export const endpoint346 = defineEndpoint({
     path: '/reports/item-346',
     requests: {
         [HttpMethod.Post]: {
@@ -7308,7 +7305,7 @@ const endpoint346 = defineEndpoint({
     },
 });
 
-const endpoint347 = defineEndpoint({
+export const endpoint347 = defineEndpoint({
     path: '/reports/item-347',
     requests: {
         [HttpMethod.Post]: {
@@ -7329,7 +7326,7 @@ const endpoint347 = defineEndpoint({
     },
 });
 
-const endpoint348 = defineEndpoint({
+export const endpoint348 = defineEndpoint({
     path: '/reports/item-348',
     requests: {
         [HttpMethod.Post]: {
@@ -7350,7 +7347,7 @@ const endpoint348 = defineEndpoint({
     },
 });
 
-const endpoint349 = defineEndpoint({
+export const endpoint349 = defineEndpoint({
     path: '/reports/item-349',
     requests: {
         [HttpMethod.Post]: {
@@ -7371,7 +7368,7 @@ const endpoint349 = defineEndpoint({
     },
 });
 
-const endpoint350 = defineEndpoint({
+export const endpoint350 = defineEndpoint({
     path: '/reports/item-350',
     requests: {
         [HttpMethod.Post]: {
@@ -7392,7 +7389,7 @@ const endpoint350 = defineEndpoint({
     },
 });
 
-const endpoint351 = defineEndpoint({
+export const endpoint351 = defineEndpoint({
     path: '/reports/item-351',
     requests: {
         [HttpMethod.Post]: {
@@ -7413,7 +7410,7 @@ const endpoint351 = defineEndpoint({
     },
 });
 
-const endpoint352 = defineEndpoint({
+export const endpoint352 = defineEndpoint({
     path: '/reports/item-352',
     requests: {
         [HttpMethod.Post]: {
@@ -7434,7 +7431,7 @@ const endpoint352 = defineEndpoint({
     },
 });
 
-const endpoint353 = defineEndpoint({
+export const endpoint353 = defineEndpoint({
     path: '/reports/item-353',
     requests: {
         [HttpMethod.Post]: {
@@ -7455,7 +7452,7 @@ const endpoint353 = defineEndpoint({
     },
 });
 
-const endpoint354 = defineEndpoint({
+export const endpoint354 = defineEndpoint({
     path: '/reports/item-354',
     requests: {
         [HttpMethod.Post]: {
@@ -7476,7 +7473,7 @@ const endpoint354 = defineEndpoint({
     },
 });
 
-const endpoint355 = defineEndpoint({
+export const endpoint355 = defineEndpoint({
     path: '/reports/item-355',
     requests: {
         [HttpMethod.Post]: {
@@ -7497,7 +7494,7 @@ const endpoint355 = defineEndpoint({
     },
 });
 
-const endpoint356 = defineEndpoint({
+export const endpoint356 = defineEndpoint({
     path: '/reports/item-356',
     requests: {
         [HttpMethod.Post]: {
@@ -7518,7 +7515,7 @@ const endpoint356 = defineEndpoint({
     },
 });
 
-const endpoint357 = defineEndpoint({
+export const endpoint357 = defineEndpoint({
     path: '/reports/item-357',
     requests: {
         [HttpMethod.Post]: {
@@ -7539,7 +7536,7 @@ const endpoint357 = defineEndpoint({
     },
 });
 
-const endpoint358 = defineEndpoint({
+export const endpoint358 = defineEndpoint({
     path: '/reports/item-358',
     requests: {
         [HttpMethod.Post]: {
@@ -7560,7 +7557,7 @@ const endpoint358 = defineEndpoint({
     },
 });
 
-const endpoint359 = defineEndpoint({
+export const endpoint359 = defineEndpoint({
     path: '/reports/item-359',
     requests: {
         [HttpMethod.Post]: {
@@ -7581,7 +7578,7 @@ const endpoint359 = defineEndpoint({
     },
 });
 
-const endpoint360 = defineEndpoint({
+export const endpoint360 = defineEndpoint({
     path: '/reports/item-360',
     requests: {
         [HttpMethod.Post]: {
@@ -7602,7 +7599,7 @@ const endpoint360 = defineEndpoint({
     },
 });
 
-const endpoint361 = defineEndpoint({
+export const endpoint361 = defineEndpoint({
     path: '/reports/item-361',
     requests: {
         [HttpMethod.Post]: {
@@ -7623,7 +7620,7 @@ const endpoint361 = defineEndpoint({
     },
 });
 
-const endpoint362 = defineEndpoint({
+export const endpoint362 = defineEndpoint({
     path: '/reports/item-362',
     requests: {
         [HttpMethod.Post]: {
@@ -7644,7 +7641,7 @@ const endpoint362 = defineEndpoint({
     },
 });
 
-const endpoint363 = defineEndpoint({
+export const endpoint363 = defineEndpoint({
     path: '/reports/item-363',
     requests: {
         [HttpMethod.Post]: {
@@ -7665,7 +7662,7 @@ const endpoint363 = defineEndpoint({
     },
 });
 
-const endpoint364 = defineEndpoint({
+export const endpoint364 = defineEndpoint({
     path: '/reports/item-364',
     requests: {
         [HttpMethod.Post]: {
@@ -7686,7 +7683,7 @@ const endpoint364 = defineEndpoint({
     },
 });
 
-const endpoint365 = defineEndpoint({
+export const endpoint365 = defineEndpoint({
     path: '/reports/item-365',
     requests: {
         [HttpMethod.Post]: {
@@ -7707,7 +7704,7 @@ const endpoint365 = defineEndpoint({
     },
 });
 
-const endpoint366 = defineEndpoint({
+export const endpoint366 = defineEndpoint({
     path: '/reports/item-366',
     requests: {
         [HttpMethod.Post]: {
@@ -7728,7 +7725,7 @@ const endpoint366 = defineEndpoint({
     },
 });
 
-const endpoint367 = defineEndpoint({
+export const endpoint367 = defineEndpoint({
     path: '/reports/item-367',
     requests: {
         [HttpMethod.Post]: {
@@ -7749,7 +7746,7 @@ const endpoint367 = defineEndpoint({
     },
 });
 
-const endpoint368 = defineEndpoint({
+export const endpoint368 = defineEndpoint({
     path: '/reports/item-368',
     requests: {
         [HttpMethod.Post]: {
@@ -7770,7 +7767,7 @@ const endpoint368 = defineEndpoint({
     },
 });
 
-const endpoint369 = defineEndpoint({
+export const endpoint369 = defineEndpoint({
     path: '/reports/item-369',
     requests: {
         [HttpMethod.Post]: {
@@ -7791,7 +7788,7 @@ const endpoint369 = defineEndpoint({
     },
 });
 
-const endpoint370 = defineEndpoint({
+export const endpoint370 = defineEndpoint({
     path: '/reports/item-370',
     requests: {
         [HttpMethod.Post]: {
@@ -7812,7 +7809,7 @@ const endpoint370 = defineEndpoint({
     },
 });
 
-const endpoint371 = defineEndpoint({
+export const endpoint371 = defineEndpoint({
     path: '/reports/item-371',
     requests: {
         [HttpMethod.Post]: {
@@ -7833,7 +7830,7 @@ const endpoint371 = defineEndpoint({
     },
 });
 
-const endpoint372 = defineEndpoint({
+export const endpoint372 = defineEndpoint({
     path: '/reports/item-372',
     requests: {
         [HttpMethod.Post]: {
@@ -7854,7 +7851,7 @@ const endpoint372 = defineEndpoint({
     },
 });
 
-const endpoint373 = defineEndpoint({
+export const endpoint373 = defineEndpoint({
     path: '/reports/item-373',
     requests: {
         [HttpMethod.Post]: {
@@ -7875,7 +7872,7 @@ const endpoint373 = defineEndpoint({
     },
 });
 
-const endpoint374 = defineEndpoint({
+export const endpoint374 = defineEndpoint({
     path: '/reports/item-374',
     requests: {
         [HttpMethod.Post]: {
@@ -7896,7 +7893,7 @@ const endpoint374 = defineEndpoint({
     },
 });
 
-const endpoint375 = defineEndpoint({
+export const endpoint375 = defineEndpoint({
     path: '/reports/item-375',
     requests: {
         [HttpMethod.Post]: {
@@ -7917,7 +7914,7 @@ const endpoint375 = defineEndpoint({
     },
 });
 
-const endpoint376 = defineEndpoint({
+export const endpoint376 = defineEndpoint({
     path: '/reports/item-376',
     requests: {
         [HttpMethod.Post]: {
@@ -7938,7 +7935,7 @@ const endpoint376 = defineEndpoint({
     },
 });
 
-const endpoint377 = defineEndpoint({
+export const endpoint377 = defineEndpoint({
     path: '/reports/item-377',
     requests: {
         [HttpMethod.Post]: {
@@ -7959,7 +7956,7 @@ const endpoint377 = defineEndpoint({
     },
 });
 
-const endpoint378 = defineEndpoint({
+export const endpoint378 = defineEndpoint({
     path: '/reports/item-378',
     requests: {
         [HttpMethod.Post]: {
@@ -7980,7 +7977,7 @@ const endpoint378 = defineEndpoint({
     },
 });
 
-const endpoint379 = defineEndpoint({
+export const endpoint379 = defineEndpoint({
     path: '/reports/item-379',
     requests: {
         [HttpMethod.Post]: {
@@ -8001,7 +7998,7 @@ const endpoint379 = defineEndpoint({
     },
 });
 
-const endpoint380 = defineEndpoint({
+export const endpoint380 = defineEndpoint({
     path: '/reports/item-380',
     requests: {
         [HttpMethod.Post]: {
@@ -8022,7 +8019,7 @@ const endpoint380 = defineEndpoint({
     },
 });
 
-const endpoint381 = defineEndpoint({
+export const endpoint381 = defineEndpoint({
     path: '/reports/item-381',
     requests: {
         [HttpMethod.Post]: {
@@ -8043,7 +8040,7 @@ const endpoint381 = defineEndpoint({
     },
 });
 
-const endpoint382 = defineEndpoint({
+export const endpoint382 = defineEndpoint({
     path: '/reports/item-382',
     requests: {
         [HttpMethod.Post]: {
@@ -8064,7 +8061,7 @@ const endpoint382 = defineEndpoint({
     },
 });
 
-const endpoint383 = defineEndpoint({
+export const endpoint383 = defineEndpoint({
     path: '/reports/item-383',
     requests: {
         [HttpMethod.Post]: {
@@ -8085,7 +8082,7 @@ const endpoint383 = defineEndpoint({
     },
 });
 
-const endpoint384 = defineEndpoint({
+export const endpoint384 = defineEndpoint({
     path: '/reports/item-384',
     requests: {
         [HttpMethod.Post]: {
@@ -8106,7 +8103,7 @@ const endpoint384 = defineEndpoint({
     },
 });
 
-const endpoint385 = defineEndpoint({
+export const endpoint385 = defineEndpoint({
     path: '/reports/item-385',
     requests: {
         [HttpMethod.Post]: {
@@ -8127,7 +8124,7 @@ const endpoint385 = defineEndpoint({
     },
 });
 
-const endpoint386 = defineEndpoint({
+export const endpoint386 = defineEndpoint({
     path: '/reports/item-386',
     requests: {
         [HttpMethod.Post]: {
@@ -8148,7 +8145,7 @@ const endpoint386 = defineEndpoint({
     },
 });
 
-const endpoint387 = defineEndpoint({
+export const endpoint387 = defineEndpoint({
     path: '/reports/item-387',
     requests: {
         [HttpMethod.Post]: {
@@ -8169,7 +8166,7 @@ const endpoint387 = defineEndpoint({
     },
 });
 
-const endpoint388 = defineEndpoint({
+export const endpoint388 = defineEndpoint({
     path: '/reports/item-388',
     requests: {
         [HttpMethod.Post]: {
@@ -8190,7 +8187,7 @@ const endpoint388 = defineEndpoint({
     },
 });
 
-const endpoint389 = defineEndpoint({
+export const endpoint389 = defineEndpoint({
     path: '/reports/item-389',
     requests: {
         [HttpMethod.Post]: {
@@ -8211,7 +8208,7 @@ const endpoint389 = defineEndpoint({
     },
 });
 
-const endpoint390 = defineEndpoint({
+export const endpoint390 = defineEndpoint({
     path: '/reports/item-390',
     requests: {
         [HttpMethod.Post]: {
@@ -8232,7 +8229,7 @@ const endpoint390 = defineEndpoint({
     },
 });
 
-const endpoint391 = defineEndpoint({
+export const endpoint391 = defineEndpoint({
     path: '/reports/item-391',
     requests: {
         [HttpMethod.Post]: {
@@ -8253,7 +8250,7 @@ const endpoint391 = defineEndpoint({
     },
 });
 
-const endpoint392 = defineEndpoint({
+export const endpoint392 = defineEndpoint({
     path: '/reports/item-392',
     requests: {
         [HttpMethod.Post]: {
@@ -8274,7 +8271,7 @@ const endpoint392 = defineEndpoint({
     },
 });
 
-const endpoint393 = defineEndpoint({
+export const endpoint393 = defineEndpoint({
     path: '/reports/item-393',
     requests: {
         [HttpMethod.Post]: {
@@ -8295,7 +8292,7 @@ const endpoint393 = defineEndpoint({
     },
 });
 
-const endpoint394 = defineEndpoint({
+export const endpoint394 = defineEndpoint({
     path: '/reports/item-394',
     requests: {
         [HttpMethod.Post]: {
@@ -8316,7 +8313,7 @@ const endpoint394 = defineEndpoint({
     },
 });
 
-const endpoint395 = defineEndpoint({
+export const endpoint395 = defineEndpoint({
     path: '/reports/item-395',
     requests: {
         [HttpMethod.Post]: {
@@ -8337,7 +8334,7 @@ const endpoint395 = defineEndpoint({
     },
 });
 
-const endpoint396 = defineEndpoint({
+export const endpoint396 = defineEndpoint({
     path: '/reports/item-396',
     requests: {
         [HttpMethod.Post]: {
@@ -8358,7 +8355,7 @@ const endpoint396 = defineEndpoint({
     },
 });
 
-const endpoint397 = defineEndpoint({
+export const endpoint397 = defineEndpoint({
     path: '/reports/item-397',
     requests: {
         [HttpMethod.Post]: {
@@ -8379,7 +8376,7 @@ const endpoint397 = defineEndpoint({
     },
 });
 
-const endpoint398 = defineEndpoint({
+export const endpoint398 = defineEndpoint({
     path: '/reports/item-398',
     requests: {
         [HttpMethod.Post]: {
@@ -8400,7 +8397,7 @@ const endpoint398 = defineEndpoint({
     },
 });
 
-const endpoint399 = defineEndpoint({
+export const endpoint399 = defineEndpoint({
     path: '/reports/item-399',
     requests: {
         [HttpMethod.Post]: {
@@ -8421,7 +8418,7 @@ const endpoint399 = defineEndpoint({
     },
 });
 
-const endpoint400 = defineEndpoint({
+export const endpoint400 = defineEndpoint({
     path: '/reports/item-400',
     requests: {
         [HttpMethod.Post]: {
@@ -8442,7 +8439,7 @@ const endpoint400 = defineEndpoint({
     },
 });
 
-const endpoint401 = defineEndpoint({
+export const endpoint401 = defineEndpoint({
     path: '/reports/item-401',
     requests: {
         [HttpMethod.Post]: {
@@ -8463,7 +8460,7 @@ const endpoint401 = defineEndpoint({
     },
 });
 
-const endpoint402 = defineEndpoint({
+export const endpoint402 = defineEndpoint({
     path: '/reports/item-402',
     requests: {
         [HttpMethod.Post]: {
@@ -8484,7 +8481,7 @@ const endpoint402 = defineEndpoint({
     },
 });
 
-const endpoint403 = defineEndpoint({
+export const endpoint403 = defineEndpoint({
     path: '/reports/item-403',
     requests: {
         [HttpMethod.Post]: {
@@ -8505,7 +8502,7 @@ const endpoint403 = defineEndpoint({
     },
 });
 
-const endpoint404 = defineEndpoint({
+export const endpoint404 = defineEndpoint({
     path: '/reports/item-404',
     requests: {
         [HttpMethod.Post]: {
@@ -8526,7 +8523,7 @@ const endpoint404 = defineEndpoint({
     },
 });
 
-const endpoint405 = defineEndpoint({
+export const endpoint405 = defineEndpoint({
     path: '/reports/item-405',
     requests: {
         [HttpMethod.Post]: {
@@ -8547,7 +8544,7 @@ const endpoint405 = defineEndpoint({
     },
 });
 
-const endpoint406 = defineEndpoint({
+export const endpoint406 = defineEndpoint({
     path: '/reports/item-406',
     requests: {
         [HttpMethod.Post]: {
@@ -8568,7 +8565,7 @@ const endpoint406 = defineEndpoint({
     },
 });
 
-const endpoint407 = defineEndpoint({
+export const endpoint407 = defineEndpoint({
     path: '/reports/item-407',
     requests: {
         [HttpMethod.Post]: {
@@ -8589,7 +8586,7 @@ const endpoint407 = defineEndpoint({
     },
 });
 
-const endpoint408 = defineEndpoint({
+export const endpoint408 = defineEndpoint({
     path: '/reports/item-408',
     requests: {
         [HttpMethod.Post]: {
@@ -8610,7 +8607,7 @@ const endpoint408 = defineEndpoint({
     },
 });
 
-const endpoint409 = defineEndpoint({
+export const endpoint409 = defineEndpoint({
     path: '/reports/item-409',
     requests: {
         [HttpMethod.Post]: {
@@ -8631,7 +8628,7 @@ const endpoint409 = defineEndpoint({
     },
 });
 
-const endpoint410 = defineEndpoint({
+export const endpoint410 = defineEndpoint({
     path: '/reports/item-410',
     requests: {
         [HttpMethod.Post]: {
@@ -8652,7 +8649,7 @@ const endpoint410 = defineEndpoint({
     },
 });
 
-const endpoint411 = defineEndpoint({
+export const endpoint411 = defineEndpoint({
     path: '/reports/item-411',
     requests: {
         [HttpMethod.Post]: {
@@ -8673,7 +8670,7 @@ const endpoint411 = defineEndpoint({
     },
 });
 
-const endpoint412 = defineEndpoint({
+export const endpoint412 = defineEndpoint({
     path: '/reports/item-412',
     requests: {
         [HttpMethod.Post]: {
@@ -8694,7 +8691,7 @@ const endpoint412 = defineEndpoint({
     },
 });
 
-const endpoint413 = defineEndpoint({
+export const endpoint413 = defineEndpoint({
     path: '/reports/item-413',
     requests: {
         [HttpMethod.Post]: {
@@ -8715,7 +8712,7 @@ const endpoint413 = defineEndpoint({
     },
 });
 
-const endpoint414 = defineEndpoint({
+export const endpoint414 = defineEndpoint({
     path: '/reports/item-414',
     requests: {
         [HttpMethod.Post]: {
@@ -8736,7 +8733,7 @@ const endpoint414 = defineEndpoint({
     },
 });
 
-const endpoint415 = defineEndpoint({
+export const endpoint415 = defineEndpoint({
     path: '/reports/item-415',
     requests: {
         [HttpMethod.Post]: {
@@ -8757,7 +8754,7 @@ const endpoint415 = defineEndpoint({
     },
 });
 
-const endpoint416 = defineEndpoint({
+export const endpoint416 = defineEndpoint({
     path: '/reports/item-416',
     requests: {
         [HttpMethod.Post]: {
@@ -8778,7 +8775,7 @@ const endpoint416 = defineEndpoint({
     },
 });
 
-const endpoint417 = defineEndpoint({
+export const endpoint417 = defineEndpoint({
     path: '/reports/item-417',
     requests: {
         [HttpMethod.Post]: {
@@ -8799,7 +8796,7 @@ const endpoint417 = defineEndpoint({
     },
 });
 
-const endpoint418 = defineEndpoint({
+export const endpoint418 = defineEndpoint({
     path: '/reports/item-418',
     requests: {
         [HttpMethod.Post]: {
@@ -8820,7 +8817,7 @@ const endpoint418 = defineEndpoint({
     },
 });
 
-const endpoint419 = defineEndpoint({
+export const endpoint419 = defineEndpoint({
     path: '/reports/item-419',
     requests: {
         [HttpMethod.Post]: {
@@ -8841,7 +8838,7 @@ const endpoint419 = defineEndpoint({
     },
 });
 
-const endpoint420 = defineEndpoint({
+export const endpoint420 = defineEndpoint({
     path: '/reports/item-420',
     requests: {
         [HttpMethod.Post]: {
@@ -8862,7 +8859,7 @@ const endpoint420 = defineEndpoint({
     },
 });
 
-const endpoint421 = defineEndpoint({
+export const endpoint421 = defineEndpoint({
     path: '/reports/item-421',
     requests: {
         [HttpMethod.Post]: {
@@ -8883,7 +8880,7 @@ const endpoint421 = defineEndpoint({
     },
 });
 
-const endpoint422 = defineEndpoint({
+export const endpoint422 = defineEndpoint({
     path: '/reports/item-422',
     requests: {
         [HttpMethod.Post]: {
@@ -8904,7 +8901,7 @@ const endpoint422 = defineEndpoint({
     },
 });
 
-const endpoint423 = defineEndpoint({
+export const endpoint423 = defineEndpoint({
     path: '/reports/item-423',
     requests: {
         [HttpMethod.Post]: {
@@ -8925,7 +8922,7 @@ const endpoint423 = defineEndpoint({
     },
 });
 
-const endpoint424 = defineEndpoint({
+export const endpoint424 = defineEndpoint({
     path: '/reports/item-424',
     requests: {
         [HttpMethod.Post]: {
@@ -8946,7 +8943,7 @@ const endpoint424 = defineEndpoint({
     },
 });
 
-const endpoint425 = defineEndpoint({
+export const endpoint425 = defineEndpoint({
     path: '/reports/item-425',
     requests: {
         [HttpMethod.Post]: {
@@ -8967,7 +8964,7 @@ const endpoint425 = defineEndpoint({
     },
 });
 
-const endpoint426 = defineEndpoint({
+export const endpoint426 = defineEndpoint({
     path: '/reports/item-426',
     requests: {
         [HttpMethod.Post]: {
@@ -8988,7 +8985,7 @@ const endpoint426 = defineEndpoint({
     },
 });
 
-const endpoint427 = defineEndpoint({
+export const endpoint427 = defineEndpoint({
     path: '/reports/item-427',
     requests: {
         [HttpMethod.Post]: {
@@ -9009,7 +9006,7 @@ const endpoint427 = defineEndpoint({
     },
 });
 
-const endpoint428 = defineEndpoint({
+export const endpoint428 = defineEndpoint({
     path: '/reports/item-428',
     requests: {
         [HttpMethod.Post]: {
@@ -9030,7 +9027,7 @@ const endpoint428 = defineEndpoint({
     },
 });
 
-const endpoint429 = defineEndpoint({
+export const endpoint429 = defineEndpoint({
     path: '/reports/item-429',
     requests: {
         [HttpMethod.Post]: {
@@ -9051,7 +9048,7 @@ const endpoint429 = defineEndpoint({
     },
 });
 
-const endpoint430 = defineEndpoint({
+export const endpoint430 = defineEndpoint({
     path: '/reports/item-430',
     requests: {
         [HttpMethod.Post]: {
@@ -9072,7 +9069,7 @@ const endpoint430 = defineEndpoint({
     },
 });
 
-const endpoint431 = defineEndpoint({
+export const endpoint431 = defineEndpoint({
     path: '/reports/item-431',
     requests: {
         [HttpMethod.Post]: {
@@ -9093,7 +9090,7 @@ const endpoint431 = defineEndpoint({
     },
 });
 
-const endpoint432 = defineEndpoint({
+export const endpoint432 = defineEndpoint({
     path: '/reports/item-432',
     requests: {
         [HttpMethod.Post]: {
@@ -9114,7 +9111,7 @@ const endpoint432 = defineEndpoint({
     },
 });
 
-const endpoint433 = defineEndpoint({
+export const endpoint433 = defineEndpoint({
     path: '/reports/item-433',
     requests: {
         [HttpMethod.Post]: {
@@ -9135,7 +9132,7 @@ const endpoint433 = defineEndpoint({
     },
 });
 
-const endpoint434 = defineEndpoint({
+export const endpoint434 = defineEndpoint({
     path: '/reports/item-434',
     requests: {
         [HttpMethod.Post]: {
@@ -9156,7 +9153,7 @@ const endpoint434 = defineEndpoint({
     },
 });
 
-const endpoint435 = defineEndpoint({
+export const endpoint435 = defineEndpoint({
     path: '/reports/item-435',
     requests: {
         [HttpMethod.Post]: {
@@ -9177,7 +9174,7 @@ const endpoint435 = defineEndpoint({
     },
 });
 
-const endpoint436 = defineEndpoint({
+export const endpoint436 = defineEndpoint({
     path: '/reports/item-436',
     requests: {
         [HttpMethod.Post]: {
@@ -9198,7 +9195,7 @@ const endpoint436 = defineEndpoint({
     },
 });
 
-const endpoint437 = defineEndpoint({
+export const endpoint437 = defineEndpoint({
     path: '/reports/item-437',
     requests: {
         [HttpMethod.Post]: {
@@ -9219,7 +9216,7 @@ const endpoint437 = defineEndpoint({
     },
 });
 
-const endpoint438 = defineEndpoint({
+export const endpoint438 = defineEndpoint({
     path: '/reports/item-438',
     requests: {
         [HttpMethod.Post]: {
@@ -9240,7 +9237,7 @@ const endpoint438 = defineEndpoint({
     },
 });
 
-const endpoint439 = defineEndpoint({
+export const endpoint439 = defineEndpoint({
     path: '/reports/item-439',
     requests: {
         [HttpMethod.Post]: {
@@ -9261,7 +9258,7 @@ const endpoint439 = defineEndpoint({
     },
 });
 
-const endpoint440 = defineEndpoint({
+export const endpoint440 = defineEndpoint({
     path: '/reports/item-440',
     requests: {
         [HttpMethod.Post]: {
@@ -9282,7 +9279,7 @@ const endpoint440 = defineEndpoint({
     },
 });
 
-const endpoint441 = defineEndpoint({
+export const endpoint441 = defineEndpoint({
     path: '/reports/item-441',
     requests: {
         [HttpMethod.Post]: {
@@ -9303,7 +9300,7 @@ const endpoint441 = defineEndpoint({
     },
 });
 
-const endpoint442 = defineEndpoint({
+export const endpoint442 = defineEndpoint({
     path: '/reports/item-442',
     requests: {
         [HttpMethod.Post]: {
@@ -9324,7 +9321,7 @@ const endpoint442 = defineEndpoint({
     },
 });
 
-const endpoint443 = defineEndpoint({
+export const endpoint443 = defineEndpoint({
     path: '/reports/item-443',
     requests: {
         [HttpMethod.Post]: {
@@ -9345,7 +9342,7 @@ const endpoint443 = defineEndpoint({
     },
 });
 
-const endpoint444 = defineEndpoint({
+export const endpoint444 = defineEndpoint({
     path: '/reports/item-444',
     requests: {
         [HttpMethod.Post]: {
@@ -9366,7 +9363,7 @@ const endpoint444 = defineEndpoint({
     },
 });
 
-const endpoint445 = defineEndpoint({
+export const endpoint445 = defineEndpoint({
     path: '/reports/item-445',
     requests: {
         [HttpMethod.Post]: {
@@ -9387,7 +9384,7 @@ const endpoint445 = defineEndpoint({
     },
 });
 
-const endpoint446 = defineEndpoint({
+export const endpoint446 = defineEndpoint({
     path: '/reports/item-446',
     requests: {
         [HttpMethod.Post]: {
@@ -9408,7 +9405,7 @@ const endpoint446 = defineEndpoint({
     },
 });
 
-const endpoint447 = defineEndpoint({
+export const endpoint447 = defineEndpoint({
     path: '/reports/item-447',
     requests: {
         [HttpMethod.Post]: {
@@ -9429,7 +9426,7 @@ const endpoint447 = defineEndpoint({
     },
 });
 
-const endpoint448 = defineEndpoint({
+export const endpoint448 = defineEndpoint({
     path: '/reports/item-448',
     requests: {
         [HttpMethod.Post]: {
@@ -9450,7 +9447,7 @@ const endpoint448 = defineEndpoint({
     },
 });
 
-const endpoint449 = defineEndpoint({
+export const endpoint449 = defineEndpoint({
     path: '/reports/item-449',
     requests: {
         [HttpMethod.Post]: {
@@ -9471,7 +9468,7 @@ const endpoint449 = defineEndpoint({
     },
 });
 
-const endpoint450 = defineEndpoint({
+export const endpoint450 = defineEndpoint({
     path: '/reports/item-450',
     requests: {
         [HttpMethod.Post]: {
@@ -9492,7 +9489,7 @@ const endpoint450 = defineEndpoint({
     },
 });
 
-const endpoint451 = defineEndpoint({
+export const endpoint451 = defineEndpoint({
     path: '/reports/item-451',
     requests: {
         [HttpMethod.Post]: {
@@ -9513,7 +9510,7 @@ const endpoint451 = defineEndpoint({
     },
 });
 
-const endpoint452 = defineEndpoint({
+export const endpoint452 = defineEndpoint({
     path: '/reports/item-452',
     requests: {
         [HttpMethod.Post]: {
@@ -9534,7 +9531,7 @@ const endpoint452 = defineEndpoint({
     },
 });
 
-const endpoint453 = defineEndpoint({
+export const endpoint453 = defineEndpoint({
     path: '/reports/item-453',
     requests: {
         [HttpMethod.Post]: {
@@ -9555,7 +9552,7 @@ const endpoint453 = defineEndpoint({
     },
 });
 
-const endpoint454 = defineEndpoint({
+export const endpoint454 = defineEndpoint({
     path: '/reports/item-454',
     requests: {
         [HttpMethod.Post]: {
@@ -9576,7 +9573,7 @@ const endpoint454 = defineEndpoint({
     },
 });
 
-const endpoint455 = defineEndpoint({
+export const endpoint455 = defineEndpoint({
     path: '/reports/item-455',
     requests: {
         [HttpMethod.Post]: {
@@ -9597,7 +9594,7 @@ const endpoint455 = defineEndpoint({
     },
 });
 
-const endpoint456 = defineEndpoint({
+export const endpoint456 = defineEndpoint({
     path: '/reports/item-456',
     requests: {
         [HttpMethod.Post]: {
@@ -9618,7 +9615,7 @@ const endpoint456 = defineEndpoint({
     },
 });
 
-const endpoint457 = defineEndpoint({
+export const endpoint457 = defineEndpoint({
     path: '/reports/item-457',
     requests: {
         [HttpMethod.Post]: {
@@ -9639,7 +9636,7 @@ const endpoint457 = defineEndpoint({
     },
 });
 
-const endpoint458 = defineEndpoint({
+export const endpoint458 = defineEndpoint({
     path: '/reports/item-458',
     requests: {
         [HttpMethod.Post]: {
@@ -9660,7 +9657,7 @@ const endpoint458 = defineEndpoint({
     },
 });
 
-const endpoint459 = defineEndpoint({
+export const endpoint459 = defineEndpoint({
     path: '/reports/item-459',
     requests: {
         [HttpMethod.Post]: {
@@ -9681,7 +9678,7 @@ const endpoint459 = defineEndpoint({
     },
 });
 
-const endpoint460 = defineEndpoint({
+export const endpoint460 = defineEndpoint({
     path: '/reports/item-460',
     requests: {
         [HttpMethod.Post]: {
@@ -9702,7 +9699,7 @@ const endpoint460 = defineEndpoint({
     },
 });
 
-const endpoint461 = defineEndpoint({
+export const endpoint461 = defineEndpoint({
     path: '/reports/item-461',
     requests: {
         [HttpMethod.Post]: {
@@ -9723,7 +9720,7 @@ const endpoint461 = defineEndpoint({
     },
 });
 
-const endpoint462 = defineEndpoint({
+export const endpoint462 = defineEndpoint({
     path: '/reports/item-462',
     requests: {
         [HttpMethod.Post]: {
@@ -9744,7 +9741,7 @@ const endpoint462 = defineEndpoint({
     },
 });
 
-const endpoint463 = defineEndpoint({
+export const endpoint463 = defineEndpoint({
     path: '/reports/item-463',
     requests: {
         [HttpMethod.Post]: {
@@ -9765,7 +9762,7 @@ const endpoint463 = defineEndpoint({
     },
 });
 
-const endpoint464 = defineEndpoint({
+export const endpoint464 = defineEndpoint({
     path: '/reports/item-464',
     requests: {
         [HttpMethod.Post]: {
@@ -9786,7 +9783,7 @@ const endpoint464 = defineEndpoint({
     },
 });
 
-const endpoint465 = defineEndpoint({
+export const endpoint465 = defineEndpoint({
     path: '/reports/item-465',
     requests: {
         [HttpMethod.Post]: {
@@ -9807,7 +9804,7 @@ const endpoint465 = defineEndpoint({
     },
 });
 
-const endpoint466 = defineEndpoint({
+export const endpoint466 = defineEndpoint({
     path: '/reports/item-466',
     requests: {
         [HttpMethod.Post]: {
@@ -9828,7 +9825,7 @@ const endpoint466 = defineEndpoint({
     },
 });
 
-const endpoint467 = defineEndpoint({
+export const endpoint467 = defineEndpoint({
     path: '/reports/item-467',
     requests: {
         [HttpMethod.Post]: {
@@ -9849,7 +9846,7 @@ const endpoint467 = defineEndpoint({
     },
 });
 
-const endpoint468 = defineEndpoint({
+export const endpoint468 = defineEndpoint({
     path: '/reports/item-468',
     requests: {
         [HttpMethod.Post]: {
@@ -9870,7 +9867,7 @@ const endpoint468 = defineEndpoint({
     },
 });
 
-const endpoint469 = defineEndpoint({
+export const endpoint469 = defineEndpoint({
     path: '/reports/item-469',
     requests: {
         [HttpMethod.Post]: {
@@ -9891,7 +9888,7 @@ const endpoint469 = defineEndpoint({
     },
 });
 
-const endpoint470 = defineEndpoint({
+export const endpoint470 = defineEndpoint({
     path: '/reports/item-470',
     requests: {
         [HttpMethod.Post]: {
@@ -9912,7 +9909,7 @@ const endpoint470 = defineEndpoint({
     },
 });
 
-const endpoint471 = defineEndpoint({
+export const endpoint471 = defineEndpoint({
     path: '/reports/item-471',
     requests: {
         [HttpMethod.Post]: {
@@ -9933,7 +9930,7 @@ const endpoint471 = defineEndpoint({
     },
 });
 
-const endpoint472 = defineEndpoint({
+export const endpoint472 = defineEndpoint({
     path: '/reports/item-472',
     requests: {
         [HttpMethod.Post]: {
@@ -9954,7 +9951,7 @@ const endpoint472 = defineEndpoint({
     },
 });
 
-const endpoint473 = defineEndpoint({
+export const endpoint473 = defineEndpoint({
     path: '/reports/item-473',
     requests: {
         [HttpMethod.Post]: {
@@ -9975,7 +9972,7 @@ const endpoint473 = defineEndpoint({
     },
 });
 
-const endpoint474 = defineEndpoint({
+export const endpoint474 = defineEndpoint({
     path: '/reports/item-474',
     requests: {
         [HttpMethod.Post]: {
@@ -9996,7 +9993,7 @@ const endpoint474 = defineEndpoint({
     },
 });
 
-const endpoint475 = defineEndpoint({
+export const endpoint475 = defineEndpoint({
     path: '/reports/item-475',
     requests: {
         [HttpMethod.Post]: {
@@ -10017,7 +10014,7 @@ const endpoint475 = defineEndpoint({
     },
 });
 
-const endpoint476 = defineEndpoint({
+export const endpoint476 = defineEndpoint({
     path: '/reports/item-476',
     requests: {
         [HttpMethod.Post]: {
@@ -10038,7 +10035,7 @@ const endpoint476 = defineEndpoint({
     },
 });
 
-const endpoint477 = defineEndpoint({
+export const endpoint477 = defineEndpoint({
     path: '/reports/item-477',
     requests: {
         [HttpMethod.Post]: {
@@ -10059,7 +10056,7 @@ const endpoint477 = defineEndpoint({
     },
 });
 
-const endpoint478 = defineEndpoint({
+export const endpoint478 = defineEndpoint({
     path: '/reports/item-478',
     requests: {
         [HttpMethod.Post]: {
@@ -10080,7 +10077,7 @@ const endpoint478 = defineEndpoint({
     },
 });
 
-const endpoint479 = defineEndpoint({
+export const endpoint479 = defineEndpoint({
     path: '/reports/item-479',
     requests: {
         [HttpMethod.Post]: {
@@ -10101,7 +10098,7 @@ const endpoint479 = defineEndpoint({
     },
 });
 
-const endpoint480 = defineEndpoint({
+export const endpoint480 = defineEndpoint({
     path: '/reports/item-480',
     requests: {
         [HttpMethod.Post]: {
@@ -10122,7 +10119,7 @@ const endpoint480 = defineEndpoint({
     },
 });
 
-const endpoint481 = defineEndpoint({
+export const endpoint481 = defineEndpoint({
     path: '/reports/item-481',
     requests: {
         [HttpMethod.Post]: {
@@ -10143,7 +10140,7 @@ const endpoint481 = defineEndpoint({
     },
 });
 
-const endpoint482 = defineEndpoint({
+export const endpoint482 = defineEndpoint({
     path: '/reports/item-482',
     requests: {
         [HttpMethod.Post]: {
@@ -10164,7 +10161,7 @@ const endpoint482 = defineEndpoint({
     },
 });
 
-const endpoint483 = defineEndpoint({
+export const endpoint483 = defineEndpoint({
     path: '/reports/item-483',
     requests: {
         [HttpMethod.Post]: {
@@ -10185,7 +10182,7 @@ const endpoint483 = defineEndpoint({
     },
 });
 
-const endpoint484 = defineEndpoint({
+export const endpoint484 = defineEndpoint({
     path: '/reports/item-484',
     requests: {
         [HttpMethod.Post]: {
@@ -10206,7 +10203,7 @@ const endpoint484 = defineEndpoint({
     },
 });
 
-const endpoint485 = defineEndpoint({
+export const endpoint485 = defineEndpoint({
     path: '/reports/item-485',
     requests: {
         [HttpMethod.Post]: {
@@ -10227,7 +10224,7 @@ const endpoint485 = defineEndpoint({
     },
 });
 
-const endpoint486 = defineEndpoint({
+export const endpoint486 = defineEndpoint({
     path: '/reports/item-486',
     requests: {
         [HttpMethod.Post]: {
@@ -10248,7 +10245,7 @@ const endpoint486 = defineEndpoint({
     },
 });
 
-const endpoint487 = defineEndpoint({
+export const endpoint487 = defineEndpoint({
     path: '/reports/item-487',
     requests: {
         [HttpMethod.Post]: {
@@ -10269,7 +10266,7 @@ const endpoint487 = defineEndpoint({
     },
 });
 
-const endpoint488 = defineEndpoint({
+export const endpoint488 = defineEndpoint({
     path: '/reports/item-488',
     requests: {
         [HttpMethod.Post]: {
@@ -10290,7 +10287,7 @@ const endpoint488 = defineEndpoint({
     },
 });
 
-const endpoint489 = defineEndpoint({
+export const endpoint489 = defineEndpoint({
     path: '/reports/item-489',
     requests: {
         [HttpMethod.Post]: {
@@ -10311,7 +10308,7 @@ const endpoint489 = defineEndpoint({
     },
 });
 
-const endpoint490 = defineEndpoint({
+export const endpoint490 = defineEndpoint({
     path: '/reports/item-490',
     requests: {
         [HttpMethod.Post]: {
@@ -10332,7 +10329,7 @@ const endpoint490 = defineEndpoint({
     },
 });
 
-const endpoint491 = defineEndpoint({
+export const endpoint491 = defineEndpoint({
     path: '/reports/item-491',
     requests: {
         [HttpMethod.Post]: {
@@ -10353,7 +10350,7 @@ const endpoint491 = defineEndpoint({
     },
 });
 
-const endpoint492 = defineEndpoint({
+export const endpoint492 = defineEndpoint({
     path: '/reports/item-492',
     requests: {
         [HttpMethod.Post]: {
@@ -10374,7 +10371,7 @@ const endpoint492 = defineEndpoint({
     },
 });
 
-const endpoint493 = defineEndpoint({
+export const endpoint493 = defineEndpoint({
     path: '/reports/item-493',
     requests: {
         [HttpMethod.Post]: {
@@ -10395,7 +10392,7 @@ const endpoint493 = defineEndpoint({
     },
 });
 
-const endpoint494 = defineEndpoint({
+export const endpoint494 = defineEndpoint({
     path: '/reports/item-494',
     requests: {
         [HttpMethod.Post]: {
@@ -10416,7 +10413,7 @@ const endpoint494 = defineEndpoint({
     },
 });
 
-const endpoint495 = defineEndpoint({
+export const endpoint495 = defineEndpoint({
     path: '/reports/item-495',
     requests: {
         [HttpMethod.Post]: {
@@ -10437,7 +10434,7 @@ const endpoint495 = defineEndpoint({
     },
 });
 
-const endpoint496 = defineEndpoint({
+export const endpoint496 = defineEndpoint({
     path: '/reports/item-496',
     requests: {
         [HttpMethod.Post]: {
@@ -10458,7 +10455,7 @@ const endpoint496 = defineEndpoint({
     },
 });
 
-const endpoint497 = defineEndpoint({
+export const endpoint497 = defineEndpoint({
     path: '/reports/item-497',
     requests: {
         [HttpMethod.Post]: {
@@ -10479,7 +10476,7 @@ const endpoint497 = defineEndpoint({
     },
 });
 
-const endpoint498 = defineEndpoint({
+export const endpoint498 = defineEndpoint({
     path: '/reports/item-498',
     requests: {
         [HttpMethod.Post]: {
@@ -10500,7 +10497,7 @@ const endpoint498 = defineEndpoint({
     },
 });
 
-const endpoint499 = defineEndpoint({
+export const endpoint499 = defineEndpoint({
     path: '/reports/item-499',
     requests: {
         [HttpMethod.Post]: {
@@ -10521,7 +10518,7 @@ const endpoint499 = defineEndpoint({
     },
 });
 
-const endpoint500 = defineEndpoint({
+export const endpoint500 = defineEndpoint({
     path: '/reports/item-500',
     requests: {
         [HttpMethod.Post]: {
@@ -10542,7 +10539,7 @@ const endpoint500 = defineEndpoint({
     },
 });
 
-const endpoint501 = defineEndpoint({
+export const endpoint501 = defineEndpoint({
     path: '/reports/item-501',
     requests: {
         [HttpMethod.Post]: {
@@ -10563,7 +10560,7 @@ const endpoint501 = defineEndpoint({
     },
 });
 
-const endpoint502 = defineEndpoint({
+export const endpoint502 = defineEndpoint({
     path: '/reports/item-502',
     requests: {
         [HttpMethod.Post]: {
@@ -10584,7 +10581,7 @@ const endpoint502 = defineEndpoint({
     },
 });
 
-const endpoint503 = defineEndpoint({
+export const endpoint503 = defineEndpoint({
     path: '/reports/item-503',
     requests: {
         [HttpMethod.Post]: {
@@ -10605,7 +10602,7 @@ const endpoint503 = defineEndpoint({
     },
 });
 
-const endpoint504 = defineEndpoint({
+export const endpoint504 = defineEndpoint({
     path: '/reports/item-504',
     requests: {
         [HttpMethod.Post]: {
@@ -10626,7 +10623,7 @@ const endpoint504 = defineEndpoint({
     },
 });
 
-const endpoint505 = defineEndpoint({
+export const endpoint505 = defineEndpoint({
     path: '/reports/item-505',
     requests: {
         [HttpMethod.Post]: {
@@ -10647,7 +10644,7 @@ const endpoint505 = defineEndpoint({
     },
 });
 
-const endpoint506 = defineEndpoint({
+export const endpoint506 = defineEndpoint({
     path: '/reports/item-506',
     requests: {
         [HttpMethod.Post]: {
@@ -10668,7 +10665,7 @@ const endpoint506 = defineEndpoint({
     },
 });
 
-const endpoint507 = defineEndpoint({
+export const endpoint507 = defineEndpoint({
     path: '/reports/item-507',
     requests: {
         [HttpMethod.Post]: {
@@ -10689,7 +10686,7 @@ const endpoint507 = defineEndpoint({
     },
 });
 
-const endpoint508 = defineEndpoint({
+export const endpoint508 = defineEndpoint({
     path: '/reports/item-508',
     requests: {
         [HttpMethod.Post]: {
@@ -10710,7 +10707,7 @@ const endpoint508 = defineEndpoint({
     },
 });
 
-const endpoint509 = defineEndpoint({
+export const endpoint509 = defineEndpoint({
     path: '/reports/item-509',
     requests: {
         [HttpMethod.Post]: {
@@ -10731,7 +10728,7 @@ const endpoint509 = defineEndpoint({
     },
 });
 
-const endpoint510 = defineEndpoint({
+export const endpoint510 = defineEndpoint({
     path: '/reports/item-510',
     requests: {
         [HttpMethod.Post]: {
@@ -10752,7 +10749,7 @@ const endpoint510 = defineEndpoint({
     },
 });
 
-const endpoint511 = defineEndpoint({
+export const endpoint511 = defineEndpoint({
     path: '/reports/item-511',
     requests: {
         [HttpMethod.Post]: {
@@ -10773,7 +10770,7 @@ const endpoint511 = defineEndpoint({
     },
 });
 
-const endpoint512 = defineEndpoint({
+export const endpoint512 = defineEndpoint({
     path: '/reports/item-512',
     requests: {
         [HttpMethod.Post]: {
@@ -10794,7 +10791,7 @@ const endpoint512 = defineEndpoint({
     },
 });
 
-const endpoint513 = defineEndpoint({
+export const endpoint513 = defineEndpoint({
     path: '/reports/item-513',
     requests: {
         [HttpMethod.Post]: {
@@ -10815,7 +10812,7 @@ const endpoint513 = defineEndpoint({
     },
 });
 
-const endpoint514 = defineEndpoint({
+export const endpoint514 = defineEndpoint({
     path: '/reports/item-514',
     requests: {
         [HttpMethod.Post]: {
@@ -10836,7 +10833,7 @@ const endpoint514 = defineEndpoint({
     },
 });
 
-const endpoint515 = defineEndpoint({
+export const endpoint515 = defineEndpoint({
     path: '/reports/item-515',
     requests: {
         [HttpMethod.Post]: {
@@ -10857,7 +10854,7 @@ const endpoint515 = defineEndpoint({
     },
 });
 
-const endpoint516 = defineEndpoint({
+export const endpoint516 = defineEndpoint({
     path: '/reports/item-516',
     requests: {
         [HttpMethod.Post]: {
@@ -10878,7 +10875,7 @@ const endpoint516 = defineEndpoint({
     },
 });
 
-const endpoint517 = defineEndpoint({
+export const endpoint517 = defineEndpoint({
     path: '/reports/item-517',
     requests: {
         [HttpMethod.Post]: {
@@ -10899,7 +10896,7 @@ const endpoint517 = defineEndpoint({
     },
 });
 
-const endpoint518 = defineEndpoint({
+export const endpoint518 = defineEndpoint({
     path: '/reports/item-518',
     requests: {
         [HttpMethod.Post]: {
@@ -10920,7 +10917,7 @@ const endpoint518 = defineEndpoint({
     },
 });
 
-const endpoint519 = defineEndpoint({
+export const endpoint519 = defineEndpoint({
     path: '/reports/item-519',
     requests: {
         [HttpMethod.Post]: {
@@ -10941,7 +10938,7 @@ const endpoint519 = defineEndpoint({
     },
 });
 
-const endpoint520 = defineEndpoint({
+export const endpoint520 = defineEndpoint({
     path: '/reports/item-520',
     requests: {
         [HttpMethod.Post]: {
@@ -10962,7 +10959,7 @@ const endpoint520 = defineEndpoint({
     },
 });
 
-const endpoint521 = defineEndpoint({
+export const endpoint521 = defineEndpoint({
     path: '/reports/item-521',
     requests: {
         [HttpMethod.Post]: {
@@ -10983,7 +10980,7 @@ const endpoint521 = defineEndpoint({
     },
 });
 
-const endpoint522 = defineEndpoint({
+export const endpoint522 = defineEndpoint({
     path: '/reports/item-522',
     requests: {
         [HttpMethod.Post]: {
@@ -11004,7 +11001,7 @@ const endpoint522 = defineEndpoint({
     },
 });
 
-const endpoint523 = defineEndpoint({
+export const endpoint523 = defineEndpoint({
     path: '/reports/item-523',
     requests: {
         [HttpMethod.Post]: {
@@ -11025,7 +11022,7 @@ const endpoint523 = defineEndpoint({
     },
 });
 
-const endpoint524 = defineEndpoint({
+export const endpoint524 = defineEndpoint({
     path: '/reports/item-524',
     requests: {
         [HttpMethod.Post]: {
@@ -11046,7 +11043,7 @@ const endpoint524 = defineEndpoint({
     },
 });
 
-const endpoint525 = defineEndpoint({
+export const endpoint525 = defineEndpoint({
     path: '/reports/item-525',
     requests: {
         [HttpMethod.Post]: {
@@ -11067,7 +11064,7 @@ const endpoint525 = defineEndpoint({
     },
 });
 
-const endpoint526 = defineEndpoint({
+export const endpoint526 = defineEndpoint({
     path: '/reports/item-526',
     requests: {
         [HttpMethod.Post]: {
@@ -11088,7 +11085,7 @@ const endpoint526 = defineEndpoint({
     },
 });
 
-const endpoint527 = defineEndpoint({
+export const endpoint527 = defineEndpoint({
     path: '/reports/item-527',
     requests: {
         [HttpMethod.Post]: {
@@ -11109,7 +11106,7 @@ const endpoint527 = defineEndpoint({
     },
 });
 
-const endpoint528 = defineEndpoint({
+export const endpoint528 = defineEndpoint({
     path: '/reports/item-528',
     requests: {
         [HttpMethod.Post]: {
@@ -11130,7 +11127,7 @@ const endpoint528 = defineEndpoint({
     },
 });
 
-const endpoint529 = defineEndpoint({
+export const endpoint529 = defineEndpoint({
     path: '/reports/item-529',
     requests: {
         [HttpMethod.Post]: {
@@ -11151,7 +11148,7 @@ const endpoint529 = defineEndpoint({
     },
 });
 
-const endpoint530 = defineEndpoint({
+export const endpoint530 = defineEndpoint({
     path: '/reports/item-530',
     requests: {
         [HttpMethod.Post]: {
@@ -11172,7 +11169,7 @@ const endpoint530 = defineEndpoint({
     },
 });
 
-const endpoint531 = defineEndpoint({
+export const endpoint531 = defineEndpoint({
     path: '/reports/item-531',
     requests: {
         [HttpMethod.Post]: {
@@ -11193,7 +11190,7 @@ const endpoint531 = defineEndpoint({
     },
 });
 
-const endpoint532 = defineEndpoint({
+export const endpoint532 = defineEndpoint({
     path: '/reports/item-532',
     requests: {
         [HttpMethod.Post]: {
@@ -11214,7 +11211,7 @@ const endpoint532 = defineEndpoint({
     },
 });
 
-const endpoint533 = defineEndpoint({
+export const endpoint533 = defineEndpoint({
     path: '/reports/item-533',
     requests: {
         [HttpMethod.Post]: {
@@ -11235,7 +11232,7 @@ const endpoint533 = defineEndpoint({
     },
 });
 
-const endpoint534 = defineEndpoint({
+export const endpoint534 = defineEndpoint({
     path: '/reports/item-534',
     requests: {
         [HttpMethod.Post]: {
@@ -11256,7 +11253,7 @@ const endpoint534 = defineEndpoint({
     },
 });
 
-const endpoint535 = defineEndpoint({
+export const endpoint535 = defineEndpoint({
     path: '/reports/item-535',
     requests: {
         [HttpMethod.Post]: {
@@ -11277,7 +11274,7 @@ const endpoint535 = defineEndpoint({
     },
 });
 
-const endpoint536 = defineEndpoint({
+export const endpoint536 = defineEndpoint({
     path: '/reports/item-536',
     requests: {
         [HttpMethod.Post]: {
@@ -11298,7 +11295,7 @@ const endpoint536 = defineEndpoint({
     },
 });
 
-const endpoint537 = defineEndpoint({
+export const endpoint537 = defineEndpoint({
     path: '/reports/item-537',
     requests: {
         [HttpMethod.Post]: {
@@ -11319,7 +11316,7 @@ const endpoint537 = defineEndpoint({
     },
 });
 
-const endpoint538 = defineEndpoint({
+export const endpoint538 = defineEndpoint({
     path: '/reports/item-538',
     requests: {
         [HttpMethod.Post]: {
@@ -11340,7 +11337,7 @@ const endpoint538 = defineEndpoint({
     },
 });
 
-const endpoint539 = defineEndpoint({
+export const endpoint539 = defineEndpoint({
     path: '/reports/item-539',
     requests: {
         [HttpMethod.Post]: {
@@ -11361,7 +11358,7 @@ const endpoint539 = defineEndpoint({
     },
 });
 
-const endpoint540 = defineEndpoint({
+export const endpoint540 = defineEndpoint({
     path: '/reports/item-540',
     requests: {
         [HttpMethod.Post]: {
@@ -11382,7 +11379,7 @@ const endpoint540 = defineEndpoint({
     },
 });
 
-const endpoint541 = defineEndpoint({
+export const endpoint541 = defineEndpoint({
     path: '/reports/item-541',
     requests: {
         [HttpMethod.Post]: {
@@ -11403,7 +11400,7 @@ const endpoint541 = defineEndpoint({
     },
 });
 
-const endpoint542 = defineEndpoint({
+export const endpoint542 = defineEndpoint({
     path: '/reports/item-542',
     requests: {
         [HttpMethod.Post]: {
@@ -11424,7 +11421,7 @@ const endpoint542 = defineEndpoint({
     },
 });
 
-const endpoint543 = defineEndpoint({
+export const endpoint543 = defineEndpoint({
     path: '/reports/item-543',
     requests: {
         [HttpMethod.Post]: {
@@ -11445,7 +11442,7 @@ const endpoint543 = defineEndpoint({
     },
 });
 
-const endpoint544 = defineEndpoint({
+export const endpoint544 = defineEndpoint({
     path: '/reports/item-544',
     requests: {
         [HttpMethod.Post]: {
@@ -11466,7 +11463,7 @@ const endpoint544 = defineEndpoint({
     },
 });
 
-const endpoint545 = defineEndpoint({
+export const endpoint545 = defineEndpoint({
     path: '/reports/item-545',
     requests: {
         [HttpMethod.Post]: {
@@ -11487,7 +11484,7 @@ const endpoint545 = defineEndpoint({
     },
 });
 
-const endpoint546 = defineEndpoint({
+export const endpoint546 = defineEndpoint({
     path: '/reports/item-546',
     requests: {
         [HttpMethod.Post]: {
@@ -11508,7 +11505,7 @@ const endpoint546 = defineEndpoint({
     },
 });
 
-const endpoint547 = defineEndpoint({
+export const endpoint547 = defineEndpoint({
     path: '/reports/item-547',
     requests: {
         [HttpMethod.Post]: {
@@ -11529,7 +11526,7 @@ const endpoint547 = defineEndpoint({
     },
 });
 
-const endpoint548 = defineEndpoint({
+export const endpoint548 = defineEndpoint({
     path: '/reports/item-548',
     requests: {
         [HttpMethod.Post]: {
@@ -11550,7 +11547,7 @@ const endpoint548 = defineEndpoint({
     },
 });
 
-const endpoint549 = defineEndpoint({
+export const endpoint549 = defineEndpoint({
     path: '/reports/item-549',
     requests: {
         [HttpMethod.Post]: {
@@ -11571,7 +11568,7 @@ const endpoint549 = defineEndpoint({
     },
 });
 
-const endpoint550 = defineEndpoint({
+export const endpoint550 = defineEndpoint({
     path: '/reports/item-550',
     requests: {
         [HttpMethod.Post]: {
@@ -11592,7 +11589,7 @@ const endpoint550 = defineEndpoint({
     },
 });
 
-const endpoint551 = defineEndpoint({
+export const endpoint551 = defineEndpoint({
     path: '/reports/item-551',
     requests: {
         [HttpMethod.Post]: {
@@ -11613,7 +11610,7 @@ const endpoint551 = defineEndpoint({
     },
 });
 
-const endpoint552 = defineEndpoint({
+export const endpoint552 = defineEndpoint({
     path: '/reports/item-552',
     requests: {
         [HttpMethod.Post]: {
@@ -11634,7 +11631,7 @@ const endpoint552 = defineEndpoint({
     },
 });
 
-const endpoint553 = defineEndpoint({
+export const endpoint553 = defineEndpoint({
     path: '/reports/item-553',
     requests: {
         [HttpMethod.Post]: {
@@ -11655,7 +11652,7 @@ const endpoint553 = defineEndpoint({
     },
 });
 
-const endpoint554 = defineEndpoint({
+export const endpoint554 = defineEndpoint({
     path: '/reports/item-554',
     requests: {
         [HttpMethod.Post]: {
@@ -11676,7 +11673,7 @@ const endpoint554 = defineEndpoint({
     },
 });
 
-const endpoint555 = defineEndpoint({
+export const endpoint555 = defineEndpoint({
     path: '/reports/item-555',
     requests: {
         [HttpMethod.Post]: {
@@ -11697,7 +11694,7 @@ const endpoint555 = defineEndpoint({
     },
 });
 
-const endpoint556 = defineEndpoint({
+export const endpoint556 = defineEndpoint({
     path: '/reports/item-556',
     requests: {
         [HttpMethod.Post]: {
@@ -11718,7 +11715,7 @@ const endpoint556 = defineEndpoint({
     },
 });
 
-const endpoint557 = defineEndpoint({
+export const endpoint557 = defineEndpoint({
     path: '/reports/item-557',
     requests: {
         [HttpMethod.Post]: {
@@ -11739,7 +11736,7 @@ const endpoint557 = defineEndpoint({
     },
 });
 
-const endpoint558 = defineEndpoint({
+export const endpoint558 = defineEndpoint({
     path: '/reports/item-558',
     requests: {
         [HttpMethod.Post]: {
@@ -11760,7 +11757,7 @@ const endpoint558 = defineEndpoint({
     },
 });
 
-const endpoint559 = defineEndpoint({
+export const endpoint559 = defineEndpoint({
     path: '/reports/item-559',
     requests: {
         [HttpMethod.Post]: {
@@ -11781,7 +11778,7 @@ const endpoint559 = defineEndpoint({
     },
 });
 
-const endpoint560 = defineEndpoint({
+export const endpoint560 = defineEndpoint({
     path: '/reports/item-560',
     requests: {
         [HttpMethod.Post]: {
@@ -11802,7 +11799,7 @@ const endpoint560 = defineEndpoint({
     },
 });
 
-const endpoint561 = defineEndpoint({
+export const endpoint561 = defineEndpoint({
     path: '/reports/item-561',
     requests: {
         [HttpMethod.Post]: {
@@ -11823,7 +11820,7 @@ const endpoint561 = defineEndpoint({
     },
 });
 
-const endpoint562 = defineEndpoint({
+export const endpoint562 = defineEndpoint({
     path: '/reports/item-562',
     requests: {
         [HttpMethod.Post]: {
@@ -11844,7 +11841,7 @@ const endpoint562 = defineEndpoint({
     },
 });
 
-const endpoint563 = defineEndpoint({
+export const endpoint563 = defineEndpoint({
     path: '/reports/item-563',
     requests: {
         [HttpMethod.Post]: {
@@ -11865,7 +11862,7 @@ const endpoint563 = defineEndpoint({
     },
 });
 
-const endpoint564 = defineEndpoint({
+export const endpoint564 = defineEndpoint({
     path: '/reports/item-564',
     requests: {
         [HttpMethod.Post]: {
@@ -11886,7 +11883,7 @@ const endpoint564 = defineEndpoint({
     },
 });
 
-const endpoint565 = defineEndpoint({
+export const endpoint565 = defineEndpoint({
     path: '/reports/item-565',
     requests: {
         [HttpMethod.Post]: {
@@ -11907,7 +11904,7 @@ const endpoint565 = defineEndpoint({
     },
 });
 
-const endpoint566 = defineEndpoint({
+export const endpoint566 = defineEndpoint({
     path: '/reports/item-566',
     requests: {
         [HttpMethod.Post]: {
@@ -11928,7 +11925,7 @@ const endpoint566 = defineEndpoint({
     },
 });
 
-const endpoint567 = defineEndpoint({
+export const endpoint567 = defineEndpoint({
     path: '/reports/item-567',
     requests: {
         [HttpMethod.Post]: {
@@ -11949,7 +11946,7 @@ const endpoint567 = defineEndpoint({
     },
 });
 
-const endpoint568 = defineEndpoint({
+export const endpoint568 = defineEndpoint({
     path: '/reports/item-568',
     requests: {
         [HttpMethod.Post]: {
@@ -11970,7 +11967,7 @@ const endpoint568 = defineEndpoint({
     },
 });
 
-const endpoint569 = defineEndpoint({
+export const endpoint569 = defineEndpoint({
     path: '/reports/item-569',
     requests: {
         [HttpMethod.Post]: {
@@ -11991,7 +11988,7 @@ const endpoint569 = defineEndpoint({
     },
 });
 
-const endpoint570 = defineEndpoint({
+export const endpoint570 = defineEndpoint({
     path: '/reports/item-570',
     requests: {
         [HttpMethod.Post]: {
@@ -12012,7 +12009,7 @@ const endpoint570 = defineEndpoint({
     },
 });
 
-const endpoint571 = defineEndpoint({
+export const endpoint571 = defineEndpoint({
     path: '/reports/item-571',
     requests: {
         [HttpMethod.Post]: {
@@ -12033,7 +12030,7 @@ const endpoint571 = defineEndpoint({
     },
 });
 
-const endpoint572 = defineEndpoint({
+export const endpoint572 = defineEndpoint({
     path: '/reports/item-572',
     requests: {
         [HttpMethod.Post]: {
@@ -12054,7 +12051,7 @@ const endpoint572 = defineEndpoint({
     },
 });
 
-const endpoint573 = defineEndpoint({
+export const endpoint573 = defineEndpoint({
     path: '/reports/item-573',
     requests: {
         [HttpMethod.Post]: {
@@ -12075,7 +12072,7 @@ const endpoint573 = defineEndpoint({
     },
 });
 
-const endpoint574 = defineEndpoint({
+export const endpoint574 = defineEndpoint({
     path: '/reports/item-574',
     requests: {
         [HttpMethod.Post]: {
@@ -12096,7 +12093,7 @@ const endpoint574 = defineEndpoint({
     },
 });
 
-const endpoint575 = defineEndpoint({
+export const endpoint575 = defineEndpoint({
     path: '/reports/item-575',
     requests: {
         [HttpMethod.Post]: {
@@ -12117,7 +12114,7 @@ const endpoint575 = defineEndpoint({
     },
 });
 
-const endpoint576 = defineEndpoint({
+export const endpoint576 = defineEndpoint({
     path: '/reports/item-576',
     requests: {
         [HttpMethod.Post]: {
@@ -12138,7 +12135,7 @@ const endpoint576 = defineEndpoint({
     },
 });
 
-const endpoint577 = defineEndpoint({
+export const endpoint577 = defineEndpoint({
     path: '/reports/item-577',
     requests: {
         [HttpMethod.Post]: {
@@ -12159,7 +12156,7 @@ const endpoint577 = defineEndpoint({
     },
 });
 
-const endpoint578 = defineEndpoint({
+export const endpoint578 = defineEndpoint({
     path: '/reports/item-578',
     requests: {
         [HttpMethod.Post]: {
@@ -12180,7 +12177,7 @@ const endpoint578 = defineEndpoint({
     },
 });
 
-const endpoint579 = defineEndpoint({
+export const endpoint579 = defineEndpoint({
     path: '/reports/item-579',
     requests: {
         [HttpMethod.Post]: {
@@ -12201,7 +12198,7 @@ const endpoint579 = defineEndpoint({
     },
 });
 
-const endpoint580 = defineEndpoint({
+export const endpoint580 = defineEndpoint({
     path: '/reports/item-580',
     requests: {
         [HttpMethod.Post]: {
@@ -12222,7 +12219,7 @@ const endpoint580 = defineEndpoint({
     },
 });
 
-const endpoint581 = defineEndpoint({
+export const endpoint581 = defineEndpoint({
     path: '/reports/item-581',
     requests: {
         [HttpMethod.Post]: {
@@ -12243,7 +12240,7 @@ const endpoint581 = defineEndpoint({
     },
 });
 
-const endpoint582 = defineEndpoint({
+export const endpoint582 = defineEndpoint({
     path: '/reports/item-582',
     requests: {
         [HttpMethod.Post]: {
@@ -12264,7 +12261,7 @@ const endpoint582 = defineEndpoint({
     },
 });
 
-const endpoint583 = defineEndpoint({
+export const endpoint583 = defineEndpoint({
     path: '/reports/item-583',
     requests: {
         [HttpMethod.Post]: {
@@ -12285,7 +12282,7 @@ const endpoint583 = defineEndpoint({
     },
 });
 
-const endpoint584 = defineEndpoint({
+export const endpoint584 = defineEndpoint({
     path: '/reports/item-584',
     requests: {
         [HttpMethod.Post]: {
@@ -12306,7 +12303,7 @@ const endpoint584 = defineEndpoint({
     },
 });
 
-const endpoint585 = defineEndpoint({
+export const endpoint585 = defineEndpoint({
     path: '/reports/item-585',
     requests: {
         [HttpMethod.Post]: {
@@ -12327,7 +12324,7 @@ const endpoint585 = defineEndpoint({
     },
 });
 
-const endpoint586 = defineEndpoint({
+export const endpoint586 = defineEndpoint({
     path: '/reports/item-586',
     requests: {
         [HttpMethod.Post]: {
@@ -12348,7 +12345,7 @@ const endpoint586 = defineEndpoint({
     },
 });
 
-const endpoint587 = defineEndpoint({
+export const endpoint587 = defineEndpoint({
     path: '/reports/item-587',
     requests: {
         [HttpMethod.Post]: {
@@ -12369,7 +12366,7 @@ const endpoint587 = defineEndpoint({
     },
 });
 
-const endpoint588 = defineEndpoint({
+export const endpoint588 = defineEndpoint({
     path: '/reports/item-588',
     requests: {
         [HttpMethod.Post]: {
@@ -12390,7 +12387,7 @@ const endpoint588 = defineEndpoint({
     },
 });
 
-const endpoint589 = defineEndpoint({
+export const endpoint589 = defineEndpoint({
     path: '/reports/item-589',
     requests: {
         [HttpMethod.Post]: {
@@ -12411,7 +12408,7 @@ const endpoint589 = defineEndpoint({
     },
 });
 
-const endpoint590 = defineEndpoint({
+export const endpoint590 = defineEndpoint({
     path: '/reports/item-590',
     requests: {
         [HttpMethod.Post]: {
@@ -12432,7 +12429,7 @@ const endpoint590 = defineEndpoint({
     },
 });
 
-const endpoint591 = defineEndpoint({
+export const endpoint591 = defineEndpoint({
     path: '/reports/item-591',
     requests: {
         [HttpMethod.Post]: {
@@ -12453,7 +12450,7 @@ const endpoint591 = defineEndpoint({
     },
 });
 
-const endpoint592 = defineEndpoint({
+export const endpoint592 = defineEndpoint({
     path: '/reports/item-592',
     requests: {
         [HttpMethod.Post]: {
@@ -12474,7 +12471,7 @@ const endpoint592 = defineEndpoint({
     },
 });
 
-const endpoint593 = defineEndpoint({
+export const endpoint593 = defineEndpoint({
     path: '/reports/item-593',
     requests: {
         [HttpMethod.Post]: {
@@ -12495,7 +12492,7 @@ const endpoint593 = defineEndpoint({
     },
 });
 
-const endpoint594 = defineEndpoint({
+export const endpoint594 = defineEndpoint({
     path: '/reports/item-594',
     requests: {
         [HttpMethod.Post]: {
@@ -12516,7 +12513,7 @@ const endpoint594 = defineEndpoint({
     },
 });
 
-const endpoint595 = defineEndpoint({
+export const endpoint595 = defineEndpoint({
     path: '/reports/item-595',
     requests: {
         [HttpMethod.Post]: {
@@ -12537,7 +12534,7 @@ const endpoint595 = defineEndpoint({
     },
 });
 
-const endpoint596 = defineEndpoint({
+export const endpoint596 = defineEndpoint({
     path: '/reports/item-596',
     requests: {
         [HttpMethod.Post]: {
@@ -12558,7 +12555,7 @@ const endpoint596 = defineEndpoint({
     },
 });
 
-const endpoint597 = defineEndpoint({
+export const endpoint597 = defineEndpoint({
     path: '/reports/item-597',
     requests: {
         [HttpMethod.Post]: {
@@ -12579,7 +12576,7 @@ const endpoint597 = defineEndpoint({
     },
 });
 
-const endpoint598 = defineEndpoint({
+export const endpoint598 = defineEndpoint({
     path: '/reports/item-598',
     requests: {
         [HttpMethod.Post]: {
@@ -12600,7 +12597,7 @@ const endpoint598 = defineEndpoint({
     },
 });
 
-const endpoint599 = defineEndpoint({
+export const endpoint599 = defineEndpoint({
     path: '/reports/item-599',
     requests: {
         [HttpMethod.Post]: {
@@ -12621,7 +12618,7 @@ const endpoint599 = defineEndpoint({
     },
 });
 
-const endpoint600 = defineEndpoint({
+export const endpoint600 = defineEndpoint({
     path: '/reports/item-600',
     requests: {
         [HttpMethod.Post]: {
@@ -12642,7 +12639,7 @@ const endpoint600 = defineEndpoint({
     },
 });
 
-const endpoint601 = defineEndpoint({
+export const endpoint601 = defineEndpoint({
     path: '/reports/item-601',
     requests: {
         [HttpMethod.Post]: {
@@ -12663,7 +12660,7 @@ const endpoint601 = defineEndpoint({
     },
 });
 
-const endpoint602 = defineEndpoint({
+export const endpoint602 = defineEndpoint({
     path: '/reports/item-602',
     requests: {
         [HttpMethod.Post]: {
@@ -12684,7 +12681,7 @@ const endpoint602 = defineEndpoint({
     },
 });
 
-const endpoint603 = defineEndpoint({
+export const endpoint603 = defineEndpoint({
     path: '/reports/item-603',
     requests: {
         [HttpMethod.Post]: {
@@ -12705,7 +12702,7 @@ const endpoint603 = defineEndpoint({
     },
 });
 
-const endpoint604 = defineEndpoint({
+export const endpoint604 = defineEndpoint({
     path: '/reports/item-604',
     requests: {
         [HttpMethod.Post]: {
@@ -12726,7 +12723,7 @@ const endpoint604 = defineEndpoint({
     },
 });
 
-const endpoint605 = defineEndpoint({
+export const endpoint605 = defineEndpoint({
     path: '/reports/item-605',
     requests: {
         [HttpMethod.Post]: {
@@ -12747,7 +12744,7 @@ const endpoint605 = defineEndpoint({
     },
 });
 
-const endpoint606 = defineEndpoint({
+export const endpoint606 = defineEndpoint({
     path: '/reports/item-606',
     requests: {
         [HttpMethod.Post]: {
@@ -12768,7 +12765,7 @@ const endpoint606 = defineEndpoint({
     },
 });
 
-const endpoint607 = defineEndpoint({
+export const endpoint607 = defineEndpoint({
     path: '/reports/item-607',
     requests: {
         [HttpMethod.Post]: {
@@ -12789,7 +12786,7 @@ const endpoint607 = defineEndpoint({
     },
 });
 
-const endpoint608 = defineEndpoint({
+export const endpoint608 = defineEndpoint({
     path: '/reports/item-608',
     requests: {
         [HttpMethod.Post]: {
@@ -12810,7 +12807,7 @@ const endpoint608 = defineEndpoint({
     },
 });
 
-const endpoint609 = defineEndpoint({
+export const endpoint609 = defineEndpoint({
     path: '/reports/item-609',
     requests: {
         [HttpMethod.Post]: {
@@ -12831,7 +12828,7 @@ const endpoint609 = defineEndpoint({
     },
 });
 
-const endpoint610 = defineEndpoint({
+export const endpoint610 = defineEndpoint({
     path: '/reports/item-610',
     requests: {
         [HttpMethod.Post]: {
@@ -12852,7 +12849,7 @@ const endpoint610 = defineEndpoint({
     },
 });
 
-const endpoint611 = defineEndpoint({
+export const endpoint611 = defineEndpoint({
     path: '/reports/item-611',
     requests: {
         [HttpMethod.Post]: {
@@ -12873,7 +12870,7 @@ const endpoint611 = defineEndpoint({
     },
 });
 
-const endpoint612 = defineEndpoint({
+export const endpoint612 = defineEndpoint({
     path: '/reports/item-612',
     requests: {
         [HttpMethod.Post]: {
@@ -12894,7 +12891,7 @@ const endpoint612 = defineEndpoint({
     },
 });
 
-const endpoint613 = defineEndpoint({
+export const endpoint613 = defineEndpoint({
     path: '/reports/item-613',
     requests: {
         [HttpMethod.Post]: {
@@ -12915,7 +12912,7 @@ const endpoint613 = defineEndpoint({
     },
 });
 
-const endpoint614 = defineEndpoint({
+export const endpoint614 = defineEndpoint({
     path: '/reports/item-614',
     requests: {
         [HttpMethod.Post]: {
@@ -12936,7 +12933,7 @@ const endpoint614 = defineEndpoint({
     },
 });
 
-const endpoint615 = defineEndpoint({
+export const endpoint615 = defineEndpoint({
     path: '/reports/item-615',
     requests: {
         [HttpMethod.Post]: {
@@ -12957,7 +12954,7 @@ const endpoint615 = defineEndpoint({
     },
 });
 
-const endpoint616 = defineEndpoint({
+export const endpoint616 = defineEndpoint({
     path: '/reports/item-616',
     requests: {
         [HttpMethod.Post]: {
@@ -12978,7 +12975,7 @@ const endpoint616 = defineEndpoint({
     },
 });
 
-const endpoint617 = defineEndpoint({
+export const endpoint617 = defineEndpoint({
     path: '/reports/item-617',
     requests: {
         [HttpMethod.Post]: {
@@ -12999,7 +12996,7 @@ const endpoint617 = defineEndpoint({
     },
 });
 
-const endpoint618 = defineEndpoint({
+export const endpoint618 = defineEndpoint({
     path: '/reports/item-618',
     requests: {
         [HttpMethod.Post]: {
@@ -13020,7 +13017,7 @@ const endpoint618 = defineEndpoint({
     },
 });
 
-const endpoint619 = defineEndpoint({
+export const endpoint619 = defineEndpoint({
     path: '/reports/item-619',
     requests: {
         [HttpMethod.Post]: {
@@ -13041,7 +13038,7 @@ const endpoint619 = defineEndpoint({
     },
 });
 
-const endpoint620 = defineEndpoint({
+export const endpoint620 = defineEndpoint({
     path: '/reports/item-620',
     requests: {
         [HttpMethod.Post]: {
@@ -13062,7 +13059,7 @@ const endpoint620 = defineEndpoint({
     },
 });
 
-const endpoint621 = defineEndpoint({
+export const endpoint621 = defineEndpoint({
     path: '/reports/item-621',
     requests: {
         [HttpMethod.Post]: {
@@ -13083,7 +13080,7 @@ const endpoint621 = defineEndpoint({
     },
 });
 
-const endpoint622 = defineEndpoint({
+export const endpoint622 = defineEndpoint({
     path: '/reports/item-622',
     requests: {
         [HttpMethod.Post]: {
@@ -13104,7 +13101,7 @@ const endpoint622 = defineEndpoint({
     },
 });
 
-const endpoint623 = defineEndpoint({
+export const endpoint623 = defineEndpoint({
     path: '/reports/item-623',
     requests: {
         [HttpMethod.Post]: {
@@ -13125,7 +13122,7 @@ const endpoint623 = defineEndpoint({
     },
 });
 
-const endpoint624 = defineEndpoint({
+export const endpoint624 = defineEndpoint({
     path: '/reports/item-624',
     requests: {
         [HttpMethod.Post]: {
@@ -13146,7 +13143,7 @@ const endpoint624 = defineEndpoint({
     },
 });
 
-const endpoint625 = defineEndpoint({
+export const endpoint625 = defineEndpoint({
     path: '/reports/item-625',
     requests: {
         [HttpMethod.Post]: {
@@ -13167,7 +13164,7 @@ const endpoint625 = defineEndpoint({
     },
 });
 
-const endpoint626 = defineEndpoint({
+export const endpoint626 = defineEndpoint({
     path: '/reports/item-626',
     requests: {
         [HttpMethod.Post]: {
@@ -13188,7 +13185,7 @@ const endpoint626 = defineEndpoint({
     },
 });
 
-const endpoint627 = defineEndpoint({
+export const endpoint627 = defineEndpoint({
     path: '/reports/item-627',
     requests: {
         [HttpMethod.Post]: {
@@ -13209,7 +13206,7 @@ const endpoint627 = defineEndpoint({
     },
 });
 
-const endpoint628 = defineEndpoint({
+export const endpoint628 = defineEndpoint({
     path: '/reports/item-628',
     requests: {
         [HttpMethod.Post]: {
@@ -13230,7 +13227,7 @@ const endpoint628 = defineEndpoint({
     },
 });
 
-const endpoint629 = defineEndpoint({
+export const endpoint629 = defineEndpoint({
     path: '/reports/item-629',
     requests: {
         [HttpMethod.Post]: {
@@ -13251,7 +13248,7 @@ const endpoint629 = defineEndpoint({
     },
 });
 
-const endpoint630 = defineEndpoint({
+export const endpoint630 = defineEndpoint({
     path: '/reports/item-630',
     requests: {
         [HttpMethod.Post]: {
@@ -13272,7 +13269,7 @@ const endpoint630 = defineEndpoint({
     },
 });
 
-const endpoint631 = defineEndpoint({
+export const endpoint631 = defineEndpoint({
     path: '/reports/item-631',
     requests: {
         [HttpMethod.Post]: {
@@ -13293,7 +13290,7 @@ const endpoint631 = defineEndpoint({
     },
 });
 
-const endpoint632 = defineEndpoint({
+export const endpoint632 = defineEndpoint({
     path: '/reports/item-632',
     requests: {
         [HttpMethod.Post]: {
@@ -13314,7 +13311,7 @@ const endpoint632 = defineEndpoint({
     },
 });
 
-const endpoint633 = defineEndpoint({
+export const endpoint633 = defineEndpoint({
     path: '/reports/item-633',
     requests: {
         [HttpMethod.Post]: {
@@ -13335,7 +13332,7 @@ const endpoint633 = defineEndpoint({
     },
 });
 
-const endpoint634 = defineEndpoint({
+export const endpoint634 = defineEndpoint({
     path: '/reports/item-634',
     requests: {
         [HttpMethod.Post]: {
@@ -13356,7 +13353,7 @@ const endpoint634 = defineEndpoint({
     },
 });
 
-const endpoint635 = defineEndpoint({
+export const endpoint635 = defineEndpoint({
     path: '/reports/item-635',
     requests: {
         [HttpMethod.Post]: {
@@ -13377,7 +13374,7 @@ const endpoint635 = defineEndpoint({
     },
 });
 
-const endpoint636 = defineEndpoint({
+export const endpoint636 = defineEndpoint({
     path: '/reports/item-636',
     requests: {
         [HttpMethod.Post]: {
@@ -13398,7 +13395,7 @@ const endpoint636 = defineEndpoint({
     },
 });
 
-const endpoint637 = defineEndpoint({
+export const endpoint637 = defineEndpoint({
     path: '/reports/item-637',
     requests: {
         [HttpMethod.Post]: {
@@ -13419,7 +13416,7 @@ const endpoint637 = defineEndpoint({
     },
 });
 
-const endpoint638 = defineEndpoint({
+export const endpoint638 = defineEndpoint({
     path: '/reports/item-638',
     requests: {
         [HttpMethod.Post]: {
@@ -13440,7 +13437,7 @@ const endpoint638 = defineEndpoint({
     },
 });
 
-const endpoint639 = defineEndpoint({
+export const endpoint639 = defineEndpoint({
     path: '/reports/item-639',
     requests: {
         [HttpMethod.Post]: {
@@ -13461,7 +13458,7 @@ const endpoint639 = defineEndpoint({
     },
 });
 
-const endpoint640 = defineEndpoint({
+export const endpoint640 = defineEndpoint({
     path: '/reports/item-640',
     requests: {
         [HttpMethod.Post]: {
@@ -13482,7 +13479,7 @@ const endpoint640 = defineEndpoint({
     },
 });
 
-const endpoint641 = defineEndpoint({
+export const endpoint641 = defineEndpoint({
     path: '/reports/item-641',
     requests: {
         [HttpMethod.Post]: {
@@ -13503,7 +13500,7 @@ const endpoint641 = defineEndpoint({
     },
 });
 
-const endpoint642 = defineEndpoint({
+export const endpoint642 = defineEndpoint({
     path: '/reports/item-642',
     requests: {
         [HttpMethod.Post]: {
@@ -13524,7 +13521,7 @@ const endpoint642 = defineEndpoint({
     },
 });
 
-const endpoint643 = defineEndpoint({
+export const endpoint643 = defineEndpoint({
     path: '/reports/item-643',
     requests: {
         [HttpMethod.Post]: {
@@ -13545,7 +13542,7 @@ const endpoint643 = defineEndpoint({
     },
 });
 
-const endpoint644 = defineEndpoint({
+export const endpoint644 = defineEndpoint({
     path: '/reports/item-644',
     requests: {
         [HttpMethod.Post]: {
@@ -13566,7 +13563,7 @@ const endpoint644 = defineEndpoint({
     },
 });
 
-const endpoint645 = defineEndpoint({
+export const endpoint645 = defineEndpoint({
     path: '/reports/item-645',
     requests: {
         [HttpMethod.Post]: {
@@ -13587,7 +13584,7 @@ const endpoint645 = defineEndpoint({
     },
 });
 
-const endpoint646 = defineEndpoint({
+export const endpoint646 = defineEndpoint({
     path: '/reports/item-646',
     requests: {
         [HttpMethod.Post]: {
@@ -13608,7 +13605,7 @@ const endpoint646 = defineEndpoint({
     },
 });
 
-const endpoint647 = defineEndpoint({
+export const endpoint647 = defineEndpoint({
     path: '/reports/item-647',
     requests: {
         [HttpMethod.Post]: {
@@ -13629,7 +13626,7 @@ const endpoint647 = defineEndpoint({
     },
 });
 
-const endpoint648 = defineEndpoint({
+export const endpoint648 = defineEndpoint({
     path: '/reports/item-648',
     requests: {
         [HttpMethod.Post]: {
@@ -13650,7 +13647,7 @@ const endpoint648 = defineEndpoint({
     },
 });
 
-const endpoint649 = defineEndpoint({
+export const endpoint649 = defineEndpoint({
     path: '/reports/item-649',
     requests: {
         [HttpMethod.Post]: {
@@ -13671,7 +13668,7 @@ const endpoint649 = defineEndpoint({
     },
 });
 
-const endpoint650 = defineEndpoint({
+export const endpoint650 = defineEndpoint({
     path: '/reports/item-650',
     requests: {
         [HttpMethod.Post]: {
@@ -13692,7 +13689,7 @@ const endpoint650 = defineEndpoint({
     },
 });
 
-const endpoint651 = defineEndpoint({
+export const endpoint651 = defineEndpoint({
     path: '/reports/item-651',
     requests: {
         [HttpMethod.Post]: {
@@ -13713,7 +13710,7 @@ const endpoint651 = defineEndpoint({
     },
 });
 
-const endpoint652 = defineEndpoint({
+export const endpoint652 = defineEndpoint({
     path: '/reports/item-652',
     requests: {
         [HttpMethod.Post]: {
@@ -13734,7 +13731,7 @@ const endpoint652 = defineEndpoint({
     },
 });
 
-const endpoint653 = defineEndpoint({
+export const endpoint653 = defineEndpoint({
     path: '/reports/item-653',
     requests: {
         [HttpMethod.Post]: {
@@ -13755,7 +13752,7 @@ const endpoint653 = defineEndpoint({
     },
 });
 
-const endpoint654 = defineEndpoint({
+export const endpoint654 = defineEndpoint({
     path: '/reports/item-654',
     requests: {
         [HttpMethod.Post]: {
@@ -13776,7 +13773,7 @@ const endpoint654 = defineEndpoint({
     },
 });
 
-const endpoint655 = defineEndpoint({
+export const endpoint655 = defineEndpoint({
     path: '/reports/item-655',
     requests: {
         [HttpMethod.Post]: {
@@ -13797,7 +13794,7 @@ const endpoint655 = defineEndpoint({
     },
 });
 
-const endpoint656 = defineEndpoint({
+export const endpoint656 = defineEndpoint({
     path: '/reports/item-656',
     requests: {
         [HttpMethod.Post]: {
@@ -13818,7 +13815,7 @@ const endpoint656 = defineEndpoint({
     },
 });
 
-const endpoint657 = defineEndpoint({
+export const endpoint657 = defineEndpoint({
     path: '/reports/item-657',
     requests: {
         [HttpMethod.Post]: {
@@ -13839,7 +13836,7 @@ const endpoint657 = defineEndpoint({
     },
 });
 
-const endpoint658 = defineEndpoint({
+export const endpoint658 = defineEndpoint({
     path: '/reports/item-658',
     requests: {
         [HttpMethod.Post]: {
@@ -13860,7 +13857,7 @@ const endpoint658 = defineEndpoint({
     },
 });
 
-const endpoint659 = defineEndpoint({
+export const endpoint659 = defineEndpoint({
     path: '/reports/item-659',
     requests: {
         [HttpMethod.Post]: {
@@ -13881,7 +13878,7 @@ const endpoint659 = defineEndpoint({
     },
 });
 
-const endpoint660 = defineEndpoint({
+export const endpoint660 = defineEndpoint({
     path: '/reports/item-660',
     requests: {
         [HttpMethod.Post]: {
@@ -13902,7 +13899,7 @@ const endpoint660 = defineEndpoint({
     },
 });
 
-const endpoint661 = defineEndpoint({
+export const endpoint661 = defineEndpoint({
     path: '/reports/item-661',
     requests: {
         [HttpMethod.Post]: {
@@ -13923,7 +13920,7 @@ const endpoint661 = defineEndpoint({
     },
 });
 
-const endpoint662 = defineEndpoint({
+export const endpoint662 = defineEndpoint({
     path: '/reports/item-662',
     requests: {
         [HttpMethod.Post]: {
@@ -13944,7 +13941,7 @@ const endpoint662 = defineEndpoint({
     },
 });
 
-const endpoint663 = defineEndpoint({
+export const endpoint663 = defineEndpoint({
     path: '/reports/item-663',
     requests: {
         [HttpMethod.Post]: {
@@ -13965,7 +13962,7 @@ const endpoint663 = defineEndpoint({
     },
 });
 
-const endpoint664 = defineEndpoint({
+export const endpoint664 = defineEndpoint({
     path: '/reports/item-664',
     requests: {
         [HttpMethod.Post]: {
@@ -13986,7 +13983,7 @@ const endpoint664 = defineEndpoint({
     },
 });
 
-const endpoint665 = defineEndpoint({
+export const endpoint665 = defineEndpoint({
     path: '/reports/item-665',
     requests: {
         [HttpMethod.Post]: {
@@ -14007,7 +14004,7 @@ const endpoint665 = defineEndpoint({
     },
 });
 
-const endpoint666 = defineEndpoint({
+export const endpoint666 = defineEndpoint({
     path: '/reports/item-666',
     requests: {
         [HttpMethod.Post]: {
@@ -14028,7 +14025,7 @@ const endpoint666 = defineEndpoint({
     },
 });
 
-const endpoint667 = defineEndpoint({
+export const endpoint667 = defineEndpoint({
     path: '/reports/item-667',
     requests: {
         [HttpMethod.Post]: {
@@ -14049,7 +14046,7 @@ const endpoint667 = defineEndpoint({
     },
 });
 
-const endpoint668 = defineEndpoint({
+export const endpoint668 = defineEndpoint({
     path: '/reports/item-668',
     requests: {
         [HttpMethod.Post]: {
@@ -14070,7 +14067,7 @@ const endpoint668 = defineEndpoint({
     },
 });
 
-const endpoint669 = defineEndpoint({
+export const endpoint669 = defineEndpoint({
     path: '/reports/item-669',
     requests: {
         [HttpMethod.Post]: {
@@ -14091,7 +14088,7 @@ const endpoint669 = defineEndpoint({
     },
 });
 
-const endpoint670 = defineEndpoint({
+export const endpoint670 = defineEndpoint({
     path: '/reports/item-670',
     requests: {
         [HttpMethod.Post]: {
@@ -14112,7 +14109,7 @@ const endpoint670 = defineEndpoint({
     },
 });
 
-const endpoint671 = defineEndpoint({
+export const endpoint671 = defineEndpoint({
     path: '/reports/item-671',
     requests: {
         [HttpMethod.Post]: {
@@ -14133,7 +14130,7 @@ const endpoint671 = defineEndpoint({
     },
 });
 
-const endpoint672 = defineEndpoint({
+export const endpoint672 = defineEndpoint({
     path: '/reports/item-672',
     requests: {
         [HttpMethod.Post]: {
@@ -14154,7 +14151,7 @@ const endpoint672 = defineEndpoint({
     },
 });
 
-const endpoint673 = defineEndpoint({
+export const endpoint673 = defineEndpoint({
     path: '/reports/item-673',
     requests: {
         [HttpMethod.Post]: {
@@ -14175,7 +14172,7 @@ const endpoint673 = defineEndpoint({
     },
 });
 
-const endpoint674 = defineEndpoint({
+export const endpoint674 = defineEndpoint({
     path: '/reports/item-674',
     requests: {
         [HttpMethod.Post]: {
@@ -14196,7 +14193,7 @@ const endpoint674 = defineEndpoint({
     },
 });
 
-const endpoint675 = defineEndpoint({
+export const endpoint675 = defineEndpoint({
     path: '/reports/item-675',
     requests: {
         [HttpMethod.Post]: {
@@ -14217,7 +14214,7 @@ const endpoint675 = defineEndpoint({
     },
 });
 
-const endpoint676 = defineEndpoint({
+export const endpoint676 = defineEndpoint({
     path: '/reports/item-676',
     requests: {
         [HttpMethod.Post]: {
@@ -14238,7 +14235,7 @@ const endpoint676 = defineEndpoint({
     },
 });
 
-const endpoint677 = defineEndpoint({
+export const endpoint677 = defineEndpoint({
     path: '/reports/item-677',
     requests: {
         [HttpMethod.Post]: {
@@ -14259,7 +14256,7 @@ const endpoint677 = defineEndpoint({
     },
 });
 
-const endpoint678 = defineEndpoint({
+export const endpoint678 = defineEndpoint({
     path: '/reports/item-678',
     requests: {
         [HttpMethod.Post]: {
@@ -14280,7 +14277,7 @@ const endpoint678 = defineEndpoint({
     },
 });
 
-const endpoint679 = defineEndpoint({
+export const endpoint679 = defineEndpoint({
     path: '/reports/item-679',
     requests: {
         [HttpMethod.Post]: {
@@ -14301,7 +14298,7 @@ const endpoint679 = defineEndpoint({
     },
 });
 
-const endpoint680 = defineEndpoint({
+export const endpoint680 = defineEndpoint({
     path: '/reports/item-680',
     requests: {
         [HttpMethod.Post]: {
@@ -14322,7 +14319,7 @@ const endpoint680 = defineEndpoint({
     },
 });
 
-const endpoint681 = defineEndpoint({
+export const endpoint681 = defineEndpoint({
     path: '/reports/item-681',
     requests: {
         [HttpMethod.Post]: {
@@ -14343,7 +14340,7 @@ const endpoint681 = defineEndpoint({
     },
 });
 
-const endpoint682 = defineEndpoint({
+export const endpoint682 = defineEndpoint({
     path: '/reports/item-682',
     requests: {
         [HttpMethod.Post]: {
@@ -14364,7 +14361,7 @@ const endpoint682 = defineEndpoint({
     },
 });
 
-const endpoint683 = defineEndpoint({
+export const endpoint683 = defineEndpoint({
     path: '/reports/item-683',
     requests: {
         [HttpMethod.Post]: {
@@ -14385,7 +14382,7 @@ const endpoint683 = defineEndpoint({
     },
 });
 
-const endpoint684 = defineEndpoint({
+export const endpoint684 = defineEndpoint({
     path: '/reports/item-684',
     requests: {
         [HttpMethod.Post]: {
@@ -14406,7 +14403,7 @@ const endpoint684 = defineEndpoint({
     },
 });
 
-const endpoint685 = defineEndpoint({
+export const endpoint685 = defineEndpoint({
     path: '/reports/item-685',
     requests: {
         [HttpMethod.Post]: {
@@ -14427,7 +14424,7 @@ const endpoint685 = defineEndpoint({
     },
 });
 
-const endpoint686 = defineEndpoint({
+export const endpoint686 = defineEndpoint({
     path: '/reports/item-686',
     requests: {
         [HttpMethod.Post]: {
@@ -14448,7 +14445,7 @@ const endpoint686 = defineEndpoint({
     },
 });
 
-const endpoint687 = defineEndpoint({
+export const endpoint687 = defineEndpoint({
     path: '/reports/item-687',
     requests: {
         [HttpMethod.Post]: {
@@ -14469,7 +14466,7 @@ const endpoint687 = defineEndpoint({
     },
 });
 
-const endpoint688 = defineEndpoint({
+export const endpoint688 = defineEndpoint({
     path: '/reports/item-688',
     requests: {
         [HttpMethod.Post]: {
@@ -14490,7 +14487,7 @@ const endpoint688 = defineEndpoint({
     },
 });
 
-const endpoint689 = defineEndpoint({
+export const endpoint689 = defineEndpoint({
     path: '/reports/item-689',
     requests: {
         [HttpMethod.Post]: {
@@ -14511,7 +14508,7 @@ const endpoint689 = defineEndpoint({
     },
 });
 
-const endpoint690 = defineEndpoint({
+export const endpoint690 = defineEndpoint({
     path: '/reports/item-690',
     requests: {
         [HttpMethod.Post]: {
@@ -14532,7 +14529,7 @@ const endpoint690 = defineEndpoint({
     },
 });
 
-const endpoint691 = defineEndpoint({
+export const endpoint691 = defineEndpoint({
     path: '/reports/item-691',
     requests: {
         [HttpMethod.Post]: {
@@ -14553,7 +14550,7 @@ const endpoint691 = defineEndpoint({
     },
 });
 
-const endpoint692 = defineEndpoint({
+export const endpoint692 = defineEndpoint({
     path: '/reports/item-692',
     requests: {
         [HttpMethod.Post]: {
@@ -14574,7 +14571,7 @@ const endpoint692 = defineEndpoint({
     },
 });
 
-const endpoint693 = defineEndpoint({
+export const endpoint693 = defineEndpoint({
     path: '/reports/item-693',
     requests: {
         [HttpMethod.Post]: {
@@ -14595,7 +14592,7 @@ const endpoint693 = defineEndpoint({
     },
 });
 
-const endpoint694 = defineEndpoint({
+export const endpoint694 = defineEndpoint({
     path: '/reports/item-694',
     requests: {
         [HttpMethod.Post]: {
@@ -14616,7 +14613,7 @@ const endpoint694 = defineEndpoint({
     },
 });
 
-const endpoint695 = defineEndpoint({
+export const endpoint695 = defineEndpoint({
     path: '/reports/item-695',
     requests: {
         [HttpMethod.Post]: {
@@ -14637,7 +14634,7 @@ const endpoint695 = defineEndpoint({
     },
 });
 
-const endpoint696 = defineEndpoint({
+export const endpoint696 = defineEndpoint({
     path: '/reports/item-696',
     requests: {
         [HttpMethod.Post]: {
@@ -14658,7 +14655,7 @@ const endpoint696 = defineEndpoint({
     },
 });
 
-const endpoint697 = defineEndpoint({
+export const endpoint697 = defineEndpoint({
     path: '/reports/item-697',
     requests: {
         [HttpMethod.Post]: {
@@ -14679,7 +14676,7 @@ const endpoint697 = defineEndpoint({
     },
 });
 
-const endpoint698 = defineEndpoint({
+export const endpoint698 = defineEndpoint({
     path: '/reports/item-698',
     requests: {
         [HttpMethod.Post]: {
@@ -14700,7 +14697,7 @@ const endpoint698 = defineEndpoint({
     },
 });
 
-const endpoint699 = defineEndpoint({
+export const endpoint699 = defineEndpoint({
     path: '/reports/item-699',
     requests: {
         [HttpMethod.Post]: {
@@ -14721,7 +14718,7 @@ const endpoint699 = defineEndpoint({
     },
 });
 
-const endpoint700 = defineEndpoint({
+export const endpoint700 = defineEndpoint({
     path: '/reports/item-700',
     requests: {
         [HttpMethod.Post]: {
@@ -14742,7 +14739,7 @@ const endpoint700 = defineEndpoint({
     },
 });
 
-const endpoint701 = defineEndpoint({
+export const endpoint701 = defineEndpoint({
     path: '/reports/item-701',
     requests: {
         [HttpMethod.Post]: {
@@ -14763,7 +14760,7 @@ const endpoint701 = defineEndpoint({
     },
 });
 
-const endpoint702 = defineEndpoint({
+export const endpoint702 = defineEndpoint({
     path: '/reports/item-702',
     requests: {
         [HttpMethod.Post]: {
@@ -14784,7 +14781,7 @@ const endpoint702 = defineEndpoint({
     },
 });
 
-const endpoint703 = defineEndpoint({
+export const endpoint703 = defineEndpoint({
     path: '/reports/item-703',
     requests: {
         [HttpMethod.Post]: {
@@ -14805,7 +14802,7 @@ const endpoint703 = defineEndpoint({
     },
 });
 
-const endpoint704 = defineEndpoint({
+export const endpoint704 = defineEndpoint({
     path: '/reports/item-704',
     requests: {
         [HttpMethod.Post]: {
@@ -14826,7 +14823,7 @@ const endpoint704 = defineEndpoint({
     },
 });
 
-const endpoint705 = defineEndpoint({
+export const endpoint705 = defineEndpoint({
     path: '/reports/item-705',
     requests: {
         [HttpMethod.Post]: {
@@ -14847,7 +14844,7 @@ const endpoint705 = defineEndpoint({
     },
 });
 
-const endpoint706 = defineEndpoint({
+export const endpoint706 = defineEndpoint({
     path: '/reports/item-706',
     requests: {
         [HttpMethod.Post]: {
@@ -14868,7 +14865,7 @@ const endpoint706 = defineEndpoint({
     },
 });
 
-const endpoint707 = defineEndpoint({
+export const endpoint707 = defineEndpoint({
     path: '/reports/item-707',
     requests: {
         [HttpMethod.Post]: {
@@ -14889,7 +14886,7 @@ const endpoint707 = defineEndpoint({
     },
 });
 
-const endpoint708 = defineEndpoint({
+export const endpoint708 = defineEndpoint({
     path: '/reports/item-708',
     requests: {
         [HttpMethod.Post]: {
@@ -14910,7 +14907,7 @@ const endpoint708 = defineEndpoint({
     },
 });
 
-const endpoint709 = defineEndpoint({
+export const endpoint709 = defineEndpoint({
     path: '/reports/item-709',
     requests: {
         [HttpMethod.Post]: {
@@ -14931,7 +14928,7 @@ const endpoint709 = defineEndpoint({
     },
 });
 
-const endpoint710 = defineEndpoint({
+export const endpoint710 = defineEndpoint({
     path: '/reports/item-710',
     requests: {
         [HttpMethod.Post]: {
@@ -14952,7 +14949,7 @@ const endpoint710 = defineEndpoint({
     },
 });
 
-const endpoint711 = defineEndpoint({
+export const endpoint711 = defineEndpoint({
     path: '/reports/item-711',
     requests: {
         [HttpMethod.Post]: {
@@ -14973,7 +14970,7 @@ const endpoint711 = defineEndpoint({
     },
 });
 
-const endpoint712 = defineEndpoint({
+export const endpoint712 = defineEndpoint({
     path: '/reports/item-712',
     requests: {
         [HttpMethod.Post]: {
@@ -14994,7 +14991,7 @@ const endpoint712 = defineEndpoint({
     },
 });
 
-const endpoint713 = defineEndpoint({
+export const endpoint713 = defineEndpoint({
     path: '/reports/item-713',
     requests: {
         [HttpMethod.Post]: {
@@ -15015,7 +15012,7 @@ const endpoint713 = defineEndpoint({
     },
 });
 
-const endpoint714 = defineEndpoint({
+export const endpoint714 = defineEndpoint({
     path: '/reports/item-714',
     requests: {
         [HttpMethod.Post]: {
@@ -15036,7 +15033,7 @@ const endpoint714 = defineEndpoint({
     },
 });
 
-const endpoint715 = defineEndpoint({
+export const endpoint715 = defineEndpoint({
     path: '/reports/item-715',
     requests: {
         [HttpMethod.Post]: {
@@ -15057,7 +15054,7 @@ const endpoint715 = defineEndpoint({
     },
 });
 
-const endpoint716 = defineEndpoint({
+export const endpoint716 = defineEndpoint({
     path: '/reports/item-716',
     requests: {
         [HttpMethod.Post]: {
@@ -15078,7 +15075,7 @@ const endpoint716 = defineEndpoint({
     },
 });
 
-const endpoint717 = defineEndpoint({
+export const endpoint717 = defineEndpoint({
     path: '/reports/item-717',
     requests: {
         [HttpMethod.Post]: {
@@ -15099,7 +15096,7 @@ const endpoint717 = defineEndpoint({
     },
 });
 
-const endpoint718 = defineEndpoint({
+export const endpoint718 = defineEndpoint({
     path: '/reports/item-718',
     requests: {
         [HttpMethod.Post]: {
@@ -15120,7 +15117,7 @@ const endpoint718 = defineEndpoint({
     },
 });
 
-const endpoint719 = defineEndpoint({
+export const endpoint719 = defineEndpoint({
     path: '/reports/item-719',
     requests: {
         [HttpMethod.Post]: {
@@ -15141,7 +15138,7 @@ const endpoint719 = defineEndpoint({
     },
 });
 
-const endpoint720 = defineEndpoint({
+export const endpoint720 = defineEndpoint({
     path: '/reports/item-720',
     requests: {
         [HttpMethod.Post]: {
@@ -15162,7 +15159,7 @@ const endpoint720 = defineEndpoint({
     },
 });
 
-const endpoint721 = defineEndpoint({
+export const endpoint721 = defineEndpoint({
     path: '/reports/item-721',
     requests: {
         [HttpMethod.Post]: {
@@ -15183,7 +15180,7 @@ const endpoint721 = defineEndpoint({
     },
 });
 
-const endpoint722 = defineEndpoint({
+export const endpoint722 = defineEndpoint({
     path: '/reports/item-722',
     requests: {
         [HttpMethod.Post]: {
@@ -15204,7 +15201,7 @@ const endpoint722 = defineEndpoint({
     },
 });
 
-const endpoint723 = defineEndpoint({
+export const endpoint723 = defineEndpoint({
     path: '/reports/item-723',
     requests: {
         [HttpMethod.Post]: {
@@ -15225,7 +15222,7 @@ const endpoint723 = defineEndpoint({
     },
 });
 
-const endpoint724 = defineEndpoint({
+export const endpoint724 = defineEndpoint({
     path: '/reports/item-724',
     requests: {
         [HttpMethod.Post]: {
@@ -15246,7 +15243,7 @@ const endpoint724 = defineEndpoint({
     },
 });
 
-const endpoint725 = defineEndpoint({
+export const endpoint725 = defineEndpoint({
     path: '/reports/item-725',
     requests: {
         [HttpMethod.Post]: {
@@ -15267,7 +15264,7 @@ const endpoint725 = defineEndpoint({
     },
 });
 
-const endpoint726 = defineEndpoint({
+export const endpoint726 = defineEndpoint({
     path: '/reports/item-726',
     requests: {
         [HttpMethod.Post]: {
@@ -15288,7 +15285,7 @@ const endpoint726 = defineEndpoint({
     },
 });
 
-const endpoint727 = defineEndpoint({
+export const endpoint727 = defineEndpoint({
     path: '/reports/item-727',
     requests: {
         [HttpMethod.Post]: {
@@ -15309,7 +15306,7 @@ const endpoint727 = defineEndpoint({
     },
 });
 
-const endpoint728 = defineEndpoint({
+export const endpoint728 = defineEndpoint({
     path: '/reports/item-728',
     requests: {
         [HttpMethod.Post]: {
@@ -15330,7 +15327,7 @@ const endpoint728 = defineEndpoint({
     },
 });
 
-const endpoint729 = defineEndpoint({
+export const endpoint729 = defineEndpoint({
     path: '/reports/item-729',
     requests: {
         [HttpMethod.Post]: {
@@ -15351,7 +15348,7 @@ const endpoint729 = defineEndpoint({
     },
 });
 
-const endpoint730 = defineEndpoint({
+export const endpoint730 = defineEndpoint({
     path: '/reports/item-730',
     requests: {
         [HttpMethod.Post]: {
@@ -15372,7 +15369,7 @@ const endpoint730 = defineEndpoint({
     },
 });
 
-const endpoint731 = defineEndpoint({
+export const endpoint731 = defineEndpoint({
     path: '/reports/item-731',
     requests: {
         [HttpMethod.Post]: {
@@ -15393,7 +15390,7 @@ const endpoint731 = defineEndpoint({
     },
 });
 
-const endpoint732 = defineEndpoint({
+export const endpoint732 = defineEndpoint({
     path: '/reports/item-732',
     requests: {
         [HttpMethod.Post]: {
@@ -15414,7 +15411,7 @@ const endpoint732 = defineEndpoint({
     },
 });
 
-const endpoint733 = defineEndpoint({
+export const endpoint733 = defineEndpoint({
     path: '/reports/item-733',
     requests: {
         [HttpMethod.Post]: {
@@ -15435,7 +15432,7 @@ const endpoint733 = defineEndpoint({
     },
 });
 
-const endpoint734 = defineEndpoint({
+export const endpoint734 = defineEndpoint({
     path: '/reports/item-734',
     requests: {
         [HttpMethod.Post]: {
@@ -15456,7 +15453,7 @@ const endpoint734 = defineEndpoint({
     },
 });
 
-const endpoint735 = defineEndpoint({
+export const endpoint735 = defineEndpoint({
     path: '/reports/item-735',
     requests: {
         [HttpMethod.Post]: {
@@ -15477,7 +15474,7 @@ const endpoint735 = defineEndpoint({
     },
 });
 
-const endpoint736 = defineEndpoint({
+export const endpoint736 = defineEndpoint({
     path: '/reports/item-736',
     requests: {
         [HttpMethod.Post]: {
@@ -15498,7 +15495,7 @@ const endpoint736 = defineEndpoint({
     },
 });
 
-const endpoint737 = defineEndpoint({
+export const endpoint737 = defineEndpoint({
     path: '/reports/item-737',
     requests: {
         [HttpMethod.Post]: {
@@ -15519,7 +15516,7 @@ const endpoint737 = defineEndpoint({
     },
 });
 
-const endpoint738 = defineEndpoint({
+export const endpoint738 = defineEndpoint({
     path: '/reports/item-738',
     requests: {
         [HttpMethod.Post]: {
@@ -15540,7 +15537,7 @@ const endpoint738 = defineEndpoint({
     },
 });
 
-const endpoint739 = defineEndpoint({
+export const endpoint739 = defineEndpoint({
     path: '/reports/item-739',
     requests: {
         [HttpMethod.Post]: {
@@ -15561,7 +15558,7 @@ const endpoint739 = defineEndpoint({
     },
 });
 
-const endpoint740 = defineEndpoint({
+export const endpoint740 = defineEndpoint({
     path: '/reports/item-740',
     requests: {
         [HttpMethod.Post]: {
@@ -15582,7 +15579,7 @@ const endpoint740 = defineEndpoint({
     },
 });
 
-const endpoint741 = defineEndpoint({
+export const endpoint741 = defineEndpoint({
     path: '/reports/item-741',
     requests: {
         [HttpMethod.Post]: {
@@ -15603,7 +15600,7 @@ const endpoint741 = defineEndpoint({
     },
 });
 
-const endpoint742 = defineEndpoint({
+export const endpoint742 = defineEndpoint({
     path: '/reports/item-742',
     requests: {
         [HttpMethod.Post]: {
@@ -15624,7 +15621,7 @@ const endpoint742 = defineEndpoint({
     },
 });
 
-const endpoint743 = defineEndpoint({
+export const endpoint743 = defineEndpoint({
     path: '/reports/item-743',
     requests: {
         [HttpMethod.Post]: {
@@ -15645,7 +15642,7 @@ const endpoint743 = defineEndpoint({
     },
 });
 
-const endpoint744 = defineEndpoint({
+export const endpoint744 = defineEndpoint({
     path: '/reports/item-744',
     requests: {
         [HttpMethod.Post]: {
@@ -15666,7 +15663,7 @@ const endpoint744 = defineEndpoint({
     },
 });
 
-const endpoint745 = defineEndpoint({
+export const endpoint745 = defineEndpoint({
     path: '/reports/item-745',
     requests: {
         [HttpMethod.Post]: {
@@ -15687,7 +15684,7 @@ const endpoint745 = defineEndpoint({
     },
 });
 
-const endpoint746 = defineEndpoint({
+export const endpoint746 = defineEndpoint({
     path: '/reports/item-746',
     requests: {
         [HttpMethod.Post]: {
@@ -15708,7 +15705,7 @@ const endpoint746 = defineEndpoint({
     },
 });
 
-const endpoint747 = defineEndpoint({
+export const endpoint747 = defineEndpoint({
     path: '/reports/item-747',
     requests: {
         [HttpMethod.Post]: {
@@ -15729,7 +15726,7 @@ const endpoint747 = defineEndpoint({
     },
 });
 
-const endpoint748 = defineEndpoint({
+export const endpoint748 = defineEndpoint({
     path: '/reports/item-748',
     requests: {
         [HttpMethod.Post]: {
@@ -15750,7 +15747,7 @@ const endpoint748 = defineEndpoint({
     },
 });
 
-const endpoint749 = defineEndpoint({
+export const endpoint749 = defineEndpoint({
     path: '/reports/item-749',
     requests: {
         [HttpMethod.Post]: {
@@ -15771,7 +15768,7 @@ const endpoint749 = defineEndpoint({
     },
 });
 
-const endpoint750 = defineEndpoint({
+export const endpoint750 = defineEndpoint({
     path: '/reports/item-750',
     requests: {
         [HttpMethod.Post]: {
@@ -15792,7 +15789,7 @@ const endpoint750 = defineEndpoint({
     },
 });
 
-const endpoint751 = defineEndpoint({
+export const endpoint751 = defineEndpoint({
     path: '/reports/item-751',
     requests: {
         [HttpMethod.Post]: {
@@ -15813,7 +15810,7 @@ const endpoint751 = defineEndpoint({
     },
 });
 
-const endpoint752 = defineEndpoint({
+export const endpoint752 = defineEndpoint({
     path: '/reports/item-752',
     requests: {
         [HttpMethod.Post]: {
@@ -15834,7 +15831,7 @@ const endpoint752 = defineEndpoint({
     },
 });
 
-const endpoint753 = defineEndpoint({
+export const endpoint753 = defineEndpoint({
     path: '/reports/item-753',
     requests: {
         [HttpMethod.Post]: {
@@ -15855,7 +15852,7 @@ const endpoint753 = defineEndpoint({
     },
 });
 
-const endpoint754 = defineEndpoint({
+export const endpoint754 = defineEndpoint({
     path: '/reports/item-754',
     requests: {
         [HttpMethod.Post]: {
@@ -15876,7 +15873,7 @@ const endpoint754 = defineEndpoint({
     },
 });
 
-const endpoint755 = defineEndpoint({
+export const endpoint755 = defineEndpoint({
     path: '/reports/item-755',
     requests: {
         [HttpMethod.Post]: {
@@ -15897,7 +15894,7 @@ const endpoint755 = defineEndpoint({
     },
 });
 
-const endpoint756 = defineEndpoint({
+export const endpoint756 = defineEndpoint({
     path: '/reports/item-756',
     requests: {
         [HttpMethod.Post]: {
@@ -15918,7 +15915,7 @@ const endpoint756 = defineEndpoint({
     },
 });
 
-const endpoint757 = defineEndpoint({
+export const endpoint757 = defineEndpoint({
     path: '/reports/item-757',
     requests: {
         [HttpMethod.Post]: {
@@ -15939,7 +15936,7 @@ const endpoint757 = defineEndpoint({
     },
 });
 
-const endpoint758 = defineEndpoint({
+export const endpoint758 = defineEndpoint({
     path: '/reports/item-758',
     requests: {
         [HttpMethod.Post]: {
@@ -15960,7 +15957,7 @@ const endpoint758 = defineEndpoint({
     },
 });
 
-const endpoint759 = defineEndpoint({
+export const endpoint759 = defineEndpoint({
     path: '/reports/item-759',
     requests: {
         [HttpMethod.Post]: {
@@ -15981,7 +15978,7 @@ const endpoint759 = defineEndpoint({
     },
 });
 
-const endpoint760 = defineEndpoint({
+export const endpoint760 = defineEndpoint({
     path: '/reports/item-760',
     requests: {
         [HttpMethod.Post]: {
@@ -16002,7 +15999,7 @@ const endpoint760 = defineEndpoint({
     },
 });
 
-const endpoint761 = defineEndpoint({
+export const endpoint761 = defineEndpoint({
     path: '/reports/item-761',
     requests: {
         [HttpMethod.Post]: {
@@ -16023,7 +16020,7 @@ const endpoint761 = defineEndpoint({
     },
 });
 
-const endpoint762 = defineEndpoint({
+export const endpoint762 = defineEndpoint({
     path: '/reports/item-762',
     requests: {
         [HttpMethod.Post]: {
@@ -16044,7 +16041,7 @@ const endpoint762 = defineEndpoint({
     },
 });
 
-const endpoint763 = defineEndpoint({
+export const endpoint763 = defineEndpoint({
     path: '/reports/item-763',
     requests: {
         [HttpMethod.Post]: {
@@ -16065,7 +16062,7 @@ const endpoint763 = defineEndpoint({
     },
 });
 
-const endpoint764 = defineEndpoint({
+export const endpoint764 = defineEndpoint({
     path: '/reports/item-764',
     requests: {
         [HttpMethod.Post]: {
@@ -16086,7 +16083,7 @@ const endpoint764 = defineEndpoint({
     },
 });
 
-const endpoint765 = defineEndpoint({
+export const endpoint765 = defineEndpoint({
     path: '/reports/item-765',
     requests: {
         [HttpMethod.Post]: {
@@ -16107,7 +16104,7 @@ const endpoint765 = defineEndpoint({
     },
 });
 
-const endpoint766 = defineEndpoint({
+export const endpoint766 = defineEndpoint({
     path: '/reports/item-766',
     requests: {
         [HttpMethod.Post]: {
@@ -16128,7 +16125,7 @@ const endpoint766 = defineEndpoint({
     },
 });
 
-const endpoint767 = defineEndpoint({
+export const endpoint767 = defineEndpoint({
     path: '/reports/item-767',
     requests: {
         [HttpMethod.Post]: {
@@ -16149,7 +16146,7 @@ const endpoint767 = defineEndpoint({
     },
 });
 
-const endpoint768 = defineEndpoint({
+export const endpoint768 = defineEndpoint({
     path: '/reports/item-768',
     requests: {
         [HttpMethod.Post]: {
@@ -16170,7 +16167,7 @@ const endpoint768 = defineEndpoint({
     },
 });
 
-const endpoint769 = defineEndpoint({
+export const endpoint769 = defineEndpoint({
     path: '/reports/item-769',
     requests: {
         [HttpMethod.Post]: {
@@ -16191,7 +16188,7 @@ const endpoint769 = defineEndpoint({
     },
 });
 
-const endpoint770 = defineEndpoint({
+export const endpoint770 = defineEndpoint({
     path: '/reports/item-770',
     requests: {
         [HttpMethod.Post]: {
@@ -16212,7 +16209,7 @@ const endpoint770 = defineEndpoint({
     },
 });
 
-const endpoint771 = defineEndpoint({
+export const endpoint771 = defineEndpoint({
     path: '/reports/item-771',
     requests: {
         [HttpMethod.Post]: {
@@ -16233,7 +16230,7 @@ const endpoint771 = defineEndpoint({
     },
 });
 
-const endpoint772 = defineEndpoint({
+export const endpoint772 = defineEndpoint({
     path: '/reports/item-772',
     requests: {
         [HttpMethod.Post]: {
@@ -16254,7 +16251,7 @@ const endpoint772 = defineEndpoint({
     },
 });
 
-const endpoint773 = defineEndpoint({
+export const endpoint773 = defineEndpoint({
     path: '/reports/item-773',
     requests: {
         [HttpMethod.Post]: {
@@ -16275,7 +16272,7 @@ const endpoint773 = defineEndpoint({
     },
 });
 
-const endpoint774 = defineEndpoint({
+export const endpoint774 = defineEndpoint({
     path: '/reports/item-774',
     requests: {
         [HttpMethod.Post]: {
@@ -16296,7 +16293,7 @@ const endpoint774 = defineEndpoint({
     },
 });
 
-const endpoint775 = defineEndpoint({
+export const endpoint775 = defineEndpoint({
     path: '/reports/item-775',
     requests: {
         [HttpMethod.Post]: {
@@ -16317,7 +16314,7 @@ const endpoint775 = defineEndpoint({
     },
 });
 
-const endpoint776 = defineEndpoint({
+export const endpoint776 = defineEndpoint({
     path: '/reports/item-776',
     requests: {
         [HttpMethod.Post]: {
@@ -16338,7 +16335,7 @@ const endpoint776 = defineEndpoint({
     },
 });
 
-const endpoint777 = defineEndpoint({
+export const endpoint777 = defineEndpoint({
     path: '/reports/item-777',
     requests: {
         [HttpMethod.Post]: {
@@ -16359,7 +16356,7 @@ const endpoint777 = defineEndpoint({
     },
 });
 
-const endpoint778 = defineEndpoint({
+export const endpoint778 = defineEndpoint({
     path: '/reports/item-778',
     requests: {
         [HttpMethod.Post]: {
@@ -16380,7 +16377,7 @@ const endpoint778 = defineEndpoint({
     },
 });
 
-const endpoint779 = defineEndpoint({
+export const endpoint779 = defineEndpoint({
     path: '/reports/item-779',
     requests: {
         [HttpMethod.Post]: {
@@ -16401,7 +16398,7 @@ const endpoint779 = defineEndpoint({
     },
 });
 
-const endpoint780 = defineEndpoint({
+export const endpoint780 = defineEndpoint({
     path: '/reports/item-780',
     requests: {
         [HttpMethod.Post]: {
@@ -16422,7 +16419,7 @@ const endpoint780 = defineEndpoint({
     },
 });
 
-const endpoint781 = defineEndpoint({
+export const endpoint781 = defineEndpoint({
     path: '/reports/item-781',
     requests: {
         [HttpMethod.Post]: {
@@ -16443,7 +16440,7 @@ const endpoint781 = defineEndpoint({
     },
 });
 
-const endpoint782 = defineEndpoint({
+export const endpoint782 = defineEndpoint({
     path: '/reports/item-782',
     requests: {
         [HttpMethod.Post]: {
@@ -16464,7 +16461,7 @@ const endpoint782 = defineEndpoint({
     },
 });
 
-const endpoint783 = defineEndpoint({
+export const endpoint783 = defineEndpoint({
     path: '/reports/item-783',
     requests: {
         [HttpMethod.Post]: {
@@ -16485,7 +16482,7 @@ const endpoint783 = defineEndpoint({
     },
 });
 
-const endpoint784 = defineEndpoint({
+export const endpoint784 = defineEndpoint({
     path: '/reports/item-784',
     requests: {
         [HttpMethod.Post]: {
@@ -16506,7 +16503,7 @@ const endpoint784 = defineEndpoint({
     },
 });
 
-const endpoint785 = defineEndpoint({
+export const endpoint785 = defineEndpoint({
     path: '/reports/item-785',
     requests: {
         [HttpMethod.Post]: {
@@ -16527,7 +16524,7 @@ const endpoint785 = defineEndpoint({
     },
 });
 
-const endpoint786 = defineEndpoint({
+export const endpoint786 = defineEndpoint({
     path: '/reports/item-786',
     requests: {
         [HttpMethod.Post]: {
@@ -16548,7 +16545,7 @@ const endpoint786 = defineEndpoint({
     },
 });
 
-const endpoint787 = defineEndpoint({
+export const endpoint787 = defineEndpoint({
     path: '/reports/item-787',
     requests: {
         [HttpMethod.Post]: {
@@ -16569,7 +16566,7 @@ const endpoint787 = defineEndpoint({
     },
 });
 
-const endpoint788 = defineEndpoint({
+export const endpoint788 = defineEndpoint({
     path: '/reports/item-788',
     requests: {
         [HttpMethod.Post]: {
@@ -16590,7 +16587,7 @@ const endpoint788 = defineEndpoint({
     },
 });
 
-const endpoint789 = defineEndpoint({
+export const endpoint789 = defineEndpoint({
     path: '/reports/item-789',
     requests: {
         [HttpMethod.Post]: {
@@ -16611,7 +16608,7 @@ const endpoint789 = defineEndpoint({
     },
 });
 
-const endpoint790 = defineEndpoint({
+export const endpoint790 = defineEndpoint({
     path: '/reports/item-790',
     requests: {
         [HttpMethod.Post]: {
@@ -16632,7 +16629,7 @@ const endpoint790 = defineEndpoint({
     },
 });
 
-const endpoint791 = defineEndpoint({
+export const endpoint791 = defineEndpoint({
     path: '/reports/item-791',
     requests: {
         [HttpMethod.Post]: {
@@ -16653,7 +16650,7 @@ const endpoint791 = defineEndpoint({
     },
 });
 
-const endpoint792 = defineEndpoint({
+export const endpoint792 = defineEndpoint({
     path: '/reports/item-792',
     requests: {
         [HttpMethod.Post]: {
@@ -16674,7 +16671,7 @@ const endpoint792 = defineEndpoint({
     },
 });
 
-const endpoint793 = defineEndpoint({
+export const endpoint793 = defineEndpoint({
     path: '/reports/item-793',
     requests: {
         [HttpMethod.Post]: {
@@ -16695,7 +16692,7 @@ const endpoint793 = defineEndpoint({
     },
 });
 
-const endpoint794 = defineEndpoint({
+export const endpoint794 = defineEndpoint({
     path: '/reports/item-794',
     requests: {
         [HttpMethod.Post]: {
@@ -16716,7 +16713,7 @@ const endpoint794 = defineEndpoint({
     },
 });
 
-const endpoint795 = defineEndpoint({
+export const endpoint795 = defineEndpoint({
     path: '/reports/item-795',
     requests: {
         [HttpMethod.Post]: {
@@ -16737,7 +16734,7 @@ const endpoint795 = defineEndpoint({
     },
 });
 
-const endpoint796 = defineEndpoint({
+export const endpoint796 = defineEndpoint({
     path: '/reports/item-796',
     requests: {
         [HttpMethod.Post]: {
@@ -16758,7 +16755,7 @@ const endpoint796 = defineEndpoint({
     },
 });
 
-const endpoint797 = defineEndpoint({
+export const endpoint797 = defineEndpoint({
     path: '/reports/item-797',
     requests: {
         [HttpMethod.Post]: {
@@ -16779,7 +16776,7 @@ const endpoint797 = defineEndpoint({
     },
 });
 
-const endpoint798 = defineEndpoint({
+export const endpoint798 = defineEndpoint({
     path: '/reports/item-798',
     requests: {
         [HttpMethod.Post]: {
@@ -16800,7 +16797,7 @@ const endpoint798 = defineEndpoint({
     },
 });
 
-const endpoint799 = defineEndpoint({
+export const endpoint799 = defineEndpoint({
     path: '/reports/item-799',
     requests: {
         [HttpMethod.Post]: {
@@ -16821,7 +16818,7 @@ const endpoint799 = defineEndpoint({
     },
 });
 
-const endpoint800 = defineEndpoint({
+export const endpoint800 = defineEndpoint({
     path: '/reports/item-800',
     requests: {
         [HttpMethod.Post]: {
@@ -16842,7 +16839,7 @@ const endpoint800 = defineEndpoint({
     },
 });
 
-const endpoint801 = defineEndpoint({
+export const endpoint801 = defineEndpoint({
     path: '/reports/item-801',
     requests: {
         [HttpMethod.Post]: {
@@ -16863,7 +16860,7 @@ const endpoint801 = defineEndpoint({
     },
 });
 
-const endpoint802 = defineEndpoint({
+export const endpoint802 = defineEndpoint({
     path: '/reports/item-802',
     requests: {
         [HttpMethod.Post]: {
@@ -16884,7 +16881,7 @@ const endpoint802 = defineEndpoint({
     },
 });
 
-const endpoint803 = defineEndpoint({
+export const endpoint803 = defineEndpoint({
     path: '/reports/item-803',
     requests: {
         [HttpMethod.Post]: {
@@ -16905,7 +16902,7 @@ const endpoint803 = defineEndpoint({
     },
 });
 
-const endpoint804 = defineEndpoint({
+export const endpoint804 = defineEndpoint({
     path: '/reports/item-804',
     requests: {
         [HttpMethod.Post]: {
@@ -16926,7 +16923,7 @@ const endpoint804 = defineEndpoint({
     },
 });
 
-const endpoint805 = defineEndpoint({
+export const endpoint805 = defineEndpoint({
     path: '/reports/item-805',
     requests: {
         [HttpMethod.Post]: {
@@ -16947,7 +16944,7 @@ const endpoint805 = defineEndpoint({
     },
 });
 
-const endpoint806 = defineEndpoint({
+export const endpoint806 = defineEndpoint({
     path: '/reports/item-806',
     requests: {
         [HttpMethod.Post]: {
@@ -16968,7 +16965,7 @@ const endpoint806 = defineEndpoint({
     },
 });
 
-const endpoint807 = defineEndpoint({
+export const endpoint807 = defineEndpoint({
     path: '/reports/item-807',
     requests: {
         [HttpMethod.Post]: {
@@ -16989,7 +16986,7 @@ const endpoint807 = defineEndpoint({
     },
 });
 
-const endpoint808 = defineEndpoint({
+export const endpoint808 = defineEndpoint({
     path: '/reports/item-808',
     requests: {
         [HttpMethod.Post]: {
@@ -17010,7 +17007,7 @@ const endpoint808 = defineEndpoint({
     },
 });
 
-const endpoint809 = defineEndpoint({
+export const endpoint809 = defineEndpoint({
     path: '/reports/item-809',
     requests: {
         [HttpMethod.Post]: {
@@ -17031,7 +17028,7 @@ const endpoint809 = defineEndpoint({
     },
 });
 
-const endpoint810 = defineEndpoint({
+export const endpoint810 = defineEndpoint({
     path: '/reports/item-810',
     requests: {
         [HttpMethod.Post]: {
@@ -17052,7 +17049,7 @@ const endpoint810 = defineEndpoint({
     },
 });
 
-const endpoint811 = defineEndpoint({
+export const endpoint811 = defineEndpoint({
     path: '/reports/item-811',
     requests: {
         [HttpMethod.Post]: {
@@ -17073,7 +17070,7 @@ const endpoint811 = defineEndpoint({
     },
 });
 
-const endpoint812 = defineEndpoint({
+export const endpoint812 = defineEndpoint({
     path: '/reports/item-812',
     requests: {
         [HttpMethod.Post]: {
@@ -17094,7 +17091,7 @@ const endpoint812 = defineEndpoint({
     },
 });
 
-const endpoint813 = defineEndpoint({
+export const endpoint813 = defineEndpoint({
     path: '/reports/item-813',
     requests: {
         [HttpMethod.Post]: {
@@ -17115,7 +17112,7 @@ const endpoint813 = defineEndpoint({
     },
 });
 
-const endpoint814 = defineEndpoint({
+export const endpoint814 = defineEndpoint({
     path: '/reports/item-814',
     requests: {
         [HttpMethod.Post]: {
@@ -17136,7 +17133,7 @@ const endpoint814 = defineEndpoint({
     },
 });
 
-const endpoint815 = defineEndpoint({
+export const endpoint815 = defineEndpoint({
     path: '/reports/item-815',
     requests: {
         [HttpMethod.Post]: {
@@ -17157,7 +17154,7 @@ const endpoint815 = defineEndpoint({
     },
 });
 
-const endpoint816 = defineEndpoint({
+export const endpoint816 = defineEndpoint({
     path: '/reports/item-816',
     requests: {
         [HttpMethod.Post]: {
@@ -17178,7 +17175,7 @@ const endpoint816 = defineEndpoint({
     },
 });
 
-const endpoint817 = defineEndpoint({
+export const endpoint817 = defineEndpoint({
     path: '/reports/item-817',
     requests: {
         [HttpMethod.Post]: {
@@ -17199,7 +17196,7 @@ const endpoint817 = defineEndpoint({
     },
 });
 
-const endpoint818 = defineEndpoint({
+export const endpoint818 = defineEndpoint({
     path: '/reports/item-818',
     requests: {
         [HttpMethod.Post]: {
@@ -17220,7 +17217,7 @@ const endpoint818 = defineEndpoint({
     },
 });
 
-const endpoint819 = defineEndpoint({
+export const endpoint819 = defineEndpoint({
     path: '/reports/item-819',
     requests: {
         [HttpMethod.Post]: {
@@ -17241,7 +17238,7 @@ const endpoint819 = defineEndpoint({
     },
 });
 
-const endpoint820 = defineEndpoint({
+export const endpoint820 = defineEndpoint({
     path: '/reports/item-820',
     requests: {
         [HttpMethod.Post]: {
@@ -17262,7 +17259,7 @@ const endpoint820 = defineEndpoint({
     },
 });
 
-const endpoint821 = defineEndpoint({
+export const endpoint821 = defineEndpoint({
     path: '/reports/item-821',
     requests: {
         [HttpMethod.Post]: {
@@ -17283,7 +17280,7 @@ const endpoint821 = defineEndpoint({
     },
 });
 
-const endpoint822 = defineEndpoint({
+export const endpoint822 = defineEndpoint({
     path: '/reports/item-822',
     requests: {
         [HttpMethod.Post]: {
@@ -17304,7 +17301,7 @@ const endpoint822 = defineEndpoint({
     },
 });
 
-const endpoint823 = defineEndpoint({
+export const endpoint823 = defineEndpoint({
     path: '/reports/item-823',
     requests: {
         [HttpMethod.Post]: {
@@ -17325,7 +17322,7 @@ const endpoint823 = defineEndpoint({
     },
 });
 
-const endpoint824 = defineEndpoint({
+export const endpoint824 = defineEndpoint({
     path: '/reports/item-824',
     requests: {
         [HttpMethod.Post]: {
@@ -17346,7 +17343,7 @@ const endpoint824 = defineEndpoint({
     },
 });
 
-const endpoint825 = defineEndpoint({
+export const endpoint825 = defineEndpoint({
     path: '/reports/item-825',
     requests: {
         [HttpMethod.Post]: {
@@ -17367,7 +17364,7 @@ const endpoint825 = defineEndpoint({
     },
 });
 
-const endpoint826 = defineEndpoint({
+export const endpoint826 = defineEndpoint({
     path: '/reports/item-826',
     requests: {
         [HttpMethod.Post]: {
@@ -17388,7 +17385,7 @@ const endpoint826 = defineEndpoint({
     },
 });
 
-const endpoint827 = defineEndpoint({
+export const endpoint827 = defineEndpoint({
     path: '/reports/item-827',
     requests: {
         [HttpMethod.Post]: {
@@ -17409,7 +17406,7 @@ const endpoint827 = defineEndpoint({
     },
 });
 
-const endpoint828 = defineEndpoint({
+export const endpoint828 = defineEndpoint({
     path: '/reports/item-828',
     requests: {
         [HttpMethod.Post]: {
@@ -17430,7 +17427,7 @@ const endpoint828 = defineEndpoint({
     },
 });
 
-const endpoint829 = defineEndpoint({
+export const endpoint829 = defineEndpoint({
     path: '/reports/item-829',
     requests: {
         [HttpMethod.Post]: {
@@ -17451,7 +17448,7 @@ const endpoint829 = defineEndpoint({
     },
 });
 
-const endpoint830 = defineEndpoint({
+export const endpoint830 = defineEndpoint({
     path: '/reports/item-830',
     requests: {
         [HttpMethod.Post]: {
@@ -17472,7 +17469,7 @@ const endpoint830 = defineEndpoint({
     },
 });
 
-const endpoint831 = defineEndpoint({
+export const endpoint831 = defineEndpoint({
     path: '/reports/item-831',
     requests: {
         [HttpMethod.Post]: {
@@ -17493,7 +17490,7 @@ const endpoint831 = defineEndpoint({
     },
 });
 
-const endpoint832 = defineEndpoint({
+export const endpoint832 = defineEndpoint({
     path: '/reports/item-832',
     requests: {
         [HttpMethod.Post]: {
@@ -17514,7 +17511,7 @@ const endpoint832 = defineEndpoint({
     },
 });
 
-const endpoint833 = defineEndpoint({
+export const endpoint833 = defineEndpoint({
     path: '/reports/item-833',
     requests: {
         [HttpMethod.Post]: {
@@ -17535,7 +17532,7 @@ const endpoint833 = defineEndpoint({
     },
 });
 
-const endpoint834 = defineEndpoint({
+export const endpoint834 = defineEndpoint({
     path: '/reports/item-834',
     requests: {
         [HttpMethod.Post]: {
@@ -17556,7 +17553,7 @@ const endpoint834 = defineEndpoint({
     },
 });
 
-const endpoint835 = defineEndpoint({
+export const endpoint835 = defineEndpoint({
     path: '/reports/item-835',
     requests: {
         [HttpMethod.Post]: {
@@ -17577,7 +17574,7 @@ const endpoint835 = defineEndpoint({
     },
 });
 
-const endpoint836 = defineEndpoint({
+export const endpoint836 = defineEndpoint({
     path: '/reports/item-836',
     requests: {
         [HttpMethod.Post]: {
@@ -17598,7 +17595,7 @@ const endpoint836 = defineEndpoint({
     },
 });
 
-const endpoint837 = defineEndpoint({
+export const endpoint837 = defineEndpoint({
     path: '/reports/item-837',
     requests: {
         [HttpMethod.Post]: {
@@ -17619,7 +17616,7 @@ const endpoint837 = defineEndpoint({
     },
 });
 
-const endpoint838 = defineEndpoint({
+export const endpoint838 = defineEndpoint({
     path: '/reports/item-838',
     requests: {
         [HttpMethod.Post]: {
@@ -17640,7 +17637,7 @@ const endpoint838 = defineEndpoint({
     },
 });
 
-const endpoint839 = defineEndpoint({
+export const endpoint839 = defineEndpoint({
     path: '/reports/item-839',
     requests: {
         [HttpMethod.Post]: {
@@ -17661,7 +17658,7 @@ const endpoint839 = defineEndpoint({
     },
 });
 
-const endpoint840 = defineEndpoint({
+export const endpoint840 = defineEndpoint({
     path: '/reports/item-840',
     requests: {
         [HttpMethod.Post]: {
@@ -17682,7 +17679,7 @@ const endpoint840 = defineEndpoint({
     },
 });
 
-const endpoint841 = defineEndpoint({
+export const endpoint841 = defineEndpoint({
     path: '/reports/item-841',
     requests: {
         [HttpMethod.Post]: {
@@ -17703,7 +17700,7 @@ const endpoint841 = defineEndpoint({
     },
 });
 
-const endpoint842 = defineEndpoint({
+export const endpoint842 = defineEndpoint({
     path: '/reports/item-842',
     requests: {
         [HttpMethod.Post]: {
@@ -17724,7 +17721,7 @@ const endpoint842 = defineEndpoint({
     },
 });
 
-const endpoint843 = defineEndpoint({
+export const endpoint843 = defineEndpoint({
     path: '/reports/item-843',
     requests: {
         [HttpMethod.Post]: {
@@ -17745,7 +17742,7 @@ const endpoint843 = defineEndpoint({
     },
 });
 
-const endpoint844 = defineEndpoint({
+export const endpoint844 = defineEndpoint({
     path: '/reports/item-844',
     requests: {
         [HttpMethod.Post]: {
@@ -17766,7 +17763,7 @@ const endpoint844 = defineEndpoint({
     },
 });
 
-const endpoint845 = defineEndpoint({
+export const endpoint845 = defineEndpoint({
     path: '/reports/item-845',
     requests: {
         [HttpMethod.Post]: {
@@ -17787,7 +17784,7 @@ const endpoint845 = defineEndpoint({
     },
 });
 
-const endpoint846 = defineEndpoint({
+export const endpoint846 = defineEndpoint({
     path: '/reports/item-846',
     requests: {
         [HttpMethod.Post]: {
@@ -17808,7 +17805,7 @@ const endpoint846 = defineEndpoint({
     },
 });
 
-const endpoint847 = defineEndpoint({
+export const endpoint847 = defineEndpoint({
     path: '/reports/item-847',
     requests: {
         [HttpMethod.Post]: {
@@ -17829,7 +17826,7 @@ const endpoint847 = defineEndpoint({
     },
 });
 
-const endpoint848 = defineEndpoint({
+export const endpoint848 = defineEndpoint({
     path: '/reports/item-848',
     requests: {
         [HttpMethod.Post]: {
@@ -17850,7 +17847,7 @@ const endpoint848 = defineEndpoint({
     },
 });
 
-const endpoint849 = defineEndpoint({
+export const endpoint849 = defineEndpoint({
     path: '/reports/item-849',
     requests: {
         [HttpMethod.Post]: {
@@ -17871,7 +17868,7 @@ const endpoint849 = defineEndpoint({
     },
 });
 
-const endpoint850 = defineEndpoint({
+export const endpoint850 = defineEndpoint({
     path: '/reports/item-850',
     requests: {
         [HttpMethod.Post]: {
@@ -17892,7 +17889,7 @@ const endpoint850 = defineEndpoint({
     },
 });
 
-const endpoint851 = defineEndpoint({
+export const endpoint851 = defineEndpoint({
     path: '/reports/item-851',
     requests: {
         [HttpMethod.Post]: {
@@ -17913,7 +17910,7 @@ const endpoint851 = defineEndpoint({
     },
 });
 
-const endpoint852 = defineEndpoint({
+export const endpoint852 = defineEndpoint({
     path: '/reports/item-852',
     requests: {
         [HttpMethod.Post]: {
@@ -17934,7 +17931,7 @@ const endpoint852 = defineEndpoint({
     },
 });
 
-const endpoint853 = defineEndpoint({
+export const endpoint853 = defineEndpoint({
     path: '/reports/item-853',
     requests: {
         [HttpMethod.Post]: {
@@ -17955,7 +17952,7 @@ const endpoint853 = defineEndpoint({
     },
 });
 
-const endpoint854 = defineEndpoint({
+export const endpoint854 = defineEndpoint({
     path: '/reports/item-854',
     requests: {
         [HttpMethod.Post]: {
@@ -17976,7 +17973,7 @@ const endpoint854 = defineEndpoint({
     },
 });
 
-const endpoint855 = defineEndpoint({
+export const endpoint855 = defineEndpoint({
     path: '/reports/item-855',
     requests: {
         [HttpMethod.Post]: {
@@ -17997,7 +17994,7 @@ const endpoint855 = defineEndpoint({
     },
 });
 
-const endpoint856 = defineEndpoint({
+export const endpoint856 = defineEndpoint({
     path: '/reports/item-856',
     requests: {
         [HttpMethod.Post]: {
@@ -18018,7 +18015,7 @@ const endpoint856 = defineEndpoint({
     },
 });
 
-const endpoint857 = defineEndpoint({
+export const endpoint857 = defineEndpoint({
     path: '/reports/item-857',
     requests: {
         [HttpMethod.Post]: {
@@ -18039,7 +18036,7 @@ const endpoint857 = defineEndpoint({
     },
 });
 
-const endpoint858 = defineEndpoint({
+export const endpoint858 = defineEndpoint({
     path: '/reports/item-858',
     requests: {
         [HttpMethod.Post]: {
@@ -18060,7 +18057,7 @@ const endpoint858 = defineEndpoint({
     },
 });
 
-const endpoint859 = defineEndpoint({
+export const endpoint859 = defineEndpoint({
     path: '/reports/item-859',
     requests: {
         [HttpMethod.Post]: {
@@ -18081,7 +18078,7 @@ const endpoint859 = defineEndpoint({
     },
 });
 
-const endpoint860 = defineEndpoint({
+export const endpoint860 = defineEndpoint({
     path: '/reports/item-860',
     requests: {
         [HttpMethod.Post]: {
@@ -18102,7 +18099,7 @@ const endpoint860 = defineEndpoint({
     },
 });
 
-const endpoint861 = defineEndpoint({
+export const endpoint861 = defineEndpoint({
     path: '/reports/item-861',
     requests: {
         [HttpMethod.Post]: {
@@ -18123,7 +18120,7 @@ const endpoint861 = defineEndpoint({
     },
 });
 
-const endpoint862 = defineEndpoint({
+export const endpoint862 = defineEndpoint({
     path: '/reports/item-862',
     requests: {
         [HttpMethod.Post]: {
@@ -18144,7 +18141,7 @@ const endpoint862 = defineEndpoint({
     },
 });
 
-const endpoint863 = defineEndpoint({
+export const endpoint863 = defineEndpoint({
     path: '/reports/item-863',
     requests: {
         [HttpMethod.Post]: {
@@ -18165,7 +18162,7 @@ const endpoint863 = defineEndpoint({
     },
 });
 
-const endpoint864 = defineEndpoint({
+export const endpoint864 = defineEndpoint({
     path: '/reports/item-864',
     requests: {
         [HttpMethod.Post]: {
@@ -18186,7 +18183,7 @@ const endpoint864 = defineEndpoint({
     },
 });
 
-const endpoint865 = defineEndpoint({
+export const endpoint865 = defineEndpoint({
     path: '/reports/item-865',
     requests: {
         [HttpMethod.Post]: {
@@ -18207,7 +18204,7 @@ const endpoint865 = defineEndpoint({
     },
 });
 
-const endpoint866 = defineEndpoint({
+export const endpoint866 = defineEndpoint({
     path: '/reports/item-866',
     requests: {
         [HttpMethod.Post]: {
@@ -18228,7 +18225,7 @@ const endpoint866 = defineEndpoint({
     },
 });
 
-const endpoint867 = defineEndpoint({
+export const endpoint867 = defineEndpoint({
     path: '/reports/item-867',
     requests: {
         [HttpMethod.Post]: {
@@ -18249,7 +18246,7 @@ const endpoint867 = defineEndpoint({
     },
 });
 
-const endpoint868 = defineEndpoint({
+export const endpoint868 = defineEndpoint({
     path: '/reports/item-868',
     requests: {
         [HttpMethod.Post]: {
@@ -18270,7 +18267,7 @@ const endpoint868 = defineEndpoint({
     },
 });
 
-const endpoint869 = defineEndpoint({
+export const endpoint869 = defineEndpoint({
     path: '/reports/item-869',
     requests: {
         [HttpMethod.Post]: {
@@ -18291,7 +18288,7 @@ const endpoint869 = defineEndpoint({
     },
 });
 
-const endpoint870 = defineEndpoint({
+export const endpoint870 = defineEndpoint({
     path: '/reports/item-870',
     requests: {
         [HttpMethod.Post]: {
@@ -18312,7 +18309,7 @@ const endpoint870 = defineEndpoint({
     },
 });
 
-const endpoint871 = defineEndpoint({
+export const endpoint871 = defineEndpoint({
     path: '/reports/item-871',
     requests: {
         [HttpMethod.Post]: {
@@ -18333,7 +18330,7 @@ const endpoint871 = defineEndpoint({
     },
 });
 
-const endpoint872 = defineEndpoint({
+export const endpoint872 = defineEndpoint({
     path: '/reports/item-872',
     requests: {
         [HttpMethod.Post]: {
@@ -18354,7 +18351,7 @@ const endpoint872 = defineEndpoint({
     },
 });
 
-const endpoint873 = defineEndpoint({
+export const endpoint873 = defineEndpoint({
     path: '/reports/item-873',
     requests: {
         [HttpMethod.Post]: {
@@ -18375,7 +18372,7 @@ const endpoint873 = defineEndpoint({
     },
 });
 
-const endpoint874 = defineEndpoint({
+export const endpoint874 = defineEndpoint({
     path: '/reports/item-874',
     requests: {
         [HttpMethod.Post]: {
@@ -18396,7 +18393,7 @@ const endpoint874 = defineEndpoint({
     },
 });
 
-const endpoint875 = defineEndpoint({
+export const endpoint875 = defineEndpoint({
     path: '/reports/item-875',
     requests: {
         [HttpMethod.Post]: {
@@ -18417,7 +18414,7 @@ const endpoint875 = defineEndpoint({
     },
 });
 
-const endpoint876 = defineEndpoint({
+export const endpoint876 = defineEndpoint({
     path: '/reports/item-876',
     requests: {
         [HttpMethod.Post]: {
@@ -18438,7 +18435,7 @@ const endpoint876 = defineEndpoint({
     },
 });
 
-const endpoint877 = defineEndpoint({
+export const endpoint877 = defineEndpoint({
     path: '/reports/item-877',
     requests: {
         [HttpMethod.Post]: {
@@ -18459,7 +18456,7 @@ const endpoint877 = defineEndpoint({
     },
 });
 
-const endpoint878 = defineEndpoint({
+export const endpoint878 = defineEndpoint({
     path: '/reports/item-878',
     requests: {
         [HttpMethod.Post]: {
@@ -18480,7 +18477,7 @@ const endpoint878 = defineEndpoint({
     },
 });
 
-const endpoint879 = defineEndpoint({
+export const endpoint879 = defineEndpoint({
     path: '/reports/item-879',
     requests: {
         [HttpMethod.Post]: {
@@ -18501,7 +18498,7 @@ const endpoint879 = defineEndpoint({
     },
 });
 
-const endpoint880 = defineEndpoint({
+export const endpoint880 = defineEndpoint({
     path: '/reports/item-880',
     requests: {
         [HttpMethod.Post]: {
@@ -18522,7 +18519,7 @@ const endpoint880 = defineEndpoint({
     },
 });
 
-const endpoint881 = defineEndpoint({
+export const endpoint881 = defineEndpoint({
     path: '/reports/item-881',
     requests: {
         [HttpMethod.Post]: {
@@ -18543,7 +18540,7 @@ const endpoint881 = defineEndpoint({
     },
 });
 
-const endpoint882 = defineEndpoint({
+export const endpoint882 = defineEndpoint({
     path: '/reports/item-882',
     requests: {
         [HttpMethod.Post]: {
@@ -18564,7 +18561,7 @@ const endpoint882 = defineEndpoint({
     },
 });
 
-const endpoint883 = defineEndpoint({
+export const endpoint883 = defineEndpoint({
     path: '/reports/item-883',
     requests: {
         [HttpMethod.Post]: {
@@ -18585,7 +18582,7 @@ const endpoint883 = defineEndpoint({
     },
 });
 
-const endpoint884 = defineEndpoint({
+export const endpoint884 = defineEndpoint({
     path: '/reports/item-884',
     requests: {
         [HttpMethod.Post]: {
@@ -18606,7 +18603,7 @@ const endpoint884 = defineEndpoint({
     },
 });
 
-const endpoint885 = defineEndpoint({
+export const endpoint885 = defineEndpoint({
     path: '/reports/item-885',
     requests: {
         [HttpMethod.Post]: {
@@ -18627,7 +18624,7 @@ const endpoint885 = defineEndpoint({
     },
 });
 
-const endpoint886 = defineEndpoint({
+export const endpoint886 = defineEndpoint({
     path: '/reports/item-886',
     requests: {
         [HttpMethod.Post]: {
@@ -18648,7 +18645,7 @@ const endpoint886 = defineEndpoint({
     },
 });
 
-const endpoint887 = defineEndpoint({
+export const endpoint887 = defineEndpoint({
     path: '/reports/item-887',
     requests: {
         [HttpMethod.Post]: {
@@ -18669,7 +18666,7 @@ const endpoint887 = defineEndpoint({
     },
 });
 
-const endpoint888 = defineEndpoint({
+export const endpoint888 = defineEndpoint({
     path: '/reports/item-888',
     requests: {
         [HttpMethod.Post]: {
@@ -18690,7 +18687,7 @@ const endpoint888 = defineEndpoint({
     },
 });
 
-const endpoint889 = defineEndpoint({
+export const endpoint889 = defineEndpoint({
     path: '/reports/item-889',
     requests: {
         [HttpMethod.Post]: {
@@ -18711,7 +18708,7 @@ const endpoint889 = defineEndpoint({
     },
 });
 
-const endpoint890 = defineEndpoint({
+export const endpoint890 = defineEndpoint({
     path: '/reports/item-890',
     requests: {
         [HttpMethod.Post]: {
@@ -18732,7 +18729,7 @@ const endpoint890 = defineEndpoint({
     },
 });
 
-const endpoint891 = defineEndpoint({
+export const endpoint891 = defineEndpoint({
     path: '/reports/item-891',
     requests: {
         [HttpMethod.Post]: {
@@ -18753,7 +18750,7 @@ const endpoint891 = defineEndpoint({
     },
 });
 
-const endpoint892 = defineEndpoint({
+export const endpoint892 = defineEndpoint({
     path: '/reports/item-892',
     requests: {
         [HttpMethod.Post]: {
@@ -18774,7 +18771,7 @@ const endpoint892 = defineEndpoint({
     },
 });
 
-const endpoint893 = defineEndpoint({
+export const endpoint893 = defineEndpoint({
     path: '/reports/item-893',
     requests: {
         [HttpMethod.Post]: {
@@ -18795,7 +18792,7 @@ const endpoint893 = defineEndpoint({
     },
 });
 
-const endpoint894 = defineEndpoint({
+export const endpoint894 = defineEndpoint({
     path: '/reports/item-894',
     requests: {
         [HttpMethod.Post]: {
@@ -18816,7 +18813,7 @@ const endpoint894 = defineEndpoint({
     },
 });
 
-const endpoint895 = defineEndpoint({
+export const endpoint895 = defineEndpoint({
     path: '/reports/item-895',
     requests: {
         [HttpMethod.Post]: {
@@ -18837,7 +18834,7 @@ const endpoint895 = defineEndpoint({
     },
 });
 
-const endpoint896 = defineEndpoint({
+export const endpoint896 = defineEndpoint({
     path: '/reports/item-896',
     requests: {
         [HttpMethod.Post]: {
@@ -18858,7 +18855,7 @@ const endpoint896 = defineEndpoint({
     },
 });
 
-const endpoint897 = defineEndpoint({
+export const endpoint897 = defineEndpoint({
     path: '/reports/item-897',
     requests: {
         [HttpMethod.Post]: {
@@ -18879,7 +18876,7 @@ const endpoint897 = defineEndpoint({
     },
 });
 
-const endpoint898 = defineEndpoint({
+export const endpoint898 = defineEndpoint({
     path: '/reports/item-898',
     requests: {
         [HttpMethod.Post]: {
@@ -18900,7 +18897,7 @@ const endpoint898 = defineEndpoint({
     },
 });
 
-const endpoint899 = defineEndpoint({
+export const endpoint899 = defineEndpoint({
     path: '/reports/item-899',
     requests: {
         [HttpMethod.Post]: {
@@ -18921,7 +18918,7 @@ const endpoint899 = defineEndpoint({
     },
 });
 
-const endpoint900 = defineEndpoint({
+export const endpoint900 = defineEndpoint({
     path: '/reports/item-900',
     requests: {
         [HttpMethod.Post]: {
@@ -18942,7 +18939,7 @@ const endpoint900 = defineEndpoint({
     },
 });
 
-const endpoint901 = defineEndpoint({
+export const endpoint901 = defineEndpoint({
     path: '/reports/item-901',
     requests: {
         [HttpMethod.Post]: {
@@ -18963,7 +18960,7 @@ const endpoint901 = defineEndpoint({
     },
 });
 
-const endpoint902 = defineEndpoint({
+export const endpoint902 = defineEndpoint({
     path: '/reports/item-902',
     requests: {
         [HttpMethod.Post]: {
@@ -18984,7 +18981,7 @@ const endpoint902 = defineEndpoint({
     },
 });
 
-const endpoint903 = defineEndpoint({
+export const endpoint903 = defineEndpoint({
     path: '/reports/item-903',
     requests: {
         [HttpMethod.Post]: {
@@ -19005,7 +19002,7 @@ const endpoint903 = defineEndpoint({
     },
 });
 
-const endpoint904 = defineEndpoint({
+export const endpoint904 = defineEndpoint({
     path: '/reports/item-904',
     requests: {
         [HttpMethod.Post]: {
@@ -19026,7 +19023,7 @@ const endpoint904 = defineEndpoint({
     },
 });
 
-const endpoint905 = defineEndpoint({
+export const endpoint905 = defineEndpoint({
     path: '/reports/item-905',
     requests: {
         [HttpMethod.Post]: {
@@ -19047,7 +19044,7 @@ const endpoint905 = defineEndpoint({
     },
 });
 
-const endpoint906 = defineEndpoint({
+export const endpoint906 = defineEndpoint({
     path: '/reports/item-906',
     requests: {
         [HttpMethod.Post]: {
@@ -19068,7 +19065,7 @@ const endpoint906 = defineEndpoint({
     },
 });
 
-const endpoint907 = defineEndpoint({
+export const endpoint907 = defineEndpoint({
     path: '/reports/item-907',
     requests: {
         [HttpMethod.Post]: {
@@ -19089,7 +19086,7 @@ const endpoint907 = defineEndpoint({
     },
 });
 
-const endpoint908 = defineEndpoint({
+export const endpoint908 = defineEndpoint({
     path: '/reports/item-908',
     requests: {
         [HttpMethod.Post]: {
@@ -19110,7 +19107,7 @@ const endpoint908 = defineEndpoint({
     },
 });
 
-const endpoint909 = defineEndpoint({
+export const endpoint909 = defineEndpoint({
     path: '/reports/item-909',
     requests: {
         [HttpMethod.Post]: {
@@ -19131,7 +19128,7 @@ const endpoint909 = defineEndpoint({
     },
 });
 
-const endpoint910 = defineEndpoint({
+export const endpoint910 = defineEndpoint({
     path: '/reports/item-910',
     requests: {
         [HttpMethod.Post]: {
@@ -19152,7 +19149,7 @@ const endpoint910 = defineEndpoint({
     },
 });
 
-const endpoint911 = defineEndpoint({
+export const endpoint911 = defineEndpoint({
     path: '/reports/item-911',
     requests: {
         [HttpMethod.Post]: {
@@ -19173,7 +19170,7 @@ const endpoint911 = defineEndpoint({
     },
 });
 
-const endpoint912 = defineEndpoint({
+export const endpoint912 = defineEndpoint({
     path: '/reports/item-912',
     requests: {
         [HttpMethod.Post]: {
@@ -19194,7 +19191,7 @@ const endpoint912 = defineEndpoint({
     },
 });
 
-const endpoint913 = defineEndpoint({
+export const endpoint913 = defineEndpoint({
     path: '/reports/item-913',
     requests: {
         [HttpMethod.Post]: {
@@ -19215,7 +19212,7 @@ const endpoint913 = defineEndpoint({
     },
 });
 
-const endpoint914 = defineEndpoint({
+export const endpoint914 = defineEndpoint({
     path: '/reports/item-914',
     requests: {
         [HttpMethod.Post]: {
@@ -19236,7 +19233,7 @@ const endpoint914 = defineEndpoint({
     },
 });
 
-const endpoint915 = defineEndpoint({
+export const endpoint915 = defineEndpoint({
     path: '/reports/item-915',
     requests: {
         [HttpMethod.Post]: {
@@ -19257,7 +19254,7 @@ const endpoint915 = defineEndpoint({
     },
 });
 
-const endpoint916 = defineEndpoint({
+export const endpoint916 = defineEndpoint({
     path: '/reports/item-916',
     requests: {
         [HttpMethod.Post]: {
@@ -19278,7 +19275,7 @@ const endpoint916 = defineEndpoint({
     },
 });
 
-const endpoint917 = defineEndpoint({
+export const endpoint917 = defineEndpoint({
     path: '/reports/item-917',
     requests: {
         [HttpMethod.Post]: {
@@ -19299,7 +19296,7 @@ const endpoint917 = defineEndpoint({
     },
 });
 
-const endpoint918 = defineEndpoint({
+export const endpoint918 = defineEndpoint({
     path: '/reports/item-918',
     requests: {
         [HttpMethod.Post]: {
@@ -19320,7 +19317,7 @@ const endpoint918 = defineEndpoint({
     },
 });
 
-const endpoint919 = defineEndpoint({
+export const endpoint919 = defineEndpoint({
     path: '/reports/item-919',
     requests: {
         [HttpMethod.Post]: {
@@ -19341,7 +19338,7 @@ const endpoint919 = defineEndpoint({
     },
 });
 
-const endpoint920 = defineEndpoint({
+export const endpoint920 = defineEndpoint({
     path: '/reports/item-920',
     requests: {
         [HttpMethod.Post]: {
@@ -19362,7 +19359,7 @@ const endpoint920 = defineEndpoint({
     },
 });
 
-const endpoint921 = defineEndpoint({
+export const endpoint921 = defineEndpoint({
     path: '/reports/item-921',
     requests: {
         [HttpMethod.Post]: {
@@ -19383,7 +19380,7 @@ const endpoint921 = defineEndpoint({
     },
 });
 
-const endpoint922 = defineEndpoint({
+export const endpoint922 = defineEndpoint({
     path: '/reports/item-922',
     requests: {
         [HttpMethod.Post]: {
@@ -19404,7 +19401,7 @@ const endpoint922 = defineEndpoint({
     },
 });
 
-const endpoint923 = defineEndpoint({
+export const endpoint923 = defineEndpoint({
     path: '/reports/item-923',
     requests: {
         [HttpMethod.Post]: {
@@ -19425,7 +19422,7 @@ const endpoint923 = defineEndpoint({
     },
 });
 
-const endpoint924 = defineEndpoint({
+export const endpoint924 = defineEndpoint({
     path: '/reports/item-924',
     requests: {
         [HttpMethod.Post]: {
@@ -19446,7 +19443,7 @@ const endpoint924 = defineEndpoint({
     },
 });
 
-const endpoint925 = defineEndpoint({
+export const endpoint925 = defineEndpoint({
     path: '/reports/item-925',
     requests: {
         [HttpMethod.Post]: {
@@ -19467,7 +19464,7 @@ const endpoint925 = defineEndpoint({
     },
 });
 
-const endpoint926 = defineEndpoint({
+export const endpoint926 = defineEndpoint({
     path: '/reports/item-926',
     requests: {
         [HttpMethod.Post]: {
@@ -19488,7 +19485,7 @@ const endpoint926 = defineEndpoint({
     },
 });
 
-const endpoint927 = defineEndpoint({
+export const endpoint927 = defineEndpoint({
     path: '/reports/item-927',
     requests: {
         [HttpMethod.Post]: {
@@ -19509,7 +19506,7 @@ const endpoint927 = defineEndpoint({
     },
 });
 
-const endpoint928 = defineEndpoint({
+export const endpoint928 = defineEndpoint({
     path: '/reports/item-928',
     requests: {
         [HttpMethod.Post]: {
@@ -19530,7 +19527,7 @@ const endpoint928 = defineEndpoint({
     },
 });
 
-const endpoint929 = defineEndpoint({
+export const endpoint929 = defineEndpoint({
     path: '/reports/item-929',
     requests: {
         [HttpMethod.Post]: {
@@ -19551,7 +19548,7 @@ const endpoint929 = defineEndpoint({
     },
 });
 
-const endpoint930 = defineEndpoint({
+export const endpoint930 = defineEndpoint({
     path: '/reports/item-930',
     requests: {
         [HttpMethod.Post]: {
@@ -19572,7 +19569,7 @@ const endpoint930 = defineEndpoint({
     },
 });
 
-const endpoint931 = defineEndpoint({
+export const endpoint931 = defineEndpoint({
     path: '/reports/item-931',
     requests: {
         [HttpMethod.Post]: {
@@ -19593,7 +19590,7 @@ const endpoint931 = defineEndpoint({
     },
 });
 
-const endpoint932 = defineEndpoint({
+export const endpoint932 = defineEndpoint({
     path: '/reports/item-932',
     requests: {
         [HttpMethod.Post]: {
@@ -19614,7 +19611,7 @@ const endpoint932 = defineEndpoint({
     },
 });
 
-const endpoint933 = defineEndpoint({
+export const endpoint933 = defineEndpoint({
     path: '/reports/item-933',
     requests: {
         [HttpMethod.Post]: {
@@ -19635,7 +19632,7 @@ const endpoint933 = defineEndpoint({
     },
 });
 
-const endpoint934 = defineEndpoint({
+export const endpoint934 = defineEndpoint({
     path: '/reports/item-934',
     requests: {
         [HttpMethod.Post]: {
@@ -19656,7 +19653,7 @@ const endpoint934 = defineEndpoint({
     },
 });
 
-const endpoint935 = defineEndpoint({
+export const endpoint935 = defineEndpoint({
     path: '/reports/item-935',
     requests: {
         [HttpMethod.Post]: {
@@ -19677,7 +19674,7 @@ const endpoint935 = defineEndpoint({
     },
 });
 
-const endpoint936 = defineEndpoint({
+export const endpoint936 = defineEndpoint({
     path: '/reports/item-936',
     requests: {
         [HttpMethod.Post]: {
@@ -19698,7 +19695,7 @@ const endpoint936 = defineEndpoint({
     },
 });
 
-const endpoint937 = defineEndpoint({
+export const endpoint937 = defineEndpoint({
     path: '/reports/item-937',
     requests: {
         [HttpMethod.Post]: {
@@ -19719,7 +19716,7 @@ const endpoint937 = defineEndpoint({
     },
 });
 
-const endpoint938 = defineEndpoint({
+export const endpoint938 = defineEndpoint({
     path: '/reports/item-938',
     requests: {
         [HttpMethod.Post]: {
@@ -19740,7 +19737,7 @@ const endpoint938 = defineEndpoint({
     },
 });
 
-const endpoint939 = defineEndpoint({
+export const endpoint939 = defineEndpoint({
     path: '/reports/item-939',
     requests: {
         [HttpMethod.Post]: {
@@ -19761,7 +19758,7 @@ const endpoint939 = defineEndpoint({
     },
 });
 
-const endpoint940 = defineEndpoint({
+export const endpoint940 = defineEndpoint({
     path: '/reports/item-940',
     requests: {
         [HttpMethod.Post]: {
@@ -19782,7 +19779,7 @@ const endpoint940 = defineEndpoint({
     },
 });
 
-const endpoint941 = defineEndpoint({
+export const endpoint941 = defineEndpoint({
     path: '/reports/item-941',
     requests: {
         [HttpMethod.Post]: {
@@ -19803,7 +19800,7 @@ const endpoint941 = defineEndpoint({
     },
 });
 
-const endpoint942 = defineEndpoint({
+export const endpoint942 = defineEndpoint({
     path: '/reports/item-942',
     requests: {
         [HttpMethod.Post]: {
@@ -19824,7 +19821,7 @@ const endpoint942 = defineEndpoint({
     },
 });
 
-const endpoint943 = defineEndpoint({
+export const endpoint943 = defineEndpoint({
     path: '/reports/item-943',
     requests: {
         [HttpMethod.Post]: {
@@ -19845,7 +19842,7 @@ const endpoint943 = defineEndpoint({
     },
 });
 
-const endpoint944 = defineEndpoint({
+export const endpoint944 = defineEndpoint({
     path: '/reports/item-944',
     requests: {
         [HttpMethod.Post]: {
@@ -19866,7 +19863,7 @@ const endpoint944 = defineEndpoint({
     },
 });
 
-const endpoint945 = defineEndpoint({
+export const endpoint945 = defineEndpoint({
     path: '/reports/item-945',
     requests: {
         [HttpMethod.Post]: {
@@ -19887,7 +19884,7 @@ const endpoint945 = defineEndpoint({
     },
 });
 
-const endpoint946 = defineEndpoint({
+export const endpoint946 = defineEndpoint({
     path: '/reports/item-946',
     requests: {
         [HttpMethod.Post]: {
@@ -19908,7 +19905,7 @@ const endpoint946 = defineEndpoint({
     },
 });
 
-const endpoint947 = defineEndpoint({
+export const endpoint947 = defineEndpoint({
     path: '/reports/item-947',
     requests: {
         [HttpMethod.Post]: {
@@ -19929,7 +19926,7 @@ const endpoint947 = defineEndpoint({
     },
 });
 
-const endpoint948 = defineEndpoint({
+export const endpoint948 = defineEndpoint({
     path: '/reports/item-948',
     requests: {
         [HttpMethod.Post]: {
@@ -19950,7 +19947,7 @@ const endpoint948 = defineEndpoint({
     },
 });
 
-const endpoint949 = defineEndpoint({
+export const endpoint949 = defineEndpoint({
     path: '/reports/item-949',
     requests: {
         [HttpMethod.Post]: {
@@ -19971,7 +19968,7 @@ const endpoint949 = defineEndpoint({
     },
 });
 
-const endpoint950 = defineEndpoint({
+export const endpoint950 = defineEndpoint({
     path: '/reports/item-950',
     requests: {
         [HttpMethod.Post]: {
@@ -19992,7 +19989,7 @@ const endpoint950 = defineEndpoint({
     },
 });
 
-const endpoint951 = defineEndpoint({
+export const endpoint951 = defineEndpoint({
     path: '/reports/item-951',
     requests: {
         [HttpMethod.Post]: {
@@ -20013,7 +20010,7 @@ const endpoint951 = defineEndpoint({
     },
 });
 
-const endpoint952 = defineEndpoint({
+export const endpoint952 = defineEndpoint({
     path: '/reports/item-952',
     requests: {
         [HttpMethod.Post]: {
@@ -20034,7 +20031,7 @@ const endpoint952 = defineEndpoint({
     },
 });
 
-const endpoint953 = defineEndpoint({
+export const endpoint953 = defineEndpoint({
     path: '/reports/item-953',
     requests: {
         [HttpMethod.Post]: {
@@ -20055,7 +20052,7 @@ const endpoint953 = defineEndpoint({
     },
 });
 
-const endpoint954 = defineEndpoint({
+export const endpoint954 = defineEndpoint({
     path: '/reports/item-954',
     requests: {
         [HttpMethod.Post]: {
@@ -20076,7 +20073,7 @@ const endpoint954 = defineEndpoint({
     },
 });
 
-const endpoint955 = defineEndpoint({
+export const endpoint955 = defineEndpoint({
     path: '/reports/item-955',
     requests: {
         [HttpMethod.Post]: {
@@ -20097,7 +20094,7 @@ const endpoint955 = defineEndpoint({
     },
 });
 
-const endpoint956 = defineEndpoint({
+export const endpoint956 = defineEndpoint({
     path: '/reports/item-956',
     requests: {
         [HttpMethod.Post]: {
@@ -20118,7 +20115,7 @@ const endpoint956 = defineEndpoint({
     },
 });
 
-const endpoint957 = defineEndpoint({
+export const endpoint957 = defineEndpoint({
     path: '/reports/item-957',
     requests: {
         [HttpMethod.Post]: {
@@ -20139,7 +20136,7 @@ const endpoint957 = defineEndpoint({
     },
 });
 
-const endpoint958 = defineEndpoint({
+export const endpoint958 = defineEndpoint({
     path: '/reports/item-958',
     requests: {
         [HttpMethod.Post]: {
@@ -20160,7 +20157,7 @@ const endpoint958 = defineEndpoint({
     },
 });
 
-const endpoint959 = defineEndpoint({
+export const endpoint959 = defineEndpoint({
     path: '/reports/item-959',
     requests: {
         [HttpMethod.Post]: {
@@ -20181,7 +20178,7 @@ const endpoint959 = defineEndpoint({
     },
 });
 
-const endpoint960 = defineEndpoint({
+export const endpoint960 = defineEndpoint({
     path: '/reports/item-960',
     requests: {
         [HttpMethod.Post]: {
@@ -20202,7 +20199,7 @@ const endpoint960 = defineEndpoint({
     },
 });
 
-const endpoint961 = defineEndpoint({
+export const endpoint961 = defineEndpoint({
     path: '/reports/item-961',
     requests: {
         [HttpMethod.Post]: {
@@ -20223,7 +20220,7 @@ const endpoint961 = defineEndpoint({
     },
 });
 
-const endpoint962 = defineEndpoint({
+export const endpoint962 = defineEndpoint({
     path: '/reports/item-962',
     requests: {
         [HttpMethod.Post]: {
@@ -20244,7 +20241,7 @@ const endpoint962 = defineEndpoint({
     },
 });
 
-const endpoint963 = defineEndpoint({
+export const endpoint963 = defineEndpoint({
     path: '/reports/item-963',
     requests: {
         [HttpMethod.Post]: {
@@ -20265,7 +20262,7 @@ const endpoint963 = defineEndpoint({
     },
 });
 
-const endpoint964 = defineEndpoint({
+export const endpoint964 = defineEndpoint({
     path: '/reports/item-964',
     requests: {
         [HttpMethod.Post]: {
@@ -20286,7 +20283,7 @@ const endpoint964 = defineEndpoint({
     },
 });
 
-const endpoint965 = defineEndpoint({
+export const endpoint965 = defineEndpoint({
     path: '/reports/item-965',
     requests: {
         [HttpMethod.Post]: {
@@ -20307,7 +20304,7 @@ const endpoint965 = defineEndpoint({
     },
 });
 
-const endpoint966 = defineEndpoint({
+export const endpoint966 = defineEndpoint({
     path: '/reports/item-966',
     requests: {
         [HttpMethod.Post]: {
@@ -20328,7 +20325,7 @@ const endpoint966 = defineEndpoint({
     },
 });
 
-const endpoint967 = defineEndpoint({
+export const endpoint967 = defineEndpoint({
     path: '/reports/item-967',
     requests: {
         [HttpMethod.Post]: {
@@ -20349,7 +20346,7 @@ const endpoint967 = defineEndpoint({
     },
 });
 
-const endpoint968 = defineEndpoint({
+export const endpoint968 = defineEndpoint({
     path: '/reports/item-968',
     requests: {
         [HttpMethod.Post]: {
@@ -20370,7 +20367,7 @@ const endpoint968 = defineEndpoint({
     },
 });
 
-const endpoint969 = defineEndpoint({
+export const endpoint969 = defineEndpoint({
     path: '/reports/item-969',
     requests: {
         [HttpMethod.Post]: {
@@ -20391,7 +20388,7 @@ const endpoint969 = defineEndpoint({
     },
 });
 
-const endpoint970 = defineEndpoint({
+export const endpoint970 = defineEndpoint({
     path: '/reports/item-970',
     requests: {
         [HttpMethod.Post]: {
@@ -20412,7 +20409,7 @@ const endpoint970 = defineEndpoint({
     },
 });
 
-const endpoint971 = defineEndpoint({
+export const endpoint971 = defineEndpoint({
     path: '/reports/item-971',
     requests: {
         [HttpMethod.Post]: {
@@ -20433,7 +20430,7 @@ const endpoint971 = defineEndpoint({
     },
 });
 
-const endpoint972 = defineEndpoint({
+export const endpoint972 = defineEndpoint({
     path: '/reports/item-972',
     requests: {
         [HttpMethod.Post]: {
@@ -20454,7 +20451,7 @@ const endpoint972 = defineEndpoint({
     },
 });
 
-const endpoint973 = defineEndpoint({
+export const endpoint973 = defineEndpoint({
     path: '/reports/item-973',
     requests: {
         [HttpMethod.Post]: {
@@ -20475,7 +20472,7 @@ const endpoint973 = defineEndpoint({
     },
 });
 
-const endpoint974 = defineEndpoint({
+export const endpoint974 = defineEndpoint({
     path: '/reports/item-974',
     requests: {
         [HttpMethod.Post]: {
@@ -20496,7 +20493,7 @@ const endpoint974 = defineEndpoint({
     },
 });
 
-const endpoint975 = defineEndpoint({
+export const endpoint975 = defineEndpoint({
     path: '/reports/item-975',
     requests: {
         [HttpMethod.Post]: {
@@ -20517,7 +20514,7 @@ const endpoint975 = defineEndpoint({
     },
 });
 
-const endpoint976 = defineEndpoint({
+export const endpoint976 = defineEndpoint({
     path: '/reports/item-976',
     requests: {
         [HttpMethod.Post]: {
@@ -20538,7 +20535,7 @@ const endpoint976 = defineEndpoint({
     },
 });
 
-const endpoint977 = defineEndpoint({
+export const endpoint977 = defineEndpoint({
     path: '/reports/item-977',
     requests: {
         [HttpMethod.Post]: {
@@ -20559,7 +20556,7 @@ const endpoint977 = defineEndpoint({
     },
 });
 
-const endpoint978 = defineEndpoint({
+export const endpoint978 = defineEndpoint({
     path: '/reports/item-978',
     requests: {
         [HttpMethod.Post]: {
@@ -20580,7 +20577,7 @@ const endpoint978 = defineEndpoint({
     },
 });
 
-const endpoint979 = defineEndpoint({
+export const endpoint979 = defineEndpoint({
     path: '/reports/item-979',
     requests: {
         [HttpMethod.Post]: {
@@ -20601,7 +20598,7 @@ const endpoint979 = defineEndpoint({
     },
 });
 
-const endpoint980 = defineEndpoint({
+export const endpoint980 = defineEndpoint({
     path: '/reports/item-980',
     requests: {
         [HttpMethod.Post]: {
@@ -20622,7 +20619,7 @@ const endpoint980 = defineEndpoint({
     },
 });
 
-const endpoint981 = defineEndpoint({
+export const endpoint981 = defineEndpoint({
     path: '/reports/item-981',
     requests: {
         [HttpMethod.Post]: {
@@ -20643,7 +20640,7 @@ const endpoint981 = defineEndpoint({
     },
 });
 
-const endpoint982 = defineEndpoint({
+export const endpoint982 = defineEndpoint({
     path: '/reports/item-982',
     requests: {
         [HttpMethod.Post]: {
@@ -20664,7 +20661,7 @@ const endpoint982 = defineEndpoint({
     },
 });
 
-const endpoint983 = defineEndpoint({
+export const endpoint983 = defineEndpoint({
     path: '/reports/item-983',
     requests: {
         [HttpMethod.Post]: {
@@ -20685,7 +20682,7 @@ const endpoint983 = defineEndpoint({
     },
 });
 
-const endpoint984 = defineEndpoint({
+export const endpoint984 = defineEndpoint({
     path: '/reports/item-984',
     requests: {
         [HttpMethod.Post]: {
@@ -20706,7 +20703,7 @@ const endpoint984 = defineEndpoint({
     },
 });
 
-const endpoint985 = defineEndpoint({
+export const endpoint985 = defineEndpoint({
     path: '/reports/item-985',
     requests: {
         [HttpMethod.Post]: {
@@ -20727,7 +20724,7 @@ const endpoint985 = defineEndpoint({
     },
 });
 
-const endpoint986 = defineEndpoint({
+export const endpoint986 = defineEndpoint({
     path: '/reports/item-986',
     requests: {
         [HttpMethod.Post]: {
@@ -20748,7 +20745,7 @@ const endpoint986 = defineEndpoint({
     },
 });
 
-const endpoint987 = defineEndpoint({
+export const endpoint987 = defineEndpoint({
     path: '/reports/item-987',
     requests: {
         [HttpMethod.Post]: {
@@ -20769,7 +20766,7 @@ const endpoint987 = defineEndpoint({
     },
 });
 
-const endpoint988 = defineEndpoint({
+export const endpoint988 = defineEndpoint({
     path: '/reports/item-988',
     requests: {
         [HttpMethod.Post]: {
@@ -20790,7 +20787,7 @@ const endpoint988 = defineEndpoint({
     },
 });
 
-const endpoint989 = defineEndpoint({
+export const endpoint989 = defineEndpoint({
     path: '/reports/item-989',
     requests: {
         [HttpMethod.Post]: {
@@ -20811,7 +20808,7 @@ const endpoint989 = defineEndpoint({
     },
 });
 
-const endpoint990 = defineEndpoint({
+export const endpoint990 = defineEndpoint({
     path: '/reports/item-990',
     requests: {
         [HttpMethod.Post]: {
@@ -20832,7 +20829,7 @@ const endpoint990 = defineEndpoint({
     },
 });
 
-const endpoint991 = defineEndpoint({
+export const endpoint991 = defineEndpoint({
     path: '/reports/item-991',
     requests: {
         [HttpMethod.Post]: {
@@ -20853,7 +20850,7 @@ const endpoint991 = defineEndpoint({
     },
 });
 
-const endpoint992 = defineEndpoint({
+export const endpoint992 = defineEndpoint({
     path: '/reports/item-992',
     requests: {
         [HttpMethod.Post]: {
@@ -20874,7 +20871,7 @@ const endpoint992 = defineEndpoint({
     },
 });
 
-const endpoint993 = defineEndpoint({
+export const endpoint993 = defineEndpoint({
     path: '/reports/item-993',
     requests: {
         [HttpMethod.Post]: {
@@ -20895,7 +20892,7 @@ const endpoint993 = defineEndpoint({
     },
 });
 
-const endpoint994 = defineEndpoint({
+export const endpoint994 = defineEndpoint({
     path: '/reports/item-994',
     requests: {
         [HttpMethod.Post]: {
@@ -20916,7 +20913,7 @@ const endpoint994 = defineEndpoint({
     },
 });
 
-const endpoint995 = defineEndpoint({
+export const endpoint995 = defineEndpoint({
     path: '/reports/item-995',
     requests: {
         [HttpMethod.Post]: {
@@ -20937,7 +20934,7 @@ const endpoint995 = defineEndpoint({
     },
 });
 
-const endpoint996 = defineEndpoint({
+export const endpoint996 = defineEndpoint({
     path: '/reports/item-996',
     requests: {
         [HttpMethod.Post]: {
@@ -20958,7 +20955,7 @@ const endpoint996 = defineEndpoint({
     },
 });
 
-const endpoint997 = defineEndpoint({
+export const endpoint997 = defineEndpoint({
     path: '/reports/item-997',
     requests: {
         [HttpMethod.Post]: {
@@ -20979,7 +20976,7 @@ const endpoint997 = defineEndpoint({
     },
 });
 
-const endpoint998 = defineEndpoint({
+export const endpoint998 = defineEndpoint({
     path: '/reports/item-998',
     requests: {
         [HttpMethod.Post]: {
@@ -21000,7 +20997,7 @@ const endpoint998 = defineEndpoint({
     },
 });
 
-const endpoint999 = defineEndpoint({
+export const endpoint999 = defineEndpoint({
     path: '/reports/item-999',
     requests: {
         [HttpMethod.Post]: {
@@ -21021,7 +21018,7 @@ const endpoint999 = defineEndpoint({
     },
 });
 
-const endpoint1000 = defineEndpoint({
+export const endpoint1000 = defineEndpoint({
     path: '/reports/item-1000',
     requests: {
         [HttpMethod.Post]: {
@@ -21042,7 +21039,7 @@ const endpoint1000 = defineEndpoint({
     },
 });
 
-const endpoint1001 = defineEndpoint({
+export const endpoint1001 = defineEndpoint({
     path: '/reports/item-1001',
     requests: {
         [HttpMethod.Post]: {
@@ -21063,7 +21060,7 @@ const endpoint1001 = defineEndpoint({
     },
 });
 
-const endpoint1002 = defineEndpoint({
+export const endpoint1002 = defineEndpoint({
     path: '/reports/item-1002',
     requests: {
         [HttpMethod.Post]: {
@@ -21084,7 +21081,7 @@ const endpoint1002 = defineEndpoint({
     },
 });
 
-const endpoint1003 = defineEndpoint({
+export const endpoint1003 = defineEndpoint({
     path: '/reports/item-1003',
     requests: {
         [HttpMethod.Post]: {
@@ -21105,7 +21102,7 @@ const endpoint1003 = defineEndpoint({
     },
 });
 
-const endpoint1004 = defineEndpoint({
+export const endpoint1004 = defineEndpoint({
     path: '/reports/item-1004',
     requests: {
         [HttpMethod.Post]: {
@@ -21126,7 +21123,7 @@ const endpoint1004 = defineEndpoint({
     },
 });
 
-const endpoint1005 = defineEndpoint({
+export const endpoint1005 = defineEndpoint({
     path: '/reports/item-1005',
     requests: {
         [HttpMethod.Post]: {
@@ -21147,7 +21144,7 @@ const endpoint1005 = defineEndpoint({
     },
 });
 
-const endpoint1006 = defineEndpoint({
+export const endpoint1006 = defineEndpoint({
     path: '/reports/item-1006',
     requests: {
         [HttpMethod.Post]: {
@@ -21168,7 +21165,7 @@ const endpoint1006 = defineEndpoint({
     },
 });
 
-const endpoint1007 = defineEndpoint({
+export const endpoint1007 = defineEndpoint({
     path: '/reports/item-1007',
     requests: {
         [HttpMethod.Post]: {
@@ -21189,7 +21186,7 @@ const endpoint1007 = defineEndpoint({
     },
 });
 
-const endpoint1008 = defineEndpoint({
+export const endpoint1008 = defineEndpoint({
     path: '/reports/item-1008',
     requests: {
         [HttpMethod.Post]: {
@@ -21210,7 +21207,7 @@ const endpoint1008 = defineEndpoint({
     },
 });
 
-const endpoint1009 = defineEndpoint({
+export const endpoint1009 = defineEndpoint({
     path: '/reports/item-1009',
     requests: {
         [HttpMethod.Post]: {
@@ -21231,7 +21228,7 @@ const endpoint1009 = defineEndpoint({
     },
 });
 
-const endpoint1010 = defineEndpoint({
+export const endpoint1010 = defineEndpoint({
     path: '/reports/item-1010',
     requests: {
         [HttpMethod.Post]: {
@@ -21252,7 +21249,7 @@ const endpoint1010 = defineEndpoint({
     },
 });
 
-const endpoint1011 = defineEndpoint({
+export const endpoint1011 = defineEndpoint({
     path: '/reports/item-1011',
     requests: {
         [HttpMethod.Post]: {
@@ -21273,7 +21270,7 @@ const endpoint1011 = defineEndpoint({
     },
 });
 
-const endpoint1012 = defineEndpoint({
+export const endpoint1012 = defineEndpoint({
     path: '/reports/item-1012',
     requests: {
         [HttpMethod.Post]: {
@@ -21294,7 +21291,7 @@ const endpoint1012 = defineEndpoint({
     },
 });
 
-const endpoint1013 = defineEndpoint({
+export const endpoint1013 = defineEndpoint({
     path: '/reports/item-1013',
     requests: {
         [HttpMethod.Post]: {
@@ -21315,7 +21312,7 @@ const endpoint1013 = defineEndpoint({
     },
 });
 
-const endpoint1014 = defineEndpoint({
+export const endpoint1014 = defineEndpoint({
     path: '/reports/item-1014',
     requests: {
         [HttpMethod.Post]: {
@@ -21336,7 +21333,7 @@ const endpoint1014 = defineEndpoint({
     },
 });
 
-const endpoint1015 = defineEndpoint({
+export const endpoint1015 = defineEndpoint({
     path: '/reports/item-1015',
     requests: {
         [HttpMethod.Post]: {
@@ -21357,7 +21354,7 @@ const endpoint1015 = defineEndpoint({
     },
 });
 
-const endpoint1016 = defineEndpoint({
+export const endpoint1016 = defineEndpoint({
     path: '/reports/item-1016',
     requests: {
         [HttpMethod.Post]: {
@@ -21378,7 +21375,7 @@ const endpoint1016 = defineEndpoint({
     },
 });
 
-const endpoint1017 = defineEndpoint({
+export const endpoint1017 = defineEndpoint({
     path: '/reports/item-1017',
     requests: {
         [HttpMethod.Post]: {
@@ -21399,7 +21396,7 @@ const endpoint1017 = defineEndpoint({
     },
 });
 
-const endpoint1018 = defineEndpoint({
+export const endpoint1018 = defineEndpoint({
     path: '/reports/item-1018',
     requests: {
         [HttpMethod.Post]: {
@@ -21420,7 +21417,7 @@ const endpoint1018 = defineEndpoint({
     },
 });
 
-const endpoint1019 = defineEndpoint({
+export const endpoint1019 = defineEndpoint({
     path: '/reports/item-1019',
     requests: {
         [HttpMethod.Post]: {
@@ -21441,7 +21438,7 @@ const endpoint1019 = defineEndpoint({
     },
 });
 
-const endpoint1020 = defineEndpoint({
+export const endpoint1020 = defineEndpoint({
     path: '/reports/item-1020',
     requests: {
         [HttpMethod.Post]: {
@@ -21462,7 +21459,7 @@ const endpoint1020 = defineEndpoint({
     },
 });
 
-const endpoint1021 = defineEndpoint({
+export const endpoint1021 = defineEndpoint({
     path: '/reports/item-1021',
     requests: {
         [HttpMethod.Post]: {
@@ -21483,7 +21480,7 @@ const endpoint1021 = defineEndpoint({
     },
 });
 
-const endpoint1022 = defineEndpoint({
+export const endpoint1022 = defineEndpoint({
     path: '/reports/item-1022',
     requests: {
         [HttpMethod.Post]: {
@@ -21504,7 +21501,7 @@ const endpoint1022 = defineEndpoint({
     },
 });
 
-const endpoint1023 = defineEndpoint({
+export const endpoint1023 = defineEndpoint({
     path: '/reports/item-1023',
     requests: {
         [HttpMethod.Post]: {
@@ -21525,7 +21522,7 @@ const endpoint1023 = defineEndpoint({
     },
 });
 
-const endpoint1024 = defineEndpoint({
+export const endpoint1024 = defineEndpoint({
     path: '/reports/item-1024',
     requests: {
         [HttpMethod.Post]: {
@@ -21546,7 +21543,7 @@ const endpoint1024 = defineEndpoint({
     },
 });
 
-const endpoint1025 = defineEndpoint({
+export const endpoint1025 = defineEndpoint({
     path: '/reports/item-1025',
     requests: {
         [HttpMethod.Post]: {
@@ -21567,7 +21564,7 @@ const endpoint1025 = defineEndpoint({
     },
 });
 
-const endpoint1026 = defineEndpoint({
+export const endpoint1026 = defineEndpoint({
     path: '/reports/item-1026',
     requests: {
         [HttpMethod.Post]: {
@@ -21588,7 +21585,7 @@ const endpoint1026 = defineEndpoint({
     },
 });
 
-const endpoint1027 = defineEndpoint({
+export const endpoint1027 = defineEndpoint({
     path: '/reports/item-1027',
     requests: {
         [HttpMethod.Post]: {
@@ -21609,7 +21606,7 @@ const endpoint1027 = defineEndpoint({
     },
 });
 
-const endpoint1028 = defineEndpoint({
+export const endpoint1028 = defineEndpoint({
     path: '/reports/item-1028',
     requests: {
         [HttpMethod.Post]: {
@@ -21630,7 +21627,7 @@ const endpoint1028 = defineEndpoint({
     },
 });
 
-const endpoint1029 = defineEndpoint({
+export const endpoint1029 = defineEndpoint({
     path: '/reports/item-1029',
     requests: {
         [HttpMethod.Post]: {
@@ -21651,7 +21648,7 @@ const endpoint1029 = defineEndpoint({
     },
 });
 
-const endpoint1030 = defineEndpoint({
+export const endpoint1030 = defineEndpoint({
     path: '/reports/item-1030',
     requests: {
         [HttpMethod.Post]: {
@@ -21672,7 +21669,7 @@ const endpoint1030 = defineEndpoint({
     },
 });
 
-const endpoint1031 = defineEndpoint({
+export const endpoint1031 = defineEndpoint({
     path: '/reports/item-1031',
     requests: {
         [HttpMethod.Post]: {
@@ -21693,7 +21690,7 @@ const endpoint1031 = defineEndpoint({
     },
 });
 
-const endpoint1032 = defineEndpoint({
+export const endpoint1032 = defineEndpoint({
     path: '/reports/item-1032',
     requests: {
         [HttpMethod.Post]: {
@@ -21714,7 +21711,7 @@ const endpoint1032 = defineEndpoint({
     },
 });
 
-const endpoint1033 = defineEndpoint({
+export const endpoint1033 = defineEndpoint({
     path: '/reports/item-1033',
     requests: {
         [HttpMethod.Post]: {
@@ -21735,7 +21732,7 @@ const endpoint1033 = defineEndpoint({
     },
 });
 
-const endpoint1034 = defineEndpoint({
+export const endpoint1034 = defineEndpoint({
     path: '/reports/item-1034',
     requests: {
         [HttpMethod.Post]: {
@@ -21756,7 +21753,7 @@ const endpoint1034 = defineEndpoint({
     },
 });
 
-const endpoint1035 = defineEndpoint({
+export const endpoint1035 = defineEndpoint({
     path: '/reports/item-1035',
     requests: {
         [HttpMethod.Post]: {
@@ -21777,7 +21774,7 @@ const endpoint1035 = defineEndpoint({
     },
 });
 
-const endpoint1036 = defineEndpoint({
+export const endpoint1036 = defineEndpoint({
     path: '/reports/item-1036',
     requests: {
         [HttpMethod.Post]: {
@@ -21798,7 +21795,7 @@ const endpoint1036 = defineEndpoint({
     },
 });
 
-const endpoint1037 = defineEndpoint({
+export const endpoint1037 = defineEndpoint({
     path: '/reports/item-1037',
     requests: {
         [HttpMethod.Post]: {
@@ -21819,7 +21816,7 @@ const endpoint1037 = defineEndpoint({
     },
 });
 
-const endpoint1038 = defineEndpoint({
+export const endpoint1038 = defineEndpoint({
     path: '/reports/item-1038',
     requests: {
         [HttpMethod.Post]: {
@@ -21840,7 +21837,7 @@ const endpoint1038 = defineEndpoint({
     },
 });
 
-const endpoint1039 = defineEndpoint({
+export const endpoint1039 = defineEndpoint({
     path: '/reports/item-1039',
     requests: {
         [HttpMethod.Post]: {
@@ -21861,7 +21858,7 @@ const endpoint1039 = defineEndpoint({
     },
 });
 
-const endpoint1040 = defineEndpoint({
+export const endpoint1040 = defineEndpoint({
     path: '/reports/item-1040',
     requests: {
         [HttpMethod.Post]: {
@@ -21882,7 +21879,7 @@ const endpoint1040 = defineEndpoint({
     },
 });
 
-const endpoint1041 = defineEndpoint({
+export const endpoint1041 = defineEndpoint({
     path: '/reports/item-1041',
     requests: {
         [HttpMethod.Post]: {
@@ -21903,7 +21900,7 @@ const endpoint1041 = defineEndpoint({
     },
 });
 
-const endpoint1042 = defineEndpoint({
+export const endpoint1042 = defineEndpoint({
     path: '/reports/item-1042',
     requests: {
         [HttpMethod.Post]: {
@@ -21924,7 +21921,7 @@ const endpoint1042 = defineEndpoint({
     },
 });
 
-const endpoint1043 = defineEndpoint({
+export const endpoint1043 = defineEndpoint({
     path: '/reports/item-1043',
     requests: {
         [HttpMethod.Post]: {
@@ -21945,7 +21942,7 @@ const endpoint1043 = defineEndpoint({
     },
 });
 
-const endpoint1044 = defineEndpoint({
+export const endpoint1044 = defineEndpoint({
     path: '/reports/item-1044',
     requests: {
         [HttpMethod.Post]: {
@@ -21966,7 +21963,7 @@ const endpoint1044 = defineEndpoint({
     },
 });
 
-const endpoint1045 = defineEndpoint({
+export const endpoint1045 = defineEndpoint({
     path: '/reports/item-1045',
     requests: {
         [HttpMethod.Post]: {
@@ -21987,7 +21984,7 @@ const endpoint1045 = defineEndpoint({
     },
 });
 
-const endpoint1046 = defineEndpoint({
+export const endpoint1046 = defineEndpoint({
     path: '/reports/item-1046',
     requests: {
         [HttpMethod.Post]: {
@@ -22008,7 +22005,7 @@ const endpoint1046 = defineEndpoint({
     },
 });
 
-const endpoint1047 = defineEndpoint({
+export const endpoint1047 = defineEndpoint({
     path: '/reports/item-1047',
     requests: {
         [HttpMethod.Post]: {
@@ -22029,7 +22026,7 @@ const endpoint1047 = defineEndpoint({
     },
 });
 
-const endpoint1048 = defineEndpoint({
+export const endpoint1048 = defineEndpoint({
     path: '/reports/item-1048',
     requests: {
         [HttpMethod.Post]: {
@@ -22050,7 +22047,7 @@ const endpoint1048 = defineEndpoint({
     },
 });
 
-const endpoint1049 = defineEndpoint({
+export const endpoint1049 = defineEndpoint({
     path: '/reports/item-1049',
     requests: {
         [HttpMethod.Post]: {
@@ -22071,7 +22068,7 @@ const endpoint1049 = defineEndpoint({
     },
 });
 
-const endpoint1050 = defineEndpoint({
+export const endpoint1050 = defineEndpoint({
     path: '/reports/item-1050',
     requests: {
         [HttpMethod.Post]: {
@@ -22092,7 +22089,7 @@ const endpoint1050 = defineEndpoint({
     },
 });
 
-const endpoint1051 = defineEndpoint({
+export const endpoint1051 = defineEndpoint({
     path: '/reports/item-1051',
     requests: {
         [HttpMethod.Post]: {
@@ -22113,7 +22110,7 @@ const endpoint1051 = defineEndpoint({
     },
 });
 
-const endpoint1052 = defineEndpoint({
+export const endpoint1052 = defineEndpoint({
     path: '/reports/item-1052',
     requests: {
         [HttpMethod.Post]: {
@@ -22134,7 +22131,7 @@ const endpoint1052 = defineEndpoint({
     },
 });
 
-const endpoint1053 = defineEndpoint({
+export const endpoint1053 = defineEndpoint({
     path: '/reports/item-1053',
     requests: {
         [HttpMethod.Post]: {
@@ -22155,7 +22152,7 @@ const endpoint1053 = defineEndpoint({
     },
 });
 
-const endpoint1054 = defineEndpoint({
+export const endpoint1054 = defineEndpoint({
     path: '/reports/item-1054',
     requests: {
         [HttpMethod.Post]: {
@@ -22176,7 +22173,7 @@ const endpoint1054 = defineEndpoint({
     },
 });
 
-const endpoint1055 = defineEndpoint({
+export const endpoint1055 = defineEndpoint({
     path: '/reports/item-1055',
     requests: {
         [HttpMethod.Post]: {
@@ -22197,7 +22194,7 @@ const endpoint1055 = defineEndpoint({
     },
 });
 
-const endpoint1056 = defineEndpoint({
+export const endpoint1056 = defineEndpoint({
     path: '/reports/item-1056',
     requests: {
         [HttpMethod.Post]: {
@@ -22218,7 +22215,7 @@ const endpoint1056 = defineEndpoint({
     },
 });
 
-const endpoint1057 = defineEndpoint({
+export const endpoint1057 = defineEndpoint({
     path: '/reports/item-1057',
     requests: {
         [HttpMethod.Post]: {
@@ -22239,7 +22236,7 @@ const endpoint1057 = defineEndpoint({
     },
 });
 
-const endpoint1058 = defineEndpoint({
+export const endpoint1058 = defineEndpoint({
     path: '/reports/item-1058',
     requests: {
         [HttpMethod.Post]: {
@@ -22260,7 +22257,7 @@ const endpoint1058 = defineEndpoint({
     },
 });
 
-const endpoint1059 = defineEndpoint({
+export const endpoint1059 = defineEndpoint({
     path: '/reports/item-1059',
     requests: {
         [HttpMethod.Post]: {
@@ -22281,7 +22278,7 @@ const endpoint1059 = defineEndpoint({
     },
 });
 
-const endpoint1060 = defineEndpoint({
+export const endpoint1060 = defineEndpoint({
     path: '/reports/item-1060',
     requests: {
         [HttpMethod.Post]: {
@@ -22302,7 +22299,7 @@ const endpoint1060 = defineEndpoint({
     },
 });
 
-const endpoint1061 = defineEndpoint({
+export const endpoint1061 = defineEndpoint({
     path: '/reports/item-1061',
     requests: {
         [HttpMethod.Post]: {
@@ -22323,7 +22320,7 @@ const endpoint1061 = defineEndpoint({
     },
 });
 
-const endpoint1062 = defineEndpoint({
+export const endpoint1062 = defineEndpoint({
     path: '/reports/item-1062',
     requests: {
         [HttpMethod.Post]: {
@@ -22344,7 +22341,7 @@ const endpoint1062 = defineEndpoint({
     },
 });
 
-const endpoint1063 = defineEndpoint({
+export const endpoint1063 = defineEndpoint({
     path: '/reports/item-1063',
     requests: {
         [HttpMethod.Post]: {
@@ -22365,7 +22362,7 @@ const endpoint1063 = defineEndpoint({
     },
 });
 
-const endpoint1064 = defineEndpoint({
+export const endpoint1064 = defineEndpoint({
     path: '/reports/item-1064',
     requests: {
         [HttpMethod.Post]: {
@@ -22386,7 +22383,7 @@ const endpoint1064 = defineEndpoint({
     },
 });
 
-const endpoint1065 = defineEndpoint({
+export const endpoint1065 = defineEndpoint({
     path: '/reports/item-1065',
     requests: {
         [HttpMethod.Post]: {
@@ -22407,7 +22404,7 @@ const endpoint1065 = defineEndpoint({
     },
 });
 
-const endpoint1066 = defineEndpoint({
+export const endpoint1066 = defineEndpoint({
     path: '/reports/item-1066',
     requests: {
         [HttpMethod.Post]: {
@@ -22428,7 +22425,7 @@ const endpoint1066 = defineEndpoint({
     },
 });
 
-const endpoint1067 = defineEndpoint({
+export const endpoint1067 = defineEndpoint({
     path: '/reports/item-1067',
     requests: {
         [HttpMethod.Post]: {
@@ -22449,7 +22446,7 @@ const endpoint1067 = defineEndpoint({
     },
 });
 
-const endpoint1068 = defineEndpoint({
+export const endpoint1068 = defineEndpoint({
     path: '/reports/item-1068',
     requests: {
         [HttpMethod.Post]: {
@@ -22470,7 +22467,7 @@ const endpoint1068 = defineEndpoint({
     },
 });
 
-const endpoint1069 = defineEndpoint({
+export const endpoint1069 = defineEndpoint({
     path: '/reports/item-1069',
     requests: {
         [HttpMethod.Post]: {
@@ -22491,7 +22488,7 @@ const endpoint1069 = defineEndpoint({
     },
 });
 
-const endpoint1070 = defineEndpoint({
+export const endpoint1070 = defineEndpoint({
     path: '/reports/item-1070',
     requests: {
         [HttpMethod.Post]: {
@@ -22512,7 +22509,7 @@ const endpoint1070 = defineEndpoint({
     },
 });
 
-const endpoint1071 = defineEndpoint({
+export const endpoint1071 = defineEndpoint({
     path: '/reports/item-1071',
     requests: {
         [HttpMethod.Post]: {
@@ -22533,7 +22530,7 @@ const endpoint1071 = defineEndpoint({
     },
 });
 
-const endpoint1072 = defineEndpoint({
+export const endpoint1072 = defineEndpoint({
     path: '/reports/item-1072',
     requests: {
         [HttpMethod.Post]: {
@@ -22554,7 +22551,7 @@ const endpoint1072 = defineEndpoint({
     },
 });
 
-const endpoint1073 = defineEndpoint({
+export const endpoint1073 = defineEndpoint({
     path: '/reports/item-1073',
     requests: {
         [HttpMethod.Post]: {
@@ -22575,7 +22572,7 @@ const endpoint1073 = defineEndpoint({
     },
 });
 
-const endpoint1074 = defineEndpoint({
+export const endpoint1074 = defineEndpoint({
     path: '/reports/item-1074',
     requests: {
         [HttpMethod.Post]: {
@@ -22596,7 +22593,7 @@ const endpoint1074 = defineEndpoint({
     },
 });
 
-const endpoint1075 = defineEndpoint({
+export const endpoint1075 = defineEndpoint({
     path: '/reports/item-1075',
     requests: {
         [HttpMethod.Post]: {
@@ -22617,7 +22614,7 @@ const endpoint1075 = defineEndpoint({
     },
 });
 
-const endpoint1076 = defineEndpoint({
+export const endpoint1076 = defineEndpoint({
     path: '/reports/item-1076',
     requests: {
         [HttpMethod.Post]: {
@@ -22638,7 +22635,7 @@ const endpoint1076 = defineEndpoint({
     },
 });
 
-const endpoint1077 = defineEndpoint({
+export const endpoint1077 = defineEndpoint({
     path: '/reports/item-1077',
     requests: {
         [HttpMethod.Post]: {
@@ -22659,7 +22656,7 @@ const endpoint1077 = defineEndpoint({
     },
 });
 
-const endpoint1078 = defineEndpoint({
+export const endpoint1078 = defineEndpoint({
     path: '/reports/item-1078',
     requests: {
         [HttpMethod.Post]: {
@@ -22680,7 +22677,7 @@ const endpoint1078 = defineEndpoint({
     },
 });
 
-const endpoint1079 = defineEndpoint({
+export const endpoint1079 = defineEndpoint({
     path: '/reports/item-1079',
     requests: {
         [HttpMethod.Post]: {
@@ -22701,7 +22698,7 @@ const endpoint1079 = defineEndpoint({
     },
 });
 
-const endpoint1080 = defineEndpoint({
+export const endpoint1080 = defineEndpoint({
     path: '/reports/item-1080',
     requests: {
         [HttpMethod.Post]: {
@@ -22722,7 +22719,7 @@ const endpoint1080 = defineEndpoint({
     },
 });
 
-const endpoint1081 = defineEndpoint({
+export const endpoint1081 = defineEndpoint({
     path: '/reports/item-1081',
     requests: {
         [HttpMethod.Post]: {
@@ -22743,7 +22740,7 @@ const endpoint1081 = defineEndpoint({
     },
 });
 
-const endpoint1082 = defineEndpoint({
+export const endpoint1082 = defineEndpoint({
     path: '/reports/item-1082',
     requests: {
         [HttpMethod.Post]: {
@@ -22764,7 +22761,7 @@ const endpoint1082 = defineEndpoint({
     },
 });
 
-const endpoint1083 = defineEndpoint({
+export const endpoint1083 = defineEndpoint({
     path: '/reports/item-1083',
     requests: {
         [HttpMethod.Post]: {
@@ -22785,7 +22782,7 @@ const endpoint1083 = defineEndpoint({
     },
 });
 
-const endpoint1084 = defineEndpoint({
+export const endpoint1084 = defineEndpoint({
     path: '/reports/item-1084',
     requests: {
         [HttpMethod.Post]: {
@@ -22806,7 +22803,7 @@ const endpoint1084 = defineEndpoint({
     },
 });
 
-const endpoint1085 = defineEndpoint({
+export const endpoint1085 = defineEndpoint({
     path: '/reports/item-1085',
     requests: {
         [HttpMethod.Post]: {
@@ -22827,7 +22824,7 @@ const endpoint1085 = defineEndpoint({
     },
 });
 
-const endpoint1086 = defineEndpoint({
+export const endpoint1086 = defineEndpoint({
     path: '/reports/item-1086',
     requests: {
         [HttpMethod.Post]: {
@@ -22848,7 +22845,7 @@ const endpoint1086 = defineEndpoint({
     },
 });
 
-const endpoint1087 = defineEndpoint({
+export const endpoint1087 = defineEndpoint({
     path: '/reports/item-1087',
     requests: {
         [HttpMethod.Post]: {
@@ -22869,7 +22866,7 @@ const endpoint1087 = defineEndpoint({
     },
 });
 
-const endpoint1088 = defineEndpoint({
+export const endpoint1088 = defineEndpoint({
     path: '/reports/item-1088',
     requests: {
         [HttpMethod.Post]: {
@@ -22890,7 +22887,7 @@ const endpoint1088 = defineEndpoint({
     },
 });
 
-const endpoint1089 = defineEndpoint({
+export const endpoint1089 = defineEndpoint({
     path: '/reports/item-1089',
     requests: {
         [HttpMethod.Post]: {
@@ -22911,7 +22908,7 @@ const endpoint1089 = defineEndpoint({
     },
 });
 
-const endpoint1090 = defineEndpoint({
+export const endpoint1090 = defineEndpoint({
     path: '/reports/item-1090',
     requests: {
         [HttpMethod.Post]: {
@@ -22932,7 +22929,7 @@ const endpoint1090 = defineEndpoint({
     },
 });
 
-const endpoint1091 = defineEndpoint({
+export const endpoint1091 = defineEndpoint({
     path: '/reports/item-1091',
     requests: {
         [HttpMethod.Post]: {
@@ -22953,7 +22950,7 @@ const endpoint1091 = defineEndpoint({
     },
 });
 
-const endpoint1092 = defineEndpoint({
+export const endpoint1092 = defineEndpoint({
     path: '/reports/item-1092',
     requests: {
         [HttpMethod.Post]: {
@@ -22974,7 +22971,7 @@ const endpoint1092 = defineEndpoint({
     },
 });
 
-const endpoint1093 = defineEndpoint({
+export const endpoint1093 = defineEndpoint({
     path: '/reports/item-1093',
     requests: {
         [HttpMethod.Post]: {
@@ -22995,7 +22992,7 @@ const endpoint1093 = defineEndpoint({
     },
 });
 
-const endpoint1094 = defineEndpoint({
+export const endpoint1094 = defineEndpoint({
     path: '/reports/item-1094',
     requests: {
         [HttpMethod.Post]: {
@@ -23016,7 +23013,7 @@ const endpoint1094 = defineEndpoint({
     },
 });
 
-const endpoint1095 = defineEndpoint({
+export const endpoint1095 = defineEndpoint({
     path: '/reports/item-1095',
     requests: {
         [HttpMethod.Post]: {
@@ -23037,7 +23034,7 @@ const endpoint1095 = defineEndpoint({
     },
 });
 
-const endpoint1096 = defineEndpoint({
+export const endpoint1096 = defineEndpoint({
     path: '/reports/item-1096',
     requests: {
         [HttpMethod.Post]: {
@@ -23058,7 +23055,7 @@ const endpoint1096 = defineEndpoint({
     },
 });
 
-const endpoint1097 = defineEndpoint({
+export const endpoint1097 = defineEndpoint({
     path: '/reports/item-1097',
     requests: {
         [HttpMethod.Post]: {
@@ -23079,7 +23076,7 @@ const endpoint1097 = defineEndpoint({
     },
 });
 
-const endpoint1098 = defineEndpoint({
+export const endpoint1098 = defineEndpoint({
     path: '/reports/item-1098',
     requests: {
         [HttpMethod.Post]: {
@@ -23100,7 +23097,7 @@ const endpoint1098 = defineEndpoint({
     },
 });
 
-const endpoint1099 = defineEndpoint({
+export const endpoint1099 = defineEndpoint({
     path: '/reports/item-1099',
     requests: {
         [HttpMethod.Post]: {
@@ -23121,7 +23118,7 @@ const endpoint1099 = defineEndpoint({
     },
 });
 
-const endpoint1100 = defineEndpoint({
+export const endpoint1100 = defineEndpoint({
     path: '/reports/item-1100',
     requests: {
         [HttpMethod.Post]: {
@@ -23142,7 +23139,7 @@ const endpoint1100 = defineEndpoint({
     },
 });
 
-const endpoint1101 = defineEndpoint({
+export const endpoint1101 = defineEndpoint({
     path: '/reports/item-1101',
     requests: {
         [HttpMethod.Post]: {
@@ -23163,7 +23160,7 @@ const endpoint1101 = defineEndpoint({
     },
 });
 
-const endpoint1102 = defineEndpoint({
+export const endpoint1102 = defineEndpoint({
     path: '/reports/item-1102',
     requests: {
         [HttpMethod.Post]: {
@@ -23184,7 +23181,7 @@ const endpoint1102 = defineEndpoint({
     },
 });
 
-const endpoint1103 = defineEndpoint({
+export const endpoint1103 = defineEndpoint({
     path: '/reports/item-1103',
     requests: {
         [HttpMethod.Post]: {
@@ -23205,7 +23202,7 @@ const endpoint1103 = defineEndpoint({
     },
 });
 
-const endpoint1104 = defineEndpoint({
+export const endpoint1104 = defineEndpoint({
     path: '/reports/item-1104',
     requests: {
         [HttpMethod.Post]: {
@@ -23226,7 +23223,7 @@ const endpoint1104 = defineEndpoint({
     },
 });
 
-const endpoint1105 = defineEndpoint({
+export const endpoint1105 = defineEndpoint({
     path: '/reports/item-1105',
     requests: {
         [HttpMethod.Post]: {
@@ -23247,7 +23244,7 @@ const endpoint1105 = defineEndpoint({
     },
 });
 
-const endpoint1106 = defineEndpoint({
+export const endpoint1106 = defineEndpoint({
     path: '/reports/item-1106',
     requests: {
         [HttpMethod.Post]: {
@@ -23268,7 +23265,7 @@ const endpoint1106 = defineEndpoint({
     },
 });
 
-const endpoint1107 = defineEndpoint({
+export const endpoint1107 = defineEndpoint({
     path: '/reports/item-1107',
     requests: {
         [HttpMethod.Post]: {
@@ -23289,7 +23286,7 @@ const endpoint1107 = defineEndpoint({
     },
 });
 
-const endpoint1108 = defineEndpoint({
+export const endpoint1108 = defineEndpoint({
     path: '/reports/item-1108',
     requests: {
         [HttpMethod.Post]: {
@@ -23310,7 +23307,7 @@ const endpoint1108 = defineEndpoint({
     },
 });
 
-const endpoint1109 = defineEndpoint({
+export const endpoint1109 = defineEndpoint({
     path: '/reports/item-1109',
     requests: {
         [HttpMethod.Post]: {
@@ -23331,7 +23328,7 @@ const endpoint1109 = defineEndpoint({
     },
 });
 
-const endpoint1110 = defineEndpoint({
+export const endpoint1110 = defineEndpoint({
     path: '/reports/item-1110',
     requests: {
         [HttpMethod.Post]: {
@@ -23352,7 +23349,7 @@ const endpoint1110 = defineEndpoint({
     },
 });
 
-const endpoint1111 = defineEndpoint({
+export const endpoint1111 = defineEndpoint({
     path: '/reports/item-1111',
     requests: {
         [HttpMethod.Post]: {
@@ -23373,7 +23370,7 @@ const endpoint1111 = defineEndpoint({
     },
 });
 
-const endpoint1112 = defineEndpoint({
+export const endpoint1112 = defineEndpoint({
     path: '/reports/item-1112',
     requests: {
         [HttpMethod.Post]: {
@@ -23394,7 +23391,7 @@ const endpoint1112 = defineEndpoint({
     },
 });
 
-const endpoint1113 = defineEndpoint({
+export const endpoint1113 = defineEndpoint({
     path: '/reports/item-1113',
     requests: {
         [HttpMethod.Post]: {
@@ -23415,7 +23412,7 @@ const endpoint1113 = defineEndpoint({
     },
 });
 
-const endpoint1114 = defineEndpoint({
+export const endpoint1114 = defineEndpoint({
     path: '/reports/item-1114',
     requests: {
         [HttpMethod.Post]: {
@@ -23436,7 +23433,7 @@ const endpoint1114 = defineEndpoint({
     },
 });
 
-const endpoint1115 = defineEndpoint({
+export const endpoint1115 = defineEndpoint({
     path: '/reports/item-1115',
     requests: {
         [HttpMethod.Post]: {
@@ -23457,7 +23454,7 @@ const endpoint1115 = defineEndpoint({
     },
 });
 
-const endpoint1116 = defineEndpoint({
+export const endpoint1116 = defineEndpoint({
     path: '/reports/item-1116',
     requests: {
         [HttpMethod.Post]: {
@@ -23478,7 +23475,7 @@ const endpoint1116 = defineEndpoint({
     },
 });
 
-const endpoint1117 = defineEndpoint({
+export const endpoint1117 = defineEndpoint({
     path: '/reports/item-1117',
     requests: {
         [HttpMethod.Post]: {
@@ -23499,7 +23496,7 @@ const endpoint1117 = defineEndpoint({
     },
 });
 
-const endpoint1118 = defineEndpoint({
+export const endpoint1118 = defineEndpoint({
     path: '/reports/item-1118',
     requests: {
         [HttpMethod.Post]: {
@@ -23520,7 +23517,7 @@ const endpoint1118 = defineEndpoint({
     },
 });
 
-const endpoint1119 = defineEndpoint({
+export const endpoint1119 = defineEndpoint({
     path: '/reports/item-1119',
     requests: {
         [HttpMethod.Post]: {
@@ -23541,7 +23538,7 @@ const endpoint1119 = defineEndpoint({
     },
 });
 
-const endpoint1120 = defineEndpoint({
+export const endpoint1120 = defineEndpoint({
     path: '/reports/item-1120',
     requests: {
         [HttpMethod.Post]: {
@@ -23562,7 +23559,7 @@ const endpoint1120 = defineEndpoint({
     },
 });
 
-const endpoint1121 = defineEndpoint({
+export const endpoint1121 = defineEndpoint({
     path: '/reports/item-1121',
     requests: {
         [HttpMethod.Post]: {
@@ -23583,7 +23580,7 @@ const endpoint1121 = defineEndpoint({
     },
 });
 
-const endpoint1122 = defineEndpoint({
+export const endpoint1122 = defineEndpoint({
     path: '/reports/item-1122',
     requests: {
         [HttpMethod.Post]: {
@@ -23604,7 +23601,7 @@ const endpoint1122 = defineEndpoint({
     },
 });
 
-const endpoint1123 = defineEndpoint({
+export const endpoint1123 = defineEndpoint({
     path: '/reports/item-1123',
     requests: {
         [HttpMethod.Post]: {
@@ -23625,7 +23622,7 @@ const endpoint1123 = defineEndpoint({
     },
 });
 
-const endpoint1124 = defineEndpoint({
+export const endpoint1124 = defineEndpoint({
     path: '/reports/item-1124',
     requests: {
         [HttpMethod.Post]: {
@@ -23646,7 +23643,7 @@ const endpoint1124 = defineEndpoint({
     },
 });
 
-const endpoint1125 = defineEndpoint({
+export const endpoint1125 = defineEndpoint({
     path: '/reports/item-1125',
     requests: {
         [HttpMethod.Post]: {
@@ -23667,7 +23664,7 @@ const endpoint1125 = defineEndpoint({
     },
 });
 
-const endpoint1126 = defineEndpoint({
+export const endpoint1126 = defineEndpoint({
     path: '/reports/item-1126',
     requests: {
         [HttpMethod.Post]: {
@@ -23688,7 +23685,7 @@ const endpoint1126 = defineEndpoint({
     },
 });
 
-const endpoint1127 = defineEndpoint({
+export const endpoint1127 = defineEndpoint({
     path: '/reports/item-1127',
     requests: {
         [HttpMethod.Post]: {
@@ -23709,7 +23706,7 @@ const endpoint1127 = defineEndpoint({
     },
 });
 
-const endpoint1128 = defineEndpoint({
+export const endpoint1128 = defineEndpoint({
     path: '/reports/item-1128',
     requests: {
         [HttpMethod.Post]: {
@@ -23730,7 +23727,7 @@ const endpoint1128 = defineEndpoint({
     },
 });
 
-const endpoint1129 = defineEndpoint({
+export const endpoint1129 = defineEndpoint({
     path: '/reports/item-1129',
     requests: {
         [HttpMethod.Post]: {
@@ -23751,7 +23748,7 @@ const endpoint1129 = defineEndpoint({
     },
 });
 
-const endpoint1130 = defineEndpoint({
+export const endpoint1130 = defineEndpoint({
     path: '/reports/item-1130',
     requests: {
         [HttpMethod.Post]: {
@@ -23772,7 +23769,7 @@ const endpoint1130 = defineEndpoint({
     },
 });
 
-const endpoint1131 = defineEndpoint({
+export const endpoint1131 = defineEndpoint({
     path: '/reports/item-1131',
     requests: {
         [HttpMethod.Post]: {
@@ -23793,7 +23790,7 @@ const endpoint1131 = defineEndpoint({
     },
 });
 
-const endpoint1132 = defineEndpoint({
+export const endpoint1132 = defineEndpoint({
     path: '/reports/item-1132',
     requests: {
         [HttpMethod.Post]: {
@@ -23814,7 +23811,7 @@ const endpoint1132 = defineEndpoint({
     },
 });
 
-const endpoint1133 = defineEndpoint({
+export const endpoint1133 = defineEndpoint({
     path: '/reports/item-1133',
     requests: {
         [HttpMethod.Post]: {
@@ -23835,7 +23832,7 @@ const endpoint1133 = defineEndpoint({
     },
 });
 
-const endpoint1134 = defineEndpoint({
+export const endpoint1134 = defineEndpoint({
     path: '/reports/item-1134',
     requests: {
         [HttpMethod.Post]: {
@@ -23856,7 +23853,7 @@ const endpoint1134 = defineEndpoint({
     },
 });
 
-const endpoint1135 = defineEndpoint({
+export const endpoint1135 = defineEndpoint({
     path: '/reports/item-1135',
     requests: {
         [HttpMethod.Post]: {
@@ -23877,7 +23874,7 @@ const endpoint1135 = defineEndpoint({
     },
 });
 
-const endpoint1136 = defineEndpoint({
+export const endpoint1136 = defineEndpoint({
     path: '/reports/item-1136',
     requests: {
         [HttpMethod.Post]: {
@@ -23898,7 +23895,7 @@ const endpoint1136 = defineEndpoint({
     },
 });
 
-const endpoint1137 = defineEndpoint({
+export const endpoint1137 = defineEndpoint({
     path: '/reports/item-1137',
     requests: {
         [HttpMethod.Post]: {
@@ -23919,7 +23916,7 @@ const endpoint1137 = defineEndpoint({
     },
 });
 
-const endpoint1138 = defineEndpoint({
+export const endpoint1138 = defineEndpoint({
     path: '/reports/item-1138',
     requests: {
         [HttpMethod.Post]: {
@@ -23940,7 +23937,7 @@ const endpoint1138 = defineEndpoint({
     },
 });
 
-const endpoint1139 = defineEndpoint({
+export const endpoint1139 = defineEndpoint({
     path: '/reports/item-1139',
     requests: {
         [HttpMethod.Post]: {
@@ -23961,7 +23958,7 @@ const endpoint1139 = defineEndpoint({
     },
 });
 
-const endpoint1140 = defineEndpoint({
+export const endpoint1140 = defineEndpoint({
     path: '/reports/item-1140',
     requests: {
         [HttpMethod.Post]: {
@@ -23982,7 +23979,7 @@ const endpoint1140 = defineEndpoint({
     },
 });
 
-const endpoint1141 = defineEndpoint({
+export const endpoint1141 = defineEndpoint({
     path: '/reports/item-1141',
     requests: {
         [HttpMethod.Post]: {
@@ -24003,7 +24000,7 @@ const endpoint1141 = defineEndpoint({
     },
 });
 
-const endpoint1142 = defineEndpoint({
+export const endpoint1142 = defineEndpoint({
     path: '/reports/item-1142',
     requests: {
         [HttpMethod.Post]: {
@@ -24024,7 +24021,7 @@ const endpoint1142 = defineEndpoint({
     },
 });
 
-const endpoint1143 = defineEndpoint({
+export const endpoint1143 = defineEndpoint({
     path: '/reports/item-1143',
     requests: {
         [HttpMethod.Post]: {
@@ -24045,7 +24042,7 @@ const endpoint1143 = defineEndpoint({
     },
 });
 
-const endpoint1144 = defineEndpoint({
+export const endpoint1144 = defineEndpoint({
     path: '/reports/item-1144',
     requests: {
         [HttpMethod.Post]: {
@@ -24066,7 +24063,7 @@ const endpoint1144 = defineEndpoint({
     },
 });
 
-const endpoint1145 = defineEndpoint({
+export const endpoint1145 = defineEndpoint({
     path: '/reports/item-1145',
     requests: {
         [HttpMethod.Post]: {
@@ -24087,7 +24084,7 @@ const endpoint1145 = defineEndpoint({
     },
 });
 
-const endpoint1146 = defineEndpoint({
+export const endpoint1146 = defineEndpoint({
     path: '/reports/item-1146',
     requests: {
         [HttpMethod.Post]: {
@@ -24108,7 +24105,7 @@ const endpoint1146 = defineEndpoint({
     },
 });
 
-const endpoint1147 = defineEndpoint({
+export const endpoint1147 = defineEndpoint({
     path: '/reports/item-1147',
     requests: {
         [HttpMethod.Post]: {
@@ -24129,7 +24126,7 @@ const endpoint1147 = defineEndpoint({
     },
 });
 
-const endpoint1148 = defineEndpoint({
+export const endpoint1148 = defineEndpoint({
     path: '/reports/item-1148',
     requests: {
         [HttpMethod.Post]: {
@@ -24150,7 +24147,7 @@ const endpoint1148 = defineEndpoint({
     },
 });
 
-const endpoint1149 = defineEndpoint({
+export const endpoint1149 = defineEndpoint({
     path: '/reports/item-1149',
     requests: {
         [HttpMethod.Post]: {
@@ -24171,7 +24168,7 @@ const endpoint1149 = defineEndpoint({
     },
 });
 
-const endpoint1150 = defineEndpoint({
+export const endpoint1150 = defineEndpoint({
     path: '/reports/item-1150',
     requests: {
         [HttpMethod.Post]: {
@@ -24192,7 +24189,7 @@ const endpoint1150 = defineEndpoint({
     },
 });
 
-const endpoint1151 = defineEndpoint({
+export const endpoint1151 = defineEndpoint({
     path: '/reports/item-1151',
     requests: {
         [HttpMethod.Post]: {
@@ -24213,7 +24210,7 @@ const endpoint1151 = defineEndpoint({
     },
 });
 
-const endpoint1152 = defineEndpoint({
+export const endpoint1152 = defineEndpoint({
     path: '/reports/item-1152',
     requests: {
         [HttpMethod.Post]: {
@@ -24234,7 +24231,7 @@ const endpoint1152 = defineEndpoint({
     },
 });
 
-const endpoint1153 = defineEndpoint({
+export const endpoint1153 = defineEndpoint({
     path: '/reports/item-1153',
     requests: {
         [HttpMethod.Post]: {
@@ -24255,7 +24252,7 @@ const endpoint1153 = defineEndpoint({
     },
 });
 
-const endpoint1154 = defineEndpoint({
+export const endpoint1154 = defineEndpoint({
     path: '/reports/item-1154',
     requests: {
         [HttpMethod.Post]: {
@@ -24276,7 +24273,7 @@ const endpoint1154 = defineEndpoint({
     },
 });
 
-const endpoint1155 = defineEndpoint({
+export const endpoint1155 = defineEndpoint({
     path: '/reports/item-1155',
     requests: {
         [HttpMethod.Post]: {
@@ -24297,7 +24294,7 @@ const endpoint1155 = defineEndpoint({
     },
 });
 
-const endpoint1156 = defineEndpoint({
+export const endpoint1156 = defineEndpoint({
     path: '/reports/item-1156',
     requests: {
         [HttpMethod.Post]: {
@@ -24318,7 +24315,7 @@ const endpoint1156 = defineEndpoint({
     },
 });
 
-const endpoint1157 = defineEndpoint({
+export const endpoint1157 = defineEndpoint({
     path: '/reports/item-1157',
     requests: {
         [HttpMethod.Post]: {
@@ -24339,7 +24336,7 @@ const endpoint1157 = defineEndpoint({
     },
 });
 
-const endpoint1158 = defineEndpoint({
+export const endpoint1158 = defineEndpoint({
     path: '/reports/item-1158',
     requests: {
         [HttpMethod.Post]: {
@@ -24360,7 +24357,7 @@ const endpoint1158 = defineEndpoint({
     },
 });
 
-const endpoint1159 = defineEndpoint({
+export const endpoint1159 = defineEndpoint({
     path: '/reports/item-1159',
     requests: {
         [HttpMethod.Post]: {
@@ -24381,7 +24378,7 @@ const endpoint1159 = defineEndpoint({
     },
 });
 
-const endpoint1160 = defineEndpoint({
+export const endpoint1160 = defineEndpoint({
     path: '/reports/item-1160',
     requests: {
         [HttpMethod.Post]: {
@@ -24402,7 +24399,7 @@ const endpoint1160 = defineEndpoint({
     },
 });
 
-const endpoint1161 = defineEndpoint({
+export const endpoint1161 = defineEndpoint({
     path: '/reports/item-1161',
     requests: {
         [HttpMethod.Post]: {
@@ -24423,7 +24420,7 @@ const endpoint1161 = defineEndpoint({
     },
 });
 
-const endpoint1162 = defineEndpoint({
+export const endpoint1162 = defineEndpoint({
     path: '/reports/item-1162',
     requests: {
         [HttpMethod.Post]: {
@@ -24444,7 +24441,7 @@ const endpoint1162 = defineEndpoint({
     },
 });
 
-const endpoint1163 = defineEndpoint({
+export const endpoint1163 = defineEndpoint({
     path: '/reports/item-1163',
     requests: {
         [HttpMethod.Post]: {
@@ -24465,7 +24462,7 @@ const endpoint1163 = defineEndpoint({
     },
 });
 
-const endpoint1164 = defineEndpoint({
+export const endpoint1164 = defineEndpoint({
     path: '/reports/item-1164',
     requests: {
         [HttpMethod.Post]: {
@@ -24486,7 +24483,7 @@ const endpoint1164 = defineEndpoint({
     },
 });
 
-const endpoint1165 = defineEndpoint({
+export const endpoint1165 = defineEndpoint({
     path: '/reports/item-1165',
     requests: {
         [HttpMethod.Post]: {
@@ -24507,7 +24504,7 @@ const endpoint1165 = defineEndpoint({
     },
 });
 
-const endpoint1166 = defineEndpoint({
+export const endpoint1166 = defineEndpoint({
     path: '/reports/item-1166',
     requests: {
         [HttpMethod.Post]: {
@@ -24528,7 +24525,7 @@ const endpoint1166 = defineEndpoint({
     },
 });
 
-const endpoint1167 = defineEndpoint({
+export const endpoint1167 = defineEndpoint({
     path: '/reports/item-1167',
     requests: {
         [HttpMethod.Post]: {
@@ -24549,7 +24546,7 @@ const endpoint1167 = defineEndpoint({
     },
 });
 
-const endpoint1168 = defineEndpoint({
+export const endpoint1168 = defineEndpoint({
     path: '/reports/item-1168',
     requests: {
         [HttpMethod.Post]: {
@@ -24570,7 +24567,7 @@ const endpoint1168 = defineEndpoint({
     },
 });
 
-const endpoint1169 = defineEndpoint({
+export const endpoint1169 = defineEndpoint({
     path: '/reports/item-1169',
     requests: {
         [HttpMethod.Post]: {
@@ -24591,7 +24588,7 @@ const endpoint1169 = defineEndpoint({
     },
 });
 
-const endpoint1170 = defineEndpoint({
+export const endpoint1170 = defineEndpoint({
     path: '/reports/item-1170',
     requests: {
         [HttpMethod.Post]: {
@@ -24612,7 +24609,7 @@ const endpoint1170 = defineEndpoint({
     },
 });
 
-const endpoint1171 = defineEndpoint({
+export const endpoint1171 = defineEndpoint({
     path: '/reports/item-1171',
     requests: {
         [HttpMethod.Post]: {
@@ -24633,7 +24630,7 @@ const endpoint1171 = defineEndpoint({
     },
 });
 
-const endpoint1172 = defineEndpoint({
+export const endpoint1172 = defineEndpoint({
     path: '/reports/item-1172',
     requests: {
         [HttpMethod.Post]: {
@@ -24654,7 +24651,7 @@ const endpoint1172 = defineEndpoint({
     },
 });
 
-const endpoint1173 = defineEndpoint({
+export const endpoint1173 = defineEndpoint({
     path: '/reports/item-1173',
     requests: {
         [HttpMethod.Post]: {
@@ -24675,7 +24672,7 @@ const endpoint1173 = defineEndpoint({
     },
 });
 
-const endpoint1174 = defineEndpoint({
+export const endpoint1174 = defineEndpoint({
     path: '/reports/item-1174',
     requests: {
         [HttpMethod.Post]: {
@@ -24696,7 +24693,7 @@ const endpoint1174 = defineEndpoint({
     },
 });
 
-const endpoint1175 = defineEndpoint({
+export const endpoint1175 = defineEndpoint({
     path: '/reports/item-1175',
     requests: {
         [HttpMethod.Post]: {
@@ -24717,7 +24714,7 @@ const endpoint1175 = defineEndpoint({
     },
 });
 
-const endpoint1176 = defineEndpoint({
+export const endpoint1176 = defineEndpoint({
     path: '/reports/item-1176',
     requests: {
         [HttpMethod.Post]: {
@@ -24738,7 +24735,7 @@ const endpoint1176 = defineEndpoint({
     },
 });
 
-const endpoint1177 = defineEndpoint({
+export const endpoint1177 = defineEndpoint({
     path: '/reports/item-1177',
     requests: {
         [HttpMethod.Post]: {
@@ -24759,7 +24756,7 @@ const endpoint1177 = defineEndpoint({
     },
 });
 
-const endpoint1178 = defineEndpoint({
+export const endpoint1178 = defineEndpoint({
     path: '/reports/item-1178',
     requests: {
         [HttpMethod.Post]: {
@@ -24780,7 +24777,7 @@ const endpoint1178 = defineEndpoint({
     },
 });
 
-const endpoint1179 = defineEndpoint({
+export const endpoint1179 = defineEndpoint({
     path: '/reports/item-1179',
     requests: {
         [HttpMethod.Post]: {
@@ -24801,7 +24798,7 @@ const endpoint1179 = defineEndpoint({
     },
 });
 
-const endpoint1180 = defineEndpoint({
+export const endpoint1180 = defineEndpoint({
     path: '/reports/item-1180',
     requests: {
         [HttpMethod.Post]: {
@@ -24822,7 +24819,7 @@ const endpoint1180 = defineEndpoint({
     },
 });
 
-const endpoint1181 = defineEndpoint({
+export const endpoint1181 = defineEndpoint({
     path: '/reports/item-1181',
     requests: {
         [HttpMethod.Post]: {
@@ -24843,7 +24840,7 @@ const endpoint1181 = defineEndpoint({
     },
 });
 
-const endpoint1182 = defineEndpoint({
+export const endpoint1182 = defineEndpoint({
     path: '/reports/item-1182',
     requests: {
         [HttpMethod.Post]: {
@@ -24864,7 +24861,7 @@ const endpoint1182 = defineEndpoint({
     },
 });
 
-const endpoint1183 = defineEndpoint({
+export const endpoint1183 = defineEndpoint({
     path: '/reports/item-1183',
     requests: {
         [HttpMethod.Post]: {
@@ -24885,7 +24882,7 @@ const endpoint1183 = defineEndpoint({
     },
 });
 
-const endpoint1184 = defineEndpoint({
+export const endpoint1184 = defineEndpoint({
     path: '/reports/item-1184',
     requests: {
         [HttpMethod.Post]: {
@@ -24906,7 +24903,7 @@ const endpoint1184 = defineEndpoint({
     },
 });
 
-const endpoint1185 = defineEndpoint({
+export const endpoint1185 = defineEndpoint({
     path: '/reports/item-1185',
     requests: {
         [HttpMethod.Post]: {
@@ -24927,7 +24924,7 @@ const endpoint1185 = defineEndpoint({
     },
 });
 
-const endpoint1186 = defineEndpoint({
+export const endpoint1186 = defineEndpoint({
     path: '/reports/item-1186',
     requests: {
         [HttpMethod.Post]: {
@@ -24948,7 +24945,7 @@ const endpoint1186 = defineEndpoint({
     },
 });
 
-const endpoint1187 = defineEndpoint({
+export const endpoint1187 = defineEndpoint({
     path: '/reports/item-1187',
     requests: {
         [HttpMethod.Post]: {
@@ -24969,7 +24966,7 @@ const endpoint1187 = defineEndpoint({
     },
 });
 
-const endpoint1188 = defineEndpoint({
+export const endpoint1188 = defineEndpoint({
     path: '/reports/item-1188',
     requests: {
         [HttpMethod.Post]: {
@@ -24990,7 +24987,7 @@ const endpoint1188 = defineEndpoint({
     },
 });
 
-const endpoint1189 = defineEndpoint({
+export const endpoint1189 = defineEndpoint({
     path: '/reports/item-1189',
     requests: {
         [HttpMethod.Post]: {
@@ -25011,7 +25008,7 @@ const endpoint1189 = defineEndpoint({
     },
 });
 
-const endpoint1190 = defineEndpoint({
+export const endpoint1190 = defineEndpoint({
     path: '/reports/item-1190',
     requests: {
         [HttpMethod.Post]: {
@@ -25032,7 +25029,7 @@ const endpoint1190 = defineEndpoint({
     },
 });
 
-const endpoint1191 = defineEndpoint({
+export const endpoint1191 = defineEndpoint({
     path: '/reports/item-1191',
     requests: {
         [HttpMethod.Post]: {
@@ -25053,7 +25050,7 @@ const endpoint1191 = defineEndpoint({
     },
 });
 
-const endpoint1192 = defineEndpoint({
+export const endpoint1192 = defineEndpoint({
     path: '/reports/item-1192',
     requests: {
         [HttpMethod.Post]: {
@@ -25074,7 +25071,7 @@ const endpoint1192 = defineEndpoint({
     },
 });
 
-const endpoint1193 = defineEndpoint({
+export const endpoint1193 = defineEndpoint({
     path: '/reports/item-1193',
     requests: {
         [HttpMethod.Post]: {
@@ -25095,7 +25092,7 @@ const endpoint1193 = defineEndpoint({
     },
 });
 
-const endpoint1194 = defineEndpoint({
+export const endpoint1194 = defineEndpoint({
     path: '/reports/item-1194',
     requests: {
         [HttpMethod.Post]: {
@@ -25116,7 +25113,7 @@ const endpoint1194 = defineEndpoint({
     },
 });
 
-const endpoint1195 = defineEndpoint({
+export const endpoint1195 = defineEndpoint({
     path: '/reports/item-1195',
     requests: {
         [HttpMethod.Post]: {
@@ -25137,7 +25134,7 @@ const endpoint1195 = defineEndpoint({
     },
 });
 
-const endpoint1196 = defineEndpoint({
+export const endpoint1196 = defineEndpoint({
     path: '/reports/item-1196',
     requests: {
         [HttpMethod.Post]: {
@@ -25158,7 +25155,7 @@ const endpoint1196 = defineEndpoint({
     },
 });
 
-const endpoint1197 = defineEndpoint({
+export const endpoint1197 = defineEndpoint({
     path: '/reports/item-1197',
     requests: {
         [HttpMethod.Post]: {
@@ -25179,7 +25176,7 @@ const endpoint1197 = defineEndpoint({
     },
 });
 
-const endpoint1198 = defineEndpoint({
+export const endpoint1198 = defineEndpoint({
     path: '/reports/item-1198',
     requests: {
         [HttpMethod.Post]: {
@@ -25200,7 +25197,7 @@ const endpoint1198 = defineEndpoint({
     },
 });
 
-const endpoint1199 = defineEndpoint({
+export const endpoint1199 = defineEndpoint({
     path: '/reports/item-1199',
     requests: {
         [HttpMethod.Post]: {
@@ -25221,7 +25218,7 @@ const endpoint1199 = defineEndpoint({
     },
 });
 
-const endpoint1200 = defineEndpoint({
+export const endpoint1200 = defineEndpoint({
     path: '/reports/item-1200',
     requests: {
         [HttpMethod.Post]: {
@@ -25242,7 +25239,7 @@ const endpoint1200 = defineEndpoint({
     },
 });
 
-const endpoint1201 = defineEndpoint({
+export const endpoint1201 = defineEndpoint({
     path: '/reports/item-1201',
     requests: {
         [HttpMethod.Post]: {
@@ -25263,7 +25260,7 @@ const endpoint1201 = defineEndpoint({
     },
 });
 
-const endpoint1202 = defineEndpoint({
+export const endpoint1202 = defineEndpoint({
     path: '/reports/item-1202',
     requests: {
         [HttpMethod.Post]: {
@@ -25284,7 +25281,7 @@ const endpoint1202 = defineEndpoint({
     },
 });
 
-const endpoint1203 = defineEndpoint({
+export const endpoint1203 = defineEndpoint({
     path: '/reports/item-1203',
     requests: {
         [HttpMethod.Post]: {
@@ -25305,7 +25302,7 @@ const endpoint1203 = defineEndpoint({
     },
 });
 
-const endpoint1204 = defineEndpoint({
+export const endpoint1204 = defineEndpoint({
     path: '/reports/item-1204',
     requests: {
         [HttpMethod.Post]: {
@@ -25326,7 +25323,7 @@ const endpoint1204 = defineEndpoint({
     },
 });
 
-const endpoint1205 = defineEndpoint({
+export const endpoint1205 = defineEndpoint({
     path: '/reports/item-1205',
     requests: {
         [HttpMethod.Post]: {
@@ -25347,7 +25344,7 @@ const endpoint1205 = defineEndpoint({
     },
 });
 
-const endpoint1206 = defineEndpoint({
+export const endpoint1206 = defineEndpoint({
     path: '/reports/item-1206',
     requests: {
         [HttpMethod.Post]: {
@@ -25368,7 +25365,7 @@ const endpoint1206 = defineEndpoint({
     },
 });
 
-const endpoint1207 = defineEndpoint({
+export const endpoint1207 = defineEndpoint({
     path: '/reports/item-1207',
     requests: {
         [HttpMethod.Post]: {
@@ -25389,7 +25386,7 @@ const endpoint1207 = defineEndpoint({
     },
 });
 
-const endpoint1208 = defineEndpoint({
+export const endpoint1208 = defineEndpoint({
     path: '/reports/item-1208',
     requests: {
         [HttpMethod.Post]: {
@@ -25410,7 +25407,7 @@ const endpoint1208 = defineEndpoint({
     },
 });
 
-const endpoint1209 = defineEndpoint({
+export const endpoint1209 = defineEndpoint({
     path: '/reports/item-1209',
     requests: {
         [HttpMethod.Post]: {
@@ -25431,7 +25428,7 @@ const endpoint1209 = defineEndpoint({
     },
 });
 
-const endpoint1210 = defineEndpoint({
+export const endpoint1210 = defineEndpoint({
     path: '/reports/item-1210',
     requests: {
         [HttpMethod.Post]: {
@@ -25452,7 +25449,7 @@ const endpoint1210 = defineEndpoint({
     },
 });
 
-const endpoint1211 = defineEndpoint({
+export const endpoint1211 = defineEndpoint({
     path: '/reports/item-1211',
     requests: {
         [HttpMethod.Post]: {
@@ -25473,7 +25470,7 @@ const endpoint1211 = defineEndpoint({
     },
 });
 
-const endpoint1212 = defineEndpoint({
+export const endpoint1212 = defineEndpoint({
     path: '/reports/item-1212',
     requests: {
         [HttpMethod.Post]: {
@@ -25494,7 +25491,7 @@ const endpoint1212 = defineEndpoint({
     },
 });
 
-const endpoint1213 = defineEndpoint({
+export const endpoint1213 = defineEndpoint({
     path: '/reports/item-1213',
     requests: {
         [HttpMethod.Post]: {
@@ -25515,7 +25512,7 @@ const endpoint1213 = defineEndpoint({
     },
 });
 
-const endpoint1214 = defineEndpoint({
+export const endpoint1214 = defineEndpoint({
     path: '/reports/item-1214',
     requests: {
         [HttpMethod.Post]: {
@@ -25536,7 +25533,7 @@ const endpoint1214 = defineEndpoint({
     },
 });
 
-const endpoint1215 = defineEndpoint({
+export const endpoint1215 = defineEndpoint({
     path: '/reports/item-1215',
     requests: {
         [HttpMethod.Post]: {
@@ -25557,7 +25554,7 @@ const endpoint1215 = defineEndpoint({
     },
 });
 
-const endpoint1216 = defineEndpoint({
+export const endpoint1216 = defineEndpoint({
     path: '/reports/item-1216',
     requests: {
         [HttpMethod.Post]: {
@@ -25578,7 +25575,7 @@ const endpoint1216 = defineEndpoint({
     },
 });
 
-const endpoint1217 = defineEndpoint({
+export const endpoint1217 = defineEndpoint({
     path: '/reports/item-1217',
     requests: {
         [HttpMethod.Post]: {
@@ -25599,7 +25596,7 @@ const endpoint1217 = defineEndpoint({
     },
 });
 
-const endpoint1218 = defineEndpoint({
+export const endpoint1218 = defineEndpoint({
     path: '/reports/item-1218',
     requests: {
         [HttpMethod.Post]: {
@@ -25620,7 +25617,7 @@ const endpoint1218 = defineEndpoint({
     },
 });
 
-const endpoint1219 = defineEndpoint({
+export const endpoint1219 = defineEndpoint({
     path: '/reports/item-1219',
     requests: {
         [HttpMethod.Post]: {
@@ -25641,7 +25638,7 @@ const endpoint1219 = defineEndpoint({
     },
 });
 
-const endpoint1220 = defineEndpoint({
+export const endpoint1220 = defineEndpoint({
     path: '/reports/item-1220',
     requests: {
         [HttpMethod.Post]: {
@@ -25662,7 +25659,7 @@ const endpoint1220 = defineEndpoint({
     },
 });
 
-const endpoint1221 = defineEndpoint({
+export const endpoint1221 = defineEndpoint({
     path: '/reports/item-1221',
     requests: {
         [HttpMethod.Post]: {
@@ -25683,7 +25680,7 @@ const endpoint1221 = defineEndpoint({
     },
 });
 
-const endpoint1222 = defineEndpoint({
+export const endpoint1222 = defineEndpoint({
     path: '/reports/item-1222',
     requests: {
         [HttpMethod.Post]: {
@@ -25704,7 +25701,7 @@ const endpoint1222 = defineEndpoint({
     },
 });
 
-const endpoint1223 = defineEndpoint({
+export const endpoint1223 = defineEndpoint({
     path: '/reports/item-1223',
     requests: {
         [HttpMethod.Post]: {
@@ -25725,7 +25722,7 @@ const endpoint1223 = defineEndpoint({
     },
 });
 
-const endpoint1224 = defineEndpoint({
+export const endpoint1224 = defineEndpoint({
     path: '/reports/item-1224',
     requests: {
         [HttpMethod.Post]: {
@@ -25746,7 +25743,7 @@ const endpoint1224 = defineEndpoint({
     },
 });
 
-const endpoint1225 = defineEndpoint({
+export const endpoint1225 = defineEndpoint({
     path: '/reports/item-1225',
     requests: {
         [HttpMethod.Post]: {
@@ -25767,7 +25764,7 @@ const endpoint1225 = defineEndpoint({
     },
 });
 
-const endpoint1226 = defineEndpoint({
+export const endpoint1226 = defineEndpoint({
     path: '/reports/item-1226',
     requests: {
         [HttpMethod.Post]: {
@@ -25788,7 +25785,7 @@ const endpoint1226 = defineEndpoint({
     },
 });
 
-const endpoint1227 = defineEndpoint({
+export const endpoint1227 = defineEndpoint({
     path: '/reports/item-1227',
     requests: {
         [HttpMethod.Post]: {
@@ -25809,7 +25806,7 @@ const endpoint1227 = defineEndpoint({
     },
 });
 
-const endpoint1228 = defineEndpoint({
+export const endpoint1228 = defineEndpoint({
     path: '/reports/item-1228',
     requests: {
         [HttpMethod.Post]: {
@@ -25830,7 +25827,7 @@ const endpoint1228 = defineEndpoint({
     },
 });
 
-const endpoint1229 = defineEndpoint({
+export const endpoint1229 = defineEndpoint({
     path: '/reports/item-1229',
     requests: {
         [HttpMethod.Post]: {
@@ -25851,7 +25848,7 @@ const endpoint1229 = defineEndpoint({
     },
 });
 
-const endpoint1230 = defineEndpoint({
+export const endpoint1230 = defineEndpoint({
     path: '/reports/item-1230',
     requests: {
         [HttpMethod.Post]: {
@@ -25872,7 +25869,7 @@ const endpoint1230 = defineEndpoint({
     },
 });
 
-const endpoint1231 = defineEndpoint({
+export const endpoint1231 = defineEndpoint({
     path: '/reports/item-1231',
     requests: {
         [HttpMethod.Post]: {
@@ -25893,7 +25890,7 @@ const endpoint1231 = defineEndpoint({
     },
 });
 
-const endpoint1232 = defineEndpoint({
+export const endpoint1232 = defineEndpoint({
     path: '/reports/item-1232',
     requests: {
         [HttpMethod.Post]: {
@@ -25914,7 +25911,7 @@ const endpoint1232 = defineEndpoint({
     },
 });
 
-const endpoint1233 = defineEndpoint({
+export const endpoint1233 = defineEndpoint({
     path: '/reports/item-1233',
     requests: {
         [HttpMethod.Post]: {
@@ -25935,7 +25932,7 @@ const endpoint1233 = defineEndpoint({
     },
 });
 
-const endpoint1234 = defineEndpoint({
+export const endpoint1234 = defineEndpoint({
     path: '/reports/item-1234',
     requests: {
         [HttpMethod.Post]: {
@@ -25956,7 +25953,7 @@ const endpoint1234 = defineEndpoint({
     },
 });
 
-const endpoint1235 = defineEndpoint({
+export const endpoint1235 = defineEndpoint({
     path: '/reports/item-1235',
     requests: {
         [HttpMethod.Post]: {
@@ -25977,7 +25974,7 @@ const endpoint1235 = defineEndpoint({
     },
 });
 
-const endpoint1236 = defineEndpoint({
+export const endpoint1236 = defineEndpoint({
     path: '/reports/item-1236',
     requests: {
         [HttpMethod.Post]: {
@@ -25998,7 +25995,7 @@ const endpoint1236 = defineEndpoint({
     },
 });
 
-const endpoint1237 = defineEndpoint({
+export const endpoint1237 = defineEndpoint({
     path: '/reports/item-1237',
     requests: {
         [HttpMethod.Post]: {
@@ -26019,7 +26016,7 @@ const endpoint1237 = defineEndpoint({
     },
 });
 
-const endpoint1238 = defineEndpoint({
+export const endpoint1238 = defineEndpoint({
     path: '/reports/item-1238',
     requests: {
         [HttpMethod.Post]: {
@@ -26040,7 +26037,7 @@ const endpoint1238 = defineEndpoint({
     },
 });
 
-const endpoint1239 = defineEndpoint({
+export const endpoint1239 = defineEndpoint({
     path: '/reports/item-1239',
     requests: {
         [HttpMethod.Post]: {
@@ -26061,7 +26058,7 @@ const endpoint1239 = defineEndpoint({
     },
 });
 
-const endpoint1240 = defineEndpoint({
+export const endpoint1240 = defineEndpoint({
     path: '/reports/item-1240',
     requests: {
         [HttpMethod.Post]: {
@@ -26082,7 +26079,7 @@ const endpoint1240 = defineEndpoint({
     },
 });
 
-const endpoint1241 = defineEndpoint({
+export const endpoint1241 = defineEndpoint({
     path: '/reports/item-1241',
     requests: {
         [HttpMethod.Post]: {
@@ -26103,7 +26100,7 @@ const endpoint1241 = defineEndpoint({
     },
 });
 
-const endpoint1242 = defineEndpoint({
+export const endpoint1242 = defineEndpoint({
     path: '/reports/item-1242',
     requests: {
         [HttpMethod.Post]: {
@@ -26124,7 +26121,7 @@ const endpoint1242 = defineEndpoint({
     },
 });
 
-const endpoint1243 = defineEndpoint({
+export const endpoint1243 = defineEndpoint({
     path: '/reports/item-1243',
     requests: {
         [HttpMethod.Post]: {
@@ -26145,7 +26142,7 @@ const endpoint1243 = defineEndpoint({
     },
 });
 
-const endpoint1244 = defineEndpoint({
+export const endpoint1244 = defineEndpoint({
     path: '/reports/item-1244',
     requests: {
         [HttpMethod.Post]: {
@@ -26166,7 +26163,7 @@ const endpoint1244 = defineEndpoint({
     },
 });
 
-const endpoint1245 = defineEndpoint({
+export const endpoint1245 = defineEndpoint({
     path: '/reports/item-1245',
     requests: {
         [HttpMethod.Post]: {
@@ -26187,7 +26184,7 @@ const endpoint1245 = defineEndpoint({
     },
 });
 
-const endpoint1246 = defineEndpoint({
+export const endpoint1246 = defineEndpoint({
     path: '/reports/item-1246',
     requests: {
         [HttpMethod.Post]: {
@@ -26208,7 +26205,7 @@ const endpoint1246 = defineEndpoint({
     },
 });
 
-const endpoint1247 = defineEndpoint({
+export const endpoint1247 = defineEndpoint({
     path: '/reports/item-1247',
     requests: {
         [HttpMethod.Post]: {
@@ -26229,7 +26226,7 @@ const endpoint1247 = defineEndpoint({
     },
 });
 
-const endpoint1248 = defineEndpoint({
+export const endpoint1248 = defineEndpoint({
     path: '/reports/item-1248',
     requests: {
         [HttpMethod.Post]: {
@@ -26250,7 +26247,7 @@ const endpoint1248 = defineEndpoint({
     },
 });
 
-const endpoint1249 = defineEndpoint({
+export const endpoint1249 = defineEndpoint({
     path: '/reports/item-1249',
     requests: {
         [HttpMethod.Post]: {
@@ -26271,7 +26268,7 @@ const endpoint1249 = defineEndpoint({
     },
 });
 
-const endpoint1250 = defineEndpoint({
+export const endpoint1250 = defineEndpoint({
     path: '/reports/item-1250',
     requests: {
         [HttpMethod.Post]: {
@@ -26292,7 +26289,7 @@ const endpoint1250 = defineEndpoint({
     },
 });
 
-const endpoint1251 = defineEndpoint({
+export const endpoint1251 = defineEndpoint({
     path: '/reports/item-1251',
     requests: {
         [HttpMethod.Post]: {
@@ -26313,7 +26310,7 @@ const endpoint1251 = defineEndpoint({
     },
 });
 
-const endpoint1252 = defineEndpoint({
+export const endpoint1252 = defineEndpoint({
     path: '/reports/item-1252',
     requests: {
         [HttpMethod.Post]: {
@@ -26334,7 +26331,7 @@ const endpoint1252 = defineEndpoint({
     },
 });
 
-const endpoint1253 = defineEndpoint({
+export const endpoint1253 = defineEndpoint({
     path: '/reports/item-1253',
     requests: {
         [HttpMethod.Post]: {
@@ -26355,7 +26352,7 @@ const endpoint1253 = defineEndpoint({
     },
 });
 
-const endpoint1254 = defineEndpoint({
+export const endpoint1254 = defineEndpoint({
     path: '/reports/item-1254',
     requests: {
         [HttpMethod.Post]: {
@@ -26376,7 +26373,7 @@ const endpoint1254 = defineEndpoint({
     },
 });
 
-const endpoint1255 = defineEndpoint({
+export const endpoint1255 = defineEndpoint({
     path: '/reports/item-1255',
     requests: {
         [HttpMethod.Post]: {
@@ -26397,7 +26394,7 @@ const endpoint1255 = defineEndpoint({
     },
 });
 
-const endpoint1256 = defineEndpoint({
+export const endpoint1256 = defineEndpoint({
     path: '/reports/item-1256',
     requests: {
         [HttpMethod.Post]: {
@@ -26418,7 +26415,7 @@ const endpoint1256 = defineEndpoint({
     },
 });
 
-const endpoint1257 = defineEndpoint({
+export const endpoint1257 = defineEndpoint({
     path: '/reports/item-1257',
     requests: {
         [HttpMethod.Post]: {
@@ -26439,7 +26436,7 @@ const endpoint1257 = defineEndpoint({
     },
 });
 
-const endpoint1258 = defineEndpoint({
+export const endpoint1258 = defineEndpoint({
     path: '/reports/item-1258',
     requests: {
         [HttpMethod.Post]: {
@@ -26460,7 +26457,7 @@ const endpoint1258 = defineEndpoint({
     },
 });
 
-const endpoint1259 = defineEndpoint({
+export const endpoint1259 = defineEndpoint({
     path: '/reports/item-1259',
     requests: {
         [HttpMethod.Post]: {
@@ -26481,7 +26478,7 @@ const endpoint1259 = defineEndpoint({
     },
 });
 
-const endpoint1260 = defineEndpoint({
+export const endpoint1260 = defineEndpoint({
     path: '/reports/item-1260',
     requests: {
         [HttpMethod.Post]: {
@@ -26502,7 +26499,7 @@ const endpoint1260 = defineEndpoint({
     },
 });
 
-const endpoint1261 = defineEndpoint({
+export const endpoint1261 = defineEndpoint({
     path: '/reports/item-1261',
     requests: {
         [HttpMethod.Post]: {
@@ -26523,7 +26520,7 @@ const endpoint1261 = defineEndpoint({
     },
 });
 
-const endpoint1262 = defineEndpoint({
+export const endpoint1262 = defineEndpoint({
     path: '/reports/item-1262',
     requests: {
         [HttpMethod.Post]: {
@@ -26544,7 +26541,7 @@ const endpoint1262 = defineEndpoint({
     },
 });
 
-const endpoint1263 = defineEndpoint({
+export const endpoint1263 = defineEndpoint({
     path: '/reports/item-1263',
     requests: {
         [HttpMethod.Post]: {
@@ -26565,7 +26562,7 @@ const endpoint1263 = defineEndpoint({
     },
 });
 
-const endpoint1264 = defineEndpoint({
+export const endpoint1264 = defineEndpoint({
     path: '/reports/item-1264',
     requests: {
         [HttpMethod.Post]: {
@@ -26586,7 +26583,7 @@ const endpoint1264 = defineEndpoint({
     },
 });
 
-const endpoint1265 = defineEndpoint({
+export const endpoint1265 = defineEndpoint({
     path: '/reports/item-1265',
     requests: {
         [HttpMethod.Post]: {
@@ -26607,7 +26604,7 @@ const endpoint1265 = defineEndpoint({
     },
 });
 
-const endpoint1266 = defineEndpoint({
+export const endpoint1266 = defineEndpoint({
     path: '/reports/item-1266',
     requests: {
         [HttpMethod.Post]: {
@@ -26628,7 +26625,7 @@ const endpoint1266 = defineEndpoint({
     },
 });
 
-const endpoint1267 = defineEndpoint({
+export const endpoint1267 = defineEndpoint({
     path: '/reports/item-1267',
     requests: {
         [HttpMethod.Post]: {
@@ -26649,7 +26646,7 @@ const endpoint1267 = defineEndpoint({
     },
 });
 
-const endpoint1268 = defineEndpoint({
+export const endpoint1268 = defineEndpoint({
     path: '/reports/item-1268',
     requests: {
         [HttpMethod.Post]: {
@@ -26670,7 +26667,7 @@ const endpoint1268 = defineEndpoint({
     },
 });
 
-const endpoint1269 = defineEndpoint({
+export const endpoint1269 = defineEndpoint({
     path: '/reports/item-1269',
     requests: {
         [HttpMethod.Post]: {
@@ -26691,7 +26688,7 @@ const endpoint1269 = defineEndpoint({
     },
 });
 
-const endpoint1270 = defineEndpoint({
+export const endpoint1270 = defineEndpoint({
     path: '/reports/item-1270',
     requests: {
         [HttpMethod.Post]: {
@@ -26712,7 +26709,7 @@ const endpoint1270 = defineEndpoint({
     },
 });
 
-const endpoint1271 = defineEndpoint({
+export const endpoint1271 = defineEndpoint({
     path: '/reports/item-1271',
     requests: {
         [HttpMethod.Post]: {
@@ -26733,7 +26730,7 @@ const endpoint1271 = defineEndpoint({
     },
 });
 
-const endpoint1272 = defineEndpoint({
+export const endpoint1272 = defineEndpoint({
     path: '/reports/item-1272',
     requests: {
         [HttpMethod.Post]: {
@@ -26754,7 +26751,7 @@ const endpoint1272 = defineEndpoint({
     },
 });
 
-const endpoint1273 = defineEndpoint({
+export const endpoint1273 = defineEndpoint({
     path: '/reports/item-1273',
     requests: {
         [HttpMethod.Post]: {
@@ -26775,7 +26772,7 @@ const endpoint1273 = defineEndpoint({
     },
 });
 
-const endpoint1274 = defineEndpoint({
+export const endpoint1274 = defineEndpoint({
     path: '/reports/item-1274',
     requests: {
         [HttpMethod.Post]: {
@@ -26796,7 +26793,7 @@ const endpoint1274 = defineEndpoint({
     },
 });
 
-const endpoint1275 = defineEndpoint({
+export const endpoint1275 = defineEndpoint({
     path: '/reports/item-1275',
     requests: {
         [HttpMethod.Post]: {
@@ -26817,7 +26814,7 @@ const endpoint1275 = defineEndpoint({
     },
 });
 
-const endpoint1276 = defineEndpoint({
+export const endpoint1276 = defineEndpoint({
     path: '/reports/item-1276',
     requests: {
         [HttpMethod.Post]: {
@@ -26838,7 +26835,7 @@ const endpoint1276 = defineEndpoint({
     },
 });
 
-const endpoint1277 = defineEndpoint({
+export const endpoint1277 = defineEndpoint({
     path: '/reports/item-1277',
     requests: {
         [HttpMethod.Post]: {
@@ -26859,7 +26856,7 @@ const endpoint1277 = defineEndpoint({
     },
 });
 
-const endpoint1278 = defineEndpoint({
+export const endpoint1278 = defineEndpoint({
     path: '/reports/item-1278',
     requests: {
         [HttpMethod.Post]: {
@@ -26880,7 +26877,7 @@ const endpoint1278 = defineEndpoint({
     },
 });
 
-const endpoint1279 = defineEndpoint({
+export const endpoint1279 = defineEndpoint({
     path: '/reports/item-1279',
     requests: {
         [HttpMethod.Post]: {
@@ -26901,7 +26898,7 @@ const endpoint1279 = defineEndpoint({
     },
 });
 
-const endpoint1280 = defineEndpoint({
+export const endpoint1280 = defineEndpoint({
     path: '/reports/item-1280',
     requests: {
         [HttpMethod.Post]: {
@@ -26922,7 +26919,7 @@ const endpoint1280 = defineEndpoint({
     },
 });
 
-const endpoint1281 = defineEndpoint({
+export const endpoint1281 = defineEndpoint({
     path: '/reports/item-1281',
     requests: {
         [HttpMethod.Post]: {
@@ -26943,7 +26940,7 @@ const endpoint1281 = defineEndpoint({
     },
 });
 
-const endpoint1282 = defineEndpoint({
+export const endpoint1282 = defineEndpoint({
     path: '/reports/item-1282',
     requests: {
         [HttpMethod.Post]: {
@@ -26964,7 +26961,7 @@ const endpoint1282 = defineEndpoint({
     },
 });
 
-const endpoint1283 = defineEndpoint({
+export const endpoint1283 = defineEndpoint({
     path: '/reports/item-1283',
     requests: {
         [HttpMethod.Post]: {
@@ -26985,7 +26982,7 @@ const endpoint1283 = defineEndpoint({
     },
 });
 
-const endpoint1284 = defineEndpoint({
+export const endpoint1284 = defineEndpoint({
     path: '/reports/item-1284',
     requests: {
         [HttpMethod.Post]: {
@@ -27006,7 +27003,7 @@ const endpoint1284 = defineEndpoint({
     },
 });
 
-const endpoint1285 = defineEndpoint({
+export const endpoint1285 = defineEndpoint({
     path: '/reports/item-1285',
     requests: {
         [HttpMethod.Post]: {
@@ -27027,7 +27024,7 @@ const endpoint1285 = defineEndpoint({
     },
 });
 
-const endpoint1286 = defineEndpoint({
+export const endpoint1286 = defineEndpoint({
     path: '/reports/item-1286',
     requests: {
         [HttpMethod.Post]: {
@@ -27048,7 +27045,7 @@ const endpoint1286 = defineEndpoint({
     },
 });
 
-const endpoint1287 = defineEndpoint({
+export const endpoint1287 = defineEndpoint({
     path: '/reports/item-1287',
     requests: {
         [HttpMethod.Post]: {
@@ -27069,7 +27066,7 @@ const endpoint1287 = defineEndpoint({
     },
 });
 
-const endpoint1288 = defineEndpoint({
+export const endpoint1288 = defineEndpoint({
     path: '/reports/item-1288',
     requests: {
         [HttpMethod.Post]: {
@@ -27090,7 +27087,7 @@ const endpoint1288 = defineEndpoint({
     },
 });
 
-const endpoint1289 = defineEndpoint({
+export const endpoint1289 = defineEndpoint({
     path: '/reports/item-1289',
     requests: {
         [HttpMethod.Post]: {
@@ -27111,7 +27108,7 @@ const endpoint1289 = defineEndpoint({
     },
 });
 
-const endpoint1290 = defineEndpoint({
+export const endpoint1290 = defineEndpoint({
     path: '/reports/item-1290',
     requests: {
         [HttpMethod.Post]: {
@@ -27132,7 +27129,7 @@ const endpoint1290 = defineEndpoint({
     },
 });
 
-const endpoint1291 = defineEndpoint({
+export const endpoint1291 = defineEndpoint({
     path: '/reports/item-1291',
     requests: {
         [HttpMethod.Post]: {
@@ -27153,7 +27150,7 @@ const endpoint1291 = defineEndpoint({
     },
 });
 
-const endpoint1292 = defineEndpoint({
+export const endpoint1292 = defineEndpoint({
     path: '/reports/item-1292',
     requests: {
         [HttpMethod.Post]: {
@@ -27174,7 +27171,7 @@ const endpoint1292 = defineEndpoint({
     },
 });
 
-const endpoint1293 = defineEndpoint({
+export const endpoint1293 = defineEndpoint({
     path: '/reports/item-1293',
     requests: {
         [HttpMethod.Post]: {
@@ -27195,7 +27192,7 @@ const endpoint1293 = defineEndpoint({
     },
 });
 
-const endpoint1294 = defineEndpoint({
+export const endpoint1294 = defineEndpoint({
     path: '/reports/item-1294',
     requests: {
         [HttpMethod.Post]: {
@@ -27216,7 +27213,7 @@ const endpoint1294 = defineEndpoint({
     },
 });
 
-const endpoint1295 = defineEndpoint({
+export const endpoint1295 = defineEndpoint({
     path: '/reports/item-1295',
     requests: {
         [HttpMethod.Post]: {
@@ -27237,7 +27234,7 @@ const endpoint1295 = defineEndpoint({
     },
 });
 
-const endpoint1296 = defineEndpoint({
+export const endpoint1296 = defineEndpoint({
     path: '/reports/item-1296',
     requests: {
         [HttpMethod.Post]: {
@@ -27258,7 +27255,7 @@ const endpoint1296 = defineEndpoint({
     },
 });
 
-const endpoint1297 = defineEndpoint({
+export const endpoint1297 = defineEndpoint({
     path: '/reports/item-1297',
     requests: {
         [HttpMethod.Post]: {
@@ -27279,7 +27276,7 @@ const endpoint1297 = defineEndpoint({
     },
 });
 
-const endpoint1298 = defineEndpoint({
+export const endpoint1298 = defineEndpoint({
     path: '/reports/item-1298',
     requests: {
         [HttpMethod.Post]: {
@@ -27300,7 +27297,7 @@ const endpoint1298 = defineEndpoint({
     },
 });
 
-const endpoint1299 = defineEndpoint({
+export const endpoint1299 = defineEndpoint({
     path: '/reports/item-1299',
     requests: {
         [HttpMethod.Post]: {
@@ -27321,7 +27318,7 @@ const endpoint1299 = defineEndpoint({
     },
 });
 
-const endpoint1300 = defineEndpoint({
+export const endpoint1300 = defineEndpoint({
     path: '/reports/item-1300',
     requests: {
         [HttpMethod.Post]: {
@@ -27342,7 +27339,7 @@ const endpoint1300 = defineEndpoint({
     },
 });
 
-const endpoint1301 = defineEndpoint({
+export const endpoint1301 = defineEndpoint({
     path: '/reports/item-1301',
     requests: {
         [HttpMethod.Post]: {
@@ -27363,7 +27360,7 @@ const endpoint1301 = defineEndpoint({
     },
 });
 
-const endpoint1302 = defineEndpoint({
+export const endpoint1302 = defineEndpoint({
     path: '/reports/item-1302',
     requests: {
         [HttpMethod.Post]: {
@@ -27384,7 +27381,7 @@ const endpoint1302 = defineEndpoint({
     },
 });
 
-const endpoint1303 = defineEndpoint({
+export const endpoint1303 = defineEndpoint({
     path: '/reports/item-1303',
     requests: {
         [HttpMethod.Post]: {
@@ -27405,7 +27402,7 @@ const endpoint1303 = defineEndpoint({
     },
 });
 
-const endpoint1304 = defineEndpoint({
+export const endpoint1304 = defineEndpoint({
     path: '/reports/item-1304',
     requests: {
         [HttpMethod.Post]: {
@@ -27426,7 +27423,7 @@ const endpoint1304 = defineEndpoint({
     },
 });
 
-const endpoint1305 = defineEndpoint({
+export const endpoint1305 = defineEndpoint({
     path: '/reports/item-1305',
     requests: {
         [HttpMethod.Post]: {
@@ -27447,7 +27444,7 @@ const endpoint1305 = defineEndpoint({
     },
 });
 
-const endpoint1306 = defineEndpoint({
+export const endpoint1306 = defineEndpoint({
     path: '/reports/item-1306',
     requests: {
         [HttpMethod.Post]: {
@@ -27468,7 +27465,7 @@ const endpoint1306 = defineEndpoint({
     },
 });
 
-const endpoint1307 = defineEndpoint({
+export const endpoint1307 = defineEndpoint({
     path: '/reports/item-1307',
     requests: {
         [HttpMethod.Post]: {
@@ -27489,7 +27486,7 @@ const endpoint1307 = defineEndpoint({
     },
 });
 
-const endpoint1308 = defineEndpoint({
+export const endpoint1308 = defineEndpoint({
     path: '/reports/item-1308',
     requests: {
         [HttpMethod.Post]: {
@@ -27510,7 +27507,7 @@ const endpoint1308 = defineEndpoint({
     },
 });
 
-const endpoint1309 = defineEndpoint({
+export const endpoint1309 = defineEndpoint({
     path: '/reports/item-1309',
     requests: {
         [HttpMethod.Post]: {
@@ -27531,7 +27528,7 @@ const endpoint1309 = defineEndpoint({
     },
 });
 
-const endpoint1310 = defineEndpoint({
+export const endpoint1310 = defineEndpoint({
     path: '/reports/item-1310',
     requests: {
         [HttpMethod.Post]: {
@@ -27552,7 +27549,7 @@ const endpoint1310 = defineEndpoint({
     },
 });
 
-const endpoint1311 = defineEndpoint({
+export const endpoint1311 = defineEndpoint({
     path: '/reports/item-1311',
     requests: {
         [HttpMethod.Post]: {
@@ -27573,7 +27570,7 @@ const endpoint1311 = defineEndpoint({
     },
 });
 
-const endpoint1312 = defineEndpoint({
+export const endpoint1312 = defineEndpoint({
     path: '/reports/item-1312',
     requests: {
         [HttpMethod.Post]: {
@@ -27594,7 +27591,7 @@ const endpoint1312 = defineEndpoint({
     },
 });
 
-const endpoint1313 = defineEndpoint({
+export const endpoint1313 = defineEndpoint({
     path: '/reports/item-1313',
     requests: {
         [HttpMethod.Post]: {
@@ -27615,7 +27612,7 @@ const endpoint1313 = defineEndpoint({
     },
 });
 
-const endpoint1314 = defineEndpoint({
+export const endpoint1314 = defineEndpoint({
     path: '/reports/item-1314',
     requests: {
         [HttpMethod.Post]: {
@@ -27636,7 +27633,7 @@ const endpoint1314 = defineEndpoint({
     },
 });
 
-const endpoint1315 = defineEndpoint({
+export const endpoint1315 = defineEndpoint({
     path: '/reports/item-1315',
     requests: {
         [HttpMethod.Post]: {
@@ -27657,7 +27654,7 @@ const endpoint1315 = defineEndpoint({
     },
 });
 
-const endpoint1316 = defineEndpoint({
+export const endpoint1316 = defineEndpoint({
     path: '/reports/item-1316',
     requests: {
         [HttpMethod.Post]: {
@@ -27678,7 +27675,7 @@ const endpoint1316 = defineEndpoint({
     },
 });
 
-const endpoint1317 = defineEndpoint({
+export const endpoint1317 = defineEndpoint({
     path: '/reports/item-1317',
     requests: {
         [HttpMethod.Post]: {
@@ -27699,7 +27696,7 @@ const endpoint1317 = defineEndpoint({
     },
 });
 
-const endpoint1318 = defineEndpoint({
+export const endpoint1318 = defineEndpoint({
     path: '/reports/item-1318',
     requests: {
         [HttpMethod.Post]: {
@@ -27720,7 +27717,7 @@ const endpoint1318 = defineEndpoint({
     },
 });
 
-const endpoint1319 = defineEndpoint({
+export const endpoint1319 = defineEndpoint({
     path: '/reports/item-1319',
     requests: {
         [HttpMethod.Post]: {
@@ -27741,7 +27738,7 @@ const endpoint1319 = defineEndpoint({
     },
 });
 
-const endpoint1320 = defineEndpoint({
+export const endpoint1320 = defineEndpoint({
     path: '/reports/item-1320',
     requests: {
         [HttpMethod.Post]: {
@@ -27762,7 +27759,7 @@ const endpoint1320 = defineEndpoint({
     },
 });
 
-const endpoint1321 = defineEndpoint({
+export const endpoint1321 = defineEndpoint({
     path: '/reports/item-1321',
     requests: {
         [HttpMethod.Post]: {
@@ -27783,7 +27780,7 @@ const endpoint1321 = defineEndpoint({
     },
 });
 
-const endpoint1322 = defineEndpoint({
+export const endpoint1322 = defineEndpoint({
     path: '/reports/item-1322',
     requests: {
         [HttpMethod.Post]: {
@@ -27804,7 +27801,7 @@ const endpoint1322 = defineEndpoint({
     },
 });
 
-const endpoint1323 = defineEndpoint({
+export const endpoint1323 = defineEndpoint({
     path: '/reports/item-1323',
     requests: {
         [HttpMethod.Post]: {
@@ -27825,7 +27822,7 @@ const endpoint1323 = defineEndpoint({
     },
 });
 
-const endpoint1324 = defineEndpoint({
+export const endpoint1324 = defineEndpoint({
     path: '/reports/item-1324',
     requests: {
         [HttpMethod.Post]: {
@@ -27846,7 +27843,7 @@ const endpoint1324 = defineEndpoint({
     },
 });
 
-const endpoint1325 = defineEndpoint({
+export const endpoint1325 = defineEndpoint({
     path: '/reports/item-1325',
     requests: {
         [HttpMethod.Post]: {
@@ -27867,7 +27864,7 @@ const endpoint1325 = defineEndpoint({
     },
 });
 
-const endpoint1326 = defineEndpoint({
+export const endpoint1326 = defineEndpoint({
     path: '/reports/item-1326',
     requests: {
         [HttpMethod.Post]: {
@@ -27888,7 +27885,7 @@ const endpoint1326 = defineEndpoint({
     },
 });
 
-const endpoint1327 = defineEndpoint({
+export const endpoint1327 = defineEndpoint({
     path: '/reports/item-1327',
     requests: {
         [HttpMethod.Post]: {
@@ -27909,7 +27906,7 @@ const endpoint1327 = defineEndpoint({
     },
 });
 
-const endpoint1328 = defineEndpoint({
+export const endpoint1328 = defineEndpoint({
     path: '/reports/item-1328',
     requests: {
         [HttpMethod.Post]: {
@@ -27930,7 +27927,7 @@ const endpoint1328 = defineEndpoint({
     },
 });
 
-const endpoint1329 = defineEndpoint({
+export const endpoint1329 = defineEndpoint({
     path: '/reports/item-1329',
     requests: {
         [HttpMethod.Post]: {
@@ -27951,7 +27948,7 @@ const endpoint1329 = defineEndpoint({
     },
 });
 
-const endpoint1330 = defineEndpoint({
+export const endpoint1330 = defineEndpoint({
     path: '/reports/item-1330',
     requests: {
         [HttpMethod.Post]: {
@@ -27972,7 +27969,7 @@ const endpoint1330 = defineEndpoint({
     },
 });
 
-const endpoint1331 = defineEndpoint({
+export const endpoint1331 = defineEndpoint({
     path: '/reports/item-1331',
     requests: {
         [HttpMethod.Post]: {
@@ -27993,7 +27990,7 @@ const endpoint1331 = defineEndpoint({
     },
 });
 
-const endpoint1332 = defineEndpoint({
+export const endpoint1332 = defineEndpoint({
     path: '/reports/item-1332',
     requests: {
         [HttpMethod.Post]: {
@@ -28014,7 +28011,7 @@ const endpoint1332 = defineEndpoint({
     },
 });
 
-const endpoint1333 = defineEndpoint({
+export const endpoint1333 = defineEndpoint({
     path: '/reports/item-1333',
     requests: {
         [HttpMethod.Post]: {
@@ -28035,7 +28032,7 @@ const endpoint1333 = defineEndpoint({
     },
 });
 
-const endpoint1334 = defineEndpoint({
+export const endpoint1334 = defineEndpoint({
     path: '/reports/item-1334',
     requests: {
         [HttpMethod.Post]: {
@@ -28056,7 +28053,7 @@ const endpoint1334 = defineEndpoint({
     },
 });
 
-const endpoint1335 = defineEndpoint({
+export const endpoint1335 = defineEndpoint({
     path: '/reports/item-1335',
     requests: {
         [HttpMethod.Post]: {
@@ -28077,7 +28074,7 @@ const endpoint1335 = defineEndpoint({
     },
 });
 
-const endpoint1336 = defineEndpoint({
+export const endpoint1336 = defineEndpoint({
     path: '/reports/item-1336',
     requests: {
         [HttpMethod.Post]: {
@@ -28098,7 +28095,7 @@ const endpoint1336 = defineEndpoint({
     },
 });
 
-const endpoint1337 = defineEndpoint({
+export const endpoint1337 = defineEndpoint({
     path: '/reports/item-1337',
     requests: {
         [HttpMethod.Post]: {
@@ -28119,7 +28116,7 @@ const endpoint1337 = defineEndpoint({
     },
 });
 
-const endpoint1338 = defineEndpoint({
+export const endpoint1338 = defineEndpoint({
     path: '/reports/item-1338',
     requests: {
         [HttpMethod.Post]: {
@@ -28140,7 +28137,7 @@ const endpoint1338 = defineEndpoint({
     },
 });
 
-const endpoint1339 = defineEndpoint({
+export const endpoint1339 = defineEndpoint({
     path: '/reports/item-1339',
     requests: {
         [HttpMethod.Post]: {
@@ -28161,7 +28158,7 @@ const endpoint1339 = defineEndpoint({
     },
 });
 
-const endpoint1340 = defineEndpoint({
+export const endpoint1340 = defineEndpoint({
     path: '/reports/item-1340',
     requests: {
         [HttpMethod.Post]: {
@@ -28182,7 +28179,7 @@ const endpoint1340 = defineEndpoint({
     },
 });
 
-const endpoint1341 = defineEndpoint({
+export const endpoint1341 = defineEndpoint({
     path: '/reports/item-1341',
     requests: {
         [HttpMethod.Post]: {
@@ -28203,7 +28200,7 @@ const endpoint1341 = defineEndpoint({
     },
 });
 
-const endpoint1342 = defineEndpoint({
+export const endpoint1342 = defineEndpoint({
     path: '/reports/item-1342',
     requests: {
         [HttpMethod.Post]: {
@@ -28224,7 +28221,7 @@ const endpoint1342 = defineEndpoint({
     },
 });
 
-const endpoint1343 = defineEndpoint({
+export const endpoint1343 = defineEndpoint({
     path: '/reports/item-1343',
     requests: {
         [HttpMethod.Post]: {
@@ -28245,7 +28242,7 @@ const endpoint1343 = defineEndpoint({
     },
 });
 
-const endpoint1344 = defineEndpoint({
+export const endpoint1344 = defineEndpoint({
     path: '/reports/item-1344',
     requests: {
         [HttpMethod.Post]: {
@@ -28266,7 +28263,7 @@ const endpoint1344 = defineEndpoint({
     },
 });
 
-const endpoint1345 = defineEndpoint({
+export const endpoint1345 = defineEndpoint({
     path: '/reports/item-1345',
     requests: {
         [HttpMethod.Post]: {
@@ -28287,7 +28284,7 @@ const endpoint1345 = defineEndpoint({
     },
 });
 
-const endpoint1346 = defineEndpoint({
+export const endpoint1346 = defineEndpoint({
     path: '/reports/item-1346',
     requests: {
         [HttpMethod.Post]: {
@@ -28308,7 +28305,7 @@ const endpoint1346 = defineEndpoint({
     },
 });
 
-const endpoint1347 = defineEndpoint({
+export const endpoint1347 = defineEndpoint({
     path: '/reports/item-1347',
     requests: {
         [HttpMethod.Post]: {
@@ -28329,7 +28326,7 @@ const endpoint1347 = defineEndpoint({
     },
 });
 
-const endpoint1348 = defineEndpoint({
+export const endpoint1348 = defineEndpoint({
     path: '/reports/item-1348',
     requests: {
         [HttpMethod.Post]: {
@@ -28350,7 +28347,7 @@ const endpoint1348 = defineEndpoint({
     },
 });
 
-const endpoint1349 = defineEndpoint({
+export const endpoint1349 = defineEndpoint({
     path: '/reports/item-1349',
     requests: {
         [HttpMethod.Post]: {
@@ -28371,7 +28368,7 @@ const endpoint1349 = defineEndpoint({
     },
 });
 
-const endpoint1350 = defineEndpoint({
+export const endpoint1350 = defineEndpoint({
     path: '/reports/item-1350',
     requests: {
         [HttpMethod.Post]: {
@@ -28392,7 +28389,7 @@ const endpoint1350 = defineEndpoint({
     },
 });
 
-const endpoint1351 = defineEndpoint({
+export const endpoint1351 = defineEndpoint({
     path: '/reports/item-1351',
     requests: {
         [HttpMethod.Post]: {
@@ -28413,7 +28410,7 @@ const endpoint1351 = defineEndpoint({
     },
 });
 
-const endpoint1352 = defineEndpoint({
+export const endpoint1352 = defineEndpoint({
     path: '/reports/item-1352',
     requests: {
         [HttpMethod.Post]: {
@@ -28434,7 +28431,7 @@ const endpoint1352 = defineEndpoint({
     },
 });
 
-const endpoint1353 = defineEndpoint({
+export const endpoint1353 = defineEndpoint({
     path: '/reports/item-1353',
     requests: {
         [HttpMethod.Post]: {
@@ -28455,7 +28452,7 @@ const endpoint1353 = defineEndpoint({
     },
 });
 
-const endpoint1354 = defineEndpoint({
+export const endpoint1354 = defineEndpoint({
     path: '/reports/item-1354',
     requests: {
         [HttpMethod.Post]: {
@@ -28476,7 +28473,7 @@ const endpoint1354 = defineEndpoint({
     },
 });
 
-const endpoint1355 = defineEndpoint({
+export const endpoint1355 = defineEndpoint({
     path: '/reports/item-1355',
     requests: {
         [HttpMethod.Post]: {
@@ -28497,7 +28494,7 @@ const endpoint1355 = defineEndpoint({
     },
 });
 
-const endpoint1356 = defineEndpoint({
+export const endpoint1356 = defineEndpoint({
     path: '/reports/item-1356',
     requests: {
         [HttpMethod.Post]: {
@@ -28518,7 +28515,7 @@ const endpoint1356 = defineEndpoint({
     },
 });
 
-const endpoint1357 = defineEndpoint({
+export const endpoint1357 = defineEndpoint({
     path: '/reports/item-1357',
     requests: {
         [HttpMethod.Post]: {
@@ -28539,7 +28536,7 @@ const endpoint1357 = defineEndpoint({
     },
 });
 
-const endpoint1358 = defineEndpoint({
+export const endpoint1358 = defineEndpoint({
     path: '/reports/item-1358',
     requests: {
         [HttpMethod.Post]: {
@@ -28560,7 +28557,7 @@ const endpoint1358 = defineEndpoint({
     },
 });
 
-const endpoint1359 = defineEndpoint({
+export const endpoint1359 = defineEndpoint({
     path: '/reports/item-1359',
     requests: {
         [HttpMethod.Post]: {
@@ -28581,7 +28578,7 @@ const endpoint1359 = defineEndpoint({
     },
 });
 
-const endpoint1360 = defineEndpoint({
+export const endpoint1360 = defineEndpoint({
     path: '/reports/item-1360',
     requests: {
         [HttpMethod.Post]: {
@@ -28602,7 +28599,7 @@ const endpoint1360 = defineEndpoint({
     },
 });
 
-const endpoint1361 = defineEndpoint({
+export const endpoint1361 = defineEndpoint({
     path: '/reports/item-1361',
     requests: {
         [HttpMethod.Post]: {
@@ -28623,7 +28620,7 @@ const endpoint1361 = defineEndpoint({
     },
 });
 
-const endpoint1362 = defineEndpoint({
+export const endpoint1362 = defineEndpoint({
     path: '/reports/item-1362',
     requests: {
         [HttpMethod.Post]: {
@@ -28644,7 +28641,7 @@ const endpoint1362 = defineEndpoint({
     },
 });
 
-const endpoint1363 = defineEndpoint({
+export const endpoint1363 = defineEndpoint({
     path: '/reports/item-1363',
     requests: {
         [HttpMethod.Post]: {
@@ -28665,7 +28662,7 @@ const endpoint1363 = defineEndpoint({
     },
 });
 
-const endpoint1364 = defineEndpoint({
+export const endpoint1364 = defineEndpoint({
     path: '/reports/item-1364',
     requests: {
         [HttpMethod.Post]: {
@@ -28686,7 +28683,7 @@ const endpoint1364 = defineEndpoint({
     },
 });
 
-const endpoint1365 = defineEndpoint({
+export const endpoint1365 = defineEndpoint({
     path: '/reports/item-1365',
     requests: {
         [HttpMethod.Post]: {
@@ -28707,7 +28704,7 @@ const endpoint1365 = defineEndpoint({
     },
 });
 
-const endpoint1366 = defineEndpoint({
+export const endpoint1366 = defineEndpoint({
     path: '/reports/item-1366',
     requests: {
         [HttpMethod.Post]: {
@@ -28728,7 +28725,7 @@ const endpoint1366 = defineEndpoint({
     },
 });
 
-const endpoint1367 = defineEndpoint({
+export const endpoint1367 = defineEndpoint({
     path: '/reports/item-1367',
     requests: {
         [HttpMethod.Post]: {
@@ -28749,7 +28746,7 @@ const endpoint1367 = defineEndpoint({
     },
 });
 
-const endpoint1368 = defineEndpoint({
+export const endpoint1368 = defineEndpoint({
     path: '/reports/item-1368',
     requests: {
         [HttpMethod.Post]: {
@@ -28770,7 +28767,7 @@ const endpoint1368 = defineEndpoint({
     },
 });
 
-const endpoint1369 = defineEndpoint({
+export const endpoint1369 = defineEndpoint({
     path: '/reports/item-1369',
     requests: {
         [HttpMethod.Post]: {
@@ -28791,7 +28788,7 @@ const endpoint1369 = defineEndpoint({
     },
 });
 
-const endpoint1370 = defineEndpoint({
+export const endpoint1370 = defineEndpoint({
     path: '/reports/item-1370',
     requests: {
         [HttpMethod.Post]: {
@@ -28812,7 +28809,7 @@ const endpoint1370 = defineEndpoint({
     },
 });
 
-const endpoint1371 = defineEndpoint({
+export const endpoint1371 = defineEndpoint({
     path: '/reports/item-1371',
     requests: {
         [HttpMethod.Post]: {
@@ -28833,7 +28830,7 @@ const endpoint1371 = defineEndpoint({
     },
 });
 
-const endpoint1372 = defineEndpoint({
+export const endpoint1372 = defineEndpoint({
     path: '/reports/item-1372',
     requests: {
         [HttpMethod.Post]: {
@@ -28854,7 +28851,7 @@ const endpoint1372 = defineEndpoint({
     },
 });
 
-const endpoint1373 = defineEndpoint({
+export const endpoint1373 = defineEndpoint({
     path: '/reports/item-1373',
     requests: {
         [HttpMethod.Post]: {
@@ -28875,7 +28872,7 @@ const endpoint1373 = defineEndpoint({
     },
 });
 
-const endpoint1374 = defineEndpoint({
+export const endpoint1374 = defineEndpoint({
     path: '/reports/item-1374',
     requests: {
         [HttpMethod.Post]: {
@@ -28896,7 +28893,7 @@ const endpoint1374 = defineEndpoint({
     },
 });
 
-const endpoint1375 = defineEndpoint({
+export const endpoint1375 = defineEndpoint({
     path: '/reports/item-1375',
     requests: {
         [HttpMethod.Post]: {
@@ -28917,7 +28914,7 @@ const endpoint1375 = defineEndpoint({
     },
 });
 
-const endpoint1376 = defineEndpoint({
+export const endpoint1376 = defineEndpoint({
     path: '/reports/item-1376',
     requests: {
         [HttpMethod.Post]: {
@@ -28938,7 +28935,7 @@ const endpoint1376 = defineEndpoint({
     },
 });
 
-const endpoint1377 = defineEndpoint({
+export const endpoint1377 = defineEndpoint({
     path: '/reports/item-1377',
     requests: {
         [HttpMethod.Post]: {
@@ -28959,7 +28956,7 @@ const endpoint1377 = defineEndpoint({
     },
 });
 
-const endpoint1378 = defineEndpoint({
+export const endpoint1378 = defineEndpoint({
     path: '/reports/item-1378',
     requests: {
         [HttpMethod.Post]: {
@@ -28980,7 +28977,7 @@ const endpoint1378 = defineEndpoint({
     },
 });
 
-const endpoint1379 = defineEndpoint({
+export const endpoint1379 = defineEndpoint({
     path: '/reports/item-1379',
     requests: {
         [HttpMethod.Post]: {
@@ -29001,7 +28998,7 @@ const endpoint1379 = defineEndpoint({
     },
 });
 
-const endpoint1380 = defineEndpoint({
+export const endpoint1380 = defineEndpoint({
     path: '/reports/item-1380',
     requests: {
         [HttpMethod.Post]: {
@@ -29022,7 +29019,7 @@ const endpoint1380 = defineEndpoint({
     },
 });
 
-const endpoint1381 = defineEndpoint({
+export const endpoint1381 = defineEndpoint({
     path: '/reports/item-1381',
     requests: {
         [HttpMethod.Post]: {
@@ -29043,7 +29040,7 @@ const endpoint1381 = defineEndpoint({
     },
 });
 
-const endpoint1382 = defineEndpoint({
+export const endpoint1382 = defineEndpoint({
     path: '/reports/item-1382',
     requests: {
         [HttpMethod.Post]: {
@@ -29064,7 +29061,7 @@ const endpoint1382 = defineEndpoint({
     },
 });
 
-const endpoint1383 = defineEndpoint({
+export const endpoint1383 = defineEndpoint({
     path: '/reports/item-1383',
     requests: {
         [HttpMethod.Post]: {
@@ -29085,7 +29082,7 @@ const endpoint1383 = defineEndpoint({
     },
 });
 
-const endpoint1384 = defineEndpoint({
+export const endpoint1384 = defineEndpoint({
     path: '/reports/item-1384',
     requests: {
         [HttpMethod.Post]: {
@@ -29106,7 +29103,7 @@ const endpoint1384 = defineEndpoint({
     },
 });
 
-const endpoint1385 = defineEndpoint({
+export const endpoint1385 = defineEndpoint({
     path: '/reports/item-1385',
     requests: {
         [HttpMethod.Post]: {
@@ -29127,7 +29124,7 @@ const endpoint1385 = defineEndpoint({
     },
 });
 
-const endpoint1386 = defineEndpoint({
+export const endpoint1386 = defineEndpoint({
     path: '/reports/item-1386',
     requests: {
         [HttpMethod.Post]: {
@@ -29148,7 +29145,7 @@ const endpoint1386 = defineEndpoint({
     },
 });
 
-const endpoint1387 = defineEndpoint({
+export const endpoint1387 = defineEndpoint({
     path: '/reports/item-1387',
     requests: {
         [HttpMethod.Post]: {
@@ -29169,7 +29166,7 @@ const endpoint1387 = defineEndpoint({
     },
 });
 
-const endpoint1388 = defineEndpoint({
+export const endpoint1388 = defineEndpoint({
     path: '/reports/item-1388',
     requests: {
         [HttpMethod.Post]: {
@@ -29190,7 +29187,7 @@ const endpoint1388 = defineEndpoint({
     },
 });
 
-const endpoint1389 = defineEndpoint({
+export const endpoint1389 = defineEndpoint({
     path: '/reports/item-1389',
     requests: {
         [HttpMethod.Post]: {
@@ -29211,7 +29208,7 @@ const endpoint1389 = defineEndpoint({
     },
 });
 
-const endpoint1390 = defineEndpoint({
+export const endpoint1390 = defineEndpoint({
     path: '/reports/item-1390',
     requests: {
         [HttpMethod.Post]: {
@@ -29232,7 +29229,7 @@ const endpoint1390 = defineEndpoint({
     },
 });
 
-const endpoint1391 = defineEndpoint({
+export const endpoint1391 = defineEndpoint({
     path: '/reports/item-1391',
     requests: {
         [HttpMethod.Post]: {
@@ -29253,7 +29250,7 @@ const endpoint1391 = defineEndpoint({
     },
 });
 
-const endpoint1392 = defineEndpoint({
+export const endpoint1392 = defineEndpoint({
     path: '/reports/item-1392',
     requests: {
         [HttpMethod.Post]: {
@@ -29274,7 +29271,7 @@ const endpoint1392 = defineEndpoint({
     },
 });
 
-const endpoint1393 = defineEndpoint({
+export const endpoint1393 = defineEndpoint({
     path: '/reports/item-1393',
     requests: {
         [HttpMethod.Post]: {
@@ -29295,7 +29292,7 @@ const endpoint1393 = defineEndpoint({
     },
 });
 
-const endpoint1394 = defineEndpoint({
+export const endpoint1394 = defineEndpoint({
     path: '/reports/item-1394',
     requests: {
         [HttpMethod.Post]: {
@@ -29316,7 +29313,7 @@ const endpoint1394 = defineEndpoint({
     },
 });
 
-const endpoint1395 = defineEndpoint({
+export const endpoint1395 = defineEndpoint({
     path: '/reports/item-1395',
     requests: {
         [HttpMethod.Post]: {
@@ -29337,7 +29334,7 @@ const endpoint1395 = defineEndpoint({
     },
 });
 
-const endpoint1396 = defineEndpoint({
+export const endpoint1396 = defineEndpoint({
     path: '/reports/item-1396',
     requests: {
         [HttpMethod.Post]: {
@@ -29358,7 +29355,7 @@ const endpoint1396 = defineEndpoint({
     },
 });
 
-const endpoint1397 = defineEndpoint({
+export const endpoint1397 = defineEndpoint({
     path: '/reports/item-1397',
     requests: {
         [HttpMethod.Post]: {
@@ -29379,7 +29376,7 @@ const endpoint1397 = defineEndpoint({
     },
 });
 
-const endpoint1398 = defineEndpoint({
+export const endpoint1398 = defineEndpoint({
     path: '/reports/item-1398',
     requests: {
         [HttpMethod.Post]: {
@@ -29400,7 +29397,7 @@ const endpoint1398 = defineEndpoint({
     },
 });
 
-const endpoint1399 = defineEndpoint({
+export const endpoint1399 = defineEndpoint({
     path: '/reports/item-1399',
     requests: {
         [HttpMethod.Post]: {
@@ -29421,7 +29418,7 @@ const endpoint1399 = defineEndpoint({
     },
 });
 
-const endpoint1400 = defineEndpoint({
+export const endpoint1400 = defineEndpoint({
     path: '/reports/item-1400',
     requests: {
         [HttpMethod.Post]: {
@@ -29442,7 +29439,7 @@ const endpoint1400 = defineEndpoint({
     },
 });
 
-const endpoint1401 = defineEndpoint({
+export const endpoint1401 = defineEndpoint({
     path: '/reports/item-1401',
     requests: {
         [HttpMethod.Post]: {
@@ -29463,7 +29460,7 @@ const endpoint1401 = defineEndpoint({
     },
 });
 
-const endpoint1402 = defineEndpoint({
+export const endpoint1402 = defineEndpoint({
     path: '/reports/item-1402',
     requests: {
         [HttpMethod.Post]: {
@@ -29484,7 +29481,7 @@ const endpoint1402 = defineEndpoint({
     },
 });
 
-const endpoint1403 = defineEndpoint({
+export const endpoint1403 = defineEndpoint({
     path: '/reports/item-1403',
     requests: {
         [HttpMethod.Post]: {
@@ -29505,7 +29502,7 @@ const endpoint1403 = defineEndpoint({
     },
 });
 
-const endpoint1404 = defineEndpoint({
+export const endpoint1404 = defineEndpoint({
     path: '/reports/item-1404',
     requests: {
         [HttpMethod.Post]: {
@@ -29526,7 +29523,7 @@ const endpoint1404 = defineEndpoint({
     },
 });
 
-const endpoint1405 = defineEndpoint({
+export const endpoint1405 = defineEndpoint({
     path: '/reports/item-1405',
     requests: {
         [HttpMethod.Post]: {
@@ -29547,7 +29544,7 @@ const endpoint1405 = defineEndpoint({
     },
 });
 
-const endpoint1406 = defineEndpoint({
+export const endpoint1406 = defineEndpoint({
     path: '/reports/item-1406',
     requests: {
         [HttpMethod.Post]: {
@@ -29568,7 +29565,7 @@ const endpoint1406 = defineEndpoint({
     },
 });
 
-const endpoint1407 = defineEndpoint({
+export const endpoint1407 = defineEndpoint({
     path: '/reports/item-1407',
     requests: {
         [HttpMethod.Post]: {
@@ -29589,7 +29586,7 @@ const endpoint1407 = defineEndpoint({
     },
 });
 
-const endpoint1408 = defineEndpoint({
+export const endpoint1408 = defineEndpoint({
     path: '/reports/item-1408',
     requests: {
         [HttpMethod.Post]: {
@@ -29610,7 +29607,7 @@ const endpoint1408 = defineEndpoint({
     },
 });
 
-const endpoint1409 = defineEndpoint({
+export const endpoint1409 = defineEndpoint({
     path: '/reports/item-1409',
     requests: {
         [HttpMethod.Post]: {
@@ -29631,7 +29628,7 @@ const endpoint1409 = defineEndpoint({
     },
 });
 
-const endpoint1410 = defineEndpoint({
+export const endpoint1410 = defineEndpoint({
     path: '/reports/item-1410',
     requests: {
         [HttpMethod.Post]: {
@@ -29652,7 +29649,7 @@ const endpoint1410 = defineEndpoint({
     },
 });
 
-const endpoint1411 = defineEndpoint({
+export const endpoint1411 = defineEndpoint({
     path: '/reports/item-1411',
     requests: {
         [HttpMethod.Post]: {
@@ -29673,7 +29670,7 @@ const endpoint1411 = defineEndpoint({
     },
 });
 
-const endpoint1412 = defineEndpoint({
+export const endpoint1412 = defineEndpoint({
     path: '/reports/item-1412',
     requests: {
         [HttpMethod.Post]: {
@@ -29694,7 +29691,7 @@ const endpoint1412 = defineEndpoint({
     },
 });
 
-const endpoint1413 = defineEndpoint({
+export const endpoint1413 = defineEndpoint({
     path: '/reports/item-1413',
     requests: {
         [HttpMethod.Post]: {
@@ -29715,7 +29712,7 @@ const endpoint1413 = defineEndpoint({
     },
 });
 
-const endpoint1414 = defineEndpoint({
+export const endpoint1414 = defineEndpoint({
     path: '/reports/item-1414',
     requests: {
         [HttpMethod.Post]: {
@@ -29736,7 +29733,7 @@ const endpoint1414 = defineEndpoint({
     },
 });
 
-const endpoint1415 = defineEndpoint({
+export const endpoint1415 = defineEndpoint({
     path: '/reports/item-1415',
     requests: {
         [HttpMethod.Post]: {
@@ -29757,7 +29754,7 @@ const endpoint1415 = defineEndpoint({
     },
 });
 
-const endpoint1416 = defineEndpoint({
+export const endpoint1416 = defineEndpoint({
     path: '/reports/item-1416',
     requests: {
         [HttpMethod.Post]: {
@@ -29778,7 +29775,7 @@ const endpoint1416 = defineEndpoint({
     },
 });
 
-const endpoint1417 = defineEndpoint({
+export const endpoint1417 = defineEndpoint({
     path: '/reports/item-1417',
     requests: {
         [HttpMethod.Post]: {
@@ -29799,7 +29796,7 @@ const endpoint1417 = defineEndpoint({
     },
 });
 
-const endpoint1418 = defineEndpoint({
+export const endpoint1418 = defineEndpoint({
     path: '/reports/item-1418',
     requests: {
         [HttpMethod.Post]: {
@@ -29820,7 +29817,7 @@ const endpoint1418 = defineEndpoint({
     },
 });
 
-const endpoint1419 = defineEndpoint({
+export const endpoint1419 = defineEndpoint({
     path: '/reports/item-1419',
     requests: {
         [HttpMethod.Post]: {
@@ -29841,7 +29838,7 @@ const endpoint1419 = defineEndpoint({
     },
 });
 
-const endpoint1420 = defineEndpoint({
+export const endpoint1420 = defineEndpoint({
     path: '/reports/item-1420',
     requests: {
         [HttpMethod.Post]: {
@@ -29862,7 +29859,7 @@ const endpoint1420 = defineEndpoint({
     },
 });
 
-const endpoint1421 = defineEndpoint({
+export const endpoint1421 = defineEndpoint({
     path: '/reports/item-1421',
     requests: {
         [HttpMethod.Post]: {
@@ -29883,7 +29880,7 @@ const endpoint1421 = defineEndpoint({
     },
 });
 
-const endpoint1422 = defineEndpoint({
+export const endpoint1422 = defineEndpoint({
     path: '/reports/item-1422',
     requests: {
         [HttpMethod.Post]: {
@@ -29904,7 +29901,7 @@ const endpoint1422 = defineEndpoint({
     },
 });
 
-const endpoint1423 = defineEndpoint({
+export const endpoint1423 = defineEndpoint({
     path: '/reports/item-1423',
     requests: {
         [HttpMethod.Post]: {
@@ -29925,7 +29922,7 @@ const endpoint1423 = defineEndpoint({
     },
 });
 
-const endpoint1424 = defineEndpoint({
+export const endpoint1424 = defineEndpoint({
     path: '/reports/item-1424',
     requests: {
         [HttpMethod.Post]: {
@@ -29946,7 +29943,7 @@ const endpoint1424 = defineEndpoint({
     },
 });
 
-const endpoint1425 = defineEndpoint({
+export const endpoint1425 = defineEndpoint({
     path: '/reports/item-1425',
     requests: {
         [HttpMethod.Post]: {
@@ -29967,7 +29964,7 @@ const endpoint1425 = defineEndpoint({
     },
 });
 
-const endpoint1426 = defineEndpoint({
+export const endpoint1426 = defineEndpoint({
     path: '/reports/item-1426',
     requests: {
         [HttpMethod.Post]: {
@@ -29988,7 +29985,7 @@ const endpoint1426 = defineEndpoint({
     },
 });
 
-const endpoint1427 = defineEndpoint({
+export const endpoint1427 = defineEndpoint({
     path: '/reports/item-1427',
     requests: {
         [HttpMethod.Post]: {
@@ -30009,7 +30006,7 @@ const endpoint1427 = defineEndpoint({
     },
 });
 
-const endpoint1428 = defineEndpoint({
+export const endpoint1428 = defineEndpoint({
     path: '/reports/item-1428',
     requests: {
         [HttpMethod.Post]: {
@@ -30030,7 +30027,7 @@ const endpoint1428 = defineEndpoint({
     },
 });
 
-const endpoint1429 = defineEndpoint({
+export const endpoint1429 = defineEndpoint({
     path: '/reports/item-1429',
     requests: {
         [HttpMethod.Post]: {
@@ -30051,7 +30048,7 @@ const endpoint1429 = defineEndpoint({
     },
 });
 
-const endpoint1430 = defineEndpoint({
+export const endpoint1430 = defineEndpoint({
     path: '/reports/item-1430',
     requests: {
         [HttpMethod.Post]: {
@@ -30072,7 +30069,7 @@ const endpoint1430 = defineEndpoint({
     },
 });
 
-const endpoint1431 = defineEndpoint({
+export const endpoint1431 = defineEndpoint({
     path: '/reports/item-1431',
     requests: {
         [HttpMethod.Post]: {
@@ -30093,7 +30090,7 @@ const endpoint1431 = defineEndpoint({
     },
 });
 
-const endpoint1432 = defineEndpoint({
+export const endpoint1432 = defineEndpoint({
     path: '/reports/item-1432',
     requests: {
         [HttpMethod.Post]: {
@@ -30114,7 +30111,7 @@ const endpoint1432 = defineEndpoint({
     },
 });
 
-const endpoint1433 = defineEndpoint({
+export const endpoint1433 = defineEndpoint({
     path: '/reports/item-1433',
     requests: {
         [HttpMethod.Post]: {
@@ -30135,7 +30132,7 @@ const endpoint1433 = defineEndpoint({
     },
 });
 
-const endpoint1434 = defineEndpoint({
+export const endpoint1434 = defineEndpoint({
     path: '/reports/item-1434',
     requests: {
         [HttpMethod.Post]: {
@@ -30156,7 +30153,7 @@ const endpoint1434 = defineEndpoint({
     },
 });
 
-const endpoint1435 = defineEndpoint({
+export const endpoint1435 = defineEndpoint({
     path: '/reports/item-1435',
     requests: {
         [HttpMethod.Post]: {
@@ -30177,7 +30174,7 @@ const endpoint1435 = defineEndpoint({
     },
 });
 
-const endpoint1436 = defineEndpoint({
+export const endpoint1436 = defineEndpoint({
     path: '/reports/item-1436',
     requests: {
         [HttpMethod.Post]: {
@@ -30198,7 +30195,7 @@ const endpoint1436 = defineEndpoint({
     },
 });
 
-const endpoint1437 = defineEndpoint({
+export const endpoint1437 = defineEndpoint({
     path: '/reports/item-1437',
     requests: {
         [HttpMethod.Post]: {
@@ -30219,7 +30216,7 @@ const endpoint1437 = defineEndpoint({
     },
 });
 
-const endpoint1438 = defineEndpoint({
+export const endpoint1438 = defineEndpoint({
     path: '/reports/item-1438',
     requests: {
         [HttpMethod.Post]: {
@@ -30240,7 +30237,7 @@ const endpoint1438 = defineEndpoint({
     },
 });
 
-const endpoint1439 = defineEndpoint({
+export const endpoint1439 = defineEndpoint({
     path: '/reports/item-1439',
     requests: {
         [HttpMethod.Post]: {
@@ -30261,7 +30258,7 @@ const endpoint1439 = defineEndpoint({
     },
 });
 
-const endpoint1440 = defineEndpoint({
+export const endpoint1440 = defineEndpoint({
     path: '/reports/item-1440',
     requests: {
         [HttpMethod.Post]: {
@@ -30282,7 +30279,7 @@ const endpoint1440 = defineEndpoint({
     },
 });
 
-const endpoint1441 = defineEndpoint({
+export const endpoint1441 = defineEndpoint({
     path: '/reports/item-1441',
     requests: {
         [HttpMethod.Post]: {
@@ -30303,7 +30300,7 @@ const endpoint1441 = defineEndpoint({
     },
 });
 
-const endpoint1442 = defineEndpoint({
+export const endpoint1442 = defineEndpoint({
     path: '/reports/item-1442',
     requests: {
         [HttpMethod.Post]: {
@@ -30324,7 +30321,7 @@ const endpoint1442 = defineEndpoint({
     },
 });
 
-const endpoint1443 = defineEndpoint({
+export const endpoint1443 = defineEndpoint({
     path: '/reports/item-1443',
     requests: {
         [HttpMethod.Post]: {
@@ -30345,7 +30342,7 @@ const endpoint1443 = defineEndpoint({
     },
 });
 
-const endpoint1444 = defineEndpoint({
+export const endpoint1444 = defineEndpoint({
     path: '/reports/item-1444',
     requests: {
         [HttpMethod.Post]: {
@@ -30366,7 +30363,7 @@ const endpoint1444 = defineEndpoint({
     },
 });
 
-const endpoint1445 = defineEndpoint({
+export const endpoint1445 = defineEndpoint({
     path: '/reports/item-1445',
     requests: {
         [HttpMethod.Post]: {
@@ -30387,7 +30384,7 @@ const endpoint1445 = defineEndpoint({
     },
 });
 
-const endpoint1446 = defineEndpoint({
+export const endpoint1446 = defineEndpoint({
     path: '/reports/item-1446',
     requests: {
         [HttpMethod.Post]: {
@@ -30408,7 +30405,7 @@ const endpoint1446 = defineEndpoint({
     },
 });
 
-const endpoint1447 = defineEndpoint({
+export const endpoint1447 = defineEndpoint({
     path: '/reports/item-1447',
     requests: {
         [HttpMethod.Post]: {
@@ -30429,7 +30426,7 @@ const endpoint1447 = defineEndpoint({
     },
 });
 
-const endpoint1448 = defineEndpoint({
+export const endpoint1448 = defineEndpoint({
     path: '/reports/item-1448',
     requests: {
         [HttpMethod.Post]: {
@@ -30450,7 +30447,7 @@ const endpoint1448 = defineEndpoint({
     },
 });
 
-const endpoint1449 = defineEndpoint({
+export const endpoint1449 = defineEndpoint({
     path: '/reports/item-1449',
     requests: {
         [HttpMethod.Post]: {
@@ -30471,7 +30468,7 @@ const endpoint1449 = defineEndpoint({
     },
 });
 
-const endpoint1450 = defineEndpoint({
+export const endpoint1450 = defineEndpoint({
     path: '/reports/item-1450',
     requests: {
         [HttpMethod.Post]: {
@@ -30492,7 +30489,7 @@ const endpoint1450 = defineEndpoint({
     },
 });
 
-const endpoint1451 = defineEndpoint({
+export const endpoint1451 = defineEndpoint({
     path: '/reports/item-1451',
     requests: {
         [HttpMethod.Post]: {
@@ -30513,7 +30510,7 @@ const endpoint1451 = defineEndpoint({
     },
 });
 
-const endpoint1452 = defineEndpoint({
+export const endpoint1452 = defineEndpoint({
     path: '/reports/item-1452',
     requests: {
         [HttpMethod.Post]: {
@@ -30534,7 +30531,7 @@ const endpoint1452 = defineEndpoint({
     },
 });
 
-const endpoint1453 = defineEndpoint({
+export const endpoint1453 = defineEndpoint({
     path: '/reports/item-1453',
     requests: {
         [HttpMethod.Post]: {
@@ -30555,7 +30552,7 @@ const endpoint1453 = defineEndpoint({
     },
 });
 
-const endpoint1454 = defineEndpoint({
+export const endpoint1454 = defineEndpoint({
     path: '/reports/item-1454',
     requests: {
         [HttpMethod.Post]: {
@@ -30576,7 +30573,7 @@ const endpoint1454 = defineEndpoint({
     },
 });
 
-const endpoint1455 = defineEndpoint({
+export const endpoint1455 = defineEndpoint({
     path: '/reports/item-1455',
     requests: {
         [HttpMethod.Post]: {
@@ -30597,7 +30594,7 @@ const endpoint1455 = defineEndpoint({
     },
 });
 
-const endpoint1456 = defineEndpoint({
+export const endpoint1456 = defineEndpoint({
     path: '/reports/item-1456',
     requests: {
         [HttpMethod.Post]: {
@@ -30618,7 +30615,7 @@ const endpoint1456 = defineEndpoint({
     },
 });
 
-const endpoint1457 = defineEndpoint({
+export const endpoint1457 = defineEndpoint({
     path: '/reports/item-1457',
     requests: {
         [HttpMethod.Post]: {
@@ -30639,7 +30636,7 @@ const endpoint1457 = defineEndpoint({
     },
 });
 
-const endpoint1458 = defineEndpoint({
+export const endpoint1458 = defineEndpoint({
     path: '/reports/item-1458',
     requests: {
         [HttpMethod.Post]: {
@@ -30660,7 +30657,7 @@ const endpoint1458 = defineEndpoint({
     },
 });
 
-const endpoint1459 = defineEndpoint({
+export const endpoint1459 = defineEndpoint({
     path: '/reports/item-1459',
     requests: {
         [HttpMethod.Post]: {
@@ -30681,7 +30678,7 @@ const endpoint1459 = defineEndpoint({
     },
 });
 
-const endpoint1460 = defineEndpoint({
+export const endpoint1460 = defineEndpoint({
     path: '/reports/item-1460',
     requests: {
         [HttpMethod.Post]: {
@@ -30702,7 +30699,7 @@ const endpoint1460 = defineEndpoint({
     },
 });
 
-const endpoint1461 = defineEndpoint({
+export const endpoint1461 = defineEndpoint({
     path: '/reports/item-1461',
     requests: {
         [HttpMethod.Post]: {
@@ -30723,7 +30720,7 @@ const endpoint1461 = defineEndpoint({
     },
 });
 
-const endpoint1462 = defineEndpoint({
+export const endpoint1462 = defineEndpoint({
     path: '/reports/item-1462',
     requests: {
         [HttpMethod.Post]: {
@@ -30744,7 +30741,7 @@ const endpoint1462 = defineEndpoint({
     },
 });
 
-const endpoint1463 = defineEndpoint({
+export const endpoint1463 = defineEndpoint({
     path: '/reports/item-1463',
     requests: {
         [HttpMethod.Post]: {
@@ -30765,7 +30762,7 @@ const endpoint1463 = defineEndpoint({
     },
 });
 
-const endpoint1464 = defineEndpoint({
+export const endpoint1464 = defineEndpoint({
     path: '/reports/item-1464',
     requests: {
         [HttpMethod.Post]: {
@@ -30786,7 +30783,7 @@ const endpoint1464 = defineEndpoint({
     },
 });
 
-const endpoint1465 = defineEndpoint({
+export const endpoint1465 = defineEndpoint({
     path: '/reports/item-1465',
     requests: {
         [HttpMethod.Post]: {
@@ -30807,7 +30804,7 @@ const endpoint1465 = defineEndpoint({
     },
 });
 
-const endpoint1466 = defineEndpoint({
+export const endpoint1466 = defineEndpoint({
     path: '/reports/item-1466',
     requests: {
         [HttpMethod.Post]: {
@@ -30828,7 +30825,7 @@ const endpoint1466 = defineEndpoint({
     },
 });
 
-const endpoint1467 = defineEndpoint({
+export const endpoint1467 = defineEndpoint({
     path: '/reports/item-1467',
     requests: {
         [HttpMethod.Post]: {
@@ -30849,7 +30846,7 @@ const endpoint1467 = defineEndpoint({
     },
 });
 
-const endpoint1468 = defineEndpoint({
+export const endpoint1468 = defineEndpoint({
     path: '/reports/item-1468',
     requests: {
         [HttpMethod.Post]: {
@@ -30870,7 +30867,7 @@ const endpoint1468 = defineEndpoint({
     },
 });
 
-const endpoint1469 = defineEndpoint({
+export const endpoint1469 = defineEndpoint({
     path: '/reports/item-1469',
     requests: {
         [HttpMethod.Post]: {
@@ -30891,7 +30888,7 @@ const endpoint1469 = defineEndpoint({
     },
 });
 
-const endpoint1470 = defineEndpoint({
+export const endpoint1470 = defineEndpoint({
     path: '/reports/item-1470',
     requests: {
         [HttpMethod.Post]: {
@@ -30912,7 +30909,7 @@ const endpoint1470 = defineEndpoint({
     },
 });
 
-const endpoint1471 = defineEndpoint({
+export const endpoint1471 = defineEndpoint({
     path: '/reports/item-1471',
     requests: {
         [HttpMethod.Post]: {
@@ -30933,7 +30930,7 @@ const endpoint1471 = defineEndpoint({
     },
 });
 
-const endpoint1472 = defineEndpoint({
+export const endpoint1472 = defineEndpoint({
     path: '/reports/item-1472',
     requests: {
         [HttpMethod.Post]: {
@@ -30954,7 +30951,7 @@ const endpoint1472 = defineEndpoint({
     },
 });
 
-const endpoint1473 = defineEndpoint({
+export const endpoint1473 = defineEndpoint({
     path: '/reports/item-1473',
     requests: {
         [HttpMethod.Post]: {
@@ -30975,7 +30972,7 @@ const endpoint1473 = defineEndpoint({
     },
 });
 
-const endpoint1474 = defineEndpoint({
+export const endpoint1474 = defineEndpoint({
     path: '/reports/item-1474',
     requests: {
         [HttpMethod.Post]: {
@@ -30996,7 +30993,7 @@ const endpoint1474 = defineEndpoint({
     },
 });
 
-const endpoint1475 = defineEndpoint({
+export const endpoint1475 = defineEndpoint({
     path: '/reports/item-1475',
     requests: {
         [HttpMethod.Post]: {
@@ -31017,7 +31014,7 @@ const endpoint1475 = defineEndpoint({
     },
 });
 
-const endpoint1476 = defineEndpoint({
+export const endpoint1476 = defineEndpoint({
     path: '/reports/item-1476',
     requests: {
         [HttpMethod.Post]: {
@@ -31038,7 +31035,7 @@ const endpoint1476 = defineEndpoint({
     },
 });
 
-const endpoint1477 = defineEndpoint({
+export const endpoint1477 = defineEndpoint({
     path: '/reports/item-1477',
     requests: {
         [HttpMethod.Post]: {
@@ -31059,7 +31056,7 @@ const endpoint1477 = defineEndpoint({
     },
 });
 
-const endpoint1478 = defineEndpoint({
+export const endpoint1478 = defineEndpoint({
     path: '/reports/item-1478',
     requests: {
         [HttpMethod.Post]: {
@@ -31080,7 +31077,7 @@ const endpoint1478 = defineEndpoint({
     },
 });
 
-const endpoint1479 = defineEndpoint({
+export const endpoint1479 = defineEndpoint({
     path: '/reports/item-1479',
     requests: {
         [HttpMethod.Post]: {
@@ -31101,7 +31098,7 @@ const endpoint1479 = defineEndpoint({
     },
 });
 
-const endpoint1480 = defineEndpoint({
+export const endpoint1480 = defineEndpoint({
     path: '/reports/item-1480',
     requests: {
         [HttpMethod.Post]: {
@@ -31122,7 +31119,7 @@ const endpoint1480 = defineEndpoint({
     },
 });
 
-const endpoint1481 = defineEndpoint({
+export const endpoint1481 = defineEndpoint({
     path: '/reports/item-1481',
     requests: {
         [HttpMethod.Post]: {
@@ -31143,7 +31140,7 @@ const endpoint1481 = defineEndpoint({
     },
 });
 
-const endpoint1482 = defineEndpoint({
+export const endpoint1482 = defineEndpoint({
     path: '/reports/item-1482',
     requests: {
         [HttpMethod.Post]: {
@@ -31164,7 +31161,7 @@ const endpoint1482 = defineEndpoint({
     },
 });
 
-const endpoint1483 = defineEndpoint({
+export const endpoint1483 = defineEndpoint({
     path: '/reports/item-1483',
     requests: {
         [HttpMethod.Post]: {
@@ -31185,7 +31182,7 @@ const endpoint1483 = defineEndpoint({
     },
 });
 
-const endpoint1484 = defineEndpoint({
+export const endpoint1484 = defineEndpoint({
     path: '/reports/item-1484',
     requests: {
         [HttpMethod.Post]: {
@@ -31206,7 +31203,7 @@ const endpoint1484 = defineEndpoint({
     },
 });
 
-const endpoint1485 = defineEndpoint({
+export const endpoint1485 = defineEndpoint({
     path: '/reports/item-1485',
     requests: {
         [HttpMethod.Post]: {
@@ -31227,7 +31224,7 @@ const endpoint1485 = defineEndpoint({
     },
 });
 
-const endpoint1486 = defineEndpoint({
+export const endpoint1486 = defineEndpoint({
     path: '/reports/item-1486',
     requests: {
         [HttpMethod.Post]: {
@@ -31248,7 +31245,7 @@ const endpoint1486 = defineEndpoint({
     },
 });
 
-const endpoint1487 = defineEndpoint({
+export const endpoint1487 = defineEndpoint({
     path: '/reports/item-1487',
     requests: {
         [HttpMethod.Post]: {
@@ -31269,7 +31266,7 @@ const endpoint1487 = defineEndpoint({
     },
 });
 
-const endpoint1488 = defineEndpoint({
+export const endpoint1488 = defineEndpoint({
     path: '/reports/item-1488',
     requests: {
         [HttpMethod.Post]: {
@@ -31290,7 +31287,7 @@ const endpoint1488 = defineEndpoint({
     },
 });
 
-const endpoint1489 = defineEndpoint({
+export const endpoint1489 = defineEndpoint({
     path: '/reports/item-1489',
     requests: {
         [HttpMethod.Post]: {
@@ -31311,7 +31308,7 @@ const endpoint1489 = defineEndpoint({
     },
 });
 
-const endpoint1490 = defineEndpoint({
+export const endpoint1490 = defineEndpoint({
     path: '/reports/item-1490',
     requests: {
         [HttpMethod.Post]: {
@@ -31332,7 +31329,7 @@ const endpoint1490 = defineEndpoint({
     },
 });
 
-const endpoint1491 = defineEndpoint({
+export const endpoint1491 = defineEndpoint({
     path: '/reports/item-1491',
     requests: {
         [HttpMethod.Post]: {
@@ -31353,7 +31350,7 @@ const endpoint1491 = defineEndpoint({
     },
 });
 
-const endpoint1492 = defineEndpoint({
+export const endpoint1492 = defineEndpoint({
     path: '/reports/item-1492',
     requests: {
         [HttpMethod.Post]: {
@@ -31374,7 +31371,7 @@ const endpoint1492 = defineEndpoint({
     },
 });
 
-const endpoint1493 = defineEndpoint({
+export const endpoint1493 = defineEndpoint({
     path: '/reports/item-1493',
     requests: {
         [HttpMethod.Post]: {
@@ -31395,7 +31392,7 @@ const endpoint1493 = defineEndpoint({
     },
 });
 
-const endpoint1494 = defineEndpoint({
+export const endpoint1494 = defineEndpoint({
     path: '/reports/item-1494',
     requests: {
         [HttpMethod.Post]: {
@@ -31416,7 +31413,7 @@ const endpoint1494 = defineEndpoint({
     },
 });
 
-const endpoint1495 = defineEndpoint({
+export const endpoint1495 = defineEndpoint({
     path: '/reports/item-1495',
     requests: {
         [HttpMethod.Post]: {
@@ -31437,7 +31434,7 @@ const endpoint1495 = defineEndpoint({
     },
 });
 
-const endpoint1496 = defineEndpoint({
+export const endpoint1496 = defineEndpoint({
     path: '/reports/item-1496',
     requests: {
         [HttpMethod.Post]: {
@@ -31458,7 +31455,7 @@ const endpoint1496 = defineEndpoint({
     },
 });
 
-const endpoint1497 = defineEndpoint({
+export const endpoint1497 = defineEndpoint({
     path: '/reports/item-1497',
     requests: {
         [HttpMethod.Post]: {
@@ -31479,7 +31476,7 @@ const endpoint1497 = defineEndpoint({
     },
 });
 
-const endpoint1498 = defineEndpoint({
+export const endpoint1498 = defineEndpoint({
     path: '/reports/item-1498',
     requests: {
         [HttpMethod.Post]: {
@@ -31500,7 +31497,7 @@ const endpoint1498 = defineEndpoint({
     },
 });
 
-const endpoint1499 = defineEndpoint({
+export const endpoint1499 = defineEndpoint({
     path: '/reports/item-1499',
     requests: {
         [HttpMethod.Post]: {
@@ -31521,7 +31518,7 @@ const endpoint1499 = defineEndpoint({
     },
 });
 
-const endpoint1500 = defineEndpoint({
+export const endpoint1500 = defineEndpoint({
     path: '/reports/item-1500',
     requests: {
         [HttpMethod.Post]: {
@@ -31542,7 +31539,7 @@ const endpoint1500 = defineEndpoint({
     },
 });
 
-const endpoint1501 = defineEndpoint({
+export const endpoint1501 = defineEndpoint({
     path: '/reports/item-1501',
     requests: {
         [HttpMethod.Post]: {
@@ -31563,7 +31560,7 @@ const endpoint1501 = defineEndpoint({
     },
 });
 
-const endpoint1502 = defineEndpoint({
+export const endpoint1502 = defineEndpoint({
     path: '/reports/item-1502',
     requests: {
         [HttpMethod.Post]: {
@@ -31584,7 +31581,7 @@ const endpoint1502 = defineEndpoint({
     },
 });
 
-const endpoint1503 = defineEndpoint({
+export const endpoint1503 = defineEndpoint({
     path: '/reports/item-1503',
     requests: {
         [HttpMethod.Post]: {
@@ -31605,7 +31602,7 @@ const endpoint1503 = defineEndpoint({
     },
 });
 
-const endpoint1504 = defineEndpoint({
+export const endpoint1504 = defineEndpoint({
     path: '/reports/item-1504',
     requests: {
         [HttpMethod.Post]: {
@@ -31626,7 +31623,7 @@ const endpoint1504 = defineEndpoint({
     },
 });
 
-const endpoint1505 = defineEndpoint({
+export const endpoint1505 = defineEndpoint({
     path: '/reports/item-1505',
     requests: {
         [HttpMethod.Post]: {
@@ -31647,7 +31644,7 @@ const endpoint1505 = defineEndpoint({
     },
 });
 
-const endpoint1506 = defineEndpoint({
+export const endpoint1506 = defineEndpoint({
     path: '/reports/item-1506',
     requests: {
         [HttpMethod.Post]: {
@@ -31668,7 +31665,7 @@ const endpoint1506 = defineEndpoint({
     },
 });
 
-const endpoint1507 = defineEndpoint({
+export const endpoint1507 = defineEndpoint({
     path: '/reports/item-1507',
     requests: {
         [HttpMethod.Post]: {
@@ -31689,7 +31686,7 @@ const endpoint1507 = defineEndpoint({
     },
 });
 
-const endpoint1508 = defineEndpoint({
+export const endpoint1508 = defineEndpoint({
     path: '/reports/item-1508',
     requests: {
         [HttpMethod.Post]: {
@@ -31710,7 +31707,7 @@ const endpoint1508 = defineEndpoint({
     },
 });
 
-const endpoint1509 = defineEndpoint({
+export const endpoint1509 = defineEndpoint({
     path: '/reports/item-1509',
     requests: {
         [HttpMethod.Post]: {
@@ -31731,7 +31728,7 @@ const endpoint1509 = defineEndpoint({
     },
 });
 
-const endpoint1510 = defineEndpoint({
+export const endpoint1510 = defineEndpoint({
     path: '/reports/item-1510',
     requests: {
         [HttpMethod.Post]: {
@@ -31752,7 +31749,7 @@ const endpoint1510 = defineEndpoint({
     },
 });
 
-const endpoint1511 = defineEndpoint({
+export const endpoint1511 = defineEndpoint({
     path: '/reports/item-1511',
     requests: {
         [HttpMethod.Post]: {
@@ -31773,7 +31770,7 @@ const endpoint1511 = defineEndpoint({
     },
 });
 
-const endpoint1512 = defineEndpoint({
+export const endpoint1512 = defineEndpoint({
     path: '/reports/item-1512',
     requests: {
         [HttpMethod.Post]: {
@@ -31794,7 +31791,7 @@ const endpoint1512 = defineEndpoint({
     },
 });
 
-const endpoint1513 = defineEndpoint({
+export const endpoint1513 = defineEndpoint({
     path: '/reports/item-1513',
     requests: {
         [HttpMethod.Post]: {
@@ -31815,7 +31812,7 @@ const endpoint1513 = defineEndpoint({
     },
 });
 
-const endpoint1514 = defineEndpoint({
+export const endpoint1514 = defineEndpoint({
     path: '/reports/item-1514',
     requests: {
         [HttpMethod.Post]: {
@@ -31836,7 +31833,7 @@ const endpoint1514 = defineEndpoint({
     },
 });
 
-const endpoint1515 = defineEndpoint({
+export const endpoint1515 = defineEndpoint({
     path: '/reports/item-1515',
     requests: {
         [HttpMethod.Post]: {
@@ -31857,7 +31854,7 @@ const endpoint1515 = defineEndpoint({
     },
 });
 
-const endpoint1516 = defineEndpoint({
+export const endpoint1516 = defineEndpoint({
     path: '/reports/item-1516',
     requests: {
         [HttpMethod.Post]: {
@@ -31878,7 +31875,7 @@ const endpoint1516 = defineEndpoint({
     },
 });
 
-const endpoint1517 = defineEndpoint({
+export const endpoint1517 = defineEndpoint({
     path: '/reports/item-1517',
     requests: {
         [HttpMethod.Post]: {
@@ -31899,7 +31896,7 @@ const endpoint1517 = defineEndpoint({
     },
 });
 
-const endpoint1518 = defineEndpoint({
+export const endpoint1518 = defineEndpoint({
     path: '/reports/item-1518',
     requests: {
         [HttpMethod.Post]: {
@@ -31920,7 +31917,7 @@ const endpoint1518 = defineEndpoint({
     },
 });
 
-const endpoint1519 = defineEndpoint({
+export const endpoint1519 = defineEndpoint({
     path: '/reports/item-1519',
     requests: {
         [HttpMethod.Post]: {
@@ -31941,7 +31938,7 @@ const endpoint1519 = defineEndpoint({
     },
 });
 
-const endpoint1520 = defineEndpoint({
+export const endpoint1520 = defineEndpoint({
     path: '/reports/item-1520',
     requests: {
         [HttpMethod.Post]: {
@@ -31962,7 +31959,7 @@ const endpoint1520 = defineEndpoint({
     },
 });
 
-const endpoint1521 = defineEndpoint({
+export const endpoint1521 = defineEndpoint({
     path: '/reports/item-1521',
     requests: {
         [HttpMethod.Post]: {
@@ -31983,7 +31980,7 @@ const endpoint1521 = defineEndpoint({
     },
 });
 
-const endpoint1522 = defineEndpoint({
+export const endpoint1522 = defineEndpoint({
     path: '/reports/item-1522',
     requests: {
         [HttpMethod.Post]: {
@@ -32004,7 +32001,7 @@ const endpoint1522 = defineEndpoint({
     },
 });
 
-const endpoint1523 = defineEndpoint({
+export const endpoint1523 = defineEndpoint({
     path: '/reports/item-1523',
     requests: {
         [HttpMethod.Post]: {
@@ -32025,7 +32022,7 @@ const endpoint1523 = defineEndpoint({
     },
 });
 
-const endpoint1524 = defineEndpoint({
+export const endpoint1524 = defineEndpoint({
     path: '/reports/item-1524',
     requests: {
         [HttpMethod.Post]: {
@@ -32046,7 +32043,7 @@ const endpoint1524 = defineEndpoint({
     },
 });
 
-const endpoint1525 = defineEndpoint({
+export const endpoint1525 = defineEndpoint({
     path: '/reports/item-1525',
     requests: {
         [HttpMethod.Post]: {
@@ -32067,7 +32064,7 @@ const endpoint1525 = defineEndpoint({
     },
 });
 
-const endpoint1526 = defineEndpoint({
+export const endpoint1526 = defineEndpoint({
     path: '/reports/item-1526',
     requests: {
         [HttpMethod.Post]: {
@@ -32088,7 +32085,7 @@ const endpoint1526 = defineEndpoint({
     },
 });
 
-const endpoint1527 = defineEndpoint({
+export const endpoint1527 = defineEndpoint({
     path: '/reports/item-1527',
     requests: {
         [HttpMethod.Post]: {
@@ -32109,7 +32106,7 @@ const endpoint1527 = defineEndpoint({
     },
 });
 
-const endpoint1528 = defineEndpoint({
+export const endpoint1528 = defineEndpoint({
     path: '/reports/item-1528',
     requests: {
         [HttpMethod.Post]: {
@@ -32130,7 +32127,7 @@ const endpoint1528 = defineEndpoint({
     },
 });
 
-const endpoint1529 = defineEndpoint({
+export const endpoint1529 = defineEndpoint({
     path: '/reports/item-1529',
     requests: {
         [HttpMethod.Post]: {
@@ -32151,7 +32148,7 @@ const endpoint1529 = defineEndpoint({
     },
 });
 
-const endpoint1530 = defineEndpoint({
+export const endpoint1530 = defineEndpoint({
     path: '/reports/item-1530',
     requests: {
         [HttpMethod.Post]: {
@@ -32172,7 +32169,7 @@ const endpoint1530 = defineEndpoint({
     },
 });
 
-const endpoint1531 = defineEndpoint({
+export const endpoint1531 = defineEndpoint({
     path: '/reports/item-1531',
     requests: {
         [HttpMethod.Post]: {
@@ -32193,7 +32190,7 @@ const endpoint1531 = defineEndpoint({
     },
 });
 
-const endpoint1532 = defineEndpoint({
+export const endpoint1532 = defineEndpoint({
     path: '/reports/item-1532',
     requests: {
         [HttpMethod.Post]: {
@@ -32214,7 +32211,7 @@ const endpoint1532 = defineEndpoint({
     },
 });
 
-const endpoint1533 = defineEndpoint({
+export const endpoint1533 = defineEndpoint({
     path: '/reports/item-1533',
     requests: {
         [HttpMethod.Post]: {
@@ -32235,7 +32232,7 @@ const endpoint1533 = defineEndpoint({
     },
 });
 
-const endpoint1534 = defineEndpoint({
+export const endpoint1534 = defineEndpoint({
     path: '/reports/item-1534',
     requests: {
         [HttpMethod.Post]: {
@@ -32256,7 +32253,7 @@ const endpoint1534 = defineEndpoint({
     },
 });
 
-const endpoint1535 = defineEndpoint({
+export const endpoint1535 = defineEndpoint({
     path: '/reports/item-1535',
     requests: {
         [HttpMethod.Post]: {
@@ -32277,7 +32274,7 @@ const endpoint1535 = defineEndpoint({
     },
 });
 
-const endpoint1536 = defineEndpoint({
+export const endpoint1536 = defineEndpoint({
     path: '/reports/item-1536',
     requests: {
         [HttpMethod.Post]: {
@@ -32298,7 +32295,7 @@ const endpoint1536 = defineEndpoint({
     },
 });
 
-const endpoint1537 = defineEndpoint({
+export const endpoint1537 = defineEndpoint({
     path: '/reports/item-1537',
     requests: {
         [HttpMethod.Post]: {
@@ -32319,7 +32316,7 @@ const endpoint1537 = defineEndpoint({
     },
 });
 
-const endpoint1538 = defineEndpoint({
+export const endpoint1538 = defineEndpoint({
     path: '/reports/item-1538',
     requests: {
         [HttpMethod.Post]: {
@@ -32340,7 +32337,7 @@ const endpoint1538 = defineEndpoint({
     },
 });
 
-const endpoint1539 = defineEndpoint({
+export const endpoint1539 = defineEndpoint({
     path: '/reports/item-1539',
     requests: {
         [HttpMethod.Post]: {
@@ -32361,7 +32358,7 @@ const endpoint1539 = defineEndpoint({
     },
 });
 
-const endpoint1540 = defineEndpoint({
+export const endpoint1540 = defineEndpoint({
     path: '/reports/item-1540',
     requests: {
         [HttpMethod.Post]: {
@@ -32382,7 +32379,7 @@ const endpoint1540 = defineEndpoint({
     },
 });
 
-const endpoint1541 = defineEndpoint({
+export const endpoint1541 = defineEndpoint({
     path: '/reports/item-1541',
     requests: {
         [HttpMethod.Post]: {
@@ -32403,7 +32400,7 @@ const endpoint1541 = defineEndpoint({
     },
 });
 
-const endpoint1542 = defineEndpoint({
+export const endpoint1542 = defineEndpoint({
     path: '/reports/item-1542',
     requests: {
         [HttpMethod.Post]: {
@@ -32424,7 +32421,7 @@ const endpoint1542 = defineEndpoint({
     },
 });
 
-const endpoint1543 = defineEndpoint({
+export const endpoint1543 = defineEndpoint({
     path: '/reports/item-1543',
     requests: {
         [HttpMethod.Post]: {
@@ -32445,7 +32442,7 @@ const endpoint1543 = defineEndpoint({
     },
 });
 
-const endpoint1544 = defineEndpoint({
+export const endpoint1544 = defineEndpoint({
     path: '/reports/item-1544',
     requests: {
         [HttpMethod.Post]: {
@@ -32466,7 +32463,7 @@ const endpoint1544 = defineEndpoint({
     },
 });
 
-const endpoint1545 = defineEndpoint({
+export const endpoint1545 = defineEndpoint({
     path: '/reports/item-1545',
     requests: {
         [HttpMethod.Post]: {
@@ -32487,7 +32484,7 @@ const endpoint1545 = defineEndpoint({
     },
 });
 
-const endpoint1546 = defineEndpoint({
+export const endpoint1546 = defineEndpoint({
     path: '/reports/item-1546',
     requests: {
         [HttpMethod.Post]: {
@@ -32508,7 +32505,7 @@ const endpoint1546 = defineEndpoint({
     },
 });
 
-const endpoint1547 = defineEndpoint({
+export const endpoint1547 = defineEndpoint({
     path: '/reports/item-1547',
     requests: {
         [HttpMethod.Post]: {
@@ -32529,7 +32526,7 @@ const endpoint1547 = defineEndpoint({
     },
 });
 
-const endpoint1548 = defineEndpoint({
+export const endpoint1548 = defineEndpoint({
     path: '/reports/item-1548',
     requests: {
         [HttpMethod.Post]: {
@@ -32550,7 +32547,7 @@ const endpoint1548 = defineEndpoint({
     },
 });
 
-const endpoint1549 = defineEndpoint({
+export const endpoint1549 = defineEndpoint({
     path: '/reports/item-1549',
     requests: {
         [HttpMethod.Post]: {
@@ -32571,7 +32568,7 @@ const endpoint1549 = defineEndpoint({
     },
 });
 
-const endpoint1550 = defineEndpoint({
+export const endpoint1550 = defineEndpoint({
     path: '/reports/item-1550',
     requests: {
         [HttpMethod.Post]: {
@@ -32592,7 +32589,7 @@ const endpoint1550 = defineEndpoint({
     },
 });
 
-const endpoint1551 = defineEndpoint({
+export const endpoint1551 = defineEndpoint({
     path: '/reports/item-1551',
     requests: {
         [HttpMethod.Post]: {
@@ -32613,7 +32610,7 @@ const endpoint1551 = defineEndpoint({
     },
 });
 
-const endpoint1552 = defineEndpoint({
+export const endpoint1552 = defineEndpoint({
     path: '/reports/item-1552',
     requests: {
         [HttpMethod.Post]: {
@@ -32634,7 +32631,7 @@ const endpoint1552 = defineEndpoint({
     },
 });
 
-const endpoint1553 = defineEndpoint({
+export const endpoint1553 = defineEndpoint({
     path: '/reports/item-1553',
     requests: {
         [HttpMethod.Post]: {
@@ -32655,7 +32652,7 @@ const endpoint1553 = defineEndpoint({
     },
 });
 
-const endpoint1554 = defineEndpoint({
+export const endpoint1554 = defineEndpoint({
     path: '/reports/item-1554',
     requests: {
         [HttpMethod.Post]: {
@@ -32676,7 +32673,7 @@ const endpoint1554 = defineEndpoint({
     },
 });
 
-const endpoint1555 = defineEndpoint({
+export const endpoint1555 = defineEndpoint({
     path: '/reports/item-1555',
     requests: {
         [HttpMethod.Post]: {
@@ -32697,7 +32694,7 @@ const endpoint1555 = defineEndpoint({
     },
 });
 
-const endpoint1556 = defineEndpoint({
+export const endpoint1556 = defineEndpoint({
     path: '/reports/item-1556',
     requests: {
         [HttpMethod.Post]: {
@@ -32718,7 +32715,7 @@ const endpoint1556 = defineEndpoint({
     },
 });
 
-const endpoint1557 = defineEndpoint({
+export const endpoint1557 = defineEndpoint({
     path: '/reports/item-1557',
     requests: {
         [HttpMethod.Post]: {
@@ -32739,7 +32736,7 @@ const endpoint1557 = defineEndpoint({
     },
 });
 
-const endpoint1558 = defineEndpoint({
+export const endpoint1558 = defineEndpoint({
     path: '/reports/item-1558',
     requests: {
         [HttpMethod.Post]: {
@@ -32760,7 +32757,7 @@ const endpoint1558 = defineEndpoint({
     },
 });
 
-const endpoint1559 = defineEndpoint({
+export const endpoint1559 = defineEndpoint({
     path: '/reports/item-1559',
     requests: {
         [HttpMethod.Post]: {
@@ -32781,7 +32778,7 @@ const endpoint1559 = defineEndpoint({
     },
 });
 
-const endpoint1560 = defineEndpoint({
+export const endpoint1560 = defineEndpoint({
     path: '/reports/item-1560',
     requests: {
         [HttpMethod.Post]: {
@@ -32802,7 +32799,7 @@ const endpoint1560 = defineEndpoint({
     },
 });
 
-const endpoint1561 = defineEndpoint({
+export const endpoint1561 = defineEndpoint({
     path: '/reports/item-1561',
     requests: {
         [HttpMethod.Post]: {
@@ -32823,7 +32820,7 @@ const endpoint1561 = defineEndpoint({
     },
 });
 
-const endpoint1562 = defineEndpoint({
+export const endpoint1562 = defineEndpoint({
     path: '/reports/item-1562',
     requests: {
         [HttpMethod.Post]: {
@@ -32844,7 +32841,7 @@ const endpoint1562 = defineEndpoint({
     },
 });
 
-const endpoint1563 = defineEndpoint({
+export const endpoint1563 = defineEndpoint({
     path: '/reports/item-1563',
     requests: {
         [HttpMethod.Post]: {
@@ -32865,7 +32862,7 @@ const endpoint1563 = defineEndpoint({
     },
 });
 
-const endpoint1564 = defineEndpoint({
+export const endpoint1564 = defineEndpoint({
     path: '/reports/item-1564',
     requests: {
         [HttpMethod.Post]: {
@@ -32886,7 +32883,7 @@ const endpoint1564 = defineEndpoint({
     },
 });
 
-const endpoint1565 = defineEndpoint({
+export const endpoint1565 = defineEndpoint({
     path: '/reports/item-1565',
     requests: {
         [HttpMethod.Post]: {
@@ -32907,7 +32904,7 @@ const endpoint1565 = defineEndpoint({
     },
 });
 
-const endpoint1566 = defineEndpoint({
+export const endpoint1566 = defineEndpoint({
     path: '/reports/item-1566',
     requests: {
         [HttpMethod.Post]: {
@@ -32928,7 +32925,7 @@ const endpoint1566 = defineEndpoint({
     },
 });
 
-const endpoint1567 = defineEndpoint({
+export const endpoint1567 = defineEndpoint({
     path: '/reports/item-1567',
     requests: {
         [HttpMethod.Post]: {
@@ -32949,7 +32946,7 @@ const endpoint1567 = defineEndpoint({
     },
 });
 
-const endpoint1568 = defineEndpoint({
+export const endpoint1568 = defineEndpoint({
     path: '/reports/item-1568',
     requests: {
         [HttpMethod.Post]: {
@@ -32970,7 +32967,7 @@ const endpoint1568 = defineEndpoint({
     },
 });
 
-const endpoint1569 = defineEndpoint({
+export const endpoint1569 = defineEndpoint({
     path: '/reports/item-1569',
     requests: {
         [HttpMethod.Post]: {
@@ -32991,7 +32988,7 @@ const endpoint1569 = defineEndpoint({
     },
 });
 
-const endpoint1570 = defineEndpoint({
+export const endpoint1570 = defineEndpoint({
     path: '/reports/item-1570',
     requests: {
         [HttpMethod.Post]: {
@@ -33012,7 +33009,7 @@ const endpoint1570 = defineEndpoint({
     },
 });
 
-const endpoint1571 = defineEndpoint({
+export const endpoint1571 = defineEndpoint({
     path: '/reports/item-1571',
     requests: {
         [HttpMethod.Post]: {
@@ -33033,7 +33030,7 @@ const endpoint1571 = defineEndpoint({
     },
 });
 
-const endpoint1572 = defineEndpoint({
+export const endpoint1572 = defineEndpoint({
     path: '/reports/item-1572',
     requests: {
         [HttpMethod.Post]: {
@@ -33054,7 +33051,7 @@ const endpoint1572 = defineEndpoint({
     },
 });
 
-const endpoint1573 = defineEndpoint({
+export const endpoint1573 = defineEndpoint({
     path: '/reports/item-1573',
     requests: {
         [HttpMethod.Post]: {
@@ -33075,7 +33072,7 @@ const endpoint1573 = defineEndpoint({
     },
 });
 
-const endpoint1574 = defineEndpoint({
+export const endpoint1574 = defineEndpoint({
     path: '/reports/item-1574',
     requests: {
         [HttpMethod.Post]: {
@@ -33096,7 +33093,7 @@ const endpoint1574 = defineEndpoint({
     },
 });
 
-const endpoint1575 = defineEndpoint({
+export const endpoint1575 = defineEndpoint({
     path: '/reports/item-1575',
     requests: {
         [HttpMethod.Post]: {
@@ -33117,7 +33114,7 @@ const endpoint1575 = defineEndpoint({
     },
 });
 
-const endpoint1576 = defineEndpoint({
+export const endpoint1576 = defineEndpoint({
     path: '/reports/item-1576',
     requests: {
         [HttpMethod.Post]: {
@@ -33138,7 +33135,7 @@ const endpoint1576 = defineEndpoint({
     },
 });
 
-const endpoint1577 = defineEndpoint({
+export const endpoint1577 = defineEndpoint({
     path: '/reports/item-1577',
     requests: {
         [HttpMethod.Post]: {
@@ -33159,7 +33156,7 @@ const endpoint1577 = defineEndpoint({
     },
 });
 
-const endpoint1578 = defineEndpoint({
+export const endpoint1578 = defineEndpoint({
     path: '/reports/item-1578',
     requests: {
         [HttpMethod.Post]: {
@@ -33180,7 +33177,7 @@ const endpoint1578 = defineEndpoint({
     },
 });
 
-const endpoint1579 = defineEndpoint({
+export const endpoint1579 = defineEndpoint({
     path: '/reports/item-1579',
     requests: {
         [HttpMethod.Post]: {
@@ -33201,7 +33198,7 @@ const endpoint1579 = defineEndpoint({
     },
 });
 
-const endpoint1580 = defineEndpoint({
+export const endpoint1580 = defineEndpoint({
     path: '/reports/item-1580',
     requests: {
         [HttpMethod.Post]: {
@@ -33222,7 +33219,7 @@ const endpoint1580 = defineEndpoint({
     },
 });
 
-const endpoint1581 = defineEndpoint({
+export const endpoint1581 = defineEndpoint({
     path: '/reports/item-1581',
     requests: {
         [HttpMethod.Post]: {
@@ -33243,7 +33240,7 @@ const endpoint1581 = defineEndpoint({
     },
 });
 
-const endpoint1582 = defineEndpoint({
+export const endpoint1582 = defineEndpoint({
     path: '/reports/item-1582',
     requests: {
         [HttpMethod.Post]: {
@@ -33264,7 +33261,7 @@ const endpoint1582 = defineEndpoint({
     },
 });
 
-const endpoint1583 = defineEndpoint({
+export const endpoint1583 = defineEndpoint({
     path: '/reports/item-1583',
     requests: {
         [HttpMethod.Post]: {
@@ -33285,7 +33282,7 @@ const endpoint1583 = defineEndpoint({
     },
 });
 
-const endpoint1584 = defineEndpoint({
+export const endpoint1584 = defineEndpoint({
     path: '/reports/item-1584',
     requests: {
         [HttpMethod.Post]: {
@@ -33306,7 +33303,7 @@ const endpoint1584 = defineEndpoint({
     },
 });
 
-const endpoint1585 = defineEndpoint({
+export const endpoint1585 = defineEndpoint({
     path: '/reports/item-1585',
     requests: {
         [HttpMethod.Post]: {
@@ -33327,7 +33324,7 @@ const endpoint1585 = defineEndpoint({
     },
 });
 
-const endpoint1586 = defineEndpoint({
+export const endpoint1586 = defineEndpoint({
     path: '/reports/item-1586',
     requests: {
         [HttpMethod.Post]: {
@@ -33348,7 +33345,7 @@ const endpoint1586 = defineEndpoint({
     },
 });
 
-const endpoint1587 = defineEndpoint({
+export const endpoint1587 = defineEndpoint({
     path: '/reports/item-1587',
     requests: {
         [HttpMethod.Post]: {
@@ -33369,7 +33366,7 @@ const endpoint1587 = defineEndpoint({
     },
 });
 
-const endpoint1588 = defineEndpoint({
+export const endpoint1588 = defineEndpoint({
     path: '/reports/item-1588',
     requests: {
         [HttpMethod.Post]: {
@@ -33390,7 +33387,7 @@ const endpoint1588 = defineEndpoint({
     },
 });
 
-const endpoint1589 = defineEndpoint({
+export const endpoint1589 = defineEndpoint({
     path: '/reports/item-1589',
     requests: {
         [HttpMethod.Post]: {
@@ -33411,7 +33408,7 @@ const endpoint1589 = defineEndpoint({
     },
 });
 
-const endpoint1590 = defineEndpoint({
+export const endpoint1590 = defineEndpoint({
     path: '/reports/item-1590',
     requests: {
         [HttpMethod.Post]: {
@@ -33432,7 +33429,7 @@ const endpoint1590 = defineEndpoint({
     },
 });
 
-const endpoint1591 = defineEndpoint({
+export const endpoint1591 = defineEndpoint({
     path: '/reports/item-1591',
     requests: {
         [HttpMethod.Post]: {
@@ -33453,7 +33450,7 @@ const endpoint1591 = defineEndpoint({
     },
 });
 
-const endpoint1592 = defineEndpoint({
+export const endpoint1592 = defineEndpoint({
     path: '/reports/item-1592',
     requests: {
         [HttpMethod.Post]: {
@@ -33474,7 +33471,7 @@ const endpoint1592 = defineEndpoint({
     },
 });
 
-const endpoint1593 = defineEndpoint({
+export const endpoint1593 = defineEndpoint({
     path: '/reports/item-1593',
     requests: {
         [HttpMethod.Post]: {
@@ -33495,7 +33492,7 @@ const endpoint1593 = defineEndpoint({
     },
 });
 
-const endpoint1594 = defineEndpoint({
+export const endpoint1594 = defineEndpoint({
     path: '/reports/item-1594',
     requests: {
         [HttpMethod.Post]: {
@@ -33516,7 +33513,7 @@ const endpoint1594 = defineEndpoint({
     },
 });
 
-const endpoint1595 = defineEndpoint({
+export const endpoint1595 = defineEndpoint({
     path: '/reports/item-1595',
     requests: {
         [HttpMethod.Post]: {
@@ -33537,7 +33534,7 @@ const endpoint1595 = defineEndpoint({
     },
 });
 
-const endpoint1596 = defineEndpoint({
+export const endpoint1596 = defineEndpoint({
     path: '/reports/item-1596',
     requests: {
         [HttpMethod.Post]: {
@@ -33558,7 +33555,7 @@ const endpoint1596 = defineEndpoint({
     },
 });
 
-const endpoint1597 = defineEndpoint({
+export const endpoint1597 = defineEndpoint({
     path: '/reports/item-1597',
     requests: {
         [HttpMethod.Post]: {
@@ -33579,7 +33576,7 @@ const endpoint1597 = defineEndpoint({
     },
 });
 
-const endpoint1598 = defineEndpoint({
+export const endpoint1598 = defineEndpoint({
     path: '/reports/item-1598',
     requests: {
         [HttpMethod.Post]: {
@@ -33600,7 +33597,7 @@ const endpoint1598 = defineEndpoint({
     },
 });
 
-const endpoint1599 = defineEndpoint({
+export const endpoint1599 = defineEndpoint({
     path: '/reports/item-1599',
     requests: {
         [HttpMethod.Post]: {
@@ -33621,7 +33618,7 @@ const endpoint1599 = defineEndpoint({
     },
 });
 
-const webSocket0 = defineWebSocket({
+export const webSocket0 = defineWebSocket({
     path: '/ws/stream-0',
     clientMessage: defineShape({
         command: '',
@@ -33633,7 +33630,7 @@ const webSocket0 = defineWebSocket({
     }),
 });
 
-const webSocket1 = defineWebSocket({
+export const webSocket1 = defineWebSocket({
     path: '/ws/stream-1',
     clientMessage: defineShape({
         command: '',
@@ -33645,7 +33642,7 @@ const webSocket1 = defineWebSocket({
     }),
 });
 
-const webSocket2 = defineWebSocket({
+export const webSocket2 = defineWebSocket({
     path: '/ws/stream-2',
     clientMessage: defineShape({
         command: '',
@@ -33657,7 +33654,7 @@ const webSocket2 = defineWebSocket({
     }),
 });
 
-const webSocket3 = defineWebSocket({
+export const webSocket3 = defineWebSocket({
     path: '/ws/stream-3',
     clientMessage: defineShape({
         command: '',
@@ -33669,7 +33666,7 @@ const webSocket3 = defineWebSocket({
     }),
 });
 
-const webSocket4 = defineWebSocket({
+export const webSocket4 = defineWebSocket({
     path: '/ws/stream-4',
     clientMessage: defineShape({
         command: '',
@@ -33681,7 +33678,7 @@ const webSocket4 = defineWebSocket({
     }),
 });
 
-const webSocket5 = defineWebSocket({
+export const webSocket5 = defineWebSocket({
     path: '/ws/stream-5',
     clientMessage: defineShape({
         command: '',
@@ -33693,7 +33690,7 @@ const webSocket5 = defineWebSocket({
     }),
 });
 
-const webSocket6 = defineWebSocket({
+export const webSocket6 = defineWebSocket({
     path: '/ws/stream-6',
     clientMessage: defineShape({
         command: '',
@@ -33705,7 +33702,7 @@ const webSocket6 = defineWebSocket({
     }),
 });
 
-const webSocket7 = defineWebSocket({
+export const webSocket7 = defineWebSocket({
     path: '/ws/stream-7',
     clientMessage: defineShape({
         command: '',
@@ -33717,7 +33714,7 @@ const webSocket7 = defineWebSocket({
     }),
 });
 
-const webSocket8 = defineWebSocket({
+export const webSocket8 = defineWebSocket({
     path: '/ws/stream-8',
     clientMessage: defineShape({
         command: '',
@@ -33729,7 +33726,7 @@ const webSocket8 = defineWebSocket({
     }),
 });
 
-const webSocket9 = defineWebSocket({
+export const webSocket9 = defineWebSocket({
     path: '/ws/stream-9',
     clientMessage: defineShape({
         command: '',
@@ -33741,7 +33738,7 @@ const webSocket9 = defineWebSocket({
     }),
 });
 
-const webSocket10 = defineWebSocket({
+export const webSocket10 = defineWebSocket({
     path: '/ws/stream-10',
     clientMessage: defineShape({
         command: '',
@@ -33753,7 +33750,7 @@ const webSocket10 = defineWebSocket({
     }),
 });
 
-const webSocket11 = defineWebSocket({
+export const webSocket11 = defineWebSocket({
     path: '/ws/stream-11',
     clientMessage: defineShape({
         command: '',
@@ -33765,7 +33762,7 @@ const webSocket11 = defineWebSocket({
     }),
 });
 
-const webSocket12 = defineWebSocket({
+export const webSocket12 = defineWebSocket({
     path: '/ws/stream-12',
     clientMessage: defineShape({
         command: '',
@@ -33777,7 +33774,7 @@ const webSocket12 = defineWebSocket({
     }),
 });
 
-const webSocket13 = defineWebSocket({
+export const webSocket13 = defineWebSocket({
     path: '/ws/stream-13',
     clientMessage: defineShape({
         command: '',
@@ -33789,7 +33786,7 @@ const webSocket13 = defineWebSocket({
     }),
 });
 
-const webSocket14 = defineWebSocket({
+export const webSocket14 = defineWebSocket({
     path: '/ws/stream-14',
     clientMessage: defineShape({
         command: '',
@@ -33801,7 +33798,7 @@ const webSocket14 = defineWebSocket({
     }),
 });
 
-const webSocket15 = defineWebSocket({
+export const webSocket15 = defineWebSocket({
     path: '/ws/stream-15',
     clientMessage: defineShape({
         command: '',
@@ -33813,7 +33810,7 @@ const webSocket15 = defineWebSocket({
     }),
 });
 
-const webSocket16 = defineWebSocket({
+export const webSocket16 = defineWebSocket({
     path: '/ws/stream-16',
     clientMessage: defineShape({
         command: '',
@@ -33825,7 +33822,7 @@ const webSocket16 = defineWebSocket({
     }),
 });
 
-const webSocket17 = defineWebSocket({
+export const webSocket17 = defineWebSocket({
     path: '/ws/stream-17',
     clientMessage: defineShape({
         command: '',
@@ -33837,7 +33834,7 @@ const webSocket17 = defineWebSocket({
     }),
 });
 
-const webSocket18 = defineWebSocket({
+export const webSocket18 = defineWebSocket({
     path: '/ws/stream-18',
     clientMessage: defineShape({
         command: '',
@@ -33849,7 +33846,7 @@ const webSocket18 = defineWebSocket({
     }),
 });
 
-const webSocket19 = defineWebSocket({
+export const webSocket19 = defineWebSocket({
     path: '/ws/stream-19',
     clientMessage: defineShape({
         command: '',
@@ -33861,7 +33858,7 @@ const webSocket19 = defineWebSocket({
     }),
 });
 
-const webSocket20 = defineWebSocket({
+export const webSocket20 = defineWebSocket({
     path: '/ws/stream-20',
     clientMessage: defineShape({
         command: '',
@@ -33873,7 +33870,7 @@ const webSocket20 = defineWebSocket({
     }),
 });
 
-const webSocket21 = defineWebSocket({
+export const webSocket21 = defineWebSocket({
     path: '/ws/stream-21',
     clientMessage: defineShape({
         command: '',
@@ -33885,7 +33882,7 @@ const webSocket21 = defineWebSocket({
     }),
 });
 
-const webSocket22 = defineWebSocket({
+export const webSocket22 = defineWebSocket({
     path: '/ws/stream-22',
     clientMessage: defineShape({
         command: '',
@@ -33897,7 +33894,7 @@ const webSocket22 = defineWebSocket({
     }),
 });
 
-const webSocket23 = defineWebSocket({
+export const webSocket23 = defineWebSocket({
     path: '/ws/stream-23',
     clientMessage: defineShape({
         command: '',
@@ -33909,7 +33906,7 @@ const webSocket23 = defineWebSocket({
     }),
 });
 
-const webSocket24 = defineWebSocket({
+export const webSocket24 = defineWebSocket({
     path: '/ws/stream-24',
     clientMessage: defineShape({
         command: '',
@@ -33921,7 +33918,7 @@ const webSocket24 = defineWebSocket({
     }),
 });
 
-const webSocket25 = defineWebSocket({
+export const webSocket25 = defineWebSocket({
     path: '/ws/stream-25',
     clientMessage: defineShape({
         command: '',
@@ -33933,7 +33930,7 @@ const webSocket25 = defineWebSocket({
     }),
 });
 
-const webSocket26 = defineWebSocket({
+export const webSocket26 = defineWebSocket({
     path: '/ws/stream-26',
     clientMessage: defineShape({
         command: '',
@@ -33945,7 +33942,7 @@ const webSocket26 = defineWebSocket({
     }),
 });
 
-const webSocket27 = defineWebSocket({
+export const webSocket27 = defineWebSocket({
     path: '/ws/stream-27',
     clientMessage: defineShape({
         command: '',
@@ -33957,7 +33954,7 @@ const webSocket27 = defineWebSocket({
     }),
 });
 
-const webSocket28 = defineWebSocket({
+export const webSocket28 = defineWebSocket({
     path: '/ws/stream-28',
     clientMessage: defineShape({
         command: '',
@@ -33969,7 +33966,7 @@ const webSocket28 = defineWebSocket({
     }),
 });
 
-const webSocket29 = defineWebSocket({
+export const webSocket29 = defineWebSocket({
     path: '/ws/stream-29',
     clientMessage: defineShape({
         command: '',
@@ -33981,7 +33978,7 @@ const webSocket29 = defineWebSocket({
     }),
 });
 
-const webSocket30 = defineWebSocket({
+export const webSocket30 = defineWebSocket({
     path: '/ws/stream-30',
     clientMessage: defineShape({
         command: '',
@@ -33993,7 +33990,7 @@ const webSocket30 = defineWebSocket({
     }),
 });
 
-const webSocket31 = defineWebSocket({
+export const webSocket31 = defineWebSocket({
     path: '/ws/stream-31',
     clientMessage: defineShape({
         command: '',
@@ -34005,7 +34002,7 @@ const webSocket31 = defineWebSocket({
     }),
 });
 
-const webSocket32 = defineWebSocket({
+export const webSocket32 = defineWebSocket({
     path: '/ws/stream-32',
     clientMessage: defineShape({
         command: '',
@@ -34017,7 +34014,7 @@ const webSocket32 = defineWebSocket({
     }),
 });
 
-const webSocket33 = defineWebSocket({
+export const webSocket33 = defineWebSocket({
     path: '/ws/stream-33',
     clientMessage: defineShape({
         command: '',
@@ -34029,7 +34026,7 @@ const webSocket33 = defineWebSocket({
     }),
 });
 
-const webSocket34 = defineWebSocket({
+export const webSocket34 = defineWebSocket({
     path: '/ws/stream-34',
     clientMessage: defineShape({
         command: '',
@@ -34041,7 +34038,7 @@ const webSocket34 = defineWebSocket({
     }),
 });
 
-const webSocket35 = defineWebSocket({
+export const webSocket35 = defineWebSocket({
     path: '/ws/stream-35',
     clientMessage: defineShape({
         command: '',
@@ -34053,7 +34050,7 @@ const webSocket35 = defineWebSocket({
     }),
 });
 
-const webSocket36 = defineWebSocket({
+export const webSocket36 = defineWebSocket({
     path: '/ws/stream-36',
     clientMessage: defineShape({
         command: '',
@@ -34065,7 +34062,7 @@ const webSocket36 = defineWebSocket({
     }),
 });
 
-const webSocket37 = defineWebSocket({
+export const webSocket37 = defineWebSocket({
     path: '/ws/stream-37',
     clientMessage: defineShape({
         command: '',
@@ -34077,7 +34074,7 @@ const webSocket37 = defineWebSocket({
     }),
 });
 
-const webSocket38 = defineWebSocket({
+export const webSocket38 = defineWebSocket({
     path: '/ws/stream-38',
     clientMessage: defineShape({
         command: '',
@@ -34089,7 +34086,7 @@ const webSocket38 = defineWebSocket({
     }),
 });
 
-const webSocket39 = defineWebSocket({
+export const webSocket39 = defineWebSocket({
     path: '/ws/stream-39',
     clientMessage: defineShape({
         command: '',
@@ -34101,7 +34098,7 @@ const webSocket39 = defineWebSocket({
     }),
 });
 
-const webSocket40 = defineWebSocket({
+export const webSocket40 = defineWebSocket({
     path: '/ws/stream-40',
     clientMessage: defineShape({
         command: '',
@@ -34113,7 +34110,7 @@ const webSocket40 = defineWebSocket({
     }),
 });
 
-const webSocket41 = defineWebSocket({
+export const webSocket41 = defineWebSocket({
     path: '/ws/stream-41',
     clientMessage: defineShape({
         command: '',
@@ -34125,7 +34122,7 @@ const webSocket41 = defineWebSocket({
     }),
 });
 
-const webSocket42 = defineWebSocket({
+export const webSocket42 = defineWebSocket({
     path: '/ws/stream-42',
     clientMessage: defineShape({
         command: '',
@@ -34137,7 +34134,7 @@ const webSocket42 = defineWebSocket({
     }),
 });
 
-const webSocket43 = defineWebSocket({
+export const webSocket43 = defineWebSocket({
     path: '/ws/stream-43',
     clientMessage: defineShape({
         command: '',
@@ -34149,7 +34146,7 @@ const webSocket43 = defineWebSocket({
     }),
 });
 
-const webSocket44 = defineWebSocket({
+export const webSocket44 = defineWebSocket({
     path: '/ws/stream-44',
     clientMessage: defineShape({
         command: '',
@@ -34161,7 +34158,7 @@ const webSocket44 = defineWebSocket({
     }),
 });
 
-const webSocket45 = defineWebSocket({
+export const webSocket45 = defineWebSocket({
     path: '/ws/stream-45',
     clientMessage: defineShape({
         command: '',
@@ -34173,7 +34170,7 @@ const webSocket45 = defineWebSocket({
     }),
 });
 
-const webSocket46 = defineWebSocket({
+export const webSocket46 = defineWebSocket({
     path: '/ws/stream-46',
     clientMessage: defineShape({
         command: '',
@@ -34185,7 +34182,7 @@ const webSocket46 = defineWebSocket({
     }),
 });
 
-const webSocket47 = defineWebSocket({
+export const webSocket47 = defineWebSocket({
     path: '/ws/stream-47',
     clientMessage: defineShape({
         command: '',
@@ -34197,7 +34194,7 @@ const webSocket47 = defineWebSocket({
     }),
 });
 
-const webSocket48 = defineWebSocket({
+export const webSocket48 = defineWebSocket({
     path: '/ws/stream-48',
     clientMessage: defineShape({
         command: '',
@@ -34209,7 +34206,7 @@ const webSocket48 = defineWebSocket({
     }),
 });
 
-const webSocket49 = defineWebSocket({
+export const webSocket49 = defineWebSocket({
     path: '/ws/stream-49',
     clientMessage: defineShape({
         command: '',
@@ -34221,7 +34218,7 @@ const webSocket49 = defineWebSocket({
     }),
 });
 
-const webSocket50 = defineWebSocket({
+export const webSocket50 = defineWebSocket({
     path: '/ws/stream-50',
     clientMessage: defineShape({
         command: '',
@@ -34233,7 +34230,7 @@ const webSocket50 = defineWebSocket({
     }),
 });
 
-const webSocket51 = defineWebSocket({
+export const webSocket51 = defineWebSocket({
     path: '/ws/stream-51',
     clientMessage: defineShape({
         command: '',
@@ -34245,7 +34242,7 @@ const webSocket51 = defineWebSocket({
     }),
 });
 
-const webSocket52 = defineWebSocket({
+export const webSocket52 = defineWebSocket({
     path: '/ws/stream-52',
     clientMessage: defineShape({
         command: '',
@@ -34257,7 +34254,7 @@ const webSocket52 = defineWebSocket({
     }),
 });
 
-const webSocket53 = defineWebSocket({
+export const webSocket53 = defineWebSocket({
     path: '/ws/stream-53',
     clientMessage: defineShape({
         command: '',
@@ -34269,7 +34266,7 @@ const webSocket53 = defineWebSocket({
     }),
 });
 
-const webSocket54 = defineWebSocket({
+export const webSocket54 = defineWebSocket({
     path: '/ws/stream-54',
     clientMessage: defineShape({
         command: '',
@@ -34281,7 +34278,7 @@ const webSocket54 = defineWebSocket({
     }),
 });
 
-const webSocket55 = defineWebSocket({
+export const webSocket55 = defineWebSocket({
     path: '/ws/stream-55',
     clientMessage: defineShape({
         command: '',
@@ -34293,7 +34290,7 @@ const webSocket55 = defineWebSocket({
     }),
 });
 
-const webSocket56 = defineWebSocket({
+export const webSocket56 = defineWebSocket({
     path: '/ws/stream-56',
     clientMessage: defineShape({
         command: '',
@@ -34305,7 +34302,7 @@ const webSocket56 = defineWebSocket({
     }),
 });
 
-const webSocket57 = defineWebSocket({
+export const webSocket57 = defineWebSocket({
     path: '/ws/stream-57',
     clientMessage: defineShape({
         command: '',
@@ -34317,7 +34314,7 @@ const webSocket57 = defineWebSocket({
     }),
 });
 
-const webSocket58 = defineWebSocket({
+export const webSocket58 = defineWebSocket({
     path: '/ws/stream-58',
     clientMessage: defineShape({
         command: '',
@@ -34329,7 +34326,7 @@ const webSocket58 = defineWebSocket({
     }),
 });
 
-const webSocket59 = defineWebSocket({
+export const webSocket59 = defineWebSocket({
     path: '/ws/stream-59',
     clientMessage: defineShape({
         command: '',
@@ -34341,7 +34338,7 @@ const webSocket59 = defineWebSocket({
     }),
 });
 
-const webSocket60 = defineWebSocket({
+export const webSocket60 = defineWebSocket({
     path: '/ws/stream-60',
     clientMessage: defineShape({
         command: '',
@@ -34353,7 +34350,7 @@ const webSocket60 = defineWebSocket({
     }),
 });
 
-const webSocket61 = defineWebSocket({
+export const webSocket61 = defineWebSocket({
     path: '/ws/stream-61',
     clientMessage: defineShape({
         command: '',
@@ -34365,7 +34362,7 @@ const webSocket61 = defineWebSocket({
     }),
 });
 
-const webSocket62 = defineWebSocket({
+export const webSocket62 = defineWebSocket({
     path: '/ws/stream-62',
     clientMessage: defineShape({
         command: '',
@@ -34377,7 +34374,7 @@ const webSocket62 = defineWebSocket({
     }),
 });
 
-const webSocket63 = defineWebSocket({
+export const webSocket63 = defineWebSocket({
     path: '/ws/stream-63',
     clientMessage: defineShape({
         command: '',
@@ -34389,7 +34386,7 @@ const webSocket63 = defineWebSocket({
     }),
 });
 
-const webSocket64 = defineWebSocket({
+export const webSocket64 = defineWebSocket({
     path: '/ws/stream-64',
     clientMessage: defineShape({
         command: '',
@@ -34401,7 +34398,7 @@ const webSocket64 = defineWebSocket({
     }),
 });
 
-const webSocket65 = defineWebSocket({
+export const webSocket65 = defineWebSocket({
     path: '/ws/stream-65',
     clientMessage: defineShape({
         command: '',
@@ -34413,7 +34410,7 @@ const webSocket65 = defineWebSocket({
     }),
 });
 
-const webSocket66 = defineWebSocket({
+export const webSocket66 = defineWebSocket({
     path: '/ws/stream-66',
     clientMessage: defineShape({
         command: '',
@@ -34425,7 +34422,7 @@ const webSocket66 = defineWebSocket({
     }),
 });
 
-const webSocket67 = defineWebSocket({
+export const webSocket67 = defineWebSocket({
     path: '/ws/stream-67',
     clientMessage: defineShape({
         command: '',
@@ -34437,7 +34434,7 @@ const webSocket67 = defineWebSocket({
     }),
 });
 
-const webSocket68 = defineWebSocket({
+export const webSocket68 = defineWebSocket({
     path: '/ws/stream-68',
     clientMessage: defineShape({
         command: '',
@@ -34449,7 +34446,7 @@ const webSocket68 = defineWebSocket({
     }),
 });
 
-const webSocket69 = defineWebSocket({
+export const webSocket69 = defineWebSocket({
     path: '/ws/stream-69',
     clientMessage: defineShape({
         command: '',
@@ -34461,7 +34458,7 @@ const webSocket69 = defineWebSocket({
     }),
 });
 
-const webSocket70 = defineWebSocket({
+export const webSocket70 = defineWebSocket({
     path: '/ws/stream-70',
     clientMessage: defineShape({
         command: '',
@@ -34473,7 +34470,7 @@ const webSocket70 = defineWebSocket({
     }),
 });
 
-const webSocket71 = defineWebSocket({
+export const webSocket71 = defineWebSocket({
     path: '/ws/stream-71',
     clientMessage: defineShape({
         command: '',
@@ -34485,7 +34482,7 @@ const webSocket71 = defineWebSocket({
     }),
 });
 
-const webSocket72 = defineWebSocket({
+export const webSocket72 = defineWebSocket({
     path: '/ws/stream-72',
     clientMessage: defineShape({
         command: '',
@@ -34497,7 +34494,7 @@ const webSocket72 = defineWebSocket({
     }),
 });
 
-const webSocket73 = defineWebSocket({
+export const webSocket73 = defineWebSocket({
     path: '/ws/stream-73',
     clientMessage: defineShape({
         command: '',
@@ -34509,7 +34506,7 @@ const webSocket73 = defineWebSocket({
     }),
 });
 
-const webSocket74 = defineWebSocket({
+export const webSocket74 = defineWebSocket({
     path: '/ws/stream-74',
     clientMessage: defineShape({
         command: '',
@@ -34521,7 +34518,7 @@ const webSocket74 = defineWebSocket({
     }),
 });
 
-const webSocket75 = defineWebSocket({
+export const webSocket75 = defineWebSocket({
     path: '/ws/stream-75',
     clientMessage: defineShape({
         command: '',
@@ -34533,7 +34530,7 @@ const webSocket75 = defineWebSocket({
     }),
 });
 
-const webSocket76 = defineWebSocket({
+export const webSocket76 = defineWebSocket({
     path: '/ws/stream-76',
     clientMessage: defineShape({
         command: '',
@@ -34545,7 +34542,7 @@ const webSocket76 = defineWebSocket({
     }),
 });
 
-const webSocket77 = defineWebSocket({
+export const webSocket77 = defineWebSocket({
     path: '/ws/stream-77',
     clientMessage: defineShape({
         command: '',
@@ -34557,7 +34554,7 @@ const webSocket77 = defineWebSocket({
     }),
 });
 
-const webSocket78 = defineWebSocket({
+export const webSocket78 = defineWebSocket({
     path: '/ws/stream-78',
     clientMessage: defineShape({
         command: '',
@@ -34569,7 +34566,7 @@ const webSocket78 = defineWebSocket({
     }),
 });
 
-const webSocket79 = defineWebSocket({
+export const webSocket79 = defineWebSocket({
     path: '/ws/stream-79',
     clientMessage: defineShape({
         command: '',
@@ -34581,7 +34578,7 @@ const webSocket79 = defineWebSocket({
     }),
 });
 
-const webSocket80 = defineWebSocket({
+export const webSocket80 = defineWebSocket({
     path: '/ws/stream-80',
     clientMessage: defineShape({
         command: '',
@@ -34593,7 +34590,7 @@ const webSocket80 = defineWebSocket({
     }),
 });
 
-const webSocket81 = defineWebSocket({
+export const webSocket81 = defineWebSocket({
     path: '/ws/stream-81',
     clientMessage: defineShape({
         command: '',
@@ -34605,7 +34602,7 @@ const webSocket81 = defineWebSocket({
     }),
 });
 
-const webSocket82 = defineWebSocket({
+export const webSocket82 = defineWebSocket({
     path: '/ws/stream-82',
     clientMessage: defineShape({
         command: '',
@@ -34617,7 +34614,7 @@ const webSocket82 = defineWebSocket({
     }),
 });
 
-const webSocket83 = defineWebSocket({
+export const webSocket83 = defineWebSocket({
     path: '/ws/stream-83',
     clientMessage: defineShape({
         command: '',
@@ -34629,7 +34626,7 @@ const webSocket83 = defineWebSocket({
     }),
 });
 
-const webSocket84 = defineWebSocket({
+export const webSocket84 = defineWebSocket({
     path: '/ws/stream-84',
     clientMessage: defineShape({
         command: '',
@@ -34641,7 +34638,7 @@ const webSocket84 = defineWebSocket({
     }),
 });
 
-const webSocket85 = defineWebSocket({
+export const webSocket85 = defineWebSocket({
     path: '/ws/stream-85',
     clientMessage: defineShape({
         command: '',
@@ -34653,7 +34650,7 @@ const webSocket85 = defineWebSocket({
     }),
 });
 
-const webSocket86 = defineWebSocket({
+export const webSocket86 = defineWebSocket({
     path: '/ws/stream-86',
     clientMessage: defineShape({
         command: '',
@@ -34665,7 +34662,7 @@ const webSocket86 = defineWebSocket({
     }),
 });
 
-const webSocket87 = defineWebSocket({
+export const webSocket87 = defineWebSocket({
     path: '/ws/stream-87',
     clientMessage: defineShape({
         command: '',
@@ -34677,7 +34674,7 @@ const webSocket87 = defineWebSocket({
     }),
 });
 
-const webSocket88 = defineWebSocket({
+export const webSocket88 = defineWebSocket({
     path: '/ws/stream-88',
     clientMessage: defineShape({
         command: '',
@@ -34689,7 +34686,7 @@ const webSocket88 = defineWebSocket({
     }),
 });
 
-const webSocket89 = defineWebSocket({
+export const webSocket89 = defineWebSocket({
     path: '/ws/stream-89',
     clientMessage: defineShape({
         command: '',
@@ -34701,7 +34698,7 @@ const webSocket89 = defineWebSocket({
     }),
 });
 
-const webSocket90 = defineWebSocket({
+export const webSocket90 = defineWebSocket({
     path: '/ws/stream-90',
     clientMessage: defineShape({
         command: '',
@@ -34713,7 +34710,7 @@ const webSocket90 = defineWebSocket({
     }),
 });
 
-const webSocket91 = defineWebSocket({
+export const webSocket91 = defineWebSocket({
     path: '/ws/stream-91',
     clientMessage: defineShape({
         command: '',
@@ -34725,7 +34722,7 @@ const webSocket91 = defineWebSocket({
     }),
 });
 
-const webSocket92 = defineWebSocket({
+export const webSocket92 = defineWebSocket({
     path: '/ws/stream-92',
     clientMessage: defineShape({
         command: '',
@@ -34737,7 +34734,7 @@ const webSocket92 = defineWebSocket({
     }),
 });
 
-const webSocket93 = defineWebSocket({
+export const webSocket93 = defineWebSocket({
     path: '/ws/stream-93',
     clientMessage: defineShape({
         command: '',
@@ -34749,7 +34746,7 @@ const webSocket93 = defineWebSocket({
     }),
 });
 
-const webSocket94 = defineWebSocket({
+export const webSocket94 = defineWebSocket({
     path: '/ws/stream-94',
     clientMessage: defineShape({
         command: '',
@@ -34761,7 +34758,7 @@ const webSocket94 = defineWebSocket({
     }),
 });
 
-const webSocket95 = defineWebSocket({
+export const webSocket95 = defineWebSocket({
     path: '/ws/stream-95',
     clientMessage: defineShape({
         command: '',
@@ -34773,7 +34770,7 @@ const webSocket95 = defineWebSocket({
     }),
 });
 
-const webSocket96 = defineWebSocket({
+export const webSocket96 = defineWebSocket({
     path: '/ws/stream-96',
     clientMessage: defineShape({
         command: '',
@@ -34785,7 +34782,7 @@ const webSocket96 = defineWebSocket({
     }),
 });
 
-const webSocket97 = defineWebSocket({
+export const webSocket97 = defineWebSocket({
     path: '/ws/stream-97',
     clientMessage: defineShape({
         command: '',
@@ -34797,7 +34794,7 @@ const webSocket97 = defineWebSocket({
     }),
 });
 
-const webSocket98 = defineWebSocket({
+export const webSocket98 = defineWebSocket({
     path: '/ws/stream-98',
     clientMessage: defineShape({
         command: '',
@@ -34809,7 +34806,7 @@ const webSocket98 = defineWebSocket({
     }),
 });
 
-const webSocket99 = defineWebSocket({
+export const webSocket99 = defineWebSocket({
     path: '/ws/stream-99',
     clientMessage: defineShape({
         command: '',
@@ -34821,7 +34818,7 @@ const webSocket99 = defineWebSocket({
     }),
 });
 
-const webSocket100 = defineWebSocket({
+export const webSocket100 = defineWebSocket({
     path: '/ws/stream-100',
     clientMessage: defineShape({
         command: '',
@@ -34833,7 +34830,7 @@ const webSocket100 = defineWebSocket({
     }),
 });
 
-const webSocket101 = defineWebSocket({
+export const webSocket101 = defineWebSocket({
     path: '/ws/stream-101',
     clientMessage: defineShape({
         command: '',
@@ -34845,7 +34842,7 @@ const webSocket101 = defineWebSocket({
     }),
 });
 
-const webSocket102 = defineWebSocket({
+export const webSocket102 = defineWebSocket({
     path: '/ws/stream-102',
     clientMessage: defineShape({
         command: '',
@@ -34857,7 +34854,7 @@ const webSocket102 = defineWebSocket({
     }),
 });
 
-const webSocket103 = defineWebSocket({
+export const webSocket103 = defineWebSocket({
     path: '/ws/stream-103',
     clientMessage: defineShape({
         command: '',
@@ -34869,7 +34866,7 @@ const webSocket103 = defineWebSocket({
     }),
 });
 
-const webSocket104 = defineWebSocket({
+export const webSocket104 = defineWebSocket({
     path: '/ws/stream-104',
     clientMessage: defineShape({
         command: '',
@@ -34881,7 +34878,7 @@ const webSocket104 = defineWebSocket({
     }),
 });
 
-const webSocket105 = defineWebSocket({
+export const webSocket105 = defineWebSocket({
     path: '/ws/stream-105',
     clientMessage: defineShape({
         command: '',
@@ -34893,7 +34890,7 @@ const webSocket105 = defineWebSocket({
     }),
 });
 
-const webSocket106 = defineWebSocket({
+export const webSocket106 = defineWebSocket({
     path: '/ws/stream-106',
     clientMessage: defineShape({
         command: '',
@@ -34905,7 +34902,7 @@ const webSocket106 = defineWebSocket({
     }),
 });
 
-const webSocket107 = defineWebSocket({
+export const webSocket107 = defineWebSocket({
     path: '/ws/stream-107',
     clientMessage: defineShape({
         command: '',
@@ -34917,7 +34914,7 @@ const webSocket107 = defineWebSocket({
     }),
 });
 
-const webSocket108 = defineWebSocket({
+export const webSocket108 = defineWebSocket({
     path: '/ws/stream-108',
     clientMessage: defineShape({
         command: '',
@@ -34929,7 +34926,7 @@ const webSocket108 = defineWebSocket({
     }),
 });
 
-const webSocket109 = defineWebSocket({
+export const webSocket109 = defineWebSocket({
     path: '/ws/stream-109',
     clientMessage: defineShape({
         command: '',
@@ -34941,7 +34938,7 @@ const webSocket109 = defineWebSocket({
     }),
 });
 
-const webSocket110 = defineWebSocket({
+export const webSocket110 = defineWebSocket({
     path: '/ws/stream-110',
     clientMessage: defineShape({
         command: '',
@@ -34953,7 +34950,7 @@ const webSocket110 = defineWebSocket({
     }),
 });
 
-const webSocket111 = defineWebSocket({
+export const webSocket111 = defineWebSocket({
     path: '/ws/stream-111',
     clientMessage: defineShape({
         command: '',
@@ -34965,7 +34962,7 @@ const webSocket111 = defineWebSocket({
     }),
 });
 
-const webSocket112 = defineWebSocket({
+export const webSocket112 = defineWebSocket({
     path: '/ws/stream-112',
     clientMessage: defineShape({
         command: '',
@@ -34977,7 +34974,7 @@ const webSocket112 = defineWebSocket({
     }),
 });
 
-const webSocket113 = defineWebSocket({
+export const webSocket113 = defineWebSocket({
     path: '/ws/stream-113',
     clientMessage: defineShape({
         command: '',
@@ -34989,7 +34986,7 @@ const webSocket113 = defineWebSocket({
     }),
 });
 
-const webSocket114 = defineWebSocket({
+export const webSocket114 = defineWebSocket({
     path: '/ws/stream-114',
     clientMessage: defineShape({
         command: '',
@@ -35001,7 +34998,7 @@ const webSocket114 = defineWebSocket({
     }),
 });
 
-const webSocket115 = defineWebSocket({
+export const webSocket115 = defineWebSocket({
     path: '/ws/stream-115',
     clientMessage: defineShape({
         command: '',
@@ -35013,7 +35010,7 @@ const webSocket115 = defineWebSocket({
     }),
 });
 
-const webSocket116 = defineWebSocket({
+export const webSocket116 = defineWebSocket({
     path: '/ws/stream-116',
     clientMessage: defineShape({
         command: '',
@@ -35025,7 +35022,7 @@ const webSocket116 = defineWebSocket({
     }),
 });
 
-const webSocket117 = defineWebSocket({
+export const webSocket117 = defineWebSocket({
     path: '/ws/stream-117',
     clientMessage: defineShape({
         command: '',
@@ -35037,7 +35034,7 @@ const webSocket117 = defineWebSocket({
     }),
 });
 
-const webSocket118 = defineWebSocket({
+export const webSocket118 = defineWebSocket({
     path: '/ws/stream-118',
     clientMessage: defineShape({
         command: '',
@@ -35049,7 +35046,7 @@ const webSocket118 = defineWebSocket({
     }),
 });
 
-const webSocket119 = defineWebSocket({
+export const webSocket119 = defineWebSocket({
     path: '/ws/stream-119',
     clientMessage: defineShape({
         command: '',
@@ -35061,7 +35058,7 @@ const webSocket119 = defineWebSocket({
     }),
 });
 
-const webSocket120 = defineWebSocket({
+export const webSocket120 = defineWebSocket({
     path: '/ws/stream-120',
     clientMessage: defineShape({
         command: '',
@@ -35073,7 +35070,7 @@ const webSocket120 = defineWebSocket({
     }),
 });
 
-const webSocket121 = defineWebSocket({
+export const webSocket121 = defineWebSocket({
     path: '/ws/stream-121',
     clientMessage: defineShape({
         command: '',
@@ -35085,7 +35082,7 @@ const webSocket121 = defineWebSocket({
     }),
 });
 
-const webSocket122 = defineWebSocket({
+export const webSocket122 = defineWebSocket({
     path: '/ws/stream-122',
     clientMessage: defineShape({
         command: '',
@@ -35097,7 +35094,7 @@ const webSocket122 = defineWebSocket({
     }),
 });
 
-const webSocket123 = defineWebSocket({
+export const webSocket123 = defineWebSocket({
     path: '/ws/stream-123',
     clientMessage: defineShape({
         command: '',
@@ -35109,7 +35106,7 @@ const webSocket123 = defineWebSocket({
     }),
 });
 
-const webSocket124 = defineWebSocket({
+export const webSocket124 = defineWebSocket({
     path: '/ws/stream-124',
     clientMessage: defineShape({
         command: '',
@@ -35121,7 +35118,7 @@ const webSocket124 = defineWebSocket({
     }),
 });
 
-const webSocket125 = defineWebSocket({
+export const webSocket125 = defineWebSocket({
     path: '/ws/stream-125',
     clientMessage: defineShape({
         command: '',
@@ -35133,7 +35130,7 @@ const webSocket125 = defineWebSocket({
     }),
 });
 
-const webSocket126 = defineWebSocket({
+export const webSocket126 = defineWebSocket({
     path: '/ws/stream-126',
     clientMessage: defineShape({
         command: '',
@@ -35145,7 +35142,7 @@ const webSocket126 = defineWebSocket({
     }),
 });
 
-const webSocket127 = defineWebSocket({
+export const webSocket127 = defineWebSocket({
     path: '/ws/stream-127',
     clientMessage: defineShape({
         command: '',
@@ -35157,7 +35154,7 @@ const webSocket127 = defineWebSocket({
     }),
 });
 
-const webSocket128 = defineWebSocket({
+export const webSocket128 = defineWebSocket({
     path: '/ws/stream-128',
     clientMessage: defineShape({
         command: '',
@@ -35169,7 +35166,7 @@ const webSocket128 = defineWebSocket({
     }),
 });
 
-const webSocket129 = defineWebSocket({
+export const webSocket129 = defineWebSocket({
     path: '/ws/stream-129',
     clientMessage: defineShape({
         command: '',
@@ -35181,7 +35178,7 @@ const webSocket129 = defineWebSocket({
     }),
 });
 
-const webSocket130 = defineWebSocket({
+export const webSocket130 = defineWebSocket({
     path: '/ws/stream-130',
     clientMessage: defineShape({
         command: '',
@@ -35193,7 +35190,7 @@ const webSocket130 = defineWebSocket({
     }),
 });
 
-const webSocket131 = defineWebSocket({
+export const webSocket131 = defineWebSocket({
     path: '/ws/stream-131',
     clientMessage: defineShape({
         command: '',
@@ -35205,7 +35202,7 @@ const webSocket131 = defineWebSocket({
     }),
 });
 
-const webSocket132 = defineWebSocket({
+export const webSocket132 = defineWebSocket({
     path: '/ws/stream-132',
     clientMessage: defineShape({
         command: '',
@@ -35217,7 +35214,7 @@ const webSocket132 = defineWebSocket({
     }),
 });
 
-const webSocket133 = defineWebSocket({
+export const webSocket133 = defineWebSocket({
     path: '/ws/stream-133',
     clientMessage: defineShape({
         command: '',
@@ -35229,7 +35226,7 @@ const webSocket133 = defineWebSocket({
     }),
 });
 
-const webSocket134 = defineWebSocket({
+export const webSocket134 = defineWebSocket({
     path: '/ws/stream-134',
     clientMessage: defineShape({
         command: '',
@@ -35241,7 +35238,7 @@ const webSocket134 = defineWebSocket({
     }),
 });
 
-const webSocket135 = defineWebSocket({
+export const webSocket135 = defineWebSocket({
     path: '/ws/stream-135',
     clientMessage: defineShape({
         command: '',
@@ -35253,7 +35250,7 @@ const webSocket135 = defineWebSocket({
     }),
 });
 
-const webSocket136 = defineWebSocket({
+export const webSocket136 = defineWebSocket({
     path: '/ws/stream-136',
     clientMessage: defineShape({
         command: '',
@@ -35265,7 +35262,7 @@ const webSocket136 = defineWebSocket({
     }),
 });
 
-const webSocket137 = defineWebSocket({
+export const webSocket137 = defineWebSocket({
     path: '/ws/stream-137',
     clientMessage: defineShape({
         command: '',
@@ -35277,7 +35274,7 @@ const webSocket137 = defineWebSocket({
     }),
 });
 
-const webSocket138 = defineWebSocket({
+export const webSocket138 = defineWebSocket({
     path: '/ws/stream-138',
     clientMessage: defineShape({
         command: '',
@@ -35289,7 +35286,7 @@ const webSocket138 = defineWebSocket({
     }),
 });
 
-const webSocket139 = defineWebSocket({
+export const webSocket139 = defineWebSocket({
     path: '/ws/stream-139',
     clientMessage: defineShape({
         command: '',
@@ -35301,7 +35298,7 @@ const webSocket139 = defineWebSocket({
     }),
 });
 
-const webSocket140 = defineWebSocket({
+export const webSocket140 = defineWebSocket({
     path: '/ws/stream-140',
     clientMessage: defineShape({
         command: '',
@@ -35313,7 +35310,7 @@ const webSocket140 = defineWebSocket({
     }),
 });
 
-const webSocket141 = defineWebSocket({
+export const webSocket141 = defineWebSocket({
     path: '/ws/stream-141',
     clientMessage: defineShape({
         command: '',
@@ -35325,7 +35322,7 @@ const webSocket141 = defineWebSocket({
     }),
 });
 
-const webSocket142 = defineWebSocket({
+export const webSocket142 = defineWebSocket({
     path: '/ws/stream-142',
     clientMessage: defineShape({
         command: '',
@@ -35337,7 +35334,7 @@ const webSocket142 = defineWebSocket({
     }),
 });
 
-const webSocket143 = defineWebSocket({
+export const webSocket143 = defineWebSocket({
     path: '/ws/stream-143',
     clientMessage: defineShape({
         command: '',
@@ -35349,7 +35346,7 @@ const webSocket143 = defineWebSocket({
     }),
 });
 
-const webSocket144 = defineWebSocket({
+export const webSocket144 = defineWebSocket({
     path: '/ws/stream-144',
     clientMessage: defineShape({
         command: '',
@@ -35361,7 +35358,7 @@ const webSocket144 = defineWebSocket({
     }),
 });
 
-const webSocket145 = defineWebSocket({
+export const webSocket145 = defineWebSocket({
     path: '/ws/stream-145',
     clientMessage: defineShape({
         command: '',
@@ -35373,7 +35370,7 @@ const webSocket145 = defineWebSocket({
     }),
 });
 
-const webSocket146 = defineWebSocket({
+export const webSocket146 = defineWebSocket({
     path: '/ws/stream-146',
     clientMessage: defineShape({
         command: '',
@@ -35385,7 +35382,7 @@ const webSocket146 = defineWebSocket({
     }),
 });
 
-const webSocket147 = defineWebSocket({
+export const webSocket147 = defineWebSocket({
     path: '/ws/stream-147',
     clientMessage: defineShape({
         command: '',
@@ -35397,7 +35394,7 @@ const webSocket147 = defineWebSocket({
     }),
 });
 
-const webSocket148 = defineWebSocket({
+export const webSocket148 = defineWebSocket({
     path: '/ws/stream-148',
     clientMessage: defineShape({
         command: '',
@@ -35409,7 +35406,7 @@ const webSocket148 = defineWebSocket({
     }),
 });
 
-const webSocket149 = defineWebSocket({
+export const webSocket149 = defineWebSocket({
     path: '/ws/stream-149',
     clientMessage: defineShape({
         command: '',
@@ -35421,7 +35418,7 @@ const webSocket149 = defineWebSocket({
     }),
 });
 
-const webSocket150 = defineWebSocket({
+export const webSocket150 = defineWebSocket({
     path: '/ws/stream-150',
     clientMessage: defineShape({
         command: '',
@@ -35433,7 +35430,7 @@ const webSocket150 = defineWebSocket({
     }),
 });
 
-const webSocket151 = defineWebSocket({
+export const webSocket151 = defineWebSocket({
     path: '/ws/stream-151',
     clientMessage: defineShape({
         command: '',
@@ -35445,7 +35442,7 @@ const webSocket151 = defineWebSocket({
     }),
 });
 
-const webSocket152 = defineWebSocket({
+export const webSocket152 = defineWebSocket({
     path: '/ws/stream-152',
     clientMessage: defineShape({
         command: '',
@@ -35457,7 +35454,7 @@ const webSocket152 = defineWebSocket({
     }),
 });
 
-const webSocket153 = defineWebSocket({
+export const webSocket153 = defineWebSocket({
     path: '/ws/stream-153',
     clientMessage: defineShape({
         command: '',
@@ -35469,7 +35466,7 @@ const webSocket153 = defineWebSocket({
     }),
 });
 
-const webSocket154 = defineWebSocket({
+export const webSocket154 = defineWebSocket({
     path: '/ws/stream-154',
     clientMessage: defineShape({
         command: '',
@@ -35481,7 +35478,7 @@ const webSocket154 = defineWebSocket({
     }),
 });
 
-const webSocket155 = defineWebSocket({
+export const webSocket155 = defineWebSocket({
     path: '/ws/stream-155',
     clientMessage: defineShape({
         command: '',
@@ -35493,7 +35490,7 @@ const webSocket155 = defineWebSocket({
     }),
 });
 
-const webSocket156 = defineWebSocket({
+export const webSocket156 = defineWebSocket({
     path: '/ws/stream-156',
     clientMessage: defineShape({
         command: '',
@@ -35505,7 +35502,7 @@ const webSocket156 = defineWebSocket({
     }),
 });
 
-const webSocket157 = defineWebSocket({
+export const webSocket157 = defineWebSocket({
     path: '/ws/stream-157',
     clientMessage: defineShape({
         command: '',
@@ -35517,7 +35514,7 @@ const webSocket157 = defineWebSocket({
     }),
 });
 
-const webSocket158 = defineWebSocket({
+export const webSocket158 = defineWebSocket({
     path: '/ws/stream-158',
     clientMessage: defineShape({
         command: '',
@@ -35529,7 +35526,7 @@ const webSocket158 = defineWebSocket({
     }),
 });
 
-const webSocket159 = defineWebSocket({
+export const webSocket159 = defineWebSocket({
     path: '/ws/stream-159',
     clientMessage: defineShape({
         command: '',
@@ -35541,7 +35538,7 @@ const webSocket159 = defineWebSocket({
     }),
 });
 
-const webSocket160 = defineWebSocket({
+export const webSocket160 = defineWebSocket({
     path: '/ws/stream-160',
     clientMessage: defineShape({
         command: '',
@@ -35553,7 +35550,7 @@ const webSocket160 = defineWebSocket({
     }),
 });
 
-const webSocket161 = defineWebSocket({
+export const webSocket161 = defineWebSocket({
     path: '/ws/stream-161',
     clientMessage: defineShape({
         command: '',
@@ -35565,7 +35562,7 @@ const webSocket161 = defineWebSocket({
     }),
 });
 
-const webSocket162 = defineWebSocket({
+export const webSocket162 = defineWebSocket({
     path: '/ws/stream-162',
     clientMessage: defineShape({
         command: '',
@@ -35577,7 +35574,7 @@ const webSocket162 = defineWebSocket({
     }),
 });
 
-const webSocket163 = defineWebSocket({
+export const webSocket163 = defineWebSocket({
     path: '/ws/stream-163',
     clientMessage: defineShape({
         command: '',
@@ -35589,7 +35586,7 @@ const webSocket163 = defineWebSocket({
     }),
 });
 
-const webSocket164 = defineWebSocket({
+export const webSocket164 = defineWebSocket({
     path: '/ws/stream-164',
     clientMessage: defineShape({
         command: '',
@@ -35601,7 +35598,7 @@ const webSocket164 = defineWebSocket({
     }),
 });
 
-const webSocket165 = defineWebSocket({
+export const webSocket165 = defineWebSocket({
     path: '/ws/stream-165',
     clientMessage: defineShape({
         command: '',
@@ -35613,7 +35610,7 @@ const webSocket165 = defineWebSocket({
     }),
 });
 
-const webSocket166 = defineWebSocket({
+export const webSocket166 = defineWebSocket({
     path: '/ws/stream-166',
     clientMessage: defineShape({
         command: '',
@@ -35625,7 +35622,7 @@ const webSocket166 = defineWebSocket({
     }),
 });
 
-const webSocket167 = defineWebSocket({
+export const webSocket167 = defineWebSocket({
     path: '/ws/stream-167',
     clientMessage: defineShape({
         command: '',
@@ -35637,7 +35634,7 @@ const webSocket167 = defineWebSocket({
     }),
 });
 
-const webSocket168 = defineWebSocket({
+export const webSocket168 = defineWebSocket({
     path: '/ws/stream-168',
     clientMessage: defineShape({
         command: '',
@@ -35649,7 +35646,7 @@ const webSocket168 = defineWebSocket({
     }),
 });
 
-const webSocket169 = defineWebSocket({
+export const webSocket169 = defineWebSocket({
     path: '/ws/stream-169',
     clientMessage: defineShape({
         command: '',
@@ -35661,7 +35658,7 @@ const webSocket169 = defineWebSocket({
     }),
 });
 
-const webSocket170 = defineWebSocket({
+export const webSocket170 = defineWebSocket({
     path: '/ws/stream-170',
     clientMessage: defineShape({
         command: '',
@@ -35673,7 +35670,7 @@ const webSocket170 = defineWebSocket({
     }),
 });
 
-const webSocket171 = defineWebSocket({
+export const webSocket171 = defineWebSocket({
     path: '/ws/stream-171',
     clientMessage: defineShape({
         command: '',
@@ -35685,7 +35682,7 @@ const webSocket171 = defineWebSocket({
     }),
 });
 
-const webSocket172 = defineWebSocket({
+export const webSocket172 = defineWebSocket({
     path: '/ws/stream-172',
     clientMessage: defineShape({
         command: '',
@@ -35697,7 +35694,7 @@ const webSocket172 = defineWebSocket({
     }),
 });
 
-const webSocket173 = defineWebSocket({
+export const webSocket173 = defineWebSocket({
     path: '/ws/stream-173',
     clientMessage: defineShape({
         command: '',
@@ -35709,7 +35706,7 @@ const webSocket173 = defineWebSocket({
     }),
 });
 
-const webSocket174 = defineWebSocket({
+export const webSocket174 = defineWebSocket({
     path: '/ws/stream-174',
     clientMessage: defineShape({
         command: '',
@@ -35721,7 +35718,7 @@ const webSocket174 = defineWebSocket({
     }),
 });
 
-const webSocket175 = defineWebSocket({
+export const webSocket175 = defineWebSocket({
     path: '/ws/stream-175',
     clientMessage: defineShape({
         command: '',
@@ -35733,7 +35730,7 @@ const webSocket175 = defineWebSocket({
     }),
 });
 
-const webSocket176 = defineWebSocket({
+export const webSocket176 = defineWebSocket({
     path: '/ws/stream-176',
     clientMessage: defineShape({
         command: '',
@@ -35745,7 +35742,7 @@ const webSocket176 = defineWebSocket({
     }),
 });
 
-const webSocket177 = defineWebSocket({
+export const webSocket177 = defineWebSocket({
     path: '/ws/stream-177',
     clientMessage: defineShape({
         command: '',
@@ -35757,7 +35754,7 @@ const webSocket177 = defineWebSocket({
     }),
 });
 
-const webSocket178 = defineWebSocket({
+export const webSocket178 = defineWebSocket({
     path: '/ws/stream-178',
     clientMessage: defineShape({
         command: '',
@@ -35769,7 +35766,7 @@ const webSocket178 = defineWebSocket({
     }),
 });
 
-const webSocket179 = defineWebSocket({
+export const webSocket179 = defineWebSocket({
     path: '/ws/stream-179',
     clientMessage: defineShape({
         command: '',
@@ -35781,7 +35778,7 @@ const webSocket179 = defineWebSocket({
     }),
 });
 
-const webSocket180 = defineWebSocket({
+export const webSocket180 = defineWebSocket({
     path: '/ws/stream-180',
     clientMessage: defineShape({
         command: '',
@@ -35793,7 +35790,7 @@ const webSocket180 = defineWebSocket({
     }),
 });
 
-const webSocket181 = defineWebSocket({
+export const webSocket181 = defineWebSocket({
     path: '/ws/stream-181',
     clientMessage: defineShape({
         command: '',
@@ -35805,7 +35802,7 @@ const webSocket181 = defineWebSocket({
     }),
 });
 
-const webSocket182 = defineWebSocket({
+export const webSocket182 = defineWebSocket({
     path: '/ws/stream-182',
     clientMessage: defineShape({
         command: '',
@@ -35817,7 +35814,7 @@ const webSocket182 = defineWebSocket({
     }),
 });
 
-const webSocket183 = defineWebSocket({
+export const webSocket183 = defineWebSocket({
     path: '/ws/stream-183',
     clientMessage: defineShape({
         command: '',
@@ -35829,7 +35826,7 @@ const webSocket183 = defineWebSocket({
     }),
 });
 
-const webSocket184 = defineWebSocket({
+export const webSocket184 = defineWebSocket({
     path: '/ws/stream-184',
     clientMessage: defineShape({
         command: '',
@@ -35841,7 +35838,7 @@ const webSocket184 = defineWebSocket({
     }),
 });
 
-const webSocket185 = defineWebSocket({
+export const webSocket185 = defineWebSocket({
     path: '/ws/stream-185',
     clientMessage: defineShape({
         command: '',
@@ -35853,7 +35850,7 @@ const webSocket185 = defineWebSocket({
     }),
 });
 
-const webSocket186 = defineWebSocket({
+export const webSocket186 = defineWebSocket({
     path: '/ws/stream-186',
     clientMessage: defineShape({
         command: '',
@@ -35865,7 +35862,7 @@ const webSocket186 = defineWebSocket({
     }),
 });
 
-const webSocket187 = defineWebSocket({
+export const webSocket187 = defineWebSocket({
     path: '/ws/stream-187',
     clientMessage: defineShape({
         command: '',
@@ -35877,7 +35874,7 @@ const webSocket187 = defineWebSocket({
     }),
 });
 
-const webSocket188 = defineWebSocket({
+export const webSocket188 = defineWebSocket({
     path: '/ws/stream-188',
     clientMessage: defineShape({
         command: '',
@@ -35889,7 +35886,7 @@ const webSocket188 = defineWebSocket({
     }),
 });
 
-const webSocket189 = defineWebSocket({
+export const webSocket189 = defineWebSocket({
     path: '/ws/stream-189',
     clientMessage: defineShape({
         command: '',
@@ -35901,7 +35898,7 @@ const webSocket189 = defineWebSocket({
     }),
 });
 
-const webSocket190 = defineWebSocket({
+export const webSocket190 = defineWebSocket({
     path: '/ws/stream-190',
     clientMessage: defineShape({
         command: '',
@@ -35913,7 +35910,7 @@ const webSocket190 = defineWebSocket({
     }),
 });
 
-const webSocket191 = defineWebSocket({
+export const webSocket191 = defineWebSocket({
     path: '/ws/stream-191',
     clientMessage: defineShape({
         command: '',
@@ -35925,7 +35922,7 @@ const webSocket191 = defineWebSocket({
     }),
 });
 
-const webSocket192 = defineWebSocket({
+export const webSocket192 = defineWebSocket({
     path: '/ws/stream-192',
     clientMessage: defineShape({
         command: '',
@@ -35937,7 +35934,7 @@ const webSocket192 = defineWebSocket({
     }),
 });
 
-const webSocket193 = defineWebSocket({
+export const webSocket193 = defineWebSocket({
     path: '/ws/stream-193',
     clientMessage: defineShape({
         command: '',
@@ -35949,7 +35946,7 @@ const webSocket193 = defineWebSocket({
     }),
 });
 
-const webSocket194 = defineWebSocket({
+export const webSocket194 = defineWebSocket({
     path: '/ws/stream-194',
     clientMessage: defineShape({
         command: '',
@@ -35961,7 +35958,7 @@ const webSocket194 = defineWebSocket({
     }),
 });
 
-const webSocket195 = defineWebSocket({
+export const webSocket195 = defineWebSocket({
     path: '/ws/stream-195',
     clientMessage: defineShape({
         command: '',
@@ -35973,7 +35970,7 @@ const webSocket195 = defineWebSocket({
     }),
 });
 
-const webSocket196 = defineWebSocket({
+export const webSocket196 = defineWebSocket({
     path: '/ws/stream-196',
     clientMessage: defineShape({
         command: '',
@@ -35985,7 +35982,7 @@ const webSocket196 = defineWebSocket({
     }),
 });
 
-const webSocket197 = defineWebSocket({
+export const webSocket197 = defineWebSocket({
     path: '/ws/stream-197',
     clientMessage: defineShape({
         command: '',
@@ -35997,7 +35994,7 @@ const webSocket197 = defineWebSocket({
     }),
 });
 
-const webSocket198 = defineWebSocket({
+export const webSocket198 = defineWebSocket({
     path: '/ws/stream-198',
     clientMessage: defineShape({
         command: '',
@@ -36009,7 +36006,7 @@ const webSocket198 = defineWebSocket({
     }),
 });
 
-const webSocket199 = defineWebSocket({
+export const webSocket199 = defineWebSocket({
     path: '/ws/stream-199',
     clientMessage: defineShape({
         command: '',
@@ -36021,7 +36018,7 @@ const webSocket199 = defineWebSocket({
     }),
 });
 
-const webSocket200 = defineWebSocket({
+export const webSocket200 = defineWebSocket({
     path: '/ws/stream-200',
     clientMessage: defineShape({
         command: '',
@@ -36033,7 +36030,7 @@ const webSocket200 = defineWebSocket({
     }),
 });
 
-const webSocket201 = defineWebSocket({
+export const webSocket201 = defineWebSocket({
     path: '/ws/stream-201',
     clientMessage: defineShape({
         command: '',
@@ -36045,7 +36042,7 @@ const webSocket201 = defineWebSocket({
     }),
 });
 
-const webSocket202 = defineWebSocket({
+export const webSocket202 = defineWebSocket({
     path: '/ws/stream-202',
     clientMessage: defineShape({
         command: '',
@@ -36057,7 +36054,7 @@ const webSocket202 = defineWebSocket({
     }),
 });
 
-const webSocket203 = defineWebSocket({
+export const webSocket203 = defineWebSocket({
     path: '/ws/stream-203',
     clientMessage: defineShape({
         command: '',
@@ -36069,7 +36066,7 @@ const webSocket203 = defineWebSocket({
     }),
 });
 
-const webSocket204 = defineWebSocket({
+export const webSocket204 = defineWebSocket({
     path: '/ws/stream-204',
     clientMessage: defineShape({
         command: '',
@@ -36081,7 +36078,7 @@ const webSocket204 = defineWebSocket({
     }),
 });
 
-const webSocket205 = defineWebSocket({
+export const webSocket205 = defineWebSocket({
     path: '/ws/stream-205',
     clientMessage: defineShape({
         command: '',
@@ -36093,7 +36090,7 @@ const webSocket205 = defineWebSocket({
     }),
 });
 
-const webSocket206 = defineWebSocket({
+export const webSocket206 = defineWebSocket({
     path: '/ws/stream-206',
     clientMessage: defineShape({
         command: '',
@@ -36105,7 +36102,7 @@ const webSocket206 = defineWebSocket({
     }),
 });
 
-const webSocket207 = defineWebSocket({
+export const webSocket207 = defineWebSocket({
     path: '/ws/stream-207',
     clientMessage: defineShape({
         command: '',
@@ -36117,7 +36114,7 @@ const webSocket207 = defineWebSocket({
     }),
 });
 
-const webSocket208 = defineWebSocket({
+export const webSocket208 = defineWebSocket({
     path: '/ws/stream-208',
     clientMessage: defineShape({
         command: '',
@@ -36129,7 +36126,7 @@ const webSocket208 = defineWebSocket({
     }),
 });
 
-const webSocket209 = defineWebSocket({
+export const webSocket209 = defineWebSocket({
     path: '/ws/stream-209',
     clientMessage: defineShape({
         command: '',
@@ -36141,7 +36138,7 @@ const webSocket209 = defineWebSocket({
     }),
 });
 
-const webSocket210 = defineWebSocket({
+export const webSocket210 = defineWebSocket({
     path: '/ws/stream-210',
     clientMessage: defineShape({
         command: '',
@@ -36153,7 +36150,7 @@ const webSocket210 = defineWebSocket({
     }),
 });
 
-const webSocket211 = defineWebSocket({
+export const webSocket211 = defineWebSocket({
     path: '/ws/stream-211',
     clientMessage: defineShape({
         command: '',
@@ -36165,7 +36162,7 @@ const webSocket211 = defineWebSocket({
     }),
 });
 
-const webSocket212 = defineWebSocket({
+export const webSocket212 = defineWebSocket({
     path: '/ws/stream-212',
     clientMessage: defineShape({
         command: '',
@@ -36177,7 +36174,7 @@ const webSocket212 = defineWebSocket({
     }),
 });
 
-const webSocket213 = defineWebSocket({
+export const webSocket213 = defineWebSocket({
     path: '/ws/stream-213',
     clientMessage: defineShape({
         command: '',
@@ -36189,7 +36186,7 @@ const webSocket213 = defineWebSocket({
     }),
 });
 
-const webSocket214 = defineWebSocket({
+export const webSocket214 = defineWebSocket({
     path: '/ws/stream-214',
     clientMessage: defineShape({
         command: '',
@@ -36201,7 +36198,7 @@ const webSocket214 = defineWebSocket({
     }),
 });
 
-const webSocket215 = defineWebSocket({
+export const webSocket215 = defineWebSocket({
     path: '/ws/stream-215',
     clientMessage: defineShape({
         command: '',
@@ -36213,7 +36210,7 @@ const webSocket215 = defineWebSocket({
     }),
 });
 
-const webSocket216 = defineWebSocket({
+export const webSocket216 = defineWebSocket({
     path: '/ws/stream-216',
     clientMessage: defineShape({
         command: '',
@@ -36225,7 +36222,7 @@ const webSocket216 = defineWebSocket({
     }),
 });
 
-const webSocket217 = defineWebSocket({
+export const webSocket217 = defineWebSocket({
     path: '/ws/stream-217',
     clientMessage: defineShape({
         command: '',
@@ -36237,7 +36234,7 @@ const webSocket217 = defineWebSocket({
     }),
 });
 
-const webSocket218 = defineWebSocket({
+export const webSocket218 = defineWebSocket({
     path: '/ws/stream-218',
     clientMessage: defineShape({
         command: '',
@@ -36249,7 +36246,7 @@ const webSocket218 = defineWebSocket({
     }),
 });
 
-const webSocket219 = defineWebSocket({
+export const webSocket219 = defineWebSocket({
     path: '/ws/stream-219',
     clientMessage: defineShape({
         command: '',
@@ -36261,7 +36258,7 @@ const webSocket219 = defineWebSocket({
     }),
 });
 
-const webSocket220 = defineWebSocket({
+export const webSocket220 = defineWebSocket({
     path: '/ws/stream-220',
     clientMessage: defineShape({
         command: '',
@@ -36273,7 +36270,7 @@ const webSocket220 = defineWebSocket({
     }),
 });
 
-const webSocket221 = defineWebSocket({
+export const webSocket221 = defineWebSocket({
     path: '/ws/stream-221',
     clientMessage: defineShape({
         command: '',
@@ -36285,7 +36282,7 @@ const webSocket221 = defineWebSocket({
     }),
 });
 
-const webSocket222 = defineWebSocket({
+export const webSocket222 = defineWebSocket({
     path: '/ws/stream-222',
     clientMessage: defineShape({
         command: '',
@@ -36297,7 +36294,7 @@ const webSocket222 = defineWebSocket({
     }),
 });
 
-const webSocket223 = defineWebSocket({
+export const webSocket223 = defineWebSocket({
     path: '/ws/stream-223',
     clientMessage: defineShape({
         command: '',
@@ -36309,7 +36306,7 @@ const webSocket223 = defineWebSocket({
     }),
 });
 
-const webSocket224 = defineWebSocket({
+export const webSocket224 = defineWebSocket({
     path: '/ws/stream-224',
     clientMessage: defineShape({
         command: '',
@@ -36321,7 +36318,7 @@ const webSocket224 = defineWebSocket({
     }),
 });
 
-const webSocket225 = defineWebSocket({
+export const webSocket225 = defineWebSocket({
     path: '/ws/stream-225',
     clientMessage: defineShape({
         command: '',
@@ -36333,7 +36330,7 @@ const webSocket225 = defineWebSocket({
     }),
 });
 
-const webSocket226 = defineWebSocket({
+export const webSocket226 = defineWebSocket({
     path: '/ws/stream-226',
     clientMessage: defineShape({
         command: '',
@@ -36345,7 +36342,7 @@ const webSocket226 = defineWebSocket({
     }),
 });
 
-const webSocket227 = defineWebSocket({
+export const webSocket227 = defineWebSocket({
     path: '/ws/stream-227',
     clientMessage: defineShape({
         command: '',
@@ -36357,7 +36354,7 @@ const webSocket227 = defineWebSocket({
     }),
 });
 
-const webSocket228 = defineWebSocket({
+export const webSocket228 = defineWebSocket({
     path: '/ws/stream-228',
     clientMessage: defineShape({
         command: '',
@@ -36369,7 +36366,7 @@ const webSocket228 = defineWebSocket({
     }),
 });
 
-const webSocket229 = defineWebSocket({
+export const webSocket229 = defineWebSocket({
     path: '/ws/stream-229',
     clientMessage: defineShape({
         command: '',
@@ -36381,7 +36378,7 @@ const webSocket229 = defineWebSocket({
     }),
 });
 
-const webSocket230 = defineWebSocket({
+export const webSocket230 = defineWebSocket({
     path: '/ws/stream-230',
     clientMessage: defineShape({
         command: '',
@@ -36393,7 +36390,7 @@ const webSocket230 = defineWebSocket({
     }),
 });
 
-const webSocket231 = defineWebSocket({
+export const webSocket231 = defineWebSocket({
     path: '/ws/stream-231',
     clientMessage: defineShape({
         command: '',
@@ -36405,7 +36402,7 @@ const webSocket231 = defineWebSocket({
     }),
 });
 
-const webSocket232 = defineWebSocket({
+export const webSocket232 = defineWebSocket({
     path: '/ws/stream-232',
     clientMessage: defineShape({
         command: '',
@@ -36417,7 +36414,7 @@ const webSocket232 = defineWebSocket({
     }),
 });
 
-const webSocket233 = defineWebSocket({
+export const webSocket233 = defineWebSocket({
     path: '/ws/stream-233',
     clientMessage: defineShape({
         command: '',
@@ -36429,7 +36426,7 @@ const webSocket233 = defineWebSocket({
     }),
 });
 
-const webSocket234 = defineWebSocket({
+export const webSocket234 = defineWebSocket({
     path: '/ws/stream-234',
     clientMessage: defineShape({
         command: '',
@@ -36441,7 +36438,7 @@ const webSocket234 = defineWebSocket({
     }),
 });
 
-const webSocket235 = defineWebSocket({
+export const webSocket235 = defineWebSocket({
     path: '/ws/stream-235',
     clientMessage: defineShape({
         command: '',
@@ -36453,7 +36450,7 @@ const webSocket235 = defineWebSocket({
     }),
 });
 
-const webSocket236 = defineWebSocket({
+export const webSocket236 = defineWebSocket({
     path: '/ws/stream-236',
     clientMessage: defineShape({
         command: '',
@@ -36465,7 +36462,7 @@ const webSocket236 = defineWebSocket({
     }),
 });
 
-const webSocket237 = defineWebSocket({
+export const webSocket237 = defineWebSocket({
     path: '/ws/stream-237',
     clientMessage: defineShape({
         command: '',
@@ -36477,7 +36474,7 @@ const webSocket237 = defineWebSocket({
     }),
 });
 
-const webSocket238 = defineWebSocket({
+export const webSocket238 = defineWebSocket({
     path: '/ws/stream-238',
     clientMessage: defineShape({
         command: '',
@@ -36489,7 +36486,7 @@ const webSocket238 = defineWebSocket({
     }),
 });
 
-const webSocket239 = defineWebSocket({
+export const webSocket239 = defineWebSocket({
     path: '/ws/stream-239',
     clientMessage: defineShape({
         command: '',
@@ -36501,7 +36498,7 @@ const webSocket239 = defineWebSocket({
     }),
 });
 
-const webSocket240 = defineWebSocket({
+export const webSocket240 = defineWebSocket({
     path: '/ws/stream-240',
     clientMessage: defineShape({
         command: '',
@@ -36513,7 +36510,7 @@ const webSocket240 = defineWebSocket({
     }),
 });
 
-const webSocket241 = defineWebSocket({
+export const webSocket241 = defineWebSocket({
     path: '/ws/stream-241',
     clientMessage: defineShape({
         command: '',
@@ -36525,7 +36522,7 @@ const webSocket241 = defineWebSocket({
     }),
 });
 
-const webSocket242 = defineWebSocket({
+export const webSocket242 = defineWebSocket({
     path: '/ws/stream-242',
     clientMessage: defineShape({
         command: '',
@@ -36537,7 +36534,7 @@ const webSocket242 = defineWebSocket({
     }),
 });
 
-const webSocket243 = defineWebSocket({
+export const webSocket243 = defineWebSocket({
     path: '/ws/stream-243',
     clientMessage: defineShape({
         command: '',
@@ -36549,7 +36546,7 @@ const webSocket243 = defineWebSocket({
     }),
 });
 
-const webSocket244 = defineWebSocket({
+export const webSocket244 = defineWebSocket({
     path: '/ws/stream-244',
     clientMessage: defineShape({
         command: '',
@@ -36561,7 +36558,7 @@ const webSocket244 = defineWebSocket({
     }),
 });
 
-const webSocket245 = defineWebSocket({
+export const webSocket245 = defineWebSocket({
     path: '/ws/stream-245',
     clientMessage: defineShape({
         command: '',
@@ -36573,7 +36570,7 @@ const webSocket245 = defineWebSocket({
     }),
 });
 
-const webSocket246 = defineWebSocket({
+export const webSocket246 = defineWebSocket({
     path: '/ws/stream-246',
     clientMessage: defineShape({
         command: '',
@@ -36585,7 +36582,7 @@ const webSocket246 = defineWebSocket({
     }),
 });
 
-const webSocket247 = defineWebSocket({
+export const webSocket247 = defineWebSocket({
     path: '/ws/stream-247',
     clientMessage: defineShape({
         command: '',
@@ -36597,7 +36594,7 @@ const webSocket247 = defineWebSocket({
     }),
 });
 
-const webSocket248 = defineWebSocket({
+export const webSocket248 = defineWebSocket({
     path: '/ws/stream-248',
     clientMessage: defineShape({
         command: '',
@@ -36609,7 +36606,7 @@ const webSocket248 = defineWebSocket({
     }),
 });
 
-const webSocket249 = defineWebSocket({
+export const webSocket249 = defineWebSocket({
     path: '/ws/stream-249',
     clientMessage: defineShape({
         command: '',
@@ -36621,7 +36618,7 @@ const webSocket249 = defineWebSocket({
     }),
 });
 
-const webSocket250 = defineWebSocket({
+export const webSocket250 = defineWebSocket({
     path: '/ws/stream-250',
     clientMessage: defineShape({
         command: '',
@@ -36633,7 +36630,7 @@ const webSocket250 = defineWebSocket({
     }),
 });
 
-const webSocket251 = defineWebSocket({
+export const webSocket251 = defineWebSocket({
     path: '/ws/stream-251',
     clientMessage: defineShape({
         command: '',
@@ -36645,7 +36642,7 @@ const webSocket251 = defineWebSocket({
     }),
 });
 
-const webSocket252 = defineWebSocket({
+export const webSocket252 = defineWebSocket({
     path: '/ws/stream-252',
     clientMessage: defineShape({
         command: '',
@@ -36657,7 +36654,7 @@ const webSocket252 = defineWebSocket({
     }),
 });
 
-const webSocket253 = defineWebSocket({
+export const webSocket253 = defineWebSocket({
     path: '/ws/stream-253',
     clientMessage: defineShape({
         command: '',
@@ -36669,7 +36666,7 @@ const webSocket253 = defineWebSocket({
     }),
 });
 
-const webSocket254 = defineWebSocket({
+export const webSocket254 = defineWebSocket({
     path: '/ws/stream-254',
     clientMessage: defineShape({
         command: '',
@@ -36681,7 +36678,7 @@ const webSocket254 = defineWebSocket({
     }),
 });
 
-const webSocket255 = defineWebSocket({
+export const webSocket255 = defineWebSocket({
     path: '/ws/stream-255',
     clientMessage: defineShape({
         command: '',
@@ -36693,7 +36690,7 @@ const webSocket255 = defineWebSocket({
     }),
 });
 
-const webSocket256 = defineWebSocket({
+export const webSocket256 = defineWebSocket({
     path: '/ws/stream-256',
     clientMessage: defineShape({
         command: '',
@@ -36705,7 +36702,7 @@ const webSocket256 = defineWebSocket({
     }),
 });
 
-const webSocket257 = defineWebSocket({
+export const webSocket257 = defineWebSocket({
     path: '/ws/stream-257',
     clientMessage: defineShape({
         command: '',
@@ -36717,7 +36714,7 @@ const webSocket257 = defineWebSocket({
     }),
 });
 
-const webSocket258 = defineWebSocket({
+export const webSocket258 = defineWebSocket({
     path: '/ws/stream-258',
     clientMessage: defineShape({
         command: '',
@@ -36729,7 +36726,7 @@ const webSocket258 = defineWebSocket({
     }),
 });
 
-const webSocket259 = defineWebSocket({
+export const webSocket259 = defineWebSocket({
     path: '/ws/stream-259',
     clientMessage: defineShape({
         command: '',
@@ -36741,7 +36738,7 @@ const webSocket259 = defineWebSocket({
     }),
 });
 
-const webSocket260 = defineWebSocket({
+export const webSocket260 = defineWebSocket({
     path: '/ws/stream-260',
     clientMessage: defineShape({
         command: '',
@@ -36753,7 +36750,7 @@ const webSocket260 = defineWebSocket({
     }),
 });
 
-const webSocket261 = defineWebSocket({
+export const webSocket261 = defineWebSocket({
     path: '/ws/stream-261',
     clientMessage: defineShape({
         command: '',
@@ -36765,7 +36762,7 @@ const webSocket261 = defineWebSocket({
     }),
 });
 
-const webSocket262 = defineWebSocket({
+export const webSocket262 = defineWebSocket({
     path: '/ws/stream-262',
     clientMessage: defineShape({
         command: '',
@@ -36777,7 +36774,7 @@ const webSocket262 = defineWebSocket({
     }),
 });
 
-const webSocket263 = defineWebSocket({
+export const webSocket263 = defineWebSocket({
     path: '/ws/stream-263',
     clientMessage: defineShape({
         command: '',
@@ -36789,7 +36786,7 @@ const webSocket263 = defineWebSocket({
     }),
 });
 
-const webSocket264 = defineWebSocket({
+export const webSocket264 = defineWebSocket({
     path: '/ws/stream-264',
     clientMessage: defineShape({
         command: '',
@@ -36801,7 +36798,7 @@ const webSocket264 = defineWebSocket({
     }),
 });
 
-const webSocket265 = defineWebSocket({
+export const webSocket265 = defineWebSocket({
     path: '/ws/stream-265',
     clientMessage: defineShape({
         command: '',
@@ -36813,7 +36810,7 @@ const webSocket265 = defineWebSocket({
     }),
 });
 
-const webSocket266 = defineWebSocket({
+export const webSocket266 = defineWebSocket({
     path: '/ws/stream-266',
     clientMessage: defineShape({
         command: '',
@@ -36825,7 +36822,7 @@ const webSocket266 = defineWebSocket({
     }),
 });
 
-const webSocket267 = defineWebSocket({
+export const webSocket267 = defineWebSocket({
     path: '/ws/stream-267',
     clientMessage: defineShape({
         command: '',
@@ -36837,7 +36834,7 @@ const webSocket267 = defineWebSocket({
     }),
 });
 
-const webSocket268 = defineWebSocket({
+export const webSocket268 = defineWebSocket({
     path: '/ws/stream-268',
     clientMessage: defineShape({
         command: '',
@@ -36849,7 +36846,7 @@ const webSocket268 = defineWebSocket({
     }),
 });
 
-const webSocket269 = defineWebSocket({
+export const webSocket269 = defineWebSocket({
     path: '/ws/stream-269',
     clientMessage: defineShape({
         command: '',
@@ -36861,7 +36858,7 @@ const webSocket269 = defineWebSocket({
     }),
 });
 
-const webSocket270 = defineWebSocket({
+export const webSocket270 = defineWebSocket({
     path: '/ws/stream-270',
     clientMessage: defineShape({
         command: '',
@@ -36873,7 +36870,7 @@ const webSocket270 = defineWebSocket({
     }),
 });
 
-const webSocket271 = defineWebSocket({
+export const webSocket271 = defineWebSocket({
     path: '/ws/stream-271',
     clientMessage: defineShape({
         command: '',
@@ -36885,7 +36882,7 @@ const webSocket271 = defineWebSocket({
     }),
 });
 
-const webSocket272 = defineWebSocket({
+export const webSocket272 = defineWebSocket({
     path: '/ws/stream-272',
     clientMessage: defineShape({
         command: '',
@@ -36897,7 +36894,7 @@ const webSocket272 = defineWebSocket({
     }),
 });
 
-const webSocket273 = defineWebSocket({
+export const webSocket273 = defineWebSocket({
     path: '/ws/stream-273',
     clientMessage: defineShape({
         command: '',
@@ -36909,7 +36906,7 @@ const webSocket273 = defineWebSocket({
     }),
 });
 
-const webSocket274 = defineWebSocket({
+export const webSocket274 = defineWebSocket({
     path: '/ws/stream-274',
     clientMessage: defineShape({
         command: '',
@@ -36921,7 +36918,7 @@ const webSocket274 = defineWebSocket({
     }),
 });
 
-const webSocket275 = defineWebSocket({
+export const webSocket275 = defineWebSocket({
     path: '/ws/stream-275',
     clientMessage: defineShape({
         command: '',
@@ -36933,7 +36930,7 @@ const webSocket275 = defineWebSocket({
     }),
 });
 
-const webSocket276 = defineWebSocket({
+export const webSocket276 = defineWebSocket({
     path: '/ws/stream-276',
     clientMessage: defineShape({
         command: '',
@@ -36945,7 +36942,7 @@ const webSocket276 = defineWebSocket({
     }),
 });
 
-const webSocket277 = defineWebSocket({
+export const webSocket277 = defineWebSocket({
     path: '/ws/stream-277',
     clientMessage: defineShape({
         command: '',
@@ -36957,7 +36954,7 @@ const webSocket277 = defineWebSocket({
     }),
 });
 
-const webSocket278 = defineWebSocket({
+export const webSocket278 = defineWebSocket({
     path: '/ws/stream-278',
     clientMessage: defineShape({
         command: '',
@@ -36969,7 +36966,7 @@ const webSocket278 = defineWebSocket({
     }),
 });
 
-const webSocket279 = defineWebSocket({
+export const webSocket279 = defineWebSocket({
     path: '/ws/stream-279',
     clientMessage: defineShape({
         command: '',
@@ -36981,7 +36978,7 @@ const webSocket279 = defineWebSocket({
     }),
 });
 
-const webSocket280 = defineWebSocket({
+export const webSocket280 = defineWebSocket({
     path: '/ws/stream-280',
     clientMessage: defineShape({
         command: '',
@@ -36993,7 +36990,7 @@ const webSocket280 = defineWebSocket({
     }),
 });
 
-const webSocket281 = defineWebSocket({
+export const webSocket281 = defineWebSocket({
     path: '/ws/stream-281',
     clientMessage: defineShape({
         command: '',
@@ -37005,7 +37002,7 @@ const webSocket281 = defineWebSocket({
     }),
 });
 
-const webSocket282 = defineWebSocket({
+export const webSocket282 = defineWebSocket({
     path: '/ws/stream-282',
     clientMessage: defineShape({
         command: '',
@@ -37017,7 +37014,7 @@ const webSocket282 = defineWebSocket({
     }),
 });
 
-const webSocket283 = defineWebSocket({
+export const webSocket283 = defineWebSocket({
     path: '/ws/stream-283',
     clientMessage: defineShape({
         command: '',
@@ -37029,7 +37026,7 @@ const webSocket283 = defineWebSocket({
     }),
 });
 
-const webSocket284 = defineWebSocket({
+export const webSocket284 = defineWebSocket({
     path: '/ws/stream-284',
     clientMessage: defineShape({
         command: '',
@@ -37041,7 +37038,7 @@ const webSocket284 = defineWebSocket({
     }),
 });
 
-const webSocket285 = defineWebSocket({
+export const webSocket285 = defineWebSocket({
     path: '/ws/stream-285',
     clientMessage: defineShape({
         command: '',
@@ -37053,7 +37050,7 @@ const webSocket285 = defineWebSocket({
     }),
 });
 
-const webSocket286 = defineWebSocket({
+export const webSocket286 = defineWebSocket({
     path: '/ws/stream-286',
     clientMessage: defineShape({
         command: '',
@@ -37065,7 +37062,7 @@ const webSocket286 = defineWebSocket({
     }),
 });
 
-const webSocket287 = defineWebSocket({
+export const webSocket287 = defineWebSocket({
     path: '/ws/stream-287',
     clientMessage: defineShape({
         command: '',
@@ -37077,7 +37074,7 @@ const webSocket287 = defineWebSocket({
     }),
 });
 
-const webSocket288 = defineWebSocket({
+export const webSocket288 = defineWebSocket({
     path: '/ws/stream-288',
     clientMessage: defineShape({
         command: '',
@@ -37089,7 +37086,7 @@ const webSocket288 = defineWebSocket({
     }),
 });
 
-const webSocket289 = defineWebSocket({
+export const webSocket289 = defineWebSocket({
     path: '/ws/stream-289',
     clientMessage: defineShape({
         command: '',
@@ -37101,7 +37098,7 @@ const webSocket289 = defineWebSocket({
     }),
 });
 
-const webSocket290 = defineWebSocket({
+export const webSocket290 = defineWebSocket({
     path: '/ws/stream-290',
     clientMessage: defineShape({
         command: '',
@@ -37113,7 +37110,7 @@ const webSocket290 = defineWebSocket({
     }),
 });
 
-const webSocket291 = defineWebSocket({
+export const webSocket291 = defineWebSocket({
     path: '/ws/stream-291',
     clientMessage: defineShape({
         command: '',
@@ -37125,7 +37122,7 @@ const webSocket291 = defineWebSocket({
     }),
 });
 
-const webSocket292 = defineWebSocket({
+export const webSocket292 = defineWebSocket({
     path: '/ws/stream-292',
     clientMessage: defineShape({
         command: '',
@@ -37137,7 +37134,7 @@ const webSocket292 = defineWebSocket({
     }),
 });
 
-const webSocket293 = defineWebSocket({
+export const webSocket293 = defineWebSocket({
     path: '/ws/stream-293',
     clientMessage: defineShape({
         command: '',
@@ -37149,7 +37146,7 @@ const webSocket293 = defineWebSocket({
     }),
 });
 
-const webSocket294 = defineWebSocket({
+export const webSocket294 = defineWebSocket({
     path: '/ws/stream-294',
     clientMessage: defineShape({
         command: '',
@@ -37161,7 +37158,7 @@ const webSocket294 = defineWebSocket({
     }),
 });
 
-const webSocket295 = defineWebSocket({
+export const webSocket295 = defineWebSocket({
     path: '/ws/stream-295',
     clientMessage: defineShape({
         command: '',
@@ -37173,7 +37170,7 @@ const webSocket295 = defineWebSocket({
     }),
 });
 
-const webSocket296 = defineWebSocket({
+export const webSocket296 = defineWebSocket({
     path: '/ws/stream-296',
     clientMessage: defineShape({
         command: '',
@@ -37185,7 +37182,7 @@ const webSocket296 = defineWebSocket({
     }),
 });
 
-const webSocket297 = defineWebSocket({
+export const webSocket297 = defineWebSocket({
     path: '/ws/stream-297',
     clientMessage: defineShape({
         command: '',
@@ -37197,7 +37194,7 @@ const webSocket297 = defineWebSocket({
     }),
 });
 
-const webSocket298 = defineWebSocket({
+export const webSocket298 = defineWebSocket({
     path: '/ws/stream-298',
     clientMessage: defineShape({
         command: '',
@@ -37209,7 +37206,7 @@ const webSocket298 = defineWebSocket({
     }),
 });
 
-const webSocket299 = defineWebSocket({
+export const webSocket299 = defineWebSocket({
     path: '/ws/stream-299',
     clientMessage: defineShape({
         command: '',
@@ -37221,7 +37218,7 @@ const webSocket299 = defineWebSocket({
     }),
 });
 
-const webSocket300 = defineWebSocket({
+export const webSocket300 = defineWebSocket({
     path: '/ws/stream-300',
     clientMessage: defineShape({
         command: '',
@@ -37233,7 +37230,7 @@ const webSocket300 = defineWebSocket({
     }),
 });
 
-const webSocket301 = defineWebSocket({
+export const webSocket301 = defineWebSocket({
     path: '/ws/stream-301',
     clientMessage: defineShape({
         command: '',
@@ -37245,7 +37242,7 @@ const webSocket301 = defineWebSocket({
     }),
 });
 
-const webSocket302 = defineWebSocket({
+export const webSocket302 = defineWebSocket({
     path: '/ws/stream-302',
     clientMessage: defineShape({
         command: '',
@@ -37257,7 +37254,7 @@ const webSocket302 = defineWebSocket({
     }),
 });
 
-const webSocket303 = defineWebSocket({
+export const webSocket303 = defineWebSocket({
     path: '/ws/stream-303',
     clientMessage: defineShape({
         command: '',
@@ -37269,7 +37266,7 @@ const webSocket303 = defineWebSocket({
     }),
 });
 
-const webSocket304 = defineWebSocket({
+export const webSocket304 = defineWebSocket({
     path: '/ws/stream-304',
     clientMessage: defineShape({
         command: '',
@@ -37281,7 +37278,7 @@ const webSocket304 = defineWebSocket({
     }),
 });
 
-const webSocket305 = defineWebSocket({
+export const webSocket305 = defineWebSocket({
     path: '/ws/stream-305',
     clientMessage: defineShape({
         command: '',
@@ -37293,7 +37290,7 @@ const webSocket305 = defineWebSocket({
     }),
 });
 
-const webSocket306 = defineWebSocket({
+export const webSocket306 = defineWebSocket({
     path: '/ws/stream-306',
     clientMessage: defineShape({
         command: '',
@@ -37305,7 +37302,7 @@ const webSocket306 = defineWebSocket({
     }),
 });
 
-const webSocket307 = defineWebSocket({
+export const webSocket307 = defineWebSocket({
     path: '/ws/stream-307',
     clientMessage: defineShape({
         command: '',
@@ -37317,7 +37314,7 @@ const webSocket307 = defineWebSocket({
     }),
 });
 
-const webSocket308 = defineWebSocket({
+export const webSocket308 = defineWebSocket({
     path: '/ws/stream-308',
     clientMessage: defineShape({
         command: '',
@@ -37329,7 +37326,7 @@ const webSocket308 = defineWebSocket({
     }),
 });
 
-const webSocket309 = defineWebSocket({
+export const webSocket309 = defineWebSocket({
     path: '/ws/stream-309',
     clientMessage: defineShape({
         command: '',
@@ -37341,7 +37338,7 @@ const webSocket309 = defineWebSocket({
     }),
 });
 
-const webSocket310 = defineWebSocket({
+export const webSocket310 = defineWebSocket({
     path: '/ws/stream-310',
     clientMessage: defineShape({
         command: '',
@@ -37353,7 +37350,7 @@ const webSocket310 = defineWebSocket({
     }),
 });
 
-const webSocket311 = defineWebSocket({
+export const webSocket311 = defineWebSocket({
     path: '/ws/stream-311',
     clientMessage: defineShape({
         command: '',
@@ -37365,7 +37362,7 @@ const webSocket311 = defineWebSocket({
     }),
 });
 
-const webSocket312 = defineWebSocket({
+export const webSocket312 = defineWebSocket({
     path: '/ws/stream-312',
     clientMessage: defineShape({
         command: '',
@@ -37377,7 +37374,7 @@ const webSocket312 = defineWebSocket({
     }),
 });
 
-const webSocket313 = defineWebSocket({
+export const webSocket313 = defineWebSocket({
     path: '/ws/stream-313',
     clientMessage: defineShape({
         command: '',
@@ -37389,7 +37386,7 @@ const webSocket313 = defineWebSocket({
     }),
 });
 
-const webSocket314 = defineWebSocket({
+export const webSocket314 = defineWebSocket({
     path: '/ws/stream-314',
     clientMessage: defineShape({
         command: '',
@@ -37401,7 +37398,7 @@ const webSocket314 = defineWebSocket({
     }),
 });
 
-const webSocket315 = defineWebSocket({
+export const webSocket315 = defineWebSocket({
     path: '/ws/stream-315',
     clientMessage: defineShape({
         command: '',
@@ -37413,7 +37410,7 @@ const webSocket315 = defineWebSocket({
     }),
 });
 
-const webSocket316 = defineWebSocket({
+export const webSocket316 = defineWebSocket({
     path: '/ws/stream-316',
     clientMessage: defineShape({
         command: '',
@@ -37425,7 +37422,7 @@ const webSocket316 = defineWebSocket({
     }),
 });
 
-const webSocket317 = defineWebSocket({
+export const webSocket317 = defineWebSocket({
     path: '/ws/stream-317',
     clientMessage: defineShape({
         command: '',
@@ -37437,7 +37434,7 @@ const webSocket317 = defineWebSocket({
     }),
 });
 
-const webSocket318 = defineWebSocket({
+export const webSocket318 = defineWebSocket({
     path: '/ws/stream-318',
     clientMessage: defineShape({
         command: '',
@@ -37449,7 +37446,7 @@ const webSocket318 = defineWebSocket({
     }),
 });
 
-const webSocket319 = defineWebSocket({
+export const webSocket319 = defineWebSocket({
     path: '/ws/stream-319',
     clientMessage: defineShape({
         command: '',
@@ -37461,7 +37458,7 @@ const webSocket319 = defineWebSocket({
     }),
 });
 
-const webSocket320 = defineWebSocket({
+export const webSocket320 = defineWebSocket({
     path: '/ws/stream-320',
     clientMessage: defineShape({
         command: '',
@@ -37473,7 +37470,7 @@ const webSocket320 = defineWebSocket({
     }),
 });
 
-const webSocket321 = defineWebSocket({
+export const webSocket321 = defineWebSocket({
     path: '/ws/stream-321',
     clientMessage: defineShape({
         command: '',
@@ -37485,7 +37482,7 @@ const webSocket321 = defineWebSocket({
     }),
 });
 
-const webSocket322 = defineWebSocket({
+export const webSocket322 = defineWebSocket({
     path: '/ws/stream-322',
     clientMessage: defineShape({
         command: '',
@@ -37497,7 +37494,7 @@ const webSocket322 = defineWebSocket({
     }),
 });
 
-const webSocket323 = defineWebSocket({
+export const webSocket323 = defineWebSocket({
     path: '/ws/stream-323',
     clientMessage: defineShape({
         command: '',
@@ -37509,7 +37506,7 @@ const webSocket323 = defineWebSocket({
     }),
 });
 
-const webSocket324 = defineWebSocket({
+export const webSocket324 = defineWebSocket({
     path: '/ws/stream-324',
     clientMessage: defineShape({
         command: '',
@@ -37521,7 +37518,7 @@ const webSocket324 = defineWebSocket({
     }),
 });
 
-const webSocket325 = defineWebSocket({
+export const webSocket325 = defineWebSocket({
     path: '/ws/stream-325',
     clientMessage: defineShape({
         command: '',
@@ -37533,7 +37530,7 @@ const webSocket325 = defineWebSocket({
     }),
 });
 
-const webSocket326 = defineWebSocket({
+export const webSocket326 = defineWebSocket({
     path: '/ws/stream-326',
     clientMessage: defineShape({
         command: '',
@@ -37545,7 +37542,7 @@ const webSocket326 = defineWebSocket({
     }),
 });
 
-const webSocket327 = defineWebSocket({
+export const webSocket327 = defineWebSocket({
     path: '/ws/stream-327',
     clientMessage: defineShape({
         command: '',
@@ -37557,7 +37554,7 @@ const webSocket327 = defineWebSocket({
     }),
 });
 
-const webSocket328 = defineWebSocket({
+export const webSocket328 = defineWebSocket({
     path: '/ws/stream-328',
     clientMessage: defineShape({
         command: '',
@@ -37569,7 +37566,7 @@ const webSocket328 = defineWebSocket({
     }),
 });
 
-const webSocket329 = defineWebSocket({
+export const webSocket329 = defineWebSocket({
     path: '/ws/stream-329',
     clientMessage: defineShape({
         command: '',
@@ -37581,7 +37578,7 @@ const webSocket329 = defineWebSocket({
     }),
 });
 
-const webSocket330 = defineWebSocket({
+export const webSocket330 = defineWebSocket({
     path: '/ws/stream-330',
     clientMessage: defineShape({
         command: '',
@@ -37593,7 +37590,7 @@ const webSocket330 = defineWebSocket({
     }),
 });
 
-const webSocket331 = defineWebSocket({
+export const webSocket331 = defineWebSocket({
     path: '/ws/stream-331',
     clientMessage: defineShape({
         command: '',
@@ -37605,7 +37602,7 @@ const webSocket331 = defineWebSocket({
     }),
 });
 
-const webSocket332 = defineWebSocket({
+export const webSocket332 = defineWebSocket({
     path: '/ws/stream-332',
     clientMessage: defineShape({
         command: '',
@@ -37617,7 +37614,7 @@ const webSocket332 = defineWebSocket({
     }),
 });
 
-const webSocket333 = defineWebSocket({
+export const webSocket333 = defineWebSocket({
     path: '/ws/stream-333',
     clientMessage: defineShape({
         command: '',
@@ -37629,7 +37626,7 @@ const webSocket333 = defineWebSocket({
     }),
 });
 
-const webSocket334 = defineWebSocket({
+export const webSocket334 = defineWebSocket({
     path: '/ws/stream-334',
     clientMessage: defineShape({
         command: '',
@@ -37641,7 +37638,7 @@ const webSocket334 = defineWebSocket({
     }),
 });
 
-const webSocket335 = defineWebSocket({
+export const webSocket335 = defineWebSocket({
     path: '/ws/stream-335',
     clientMessage: defineShape({
         command: '',
@@ -37653,7 +37650,7 @@ const webSocket335 = defineWebSocket({
     }),
 });
 
-const webSocket336 = defineWebSocket({
+export const webSocket336 = defineWebSocket({
     path: '/ws/stream-336',
     clientMessage: defineShape({
         command: '',
@@ -37665,7 +37662,7 @@ const webSocket336 = defineWebSocket({
     }),
 });
 
-const webSocket337 = defineWebSocket({
+export const webSocket337 = defineWebSocket({
     path: '/ws/stream-337',
     clientMessage: defineShape({
         command: '',
@@ -37677,7 +37674,7 @@ const webSocket337 = defineWebSocket({
     }),
 });
 
-const webSocket338 = defineWebSocket({
+export const webSocket338 = defineWebSocket({
     path: '/ws/stream-338',
     clientMessage: defineShape({
         command: '',
@@ -37689,7 +37686,7 @@ const webSocket338 = defineWebSocket({
     }),
 });
 
-const webSocket339 = defineWebSocket({
+export const webSocket339 = defineWebSocket({
     path: '/ws/stream-339',
     clientMessage: defineShape({
         command: '',
@@ -37701,7 +37698,7 @@ const webSocket339 = defineWebSocket({
     }),
 });
 
-const webSocket340 = defineWebSocket({
+export const webSocket340 = defineWebSocket({
     path: '/ws/stream-340',
     clientMessage: defineShape({
         command: '',
@@ -37713,7 +37710,7 @@ const webSocket340 = defineWebSocket({
     }),
 });
 
-const webSocket341 = defineWebSocket({
+export const webSocket341 = defineWebSocket({
     path: '/ws/stream-341',
     clientMessage: defineShape({
         command: '',
@@ -37725,7 +37722,7 @@ const webSocket341 = defineWebSocket({
     }),
 });
 
-const webSocket342 = defineWebSocket({
+export const webSocket342 = defineWebSocket({
     path: '/ws/stream-342',
     clientMessage: defineShape({
         command: '',
@@ -37737,7 +37734,7 @@ const webSocket342 = defineWebSocket({
     }),
 });
 
-const webSocket343 = defineWebSocket({
+export const webSocket343 = defineWebSocket({
     path: '/ws/stream-343',
     clientMessage: defineShape({
         command: '',
@@ -37749,7 +37746,7 @@ const webSocket343 = defineWebSocket({
     }),
 });
 
-const webSocket344 = defineWebSocket({
+export const webSocket344 = defineWebSocket({
     path: '/ws/stream-344',
     clientMessage: defineShape({
         command: '',
@@ -37761,7 +37758,7 @@ const webSocket344 = defineWebSocket({
     }),
 });
 
-const webSocket345 = defineWebSocket({
+export const webSocket345 = defineWebSocket({
     path: '/ws/stream-345',
     clientMessage: defineShape({
         command: '',
@@ -37773,7 +37770,7 @@ const webSocket345 = defineWebSocket({
     }),
 });
 
-const webSocket346 = defineWebSocket({
+export const webSocket346 = defineWebSocket({
     path: '/ws/stream-346',
     clientMessage: defineShape({
         command: '',
@@ -37785,7 +37782,7 @@ const webSocket346 = defineWebSocket({
     }),
 });
 
-const webSocket347 = defineWebSocket({
+export const webSocket347 = defineWebSocket({
     path: '/ws/stream-347',
     clientMessage: defineShape({
         command: '',
@@ -37797,7 +37794,7 @@ const webSocket347 = defineWebSocket({
     }),
 });
 
-const webSocket348 = defineWebSocket({
+export const webSocket348 = defineWebSocket({
     path: '/ws/stream-348',
     clientMessage: defineShape({
         command: '',
@@ -37809,7 +37806,7 @@ const webSocket348 = defineWebSocket({
     }),
 });
 
-const webSocket349 = defineWebSocket({
+export const webSocket349 = defineWebSocket({
     path: '/ws/stream-349',
     clientMessage: defineShape({
         command: '',
@@ -37821,7 +37818,7 @@ const webSocket349 = defineWebSocket({
     }),
 });
 
-const webSocket350 = defineWebSocket({
+export const webSocket350 = defineWebSocket({
     path: '/ws/stream-350',
     clientMessage: defineShape({
         command: '',
@@ -37833,7 +37830,7 @@ const webSocket350 = defineWebSocket({
     }),
 });
 
-const webSocket351 = defineWebSocket({
+export const webSocket351 = defineWebSocket({
     path: '/ws/stream-351',
     clientMessage: defineShape({
         command: '',
@@ -37845,7 +37842,7 @@ const webSocket351 = defineWebSocket({
     }),
 });
 
-const webSocket352 = defineWebSocket({
+export const webSocket352 = defineWebSocket({
     path: '/ws/stream-352',
     clientMessage: defineShape({
         command: '',
@@ -37857,7 +37854,7 @@ const webSocket352 = defineWebSocket({
     }),
 });
 
-const webSocket353 = defineWebSocket({
+export const webSocket353 = defineWebSocket({
     path: '/ws/stream-353',
     clientMessage: defineShape({
         command: '',
@@ -37869,7 +37866,7 @@ const webSocket353 = defineWebSocket({
     }),
 });
 
-const webSocket354 = defineWebSocket({
+export const webSocket354 = defineWebSocket({
     path: '/ws/stream-354',
     clientMessage: defineShape({
         command: '',
@@ -37881,7 +37878,7 @@ const webSocket354 = defineWebSocket({
     }),
 });
 
-const webSocket355 = defineWebSocket({
+export const webSocket355 = defineWebSocket({
     path: '/ws/stream-355',
     clientMessage: defineShape({
         command: '',
@@ -37893,7 +37890,7 @@ const webSocket355 = defineWebSocket({
     }),
 });
 
-const webSocket356 = defineWebSocket({
+export const webSocket356 = defineWebSocket({
     path: '/ws/stream-356',
     clientMessage: defineShape({
         command: '',
@@ -37905,7 +37902,7 @@ const webSocket356 = defineWebSocket({
     }),
 });
 
-const webSocket357 = defineWebSocket({
+export const webSocket357 = defineWebSocket({
     path: '/ws/stream-357',
     clientMessage: defineShape({
         command: '',
@@ -37917,7 +37914,7 @@ const webSocket357 = defineWebSocket({
     }),
 });
 
-const webSocket358 = defineWebSocket({
+export const webSocket358 = defineWebSocket({
     path: '/ws/stream-358',
     clientMessage: defineShape({
         command: '',
@@ -37929,7 +37926,7 @@ const webSocket358 = defineWebSocket({
     }),
 });
 
-const webSocket359 = defineWebSocket({
+export const webSocket359 = defineWebSocket({
     path: '/ws/stream-359',
     clientMessage: defineShape({
         command: '',
@@ -37941,7 +37938,7 @@ const webSocket359 = defineWebSocket({
     }),
 });
 
-const webSocket360 = defineWebSocket({
+export const webSocket360 = defineWebSocket({
     path: '/ws/stream-360',
     clientMessage: defineShape({
         command: '',
@@ -37953,7 +37950,7 @@ const webSocket360 = defineWebSocket({
     }),
 });
 
-const webSocket361 = defineWebSocket({
+export const webSocket361 = defineWebSocket({
     path: '/ws/stream-361',
     clientMessage: defineShape({
         command: '',
@@ -37965,7 +37962,7 @@ const webSocket361 = defineWebSocket({
     }),
 });
 
-const webSocket362 = defineWebSocket({
+export const webSocket362 = defineWebSocket({
     path: '/ws/stream-362',
     clientMessage: defineShape({
         command: '',
@@ -37977,7 +37974,7 @@ const webSocket362 = defineWebSocket({
     }),
 });
 
-const webSocket363 = defineWebSocket({
+export const webSocket363 = defineWebSocket({
     path: '/ws/stream-363',
     clientMessage: defineShape({
         command: '',
@@ -37989,7 +37986,7 @@ const webSocket363 = defineWebSocket({
     }),
 });
 
-const webSocket364 = defineWebSocket({
+export const webSocket364 = defineWebSocket({
     path: '/ws/stream-364',
     clientMessage: defineShape({
         command: '',
@@ -38001,7 +37998,7 @@ const webSocket364 = defineWebSocket({
     }),
 });
 
-const webSocket365 = defineWebSocket({
+export const webSocket365 = defineWebSocket({
     path: '/ws/stream-365',
     clientMessage: defineShape({
         command: '',
@@ -38013,7 +38010,7 @@ const webSocket365 = defineWebSocket({
     }),
 });
 
-const webSocket366 = defineWebSocket({
+export const webSocket366 = defineWebSocket({
     path: '/ws/stream-366',
     clientMessage: defineShape({
         command: '',
@@ -38025,7 +38022,7 @@ const webSocket366 = defineWebSocket({
     }),
 });
 
-const webSocket367 = defineWebSocket({
+export const webSocket367 = defineWebSocket({
     path: '/ws/stream-367',
     clientMessage: defineShape({
         command: '',
@@ -38037,7 +38034,7 @@ const webSocket367 = defineWebSocket({
     }),
 });
 
-const webSocket368 = defineWebSocket({
+export const webSocket368 = defineWebSocket({
     path: '/ws/stream-368',
     clientMessage: defineShape({
         command: '',
@@ -38049,7 +38046,7 @@ const webSocket368 = defineWebSocket({
     }),
 });
 
-const webSocket369 = defineWebSocket({
+export const webSocket369 = defineWebSocket({
     path: '/ws/stream-369',
     clientMessage: defineShape({
         command: '',
@@ -38061,7 +38058,7 @@ const webSocket369 = defineWebSocket({
     }),
 });
 
-const webSocket370 = defineWebSocket({
+export const webSocket370 = defineWebSocket({
     path: '/ws/stream-370',
     clientMessage: defineShape({
         command: '',
@@ -38073,7 +38070,7 @@ const webSocket370 = defineWebSocket({
     }),
 });
 
-const webSocket371 = defineWebSocket({
+export const webSocket371 = defineWebSocket({
     path: '/ws/stream-371',
     clientMessage: defineShape({
         command: '',
@@ -38085,7 +38082,7 @@ const webSocket371 = defineWebSocket({
     }),
 });
 
-const webSocket372 = defineWebSocket({
+export const webSocket372 = defineWebSocket({
     path: '/ws/stream-372',
     clientMessage: defineShape({
         command: '',
@@ -38097,7 +38094,7 @@ const webSocket372 = defineWebSocket({
     }),
 });
 
-const webSocket373 = defineWebSocket({
+export const webSocket373 = defineWebSocket({
     path: '/ws/stream-373',
     clientMessage: defineShape({
         command: '',
@@ -38109,7 +38106,7 @@ const webSocket373 = defineWebSocket({
     }),
 });
 
-const webSocket374 = defineWebSocket({
+export const webSocket374 = defineWebSocket({
     path: '/ws/stream-374',
     clientMessage: defineShape({
         command: '',
@@ -38121,7 +38118,7 @@ const webSocket374 = defineWebSocket({
     }),
 });
 
-const webSocket375 = defineWebSocket({
+export const webSocket375 = defineWebSocket({
     path: '/ws/stream-375',
     clientMessage: defineShape({
         command: '',
@@ -38133,7 +38130,7 @@ const webSocket375 = defineWebSocket({
     }),
 });
 
-const webSocket376 = defineWebSocket({
+export const webSocket376 = defineWebSocket({
     path: '/ws/stream-376',
     clientMessage: defineShape({
         command: '',
@@ -38145,7 +38142,7 @@ const webSocket376 = defineWebSocket({
     }),
 });
 
-const webSocket377 = defineWebSocket({
+export const webSocket377 = defineWebSocket({
     path: '/ws/stream-377',
     clientMessage: defineShape({
         command: '',
@@ -38157,7 +38154,7 @@ const webSocket377 = defineWebSocket({
     }),
 });
 
-const webSocket378 = defineWebSocket({
+export const webSocket378 = defineWebSocket({
     path: '/ws/stream-378',
     clientMessage: defineShape({
         command: '',
@@ -38169,7 +38166,7 @@ const webSocket378 = defineWebSocket({
     }),
 });
 
-const webSocket379 = defineWebSocket({
+export const webSocket379 = defineWebSocket({
     path: '/ws/stream-379',
     clientMessage: defineShape({
         command: '',
@@ -38181,7 +38178,7 @@ const webSocket379 = defineWebSocket({
     }),
 });
 
-const webSocket380 = defineWebSocket({
+export const webSocket380 = defineWebSocket({
     path: '/ws/stream-380',
     clientMessage: defineShape({
         command: '',
@@ -38193,7 +38190,7 @@ const webSocket380 = defineWebSocket({
     }),
 });
 
-const webSocket381 = defineWebSocket({
+export const webSocket381 = defineWebSocket({
     path: '/ws/stream-381',
     clientMessage: defineShape({
         command: '',
@@ -38205,7 +38202,7 @@ const webSocket381 = defineWebSocket({
     }),
 });
 
-const webSocket382 = defineWebSocket({
+export const webSocket382 = defineWebSocket({
     path: '/ws/stream-382',
     clientMessage: defineShape({
         command: '',
@@ -38217,7 +38214,7 @@ const webSocket382 = defineWebSocket({
     }),
 });
 
-const webSocket383 = defineWebSocket({
+export const webSocket383 = defineWebSocket({
     path: '/ws/stream-383',
     clientMessage: defineShape({
         command: '',
@@ -38229,7 +38226,7 @@ const webSocket383 = defineWebSocket({
     }),
 });
 
-const webSocket384 = defineWebSocket({
+export const webSocket384 = defineWebSocket({
     path: '/ws/stream-384',
     clientMessage: defineShape({
         command: '',
@@ -38241,7 +38238,7 @@ const webSocket384 = defineWebSocket({
     }),
 });
 
-const webSocket385 = defineWebSocket({
+export const webSocket385 = defineWebSocket({
     path: '/ws/stream-385',
     clientMessage: defineShape({
         command: '',
@@ -38253,7 +38250,7 @@ const webSocket385 = defineWebSocket({
     }),
 });
 
-const webSocket386 = defineWebSocket({
+export const webSocket386 = defineWebSocket({
     path: '/ws/stream-386',
     clientMessage: defineShape({
         command: '',
@@ -38265,7 +38262,7 @@ const webSocket386 = defineWebSocket({
     }),
 });
 
-const webSocket387 = defineWebSocket({
+export const webSocket387 = defineWebSocket({
     path: '/ws/stream-387',
     clientMessage: defineShape({
         command: '',
@@ -38277,7 +38274,7 @@ const webSocket387 = defineWebSocket({
     }),
 });
 
-const webSocket388 = defineWebSocket({
+export const webSocket388 = defineWebSocket({
     path: '/ws/stream-388',
     clientMessage: defineShape({
         command: '',
@@ -38289,7 +38286,7 @@ const webSocket388 = defineWebSocket({
     }),
 });
 
-const webSocket389 = defineWebSocket({
+export const webSocket389 = defineWebSocket({
     path: '/ws/stream-389',
     clientMessage: defineShape({
         command: '',
@@ -38301,7 +38298,7 @@ const webSocket389 = defineWebSocket({
     }),
 });
 
-const webSocket390 = defineWebSocket({
+export const webSocket390 = defineWebSocket({
     path: '/ws/stream-390',
     clientMessage: defineShape({
         command: '',
@@ -38313,7 +38310,7 @@ const webSocket390 = defineWebSocket({
     }),
 });
 
-const webSocket391 = defineWebSocket({
+export const webSocket391 = defineWebSocket({
     path: '/ws/stream-391',
     clientMessage: defineShape({
         command: '',
@@ -38325,7 +38322,7 @@ const webSocket391 = defineWebSocket({
     }),
 });
 
-const webSocket392 = defineWebSocket({
+export const webSocket392 = defineWebSocket({
     path: '/ws/stream-392',
     clientMessage: defineShape({
         command: '',
@@ -38337,7 +38334,7 @@ const webSocket392 = defineWebSocket({
     }),
 });
 
-const webSocket393 = defineWebSocket({
+export const webSocket393 = defineWebSocket({
     path: '/ws/stream-393',
     clientMessage: defineShape({
         command: '',
@@ -38349,7 +38346,7 @@ const webSocket393 = defineWebSocket({
     }),
 });
 
-const webSocket394 = defineWebSocket({
+export const webSocket394 = defineWebSocket({
     path: '/ws/stream-394',
     clientMessage: defineShape({
         command: '',
@@ -38361,7 +38358,7 @@ const webSocket394 = defineWebSocket({
     }),
 });
 
-const webSocket395 = defineWebSocket({
+export const webSocket395 = defineWebSocket({
     path: '/ws/stream-395',
     clientMessage: defineShape({
         command: '',
@@ -38373,7 +38370,7 @@ const webSocket395 = defineWebSocket({
     }),
 });
 
-const webSocket396 = defineWebSocket({
+export const webSocket396 = defineWebSocket({
     path: '/ws/stream-396',
     clientMessage: defineShape({
         command: '',
@@ -38385,7 +38382,7 @@ const webSocket396 = defineWebSocket({
     }),
 });
 
-const webSocket397 = defineWebSocket({
+export const webSocket397 = defineWebSocket({
     path: '/ws/stream-397',
     clientMessage: defineShape({
         command: '',
@@ -38397,7 +38394,7 @@ const webSocket397 = defineWebSocket({
     }),
 });
 
-const webSocket398 = defineWebSocket({
+export const webSocket398 = defineWebSocket({
     path: '/ws/stream-398',
     clientMessage: defineShape({
         command: '',
@@ -38409,7 +38406,7 @@ const webSocket398 = defineWebSocket({
     }),
 });
 
-const webSocket399 = defineWebSocket({
+export const webSocket399 = defineWebSocket({
     path: '/ws/stream-399',
     clientMessage: defineShape({
         command: '',
@@ -38422,6 +38419,7 @@ const webSocket399 = defineWebSocket({
 });
 
 export const largeApi = defineApi({
+    name: 'large-api',
     endpoints: [
         endpoint0,
         endpoint1,

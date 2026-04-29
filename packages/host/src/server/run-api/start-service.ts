@@ -1,18 +1,8 @@
-import {check} from '@augment-vir/assert';
-import {awaitedForEach, ensureErrorAndPrependMessage, type SelectFrom} from '@augment-vir/common';
-import {
-    type GenericServiceImplementation,
-    ServiceImplementation,
-} from '@rest-vir/implement-service';
 import {ClusterManager, runInCluster, type WorkerRunner} from 'cluster-vir';
 import fastify, {type FastifyInstance, type FastifyPluginCallback} from 'fastify';
 import {getPortPromise} from 'portfinder';
-import {attachService} from './attach-service.js';
-import {
-    finalizeOptions,
-    type StartServiceOptions,
-    type StartServiceUserOptions,
-} from './start-service-options.js';
+import {attachApi} from './attach-api.js';
+import {finalizeOptions, type RunApiOptions, type RunApiUserOptions} from './run-api-options.js';
 
 /**
  * Output of {@link startService}.
@@ -68,7 +58,7 @@ export type FastifyPlugins = [plugin: FastifyPluginCallback, options?: any][];
  * Starts the given {@link ServiceImplementation} inside of a backend [Fastify
  * server](https://www.npmjs.com/package/fastify).
  *
- * To attach the service endpoint handlers to an existing Fastify server, use {@link attachService}.
+ * To attach the service endpoint handlers to an existing Fastify server, use {@link attachApi}.
  *
  * @category Run Service
  * @category Package : @rest-vir/run-service
@@ -90,7 +80,7 @@ export async function startService(
             }
         >
     >,
-    userOptions: Readonly<StartServiceUserOptions> = {},
+    userOptions: Readonly<RunApiUserOptions> = {},
     fastifyPlugins: Readonly<FastifyPlugins> = [],
 ): Promise<StartServiceOutput> {
     process.on('unhandledRejection', (reason) => {
@@ -185,7 +175,7 @@ async function startServer(
             }
         >
     >,
-    {host, port}: Readonly<Pick<StartServiceOptions, 'host' | 'port'>>,
+    {host, port}: Readonly<Pick<RunApiOptions, 'host' | 'port'>>,
     fastifyPlugins: Readonly<FastifyPlugins>,
 ): Promise<StartServiceOutput> {
     const server = fastify();
@@ -200,7 +190,7 @@ async function startServer(
         },
     );
 
-    await attachService(server, service, {
+    await attachApi(server, service, {
         throwErrorsForExternalHandling: false,
     });
 

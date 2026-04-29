@@ -81,6 +81,7 @@ export function defineApi<
     apiInit: Readonly<ApiInit<EndpointPaths, WebSocketPaths>>,
 ): ApiDefinition<EndpointPaths[number], WebSocketPaths[number]> {
     return {
+        apiName: apiInit.apiName,
         endpoints: apiInit.endpoints
             ? mapRouteByPath(
                   'endpoints',
@@ -116,7 +117,9 @@ export type ApiInit<
         readonly [K in keyof WebSocketPaths]: Readonly<WebSocketDefinition> &
             Readonly<{path: WebSocketPaths[K]}>;
     };
-}>;
+}> & {
+    apiName: string;
+};
 
 /**
  * Output of {@link defineApi}. Path-keyed records of Endpoints and WebSockets, narrowed to the path
@@ -130,6 +133,7 @@ export type ApiDefinition<
     EndpointPaths extends BaseRoutePath = BaseRoutePath,
     WebSocketPaths extends BaseRoutePath = BaseRoutePath,
 > = {
+    apiName: string;
     endpoints: Readonly<Record<EndpointPaths, Readonly<EndpointDefinition>>>;
     webSockets: Readonly<Record<WebSocketPaths, Readonly<WebSocketDefinition>>>;
 };

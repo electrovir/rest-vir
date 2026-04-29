@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {finalizeOptions} from './start-service-options.js';
+import {finalizeOptions} from './run-api-options.js';
 
 describe(finalizeOptions.name, () => {
     itCases(finalizeOptions, [

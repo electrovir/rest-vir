@@ -10,8 +10,8 @@ import {
 import {type IncomingHttpHeaders} from 'node:http';
 import {defineShape, exactShape} from 'object-shape-tester';
 import {
-    type WebSocketImplementation,
     type WebSocketImplementationParams,
+    type WebSocketListenerImplementations,
 } from './implement-websocket.js';
 import {
     type RunningServerInfo,
@@ -67,6 +67,7 @@ type CustomContext = {
 
 /** A defineApi that includes a websocket — exercised by `WebSocketImplementation` consumers. */
 const wsApi = defineApi({
+    apiName: 'ws-api',
     webSockets: [
         noMessagesWebSocket,
         echoWebSocket,
@@ -184,8 +185,10 @@ describe('WebSocketImplementationParams', () => {
 
 describe('WebSocketImplementation', () => {
     it('exposes optional open / message / close callbacks at the NoParam default', () => {
-        assert.tsType<keyof WebSocketImplementation>().equals<'open' | 'message' | 'close'>();
-        assert.tsType<WebSocketImplementation>().matches<{
+        assert
+            .tsType<keyof WebSocketListenerImplementations>()
+            .equals<'open' | 'message' | 'close'>();
+        assert.tsType<WebSocketListenerImplementations>().matches<{
             open?: (params: WebSocketImplementationParams) => unknown;
             message?: (params: WebSocketImplementationParams<NoParam, true>) => unknown;
             close?: (params: WebSocketImplementationParams) => unknown;
@@ -193,7 +196,7 @@ describe('WebSocketImplementation', () => {
     });
 
     it('threads the websocket generic into each callback parameter', () => {
-        type Implementation = WebSocketImplementation<typeof echoWebSocket>;
+        type Implementation = WebSocketListenerImplementations<typeof echoWebSocket>;
 
         type OpenParams = Parameters<NonNullable<Implementation['open']>>[0];
         type MessageParams = Parameters<NonNullable<Implementation['message']>>[0];
@@ -211,7 +214,7 @@ describe('WebSocketImplementation', () => {
     });
 
     it('only attaches a message field to the message callback parameters', () => {
-        type Implementation = WebSocketImplementation<typeof echoWebSocket>;
+        type Implementation = WebSocketListenerImplementations<typeof echoWebSocket>;
 
         type OpenParams = Parameters<NonNullable<Implementation['open']>>[0];
         type MessageParams = Parameters<NonNullable<Implementation['message']>>[0];
@@ -223,7 +226,7 @@ describe('WebSocketImplementation', () => {
     });
 
     it('threads the HostContext generic through every callback parameter', () => {
-        type Implementation = WebSocketImplementation<typeof echoWebSocket, CustomContext>;
+        type Implementation = WebSocketListenerImplementations<typeof echoWebSocket, CustomContext>;
 
         type OpenParams = Parameters<NonNullable<Implementation['open']>>[0];
         type MessageParams = Parameters<NonNullable<Implementation['message']>>[0];
@@ -235,7 +238,7 @@ describe('WebSocketImplementation', () => {
     });
 
     it('narrows the message callback parameter to the websocket clientMessage type', () => {
-        type Implementation = WebSocketImplementation<typeof echoWebSocket>;
+        type Implementation = WebSocketListenerImplementations<typeof echoWebSocket>;
 
         type MessageParams = Parameters<NonNullable<Implementation['message']>>[0];
 
@@ -243,7 +246,7 @@ describe('WebSocketImplementation', () => {
     });
 
     it('returns MaybePromise<void> from each callback', () => {
-        type Implementation = WebSocketImplementation;
+        type Implementation = WebSocketListenerImplementations;
 
         type OpenReturn = ReturnType<NonNullable<Implementation['open']>>;
         type MessageReturn = ReturnType<NonNullable<Implementation['message']>>;
@@ -255,13 +258,19 @@ describe('WebSocketImplementation', () => {
     });
 
     it('accepts an empty object literal (every callback is optional)', () => {
-        const implementation: WebSocketImplementation<typeof echoWebSocket, CustomContext> = {};
+        const implementation: WebSocketListenerImplementations<
+            typeof echoWebSocket,
+            CustomContext
+        > = {};
 
         assert.deepEquals(implementation, {});
     });
 
     it('accepts a partial implementation with just open', () => {
-        const implementation: WebSocketImplementation<typeof echoWebSocket, CustomContext> = {
+        const implementation: WebSocketListenerImplementations<
+            typeof echoWebSocket,
+            CustomContext
+        > = {
             open() {},
         };
 
@@ -273,7 +282,10 @@ describe('WebSocketImplementation', () => {
     });
 
     it('accepts a fully populated implementation with all three callbacks', () => {
-        const implementation: WebSocketImplementation<typeof echoWebSocket, CustomContext> = {
+        const implementation: WebSocketListenerImplementations<
+            typeof echoWebSocket,
+            CustomContext
+        > = {
             open({context}) {
                 assert.tsType(context).equals<CustomContext>();
             },
@@ -292,12 +304,12 @@ describe('WebSocketImplementation', () => {
 
 describe('WebSocketImplementation assignability across api shapes', () => {
     it('a specific implementation widens to the bare WebSocketImplementation type', () => {
-        const specific: WebSocketImplementation<typeof echoWebSocket, CustomContext> = {
+        const specific: WebSocketListenerImplementations<typeof echoWebSocket, CustomContext> = {
             open() {},
         };
-        const widened: WebSocketImplementation = specific;
+        const widened: WebSocketListenerImplementations = specific;
 
-        assert.tsType<typeof widened>().matches<WebSocketImplementation>();
+        assert.tsType<typeof widened>().matches<WebSocketListenerImplementations>();
     });
 
     it('typeof wsApi.webSockets exposes the registered paths', () => {

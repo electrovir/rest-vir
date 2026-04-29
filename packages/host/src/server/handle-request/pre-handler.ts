@@ -1,34 +1,29 @@
-import {assertWrap} from '@augment-vir/assert';
 import {
+    HttpMethod,
+    HttpStatus,
+    combineErrorMessages,
     ensureErrorAndPrependMessage,
     extractErrorMessage,
     getOrSet,
-    HttpStatus,
     stringify,
     wrapInTry,
-    type SelectFrom,
 } from '@augment-vir/common';
+import {extractEndpointMethodDefinition, extractHttpMethod, isFormDataShape} from '@rest-vir/api';
+import {restVirApiNameHeader} from '@rest-vir/client';
+import {type IncomingHttpHeaders} from 'node:http';
+import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
+import {type CreateHostContextParams} from '../../implementation/host-context.js';
+import {type ImplementedApi} from '../../implementation/implement-api.js';
 import {
-    isFormDataShape,
-    matchUrlToService,
-    restVirServiceNameHeader,
-    type EndpointDefinition,
-    type WebSocketDefinition,
-} from '@rest-vir/define-service';
-import {
-    HttpMethod,
-    RestVirHandlerError,
-    type ContextInitParams,
-    type GenericServiceImplementation,
     type RunningServerInfo,
     type ServerRequest,
     type ServerResponse,
-} from '@rest-vir/implement-service';
-import {type IncomingHttpHeaders} from 'node:http';
-import {assertValidShape, checkValidShape} from 'object-shape-tester';
+} from '../../implementation/raw-route-data.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
+import {matchUrlToRoute} from '../util/match-url.js';
 import {handleHandlerOutputWithoutSending, type HandledOutput} from './endpoint-handler.js';
 import {handleCors} from './handle-cors.js';
-import {handleRequestMethod} from './handle-request-method.js';
 import {handleSearchParams} from './handle-search-params.js';
 import {buildHandlerParams} from './handler-params.js';
 
@@ -42,28 +37,17 @@ import {buildHandlerParams} from './handler-params.js';
 export async function preHandler({
     request,
     response,
-    service,
+    api,
     server,
     attachId,
+    serverLogger,
 }: {
     request: ServerRequest;
     response: ServerResponse;
-    service: Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                createContext: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-                logger: true;
-            }
-        >
-    >;
+    api: Readonly<ImplementedApi>;
     server: Readonly<RunningServerInfo>;
     attachId: string;
+    serverLogger: ServerLogger;
 }): Promise<Readonly<HandledOutput>> {
     if (!request.restVirContext) {
         request.restVirContext = {};
@@ -72,9 +56,9 @@ export async function preHandler({
         return {};
     });
 
-    response.header(restVirServiceNameHeader, service.serviceName);
+    response.header(restVirApiNameHeader, api.definition.apiName);
 
-    const pathMatch = matchUrlToService(service, request.originalUrl);
+    const pathMatch = matchUrlToRoute(api.definition, request.originalUrl);
 
     if (!pathMatch) {
         /** Nothing to do. */
@@ -82,11 +66,11 @@ export async function preHandler({
     }
 
     const endpointDefinition = pathMatch.endpointPath
-        ? service.endpoints[pathMatch.endpointPath]
+        ? api.definition.endpoints[pathMatch.endpointPath]
         : undefined;
     const webSocketDefinition =
         request.ws && pathMatch.webSocketPath
-            ? service.webSockets[pathMatch.webSocketPath]
+            ? api.definition.webSockets[pathMatch.webSocketPath]
             : undefined;
 
     const route = endpointDefinition || webSocketDefinition;
@@ -99,18 +83,27 @@ export async function preHandler({
         ? (request.headers['sec-websocket-protocol'] || '').split(', ')
         : [];
 
-    const protocolShapeError = webSocketDefinition?.protocolsShape
-        ? wrapInTry(() =>
-              assertValidShape(protocols, webSocketDefinition.protocolsShape, {
-                  allowExtraKeys: true,
-              }),
-          )
+    const connectProtocol = webSocketDefinition?.connectProtocol;
+
+    const protocolShapeError = connectProtocol
+        ? wrapInTry(() => {
+              protocols.forEach((protocol) => {
+                  assertValidShape(protocol, connectProtocol, {
+                      allowExtraKeys: true,
+                  });
+              });
+          })
         : undefined;
 
     if (protocolShapeError) {
-        service.logger.error(
+        serverLogger.error(
             new RestVirHandlerError(
-                route,
+                {
+                    apiName: api.definition.apiName,
+                    isEndpoint: !!endpointDefinition,
+                    isWebSocket: !!webSocketDefinition,
+                    path: route.path,
+                },
                 extractErrorMessage(
                     ensureErrorAndPrependMessage(
                         protocolShapeError,
@@ -128,33 +121,68 @@ export async function preHandler({
     }
     attachedRestVirContext.protocols = protocols;
 
-    const subHandlerResponse =
-        handleHandlerOutputWithoutSending(
-            await handleCors({
-                request,
-                route,
-            }),
-            response,
-        ) ||
-        handleHandlerOutputWithoutSending(
-            handleRequestMethod({
-                request,
-                route,
-            }),
-            response,
-        );
+    const corsResponse = handleHandlerOutputWithoutSending(
+        await handleCors({
+            request,
+            route,
+        }),
+        response,
+    );
 
-    if (subHandlerResponse) {
-        return subHandlerResponse;
+    if (corsResponse) {
+        return corsResponse;
     }
 
-    const requestData = wrapInTry(() => extractRequestData(request.body, request.headers, route));
+    /**
+     * At this point, if the method is Options, then `handleCors` would've returned something. So
+     * this `method` variable can never be Options.
+     */
+    const method = extractHttpMethod(request.method);
+
+    const endpointMethodDefinition =
+        endpointDefinition && method
+            ? extractEndpointMethodDefinition(endpointDefinition, method)
+            : undefined;
+
+    if (
+        !method ||
+        (endpointDefinition && !endpointMethodDefinition) ||
+        (webSocketDefinition && method != HttpMethod.Get)
+    ) {
+        serverLogger.error(
+            new RestVirHandlerError(
+                {
+                    apiName: api.definition.apiName,
+                    isEndpoint: !!endpointDefinition,
+                    isWebSocket: !!webSocketDefinition,
+                    path: route.path,
+                },
+                `Method '${request.method.toUpperCase()}' rejected: '${request.originalUrl}'`,
+                HttpStatus.MethodNotAllowed,
+            ),
+        );
+        return {
+            statusCode: HttpStatus.MethodNotAllowed,
+        };
+    }
+
+    const requestData = wrapInTry(() =>
+        extractRequestData(request.body, request.headers, endpointMethodDefinition?.requestData),
+    );
 
     if (requestData instanceof Error) {
-        service.logger.error(
+        serverLogger.error(
             new RestVirHandlerError(
-                route,
-                `Rejected request body from '${request.originalUrl}': ${stringify(requestData)}`,
+                {
+                    apiName: api.definition.apiName,
+                    isEndpoint: !!endpointDefinition,
+                    isWebSocket: !!webSocketDefinition,
+                    path: route.path,
+                },
+                combineErrorMessages(
+                    `Rejected request body from '${request.originalUrl}'.`,
+                    requestData,
+                ),
                 HttpStatus.BadRequest,
             ),
         );
@@ -175,7 +203,7 @@ export async function preHandler({
     }
     attachedRestVirContext.searchParams = searchParams.data;
 
-    const contextParams: ContextInitParams = {
+    const contextParams: CreateHostContextParams = {
         ...buildHandlerParams({
             request,
             requestData,
@@ -183,27 +211,32 @@ export async function preHandler({
             server,
         }),
 
-        method: assertWrap.isEnumValue(request.method.toUpperCase(), HttpMethod),
-        service,
+        method,
+        api,
         endpointDefinition,
         webSocketDefinition,
         searchParams: searchParams.data,
     };
 
     try {
-        const contextOutput = await service.createContext?.(contextParams);
+        const contextOutput = await api.implementation.createHostContext?.(contextParams);
 
         if (contextOutput?.reject) {
-            service.logger.error(
+            serverLogger.error(
                 new RestVirHandlerError(
-                    route,
+                    {
+                        apiName: api.definition.apiName,
+                        isEndpoint: !!endpointDefinition,
+                        isWebSocket: !!webSocketDefinition,
+                        path: route.path,
+                    },
                     `Context creation rejected: '${request.originalUrl}'`,
                     contextOutput.reject.statusCode,
                 ),
             );
             return handleHandlerOutputWithoutSending(
                 {
-                    body: contextOutput.reject.responseErrorMessage,
+                    body: contextOutput.reject.responseData,
                     statusCode: contextOutput.reject.statusCode,
                     headers: contextOutput.reject.headers,
                 },
@@ -221,24 +254,9 @@ export async function preHandler({
 function extractRequestData(
     body: unknown,
     headers: IncomingHttpHeaders,
-    route: Readonly<
-        SelectFrom<
-            EndpointDefinition | WebSocketDefinition,
-            {
-                requestDataShape: true;
-                path: true;
-                service: {
-                    serviceName: true;
-                };
-                isEndpoint: true;
-                isWebSocket: true;
-            }
-        >
-    >,
+    requestDataShape: Shape | undefined,
 ): unknown {
-    const dataShape = 'requestDataShape' in route ? route.requestDataShape : undefined;
-
-    if (dataShape == undefined) {
+    if (requestDataShape == undefined) {
         if (body) {
             throw new Error(`Did not expect any request data but received it.`);
         } else {
@@ -246,10 +264,13 @@ function extractRequestData(
         }
     }
 
-    if (isFormDataShape(dataShape) && headers['content-type']?.includes('multipart/form-data')) {
+    if (
+        isFormDataShape(requestDataShape) &&
+        headers['content-type']?.includes('multipart/form-data')
+    ) {
         return body;
     } else if (
-        !checkValidShape(body, dataShape, {
+        !checkValidShape(body, requestDataShape, {
             /** Allow extra keys for forwards / backwards compatibility. */
             allowExtraKeys: true,
         })

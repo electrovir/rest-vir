@@ -1,0 +1,73 @@
+import {log, mapObjectValues, type PartialWithUndefined} from '@augment-vir/common';
+
+/**
+ * A service logger. All internal service logs will go through this and endpoint implementations are
+ * also given the service's logger to use if they wish.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
+export type ServerLogger = {
+    /** The error log is always guaranteed to be passed exactly a single error. */
+    error: (error: Error) => void;
+    /**
+     * The info log maybe receive any number of arguments of any type. Note that
+     * {@link defaultServerLogger} already contains logic to convert these into strings so you may
+     * want to utilize its behavior in your custom logging.
+     */
+    info: (...args: ReadonlyArray<unknown>) => void;
+};
+
+/**
+ * User-definable service logger. Loggers may be set as `undefined` here to silence them.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
+export type UserServerLogger = PartialWithUndefined<ServerLogger>;
+
+/**
+ * The default service logger.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
+export const defaultServerLogger: ServerLogger = {
+    error(error) {
+        log.error(error);
+    },
+    info: log.faint,
+};
+
+/**
+ * Combines a user defined service logger with the default logger, silencing loggers that have been
+ * set to `undefined` by the user.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
+export function createServerLogger(option: UserServerLogger = {}): ServerLogger {
+    return mapObjectValues(defaultServerLogger, (logKey, defaultLogFunction) => {
+        if (logKey in option) {
+            return option[logKey] || silentServerLogger[logKey];
+        } else {
+            return defaultLogFunction;
+        }
+    }) as ServerLogger;
+}
+
+/**
+ * A silent service logger. All logs simply do not get logged or do anything at all.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/implement-service
+ * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ */
+export const silentServerLogger: ServerLogger = {
+    error: () => {},
+    info: () => {},
+};

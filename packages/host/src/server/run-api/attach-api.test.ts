@@ -1,5 +1,5 @@
 import {describe, itCases} from '@augment-vir/test';
-import {extractRunningServerInfo} from './attach-service.js';
+import {extractRunningServerInfo} from './attach-api.js';
 
 describe(extractRunningServerInfo.name, () => {
     itCases(extractRunningServerInfo, [

@@ -1,9 +1,3 @@
-import {assert, waitUntil} from '@augment-vir/assert';
-import {stringify} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {AnyOrigin, defineService} from '@rest-vir/define-service';
-import {implementService} from '@rest-vir/implement-service';
-import {mockServiceImplementation} from '@rest-vir/implement-service/src/implementation/implement-service.mock.js';
 import {testWebSocket, withWebSocketTest} from './test-web-socket.js';
 
 describe(testWebSocket.name, () => {

@@ -1,6 +1,12 @@
 import {type ApiDefinition, type EndpointDefinition, type WebSocketDefinition} from '@rest-vir/api';
-import {type EndpointImplementation, type ImplementedEndpoint} from './implement-endpoint.js';
-import {type WebSocketImplementation} from './implement-websocket.js';
+import {
+    type EndpointMethodImplementations,
+    type ImplementedEndpoint,
+} from './implement-endpoint.js';
+import {
+    type ImplementedWebSocket,
+    type WebSocketListenerImplementations,
+} from './implement-websocket.js';
 
 export function createApiImplementor<HostContext>(this: void) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,11 +18,15 @@ export function createApiImplementor<HostContext>(this: void) {
                 },
             >(
                 endpoint: Readonly<Endpoint>,
-                implementation: Readonly<EndpointImplementation<NoInfer<Endpoint>, HostContext>>,
+                implementation: Readonly<
+                    EndpointMethodImplementations<NoInfer<Endpoint>, HostContext>
+                >,
             ): ImplementedEndpoint<Endpoint['path']> => {
                 return {
-                    path: endpoint.path,
                     implementation,
+                    definition: endpoint,
+                    isEndpoint: true,
+                    isWebSocket: false,
                 };
             },
             implementWebSocket: <
@@ -26,12 +36,14 @@ export function createApiImplementor<HostContext>(this: void) {
             >(
                 webSocket: Readonly<ThisWebSocket>,
                 implementation: Readonly<
-                    WebSocketImplementation<NoInfer<ThisWebSocket>, HostContext>
+                    WebSocketListenerImplementations<NoInfer<ThisWebSocket>, HostContext>
                 >,
-            ) => {
+            ): ImplementedWebSocket<ThisWebSocket['path']> => {
                 return {
-                    path: webSocket.path,
                     implementation,
+                    definition: webSocket,
+                    isEndpoint: false,
+                    isWebSocket: true,
                 };
             },
         };

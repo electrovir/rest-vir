@@ -1,20 +1,6 @@
-import {assert} from '@augment-vir/assert';
-import {ensureErrorClass, extractErrorMessage, stringify} from '@augment-vir/common';
-import {
-    overwriteWebSocketMethods,
-    parseJsonWithUndefined,
-    WebSocketLocation,
-} from '@rest-vir/define-service';
-import {
-    type ImplementedWebSocket,
-    RestVirHandlerError,
-    type RunningServerInfo,
-    type ServerRequest,
-    type WebSocketImplementationParams,
-} from '@rest-vir/implement-service';
 import {assertValidShape} from 'object-shape-tester';
 import {type WebSocket as WsWebSocket} from 'ws';
-import {type RestVirRequestContext} from '../start-service/attach-service.js';
+import {type RestVirRequestContext} from '../run-api/attach-api.js';
 
 /**
  * Handles a WebSocket request.
@@ -94,7 +80,6 @@ export async function handleWebSocketRequest(
         webSocket.on('message', async (rawMessage) => {
             let message: unknown;
             try {
-                // eslint-disable-next-line @typescript-eslint/no-base-to-string
                 const stringRawMessage = String(rawMessage);
 
                 message = parseJsonWithUndefined(stringRawMessage);

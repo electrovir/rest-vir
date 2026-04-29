@@ -1,11 +1,3 @@
-import {describe, it} from '@augment-vir/test';
-import {AnyOrigin} from '@rest-vir/define-service';
-import {
-    defaultServiceLogger,
-    type ImplementedEndpoint,
-    type ServerRequest,
-    type ServerResponse,
-} from '@rest-vir/implement-service';
 import {preHandler} from './pre-handler.js';
 
 describe(preHandler.name, () => {

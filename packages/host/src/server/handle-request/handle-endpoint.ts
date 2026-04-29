@@ -1,17 +1,13 @@
 import {assert, assertWrap} from '@augment-vir/assert';
-import {ensureErrorAndPrependMessage, isErrorHttpStatus} from '@augment-vir/common';
-import {
-    createRestVirHandlerErrorPrefix,
-    type EndpointImplementationOutput,
-    type EndpointImplementationParams,
-    HttpMethod,
-    type ImplementedEndpoint,
-    RestVirHandlerError,
-    type RunningServerInfo,
-} from '@rest-vir/implement-service';
+import {definableHttpMethods} from '@rest-vir/api';
 import {assertValidShape} from 'object-shape-tester';
-import {type RestVirRequestContext} from '../start-service/attach-service.js';
-import {type EndpointHandlerParams, type HandledOutput} from './endpoint-handler.js';
+import {
+    type EndpointMethodImplementationParams,
+    type ImplementedEndpoint,
+} from '../../implementation/implement-endpoint.js';
+import {type RunningServerInfo} from '../../implementation/raw-route-data.js';
+import {type RestVirRequestContext} from '../run-api/attach-api.js';
+import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js';
 import {buildHandlerParams} from './handler-params.js';
 
 /**
@@ -30,7 +26,7 @@ export async function handleEndpointRequest(
         attachId,
         server,
     }: Readonly<
-        Omit<EndpointHandlerParams, 'route'> & {
+        Omit<RouteHandlerParams, 'route'> & {
             attachId: string;
             endpoint: Readonly<ImplementedEndpoint>;
             server: Readonly<RunningServerInfo>;
@@ -49,18 +45,15 @@ export async function handleEndpointRequest(
 
         const searchParams = restVirContext.searchParams;
 
-        const endpointParams: EndpointImplementationParams = {
+        const endpointParams: EndpointMethodImplementationParams = {
             ...buildHandlerParams({
                 request,
                 requestData,
                 response,
                 server,
             }),
-
-            method: assertWrap.isEnumValue(request.method.toUpperCase(), HttpMethod),
-            service: endpoint.service,
-            endpoint,
-            log: endpoint.service.logger,
+            method: assertWrap.isIn(request.method.toUpperCase(), definableHttpMethods),
+            endpointDefinition: endpoint,
             context,
             searchParams,
         };

@@ -1,5 +1,3 @@
-import multipart from '@fastify/multipart';
-import {mockServiceImplementation} from '@rest-vir/implement-service/src/implementation/implement-service.mock.js';
 import {startService} from '../start-service.js';
 
 await startService(

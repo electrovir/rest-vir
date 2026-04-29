@@ -1,8 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {type BaseRoutePath, defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
-import {type EndpointImplementation, type ImplementedEndpoint} from './implement-endpoint.js';
+import {
+    type EndpointMethodImplementations,
+    type ImplementedEndpoint,
+} from './implement-endpoint.js';
 import {createApiImplementor} from './implementor.js';
 
 const mockEndpoint = defineEndpoint({
@@ -21,6 +24,7 @@ const mockEndpoint = defineEndpoint({
 });
 
 const mockApi = defineApi({
+    apiName: 'mock-api',
     endpoints: [mockEndpoint],
 });
 
@@ -52,7 +56,7 @@ describe('implementEndpoint', () => {
             },
         });
 
-        implemented.path;
+        assert.tsType(implemented.definition.path).equals<'/test'>();
     });
     it('prevents more than one return property', () => {
         implementMockEndpoint(mockEndpoint, {
@@ -93,8 +97,8 @@ describe('EndpointImplementation', () => {
             },
         });
 
-        assert.tsType<keyof typeof testAssignment>().equals<'implementation' | 'path'>();
-        assert.tsType(testAssignment.implementation).equals<EndpointImplementation>();
-        assert.tsType(testAssignment.path).equals<PropertyKey>();
+        assert.tsType<keyof typeof testAssignment>().equals<'implementation' | 'definition'>();
+        assert.tsType(testAssignment.implementation).equals<EndpointMethodImplementations>();
+        assert.tsType(testAssignment.definition.path).equals<BaseRoutePath>();
     });
 });

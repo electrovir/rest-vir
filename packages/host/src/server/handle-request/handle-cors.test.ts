@@ -1,8 +1,3 @@
-import {assert} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {AnyOrigin, restVirServiceNameHeader} from '@rest-vir/define-service';
-import {defaultServiceLogger} from '@rest-vir/implement-service';
 import {handleCors} from './handle-cors.js';
 
 describe(handleCors.name, () => {

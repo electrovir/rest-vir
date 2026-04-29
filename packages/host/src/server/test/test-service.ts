@@ -1,53 +1,26 @@
-import {assert, assertWrap, check} from '@augment-vir/assert';
 import {
-    type AnyObject,
-    ensureErrorAndPrependMessage,
-    log,
-    mapObjectValues,
-    mergeDeep,
     mergeDefinedProperties,
-    omitObjectKeys,
     type Overwrite,
     type PartialWithUndefined,
     type SelectFrom,
 } from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
-import {
-    assertValidWebSocketProtocols,
-    buildEndpointRequestInit,
-    buildWebSocketUrl,
-    type ClientWebSocket,
-    type CollapsedConnectWebSocketParams,
-    type CollapsedFetchEndpointParams,
-    type EndpointDefinition,
-    finalizeWebSocket,
-    type GenericEndpointDefinition,
-    type GenericWebSocketDefinition,
-    type NoParam,
-    restVirServiceNameHeader,
-    type WebSocketDefinition,
-    WebSocketLocation,
-} from '@rest-vir/define-service';
-import {type GenericServiceImplementation} from '@rest-vir/implement-service';
 import fastify, {type FastifyInstance} from 'fastify';
 import {type InjectOptions} from 'light-my-request';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {buildUrl, parseUrl} from 'url-vir';
 import type WsSocket from 'ws';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {type HandleRouteOptions} from '../handle-request/endpoint-handler.js';
-import {attachService} from '../start-service/attach-service.js';
-import {
-    type StartServiceOptions,
-    type StartServiceUserOptions,
-} from '../start-service/start-service-options.js';
+import {attachApi} from '../run-api/attach-api.js';
+import {type RunApiOptions, type RunApiUserOptions} from '../run-api/run-api-options.js';
 import {applyDebugLogger} from '../util/debug.js';
 
 /**
  * Options for {@link condenseResponse}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type CondenseResponseOptions = {
     /**
@@ -62,8 +35,8 @@ export type CondenseResponseOptions = {
  * Condense a response into just the interesting properties for easier testing comparisons.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function condenseResponse(
     response: Response,
@@ -101,8 +74,8 @@ export async function condenseResponse(
  * Used for each individual endpoint's fetcher in {@link FetchTestService}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type FetchTestEndpoint<EndpointToTest extends EndpointDefinition> = (
     ...params: CollapsedFetchEndpointParams<EndpointToTest, false>
@@ -112,19 +85,19 @@ export type FetchTestEndpoint<EndpointToTest extends EndpointDefinition> = (
  * Used for each individual endpoint's fetcher in {@link FetchTestService}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type ConnectTestWebSocket<WebSocketToTest extends WebSocketDefinition> = (
     ...params: CollapsedConnectWebSocketParams<WebSocketToTest, false>
 ) => Promise<ClientWebSocket<WebSocketToTest>>;
 
 /**
- * Type for the `fetchEndpoint` function provided by {@link testService} and {@link describeService}.
+ * Type for the `fetchEndpoint` function provided by {@link testApi} and {@link describeService}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type FetchTestService<
     Service extends SelectFrom<
@@ -140,12 +113,11 @@ export type FetchTestService<
 };
 
 /**
- * Type for the `connectWebSocket` function provided by {@link testService} and
- * {@link describeService}.
+ * Type for the `connectWebSocket` function provided by {@link testApi} and {@link describeService}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type ConnectTestServiceWebSocket<
     Service extends SelectFrom<
@@ -161,14 +133,14 @@ export type ConnectTestServiceWebSocket<
 };
 
 /**
- * Options for {@link testService}.
+ * Options for {@link testApi}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export type TestServiceOptions = Overwrite<
-    StartServiceUserOptions,
+export type TestApiOptions = Overwrite<
+    RunApiUserOptions,
     {
         port?: number | undefined | false;
     }
@@ -178,8 +150,8 @@ export type TestServiceOptions = Overwrite<
  * Suite for testing a service as a live, running server.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type ServiceTestSuite<
     Service extends Readonly<
@@ -207,18 +179,18 @@ export type ServiceTestSuite<
  * Test your service with actual Request and Response objects! The returned object includes
  * utilities for sending fetch requests and WebSocket connections to the service.
  *
- * Make sure to use the `kill` output after your tests are finished. To automatically kill the
- * server, use {@link describeService} instead.
+ * Make sure to use the `kill` method on the output after your tests are finished. To automatically
+ * kill the server, use {@link describeService} instead.
  *
  * By default, this uses Fastify's request injection strategy to avoid using up real system ports.
  * To instead use an actual port, set `port` in the options parameter.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
+ * @category Package : @rest-vir/host
  * @example
  *
  * ```ts
- * import {testService} from '@rest-vir/run-service';
+ * import {testService} from '@rest-vir/host';
  *
  * const {connectWebsocket, kill, fetchEndpoint} = await testService(myServiceImplementation);
  *
@@ -227,43 +199,24 @@ export type ServiceTestSuite<
  * await kill();
  * ```
  *
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export async function testService<
-    const Service extends Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                createContext: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-                logger: true;
-                postHook: true;
-            }
-        >
-    >,
->(
-    service: Readonly<Service>,
-    testServiceOptions: Readonly<
-        Omit<
-            PartialWithUndefined<StartServiceUserOptions>,
-            'workerCount' | 'preventWorkerRespawn' | ''
-        >
+export async function testApi<const Api extends Readonly<ApiImplementation>>(
+    api: Readonly<Api>,
+    testApiOptions: Readonly<
+        Omit<PartialWithUndefined<RunApiUserOptions>, 'workerCount' | 'preventWorkerRespawn' | ''>
     > = {},
 ) {
     const {
         host = 'localhost',
         port,
         debug,
-    } = mergeDefinedProperties<TestServiceOptions>(
+    } = mergeDefinedProperties<TestApiOptions>(
         {
             port: false,
             debug: true,
         },
-        testServiceOptions,
+        testApiOptions,
         {
             workerCount: 1,
             preventWorkerRespawn: true,
@@ -281,7 +234,7 @@ export async function testService<
     assert.isDefined(server, 'Service server was not started.');
 
     const output = {
-        ...(await testExistingServer(server, service, {
+        ...(await testExistingServer(server, api, {
             port: port || undefined,
             host,
             throwErrorsForExternalHandling: false,
@@ -304,8 +257,8 @@ export async function testService<
 }
 
 /**
- * Similar to {@link testService} but used to test against a Fastify server that you've already
- * started elsewhere. This will merely attach all route listeners to it and return test callbacks.
+ * Similar to {@link testApi} but used to test against a Fastify server that you've already started
+ * elsewhere. This will merely attach all route listeners to it and return test callbacks.
  *
  * The returned object includes a function to send fetches to directly to the running service.
  *
@@ -313,8 +266,8 @@ export async function testService<
  * To instead listen to an actual port, set `port` in the options parameter.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function testExistingServer<
     const Service extends Readonly<
@@ -337,11 +290,11 @@ export async function testExistingServer<
     service: Readonly<Service>,
     options: Readonly<
         HandleRouteOptions &
-            Omit<PartialWithUndefined<StartServiceOptions>, 'workerCount' | 'preventWorkerRespawn'>
+            Omit<PartialWithUndefined<RunApiOptions>, 'workerCount' | 'preventWorkerRespawn'>
     > = {},
 ): Promise<ServiceTestSuite<Service>> {
     applyDebugLogger(options.debug, service);
-    await attachService(server, service, options);
+    await attachApi(server, service, options);
 
     const fetchOrigin =
         options.port == undefined
@@ -521,15 +474,15 @@ export async function testExistingServer<
  * test runner to run tests for a service and automatically kill the service when all tests have
  * finished. The describe callback is passed a params object which includes a fetch function.
  *
- * See {@link testService} for more control over how tests are run (but without automatic server
+ * See {@link testApi} for more control over how tests are run (but without automatic server
  * shutdown).
  *
  * @category Testing : Backend
- * @category Package : @rest-vir/run-service
+ * @category Package : @rest-vir/host
  * @example
  *
  * ```ts
- * import {describeService} from '@rest-vir/run-service';
+ * import {describeService} from '@rest-vir/host';
  * import {it} from '@augment-vir/test';
  *
  * describeService({service: myService}, ({fetchEndpoint}) => {
@@ -539,7 +492,7 @@ export async function testExistingServer<
  * });
  * ```
  *
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function describeService<
     const Service extends Readonly<
@@ -565,7 +518,7 @@ export function describeService<
         /** The service to startup and send requests to. */
         service: Readonly<Service>;
         /** Options for starting the service. */
-        options?: PartialWithUndefined<StartServiceUserOptions>;
+        options?: PartialWithUndefined<RunApiUserOptions>;
     },
     describeCallback: (params: {
         /** Send a request to the service. */
@@ -574,7 +527,7 @@ export function describeService<
         service: Readonly<Service>;
     }) => void | undefined,
 ) {
-    const servicePromise = testService(service, options);
+    const servicePromise = testApi(service, options);
 
     const fetchServiceObject = mapObjectValues(service.endpoints, (endpointPath) => {
         return async (...args: any[]) => {

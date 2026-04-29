@@ -4,24 +4,24 @@ import {assertValidShape, defineShape} from 'object-shape-tester';
 import {parseUrl} from 'url-vir';
 
 /**
- * Shape definition for `startService` options.
+ * Shape definition for `runApi` options.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export const startServiceOptionsShape = defineShape({
+export const runApiOptionsShape = defineShape({
     /**
      * Prevent automatically choosing an available port if the provided port is already in use. This
-     * will cause `startService` to simply crash if the given port is in use.
+     * will cause `runApi` to simply crash if the given port is in use.
      *
      * @default false
      */
     lockPort: false,
     /**
      * The port that the service should listen to requests on. Note that if `lockPort` is not set,
-     * `startService` will try to find the first available port _starting_ with this given `port`
-     * property (so the actual server may be listening to a different port).
+     * `runApi` will try to find the first available port _starting_ with this given `port` property
+     * (so the actual server may be listening to a different port).
      *
      * If this property is set to `false`, no port will be listened to (so you can manually do that
      * later if you wish).
@@ -69,7 +69,7 @@ export const startServiceOptionsShape = defineShape({
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type StartServiceOptions = typeof startServiceOptionsShape.runtimeType;
+export type RunApiOptions = typeof runApiOptionsShape.runtimeType;
 
 /**
  * User-provided options type for `startService`.
@@ -77,9 +77,9 @@ export type StartServiceOptions = typeof startServiceOptionsShape.runtimeType;
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
- * @see {@link startServiceOptionsShape} for option explanations.
+ * @see {@link runApiOptionsShape} for option explanations.
  */
-export type StartServiceUserOptions = PartialWithUndefined<StartServiceOptions>;
+export type RunApiUserOptions = PartialWithUndefined<RunApiOptions>;
 
 /**
  * Combines user defined options with default options to create a full options type for
@@ -88,16 +88,16 @@ export type StartServiceUserOptions = PartialWithUndefined<StartServiceOptions>;
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
- * @see {@link startServiceOptionsShape} for option explanations.
+ * @see {@link runApiOptionsShape} for option explanations.
  */
 export function finalizeOptions(
     serviceOrigin: string,
-    userOptions: Readonly<StartServiceUserOptions>,
-): StartServiceOptions {
+    userOptions: Readonly<RunApiUserOptions>,
+): RunApiOptions {
     const {hostname, port} = parseUrl(serviceOrigin);
 
-    const options = mergeDefinedProperties<StartServiceOptions>(
-        startServiceOptionsShape.default,
+    const options = mergeDefinedProperties<RunApiOptions>(
+        runApiOptionsShape.default,
         Number(port)
             ? {
                   host: hostname || undefined,
@@ -108,7 +108,7 @@ export function finalizeOptions(
     );
     options.workerCount = Math.max(1, options.workerCount);
 
-    assertValidShape(options, startServiceOptionsShape);
+    assertValidShape(options, runApiOptionsShape);
 
     return options;
 }

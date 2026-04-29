@@ -1,13 +1,12 @@
-import {type AnyFunction, type MaybePromise} from '@augment-vir/common';
+import {type WebSocketDefinition} from '@rest-vir/api';
 import {
     type ClientWebSocket,
-    type CollapsedConnectWebSocketParams,
-    type ConnectWebSocketParams,
-    type NoParam,
-    type WebSocketDefinition,
-} from '@rest-vir/define-service';
-import {type ImplementedWebSocket} from '@rest-vir/implement-service';
-import {testService} from './test-service.js';
+    type CommonWebSocket,
+    type WebSocketConnectParamObject,
+    type WebSocketConnectParams,
+} from '@rest-vir/client';
+import {type WebSocketListenerImplementations} from '../../implementation/implement-websocket.js';
+import {testApi} from './test-service.js';
 
 /**
  * Type for {@link testWebSocket}.
@@ -16,10 +15,13 @@ import {testService} from './test-service.js';
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type TestWebSocket = <WebSocketToTest extends WebSocketDefinition>(
-    webSocketDefinition: WebSocketToTest,
-    ...args: CollapsedConnectWebSocketParams<WebSocketToTest, false>
-) => Promise<ClientWebSocket<WebSocketToTest>>;
+export type TestWebSocket = <
+    ThisWebSocket extends WebSocketDefinition,
+    WebSocketClass extends CommonWebSocket,
+>(
+    webSocketDefinition: ThisWebSocket,
+    ...args: WebSocketConnectParams<NoInfer<ThisWebSocket>, WebSocketClass>
+) => Promise<ClientWebSocket<ThisWebSocket>>;
 
 /**
  * Test your WebSocket implementation with a real connection pipeline. Make sure to close your
@@ -31,12 +33,14 @@ export type TestWebSocket = <WebSocketToTest extends WebSocketDefinition>(
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
 export const testWebSocket = async function testWebSocket<
-    const WebSocketToTest extends ImplementedWebSocket,
+    const ThisWebSocket extends WebSocketDefinition,
+    const WebSocketClass extends CommonWebSocket,
 >(
-    webSocketImplementation: WebSocketToTest,
-    params: ConnectWebSocketParams<Exclude<WebSocketToTest, NoParam>, false>,
+    webSocketDefinition: ThisWebSocket,
+    webSocketImplementation: WebSocketListenerImplementations<NoInfer<ThisWebSocket>, any>,
+    params: WebSocketConnectParamObject<NoInfer<ThisWebSocket>, WebSocketClass>,
 ) {
-    const {connectWebSocket, kill} = await testService(
+    const {connectWebSocket, kill} = await testApi(
         {
             ...webSocketImplementation.service,
             webSockets: {
@@ -66,8 +70,8 @@ export const testWebSocket = async function testWebSocket<
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type WithWebSocketTestCallback<WebSocketToTest extends ImplementedWebSocket> = (
-    clientWebSocket: ClientWebSocket<WebSocketToTest>,
+export type WithWebSocketTestCallback<ThisWebSocket extends ImplementedWebSocket> = (
+    clientWebSocket: ClientWebSocket<ThisWebSocket>,
 ) => MaybePromise<void>;
 
 /**
@@ -104,15 +108,15 @@ export type WithWebSocketTestCallback<WebSocketToTest extends ImplementedWebSock
  *
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export function withWebSocketTest<const WebSocketToTest extends ImplementedWebSocket>(
-    webSocketDefinition: WebSocketToTest,
-    params: Omit<ConnectWebSocketParams<WebSocketToTest, false>, 'listeners'>,
-    callback: WithWebSocketTestCallback<WebSocketToTest>,
+export function withWebSocketTest<const ThisWebSocket extends ImplementedWebSocket>(
+    webSocketDefinition: ThisWebSocket,
+    params: Omit<ConnectWebSocketParams<ThisWebSocket, false>, 'listeners'>,
+    callback: WithWebSocketTestCallback<ThisWebSocket>,
 ) {
     return async () => {
-        const clientWebSocket = await testWebSocket<any>(webSocketDefinition, params as any);
+        const clientWebSocket = await testWebSocket(webSocketDefinition, params as any);
 
-        await callback(clientWebSocket as any);
+        await callback(clientWebSocket);
 
         await clientWebSocket.close();
     };

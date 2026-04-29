@@ -22,10 +22,15 @@ import {
 import {type IncomingHttpHeaders, type ServerResponse} from 'node:http';
 import {type RequireExactlyOne} from 'type-fest';
 import {type RunningServerInfo, type ServerRequest} from './raw-route-data.js';
+import {type ServerLogger} from './server-logger.js';
 
 export type ImplementedEndpoint<Path extends PropertyKey = PropertyKey> = {
-    path: Path;
-    implementation: EndpointImplementation;
+    implementation: EndpointMethodImplementations;
+    definition: EndpointDefinition & {
+        path: Path;
+    };
+    isWebSocket: false;
+    isEndpoint: true;
 };
 
 export type EndpointMethodImplementationParams<
@@ -33,8 +38,9 @@ export type EndpointMethodImplementationParams<
     Method extends Readonly<DefinableHttpMethod> | NoParam = NoParam,
     HostContext = any,
 > = {
+    serverLogger: ServerLogger;
     context: HostContext;
-    method: Method;
+    method: Method extends DefinableHttpMethod ? Method : DefinableHttpMethod;
     endpointDefinition: Endpoint extends EndpointDefinition
         ? Readonly<Exclude<Endpoint, NoParam>>
         : Readonly<EndpointDefinition>;
@@ -48,7 +54,7 @@ export type EndpointMethodImplementationParams<
     server: RunningServerInfo;
 };
 
-export type EndpointImplementation<
+export type EndpointMethodImplementations<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
     HostContext = unknown,
 > = Endpoint extends EndpointDefinition

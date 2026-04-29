@@ -1,19 +1,3 @@
-import {waitUntil} from '@augment-vir/assert';
-import {DeferredPromise, log, removeColor, safeMatch, type MaybePromise} from '@augment-vir/common';
-import {
-    interpolationSafeWindowsPath,
-    ShellStderrEvent,
-    ShellStdoutEvent,
-    streamShellCommand,
-} from '@augment-vir/node';
-import {describe, it} from '@augment-vir/test';
-import {
-    AnyOrigin,
-    overwriteWebSocketMethods,
-    waitForOpenWebSocket,
-    WebSocketLocation,
-    type ClientWebSocket,
-} from '@rest-vir/define-service';
 import {join} from 'node:path';
 import {defineShape, unknownShape} from 'object-shape-tester';
 import {buildUrl} from 'url-vir';
