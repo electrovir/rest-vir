@@ -1,6 +1,29 @@
+import {assert} from '@augment-vir/assert';
+import {combineErrorMessages, ensureErrorClass, HttpStatus, stringify} from '@augment-vir/common';
+import {parseJsonWithUndefined, type ApiDefinition} from '@rest-vir/api';
+import {overwriteWebSocketMethods, WebSocketLocation} from '@rest-vir/client';
 import {assertValidShape} from 'object-shape-tester';
 import {type WebSocket as WsWebSocket} from 'ws';
+import {
+    type WebSocketImplementation,
+    type WebSocketImplementationParams,
+} from '../../implementation/implement-websocket.js';
+import {type RunningServerInfo, type ServerRequest} from '../../implementation/raw-route-data.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
 import {type RestVirRequestContext} from '../run-api/attach-api.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
+
+function rawMessageToString(rawMessage: WsWebSocket.Data): string {
+    if (typeof rawMessage === 'string') {
+        return rawMessage;
+    } else if (Array.isArray(rawMessage)) {
+        return Buffer.concat(rawMessage).toString('utf8');
+    } else if (Buffer.isBuffer(rawMessage)) {
+        return rawMessage.toString('utf8');
+    } else {
+        return Buffer.from(rawMessage).toString('utf8');
+    }
+}
 
 /**
  * Handles a WebSocket request.
@@ -14,15 +37,19 @@ export async function handleWebSocketRequest(
     {
         attachId,
         request,
-        implementedWebSocket,
+        webSocketImplementation,
         webSocket: wsWebSocket,
         server,
+        serverLogger,
+        api,
     }: Readonly<{
         request: ServerRequest;
         attachId: string;
-        implementedWebSocket: Readonly<ImplementedWebSocket>;
+        webSocketImplementation: Readonly<WebSocketImplementation>;
         webSocket: WsWebSocket;
         server: Readonly<RunningServerInfo>;
+        serverLogger: Readonly<ServerLogger>;
+        api: Readonly<ApiDefinition>;
     }>,
 ): Promise<void> {
     // by this point in the request lifecycle, we know that these properties have been set.
@@ -30,7 +57,7 @@ export async function handleWebSocketRequest(
     assert.isDefined(restVirContext, 'restVirContext is not defined');
 
     const webSocket = overwriteWebSocketMethods(
-        implementedWebSocket,
+        webSocketImplementation.definition,
         wsWebSocket,
         WebSocketLocation.OnHost,
     );
@@ -59,35 +86,33 @@ export async function handleWebSocketRequest(
 
     const webSocketCallbackParams: WebSocketImplementationParams = {
         context: restVirContext.context,
-        headers: request.headers,
-        log: implementedWebSocket.service.logger,
+        requestHeaders: request.headers,
+        serverLogger,
         request,
-        service: implementedWebSocket.service,
-        webSocketDefinition: implementedWebSocket,
+        webSocketDefinition: webSocketImplementation.definition,
         webSocket,
         protocols: restVirContext.protocols,
         searchParams: restVirContext.searchParams,
         server,
     };
 
-    if (implementedWebSocket.implementation.close) {
+    if (webSocketImplementation.implementation.close) {
         webSocket.on('close', async () => {
-            await implementedWebSocket.implementation.close?.(webSocketCallbackParams);
+            await webSocketImplementation.implementation.close?.(webSocketCallbackParams);
         });
     }
 
-    if (implementedWebSocket.implementation.message) {
+    if (webSocketImplementation.implementation.message) {
         webSocket.on('message', async (rawMessage) => {
+            const stringRawMessage = rawMessageToString(rawMessage);
             let message: unknown;
             try {
-                const stringRawMessage = String(rawMessage);
-
                 message = parseJsonWithUndefined(stringRawMessage);
 
-                if (implementedWebSocket.messageFromClientShape) {
+                if (webSocketImplementation.definition.clientMessage) {
                     assertValidShape(
                         message,
-                        implementedWebSocket.messageFromClientShape,
+                        webSocketImplementation.definition.clientMessage,
                         {
                             allowExtraKeys: true,
                         },
@@ -99,36 +124,54 @@ export async function handleWebSocketRequest(
                     );
                 }
             } catch (error) {
-                const errorMessage = `Failed to receive WebSocket message '${String(rawMessage as unknown)}': ${extractErrorMessage(error)}`;
+                const errorMessage = combineErrorMessages(
+                    `Failed to receive WebSocket message '${stringRawMessage}'.`,
+                    error,
+                );
 
-                implementedWebSocket.service.logger.error(
+                serverLogger.error(
                     ensureErrorClass(
                         error,
                         RestVirHandlerError,
-                        implementedWebSocket,
+                        {
+                            apiName: api.apiName,
+                            isEndpoint: false,
+                            isWebSocket: true,
+                            path: webSocketImplementation.path,
+                        },
                         errorMessage,
+                        HttpStatus.InternalServerError,
                     ),
                 );
             }
             try {
-                await implementedWebSocket.implementation.message?.({
+                await webSocketImplementation.implementation.message?.({
                     ...webSocketCallbackParams,
                     message,
                 });
             } catch (error) {
-                implementedWebSocket.service.logger.error(
+                serverLogger.error(
                     ensureErrorClass(
                         error,
                         RestVirHandlerError,
-                        implementedWebSocket,
-                        `Failed to handle WebSocket message '${String(rawMessage as unknown)}': ${extractErrorMessage(error)}`,
+                        {
+                            apiName: api.apiName,
+                            isEndpoint: false,
+                            isWebSocket: true,
+                            path: webSocketImplementation.path,
+                        },
+                        combineErrorMessages(
+                            `Failed to handle WebSocket message '${stringRawMessage}'.`,
+                            error,
+                        ),
+                        HttpStatus.InternalServerError,
                     ),
                 );
             }
         });
     }
 
-    if (implementedWebSocket.implementation.open) {
-        await implementedWebSocket.implementation.open(webSocketCallbackParams);
+    if (webSocketImplementation.implementation.open) {
+        await webSocketImplementation.implementation.open(webSocketCallbackParams);
     }
 }

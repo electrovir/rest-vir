@@ -55,7 +55,7 @@ export function defineEndpoint<const Endpoint extends EndpointDefinition>(
  */
 export type EndpointDefinition = {
     path: BaseRoutePath;
-    requests: Partial<{
+    requests: RequireAtLeastOne<{
         [Method in DefinableHttpMethod]: EndpointMethodDefinition<Method>;
     }>;
 };
@@ -371,11 +371,13 @@ export type EndpointResponseHeadersType<
         >['responses']
     >[Extract<Status, HttpStatus>]
 >['requiredResponseHeaders'] extends infer RequiredHeaders extends BaseRequiredResponseHeaders
-    ? {
-          [HeaderKey in keyof RequiredHeaders]: ExtractRequiredHeaderValue<
-              RequiredHeaders[HeaderKey]
-          >;
-      } & DefaultResponseHeadersType
+    ? IsNever<RequiredHeaders> extends true
+        ? DefaultResponseHeadersType
+        : {
+              [HeaderKey in keyof RequiredHeaders]: ExtractRequiredHeaderValue<
+                  RequiredHeaders[HeaderKey]
+              >;
+          } & DefaultResponseHeadersType
     : DefaultResponseHeadersType;
 
 /**

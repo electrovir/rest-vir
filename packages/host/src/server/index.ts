@@ -11,7 +11,7 @@ export * from './handle-request/pre-handler.js';
 export * from './run-api/attach-api.js';
 export * from './run-api/run-api-options.js';
 export * from './run-api/start-service.js';
+export * from './test/test-api.js';
 export * from './test/test-endpoint.js';
-export * from './test/test-service.js';
 export * from './test/test-web-socket.js';
 export * from './util/headers.js';

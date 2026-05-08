@@ -2,9 +2,9 @@ import {assert, check} from '@augment-vir/assert';
 import {ensureError, HttpStatus} from '@augment-vir/common';
 import cluster from 'node:cluster';
 import {type WebSocket as WsWebSocket} from 'ws';
-import {type ImplementedApi} from '../../implementation/implement-api.js';
-import {type ImplementedEndpoint} from '../../implementation/implement-endpoint.js';
-import {type ImplementedWebSocket} from '../../implementation/implement-websocket.js';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {type PostRouteHook} from '../../implementation/post-route-hook.js';
 import {
     type RunningServerInfo,
@@ -47,13 +47,13 @@ export async function handleRoute({
     request: ServerRequest;
     /** `WebSocket` requests won't have a response. */
     response: ServerResponse | undefined;
-    route: Readonly<ImplementedEndpoint | ImplementedWebSocket>;
+    route: Readonly<EndpointImplementation | WebSocketImplementation>;
     attachId: string;
     server: Readonly<RunningServerInfo>;
     options: Readonly<HandleRouteOptions>;
     postRouteHook: PostRouteHook | undefined;
     serverLogger: ServerLogger;
-    api: ImplementedApi;
+    api: ApiImplementation;
 }) {
     try {
         const workerPid = cluster.isPrimary ? '' : process.pid;
@@ -76,6 +76,8 @@ export async function handleRoute({
                 endpoint: route,
                 attachId,
                 server,
+                api: api.definition,
+                serverLogger,
             });
 
             /** The implementation already handled the response (e.g. SSE streaming). */
@@ -96,7 +98,8 @@ export async function handleRoute({
                         request,
                         response,
                         server,
-                        service,
+                        api,
+                        serverLogger,
                     }))) ||
                 endpointResult;
 
@@ -115,7 +118,7 @@ export async function handleRoute({
 
             return await handleWebSocketRequest({
                 request,
-                implementedWebSocket: route,
+                webSocketImplementation: route,
                 webSocket,
                 attachId,
                 server,

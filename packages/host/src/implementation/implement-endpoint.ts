@@ -19,12 +19,13 @@ import {
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
 } from '@rest-vir/api';
-import {type IncomingHttpHeaders, type ServerResponse} from 'node:http';
+import {type IncomingHttpHeaders} from 'node:http';
 import {type RequireExactlyOne} from 'type-fest';
-import {type RunningServerInfo, type ServerRequest} from './raw-route-data.js';
+import {type RunningServerInfo, type ServerRequest, type ServerResponse} from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type ImplementedEndpoint<Path extends PropertyKey = PropertyKey> = {
+export type EndpointImplementation<Path extends PropertyKey = PropertyKey> = {
+    path: Path;
     implementation: EndpointMethodImplementations;
     definition: EndpointDefinition & {
         path: Path;
@@ -69,7 +70,7 @@ export type EndpointMethodImplementations<
       }
     : Partial<
           Record<
-              DefinableHttpMethod | `${DefinableHttpMethod}`,
+              DefinableHttpMethod,
               MakeBivariantFunction<
                   EndpointMethodImplementationParams,
                   MaybePromise<EndpointMethodImplementationOutput>
@@ -100,7 +101,6 @@ export type EndpointImplementationStatusOutput<
 > = SetNullishPropertiesAsOptional<{
     responseData: EndpointResponseType<Endpoint, Method, Status>;
     headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
-    responseHandled?: never;
 }>;
 
 export type DefaultEndpointMethodStatusOutputs = Partial<
@@ -120,7 +120,6 @@ export type EndpointMethodImplementationOutput<
                       {
                           responseData: DefaultErrorResponseType;
                           headers?: DefaultResponseHeadersType | undefined;
-                          responseHandled?: never;
                       }
                   > & {
                       [Status in Exclude<
@@ -131,7 +130,6 @@ export type EndpointMethodImplementationOutput<
                           headers?:
                               | EndpointResponseHeadersType<Endpoint, Method, Status>
                               | undefined;
-                          responseHandled?: never;
                       }>;
                   } & {responseHandled: true}
           >

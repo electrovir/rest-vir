@@ -8,12 +8,20 @@ import {
     stringify,
     wrapInTry,
 } from '@augment-vir/common';
-import {extractEndpointMethodDefinition, extractHttpMethod, isFormDataShape} from '@rest-vir/api';
+import {
+    extractEndpointMethodDefinition,
+    extractHttpMethod,
+    isFormDataShape,
+    type EndpointDefinition,
+    type WebSocketDefinition,
+} from '@rest-vir/api';
 import {restVirApiNameHeader} from '@rest-vir/client';
 import {type IncomingHttpHeaders} from 'node:http';
 import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
 import {type CreateHostContextParams} from '../../implementation/host-context.js';
-import {type ImplementedApi} from '../../implementation/implement-api.js';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {
     type RunningServerInfo,
     type ServerRequest,
@@ -44,7 +52,7 @@ export async function preHandler({
 }: {
     request: ServerRequest;
     response: ServerResponse;
-    api: Readonly<ImplementedApi>;
+    api: Readonly<ApiImplementation>;
     server: Readonly<RunningServerInfo>;
     attachId: string;
     serverLogger: ServerLogger;
@@ -72,10 +80,21 @@ export async function preHandler({
         request.ws && pathMatch.webSocketPath
             ? api.definition.webSockets[pathMatch.webSocketPath]
             : undefined;
+    const endpointImplementation = pathMatch.endpointPath
+        ? api.implementation.endpoints[pathMatch.endpointPath]
+        : undefined;
+    const webSocketImplementation =
+        request.ws && pathMatch.webSocketPath
+            ? api.implementation.webSockets[pathMatch.webSocketPath]
+            : undefined;
 
-    const route = endpointDefinition || webSocketDefinition;
+    const routeDefinition: Readonly<EndpointDefinition | WebSocketDefinition> | undefined =
+        endpointDefinition || webSocketDefinition;
+    const routeImplementation:
+        | Readonly<EndpointImplementation | WebSocketImplementation>
+        | undefined = endpointImplementation || webSocketImplementation;
 
-    if (!route) {
+    if (!routeDefinition || !routeImplementation) {
         return undefined;
     }
 
@@ -102,7 +121,7 @@ export async function preHandler({
                     apiName: api.definition.apiName,
                     isEndpoint: !!endpointDefinition,
                     isWebSocket: !!webSocketDefinition,
-                    path: route.path,
+                    path: routeDefinition.path,
                 },
                 extractErrorMessage(
                     ensureErrorAndPrependMessage(
@@ -124,7 +143,9 @@ export async function preHandler({
     const corsResponse = handleHandlerOutputWithoutSending(
         await handleCors({
             request,
-            route,
+            route: routeImplementation,
+            api,
+            serverLogger,
         }),
         response,
     );
@@ -155,7 +176,7 @@ export async function preHandler({
                     apiName: api.definition.apiName,
                     isEndpoint: !!endpointDefinition,
                     isWebSocket: !!webSocketDefinition,
-                    path: route.path,
+                    path: routeDefinition.path,
                 },
                 `Method '${request.method.toUpperCase()}' rejected: '${request.originalUrl}'`,
                 HttpStatus.MethodNotAllowed,
@@ -177,7 +198,7 @@ export async function preHandler({
                     apiName: api.definition.apiName,
                     isEndpoint: !!endpointDefinition,
                     isWebSocket: !!webSocketDefinition,
-                    path: route.path,
+                    path: routeDefinition.path,
                 },
                 combineErrorMessages(
                     `Rejected request body from '${request.originalUrl}'.`,
@@ -194,14 +215,16 @@ export async function preHandler({
 
     attachedRestVirContext.requestData = requestData;
     const searchParams = handleSearchParams({
+        api: api.definition,
+        serverLogger,
         request,
-        route,
+        route: routeImplementation,
     });
 
-    if (!('data' in searchParams)) {
+    if (!('searchParams' in searchParams)) {
         return handleHandlerOutputWithoutSending(searchParams, response);
     }
-    attachedRestVirContext.searchParams = searchParams.data;
+    attachedRestVirContext.searchParams = searchParams.searchParams;
 
     const contextParams: CreateHostContextParams = {
         ...buildHandlerParams({
@@ -215,7 +238,7 @@ export async function preHandler({
         api,
         endpointDefinition,
         webSocketDefinition,
-        searchParams: searchParams.data,
+        searchParams: searchParams.searchParams,
     };
 
     try {
@@ -228,7 +251,7 @@ export async function preHandler({
                         apiName: api.definition.apiName,
                         isEndpoint: !!endpointDefinition,
                         isWebSocket: !!webSocketDefinition,
-                        path: route.path,
+                        path: routeDefinition.path,
                     },
                     `Context creation rejected: '${request.originalUrl}'`,
                     contextOutput.reject.statusCode,

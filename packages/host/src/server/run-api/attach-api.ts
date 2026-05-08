@@ -16,7 +16,7 @@ import fastifyWs from '@fastify/websocket';
 import {type BaseSearchParams} from '@rest-vir/api';
 import {type FastifyInstance} from 'fastify';
 import {buildUrl, parseUrl} from 'url-vir';
-import {type ImplementedApi} from '../../implementation/implement-api.js';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {type RunningServerInfo} from '../../implementation/raw-route-data.js';
 import {createServerLogger} from '../../implementation/server-logger.js';
 import {handleHandlerOutput, type HandleRouteOptions} from '../handle-request/endpoint-handler.js';
@@ -66,11 +66,13 @@ const endpointFastifyMethods = getEnumValues(HttpMethod).filter((value) => {
 export type ApiServerOptions = {
     /**
      * The origin at which the api is hosted on. Fetch requests and WebSocket connections should be
-     * sent to this origin to connect with this server.
+     * sent to this origin to connect with this server. The internal server alone will not know what
+     * this is (since it's going to just be listening on some localhost port), so you must provide
+     * this so that the endpoint handlers know what the current origin is.
      *
      * @see https://developer.mozilla.org/en-US/docs/Web/API/Location for help on which part of the URL is the origin (if necessary).
      */
-    serviceOrigin: string;
+    serverOrigin: string;
 };
 
 /**
@@ -94,11 +96,10 @@ export type ApiServerOptions = {
  */
 export async function attachApi(
     server: Readonly<FastifyInstance>,
-    implementedApi: Readonly<ImplementedApi>,
-    serverOptions: Readonly<ApiServerOptions>,
-    options: Readonly<HandleRouteOptions> = {},
+    api: Readonly<ApiImplementation>,
+    options: Readonly<ApiServerOptions & HandleRouteOptions>,
 ): Promise<void> {
-    const serverLogger = createServerLogger(implementedApi.implementation.serverLogger);
+    const serverLogger = createServerLogger(api.implementation.serverLogger);
 
     try {
         const attachId = randomString(32);
@@ -125,7 +126,7 @@ export async function attachApi(
                                 isEndpoint: false,
                                 isWebSocket: true,
                                 path: request.originalUrl,
-                                apiName: implementedApi.definition.apiName,
+                                apiName: api.definition.apiName,
                             },
                             extractErrorMessage(error),
                             HttpStatus.InternalServerError,
@@ -136,16 +137,17 @@ export async function attachApi(
             });
         }
 
-        const postHook = implementedApi.implementation.postRouteHook;
+        const postHook = api.implementation.postRouteHook;
 
         server.addHook('preValidation', async (request, response) => {
             try {
                 const preHandlerResult = await preHandler({
                     request,
                     response,
-                    service: implementedApi,
-                    server: extractRunningServerInfo(serverOptions, server),
+                    api,
+                    server: extractRunningServerInfo(options, server),
                     attachId,
+                    serverLogger,
                 });
 
                 if (preHandlerResult?.statusCode && postHook) {
@@ -156,8 +158,9 @@ export async function attachApi(
                         postHook,
                         request,
                         response,
-                        server: extractRunningServerInfo(serverOptions, server),
-                        service: implementedApi,
+                        server: extractRunningServerInfo(options, server),
+                        api,
+                        serverLogger,
                     });
 
                     if (postHookResult) {
@@ -175,7 +178,7 @@ export async function attachApi(
                             isEndpoint: undefined,
                             isWebSocket: undefined,
                             path: request.originalUrl,
-                            apiName: implementedApi.definition.apiName,
+                            apiName: api.definition.apiName,
                         },
                         combineErrorMessages('Unexpected error', extractErrorMessage(error)),
                         HttpStatus.InternalServerError,
@@ -196,13 +199,13 @@ export async function attachApi(
         });
 
         const allPaths = new Set([
-            ...getObjectTypedKeys(implementedApi.implementation.webSockets),
-            ...getObjectTypedKeys(implementedApi.implementation.endpoints),
+            ...getObjectTypedKeys(api.implementation.webSockets),
+            ...getObjectTypedKeys(api.implementation.endpoints),
         ]);
 
         allPaths.forEach((path) => {
-            const webSocketImplementation = implementedApi.implementation.webSockets[path];
-            const endpointImplementation = implementedApi.implementation.endpoints[path];
+            const webSocketImplementation = api.implementation.webSockets[path];
+            const endpointImplementation = api.implementation.endpoints[path];
 
             if (endpointImplementation && webSocketImplementation) {
                 server.route({
@@ -215,10 +218,11 @@ export async function attachApi(
                             response,
                             route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(serverOptions, server),
+                            server: extractRunningServerInfo(options, server),
                             options,
                             postRouteHook: postHook,
-                            service: implementedApi,
+                            api,
+                            serverLogger,
                         });
                     },
                 });
@@ -232,10 +236,11 @@ export async function attachApi(
                             response,
                             route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(serverOptions, server),
+                            server: extractRunningServerInfo(options, server),
                             options,
                             postRouteHook: postHook,
-                            service: implementedApi,
+                            api,
+                            serverLogger,
                         });
                     },
                     wsHandler(webSocket, request) {
@@ -245,10 +250,11 @@ export async function attachApi(
                             response: undefined,
                             route: webSocketImplementation,
                             attachId,
-                            server: extractRunningServerInfo(serverOptions, server),
+                            server: extractRunningServerInfo(options, server),
                             options,
                             postRouteHook: postHook,
-                            service: implementedApi,
+                            api,
+                            serverLogger,
                         });
                     },
                 });
@@ -266,10 +272,11 @@ export async function attachApi(
                             response,
                             route: endpointImplementation,
                             attachId,
-                            server: extractRunningServerInfo(serverOptions, server),
+                            server: extractRunningServerInfo(options, server),
                             options,
                             postRouteHook: postHook,
-                            service: implementedApi,
+                            api,
+                            serverLogger,
                         });
                     },
                 });
@@ -287,10 +294,11 @@ export async function attachApi(
                             response: undefined,
                             route: webSocketImplementation,
                             attachId,
-                            server: extractRunningServerInfo(serverOptions, server),
+                            server: extractRunningServerInfo(options, server),
                             options,
                             postRouteHook: postHook,
-                            service: implementedApi,
+                            api,
+                            serverLogger,
                         });
                     },
                 });
@@ -324,14 +332,14 @@ export function extractRunningServerInfo(
 ): RunningServerInfo {
     const address = fastify.server.address();
 
-    const {port: originalPort} = parseUrl(serverOptions.serviceOrigin);
+    const {port: originalPort} = parseUrl(serverOptions.serverOrigin);
 
     if (!originalPort || check.isString(address) || !address) {
         return {
-            serviceOrigin: serverOptions.serviceOrigin,
+            serviceOrigin: serverOptions.serverOrigin,
         };
     } else {
-        const {origin} = buildUrl(serverOptions.serviceOrigin, {
+        const {origin} = buildUrl(serverOptions.serverOrigin, {
             port: address.port,
         });
 

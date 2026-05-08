@@ -1,5 +1,24 @@
-import {assertValidShape, type Shape} from 'object-shape-tester';
-import {parseUrl} from 'url-vir';
+import {check} from '@augment-vir/assert';
+import {
+    combineErrorMessages,
+    HttpStatus,
+    stringify,
+    wrapInTry,
+    type ErrorHttpStatus,
+    type SelectFrom,
+} from '@augment-vir/common';
+import {
+    type ApiDefinition,
+    type BaseSearchParams,
+    type CommonRouteDefinition,
+    type RouteSearchParamsType,
+} from '@rest-vir/api';
+import {extractSearchParams} from '@rest-vir/client';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
+import {type ServerRequest} from '../../implementation/raw-route-data.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
 
 /**
  * Handles a request's search params and compares it against the route's required search params
@@ -12,23 +31,22 @@ import {parseUrl} from 'url-vir';
 export function handleSearchParams({
     request,
     route,
+    serverLogger,
+    api,
 }: Readonly<{
-    request: Readonly<Pick<ServerRequest, 'originalUrl'>>;
-    route: Readonly<
+    request: Readonly<
         SelectFrom<
-            ImplementedEndpoint | ImplementedWebSocket,
+            ServerRequest,
             {
-                searchParamsShape: true;
-                service: {
-                    logger: true;
-                    serviceName: true;
-                };
-                path: true;
-                isEndpoint: true;
-                isWebSocket: true;
+                originalUrl: true;
+                method: true;
+                query: true;
             }
         >
     >;
+    route: Readonly<EndpointImplementation | WebSocketImplementation>;
+    serverLogger: Readonly<ServerLogger>;
+    api: Readonly<ApiDefinition>;
 }>):
     | {
           body?: string;
@@ -36,28 +54,41 @@ export function handleSearchParams({
            * If this is set, then the response is sent with this status code and the given body (if
            * any).
            */
-          statusCode: HttpStatusByCategory<ErrorHttpStatusCategories>;
+          statusCode: ErrorHttpStatus;
       }
     | {
-          data: BaseSearchParams;
+          searchParams: BaseSearchParams;
       } {
-    const searchParams = parseUrl(request.originalUrl).searchParams;
-    const shape = route.searchParamsShape as undefined | Shape;
+    const method = request.method.toUpperCase();
+    const searchParamRequirement: CommonRouteDefinition['searchParams'] = route.isWebSocket
+        ? route.definition.searchParams
+        : check.isKeyOf(method, route.definition.requests)
+          ? route.definition.requests[method]?.searchParams
+          : undefined;
+    const rawQuery = request.query;
 
-    const validationError: undefined | Error = shape
-        ? wrapInTry(() => {
-              assertValidShape(searchParams, shape, {
-                  allowExtraKeys: true,
-              });
-              return undefined;
-          })
-        : undefined;
+    const searchParams = wrapInTry(() =>
+        extractSearchParams(
+            {
+                searchParams: searchParamRequirement,
+            },
+            {
+                searchParams: rawQuery as RouteSearchParamsType,
+            },
+        ),
+    );
 
-    if (validationError) {
-        route.service.logger.error(
+    if (searchParams instanceof Error) {
+        serverLogger.error(
             new RestVirHandlerError(
-                route,
-                `Search params failed for ${stringify(searchParams)}: ${validationError.message}`,
+                {
+                    apiName: api.apiName,
+                    ...route,
+                },
+                combineErrorMessages(
+                    `Search params failed for ${stringify(rawQuery)}.`,
+                    searchParams,
+                ),
                 HttpStatus.BadRequest,
             ),
         );
@@ -68,6 +99,6 @@ export function handleSearchParams({
     }
 
     return {
-        data: searchParams,
+        searchParams,
     };
 }

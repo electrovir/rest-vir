@@ -6,7 +6,7 @@ import {
     type WebSocketConnectParams,
 } from '@rest-vir/client';
 import {type WebSocketListenerImplementations} from '../../implementation/implement-websocket.js';
-import {testApi} from './test-service.js';
+import {testApi} from './test-api.js';
 
 /**
  * Type for {@link testWebSocket}.

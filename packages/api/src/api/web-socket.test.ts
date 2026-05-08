@@ -55,7 +55,7 @@ describe('WebSocketDefinition', () => {
     it('allows requiredClientOrigin', () => {
         const definition: WebSocketDefinition = {
             path: '/ws',
-            clientOrigin: 'https://example.com',
+            clientOriginRequirement: 'https://example.com',
         };
     });
 

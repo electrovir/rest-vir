@@ -9,7 +9,7 @@ import {
 } from '@rest-vir/api';
 import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
 import {type IsAny, type IsUnknown, type RequireExactlyOne} from 'type-fest';
-import {type ImplementedApi} from './implement-api.js';
+import {type ApiImplementation} from './implement-api.js';
 import {type RunningServerInfo, type ServerRequest, type ServerResponse} from './raw-route-data.js';
 
 export type CreateHostContext<HostContext> =
@@ -34,7 +34,7 @@ export type CreateHostContextParams = {
     searchParams: BaseSearchParams;
     requestHeaders: IncomingHttpHeaders;
     method: DefinableHttpMethod;
-    api: ImplementedApi;
+    api: ApiImplementation;
     requestData: unknown;
     request: ServerRequest;
     response: ServerResponse;

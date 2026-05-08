@@ -1,16 +1,28 @@
 import {assert, check} from '@augment-vir/assert';
-import {ensureArray, mapObject, type PartialWithUndefined, stringify} from '@augment-vir/common';
+import {
+    ensureArray,
+    mapObject,
+    type PartialWithUndefined,
+    type SelectFrom,
+    stringify,
+} from '@augment-vir/common';
 import {
     type AllowedSingleSearchParamValue,
     type BaseSearchParams,
-    type EndpointMethodDefinition,
+    type CommonRouteDefinition,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
 
 export function extractSearchParams(
-    path: PropertyKey,
-    endpoint: Readonly<EndpointMethodDefinition>,
+    endpoint: Readonly<
+        SelectFrom<
+            CommonRouteDefinition,
+            {
+                searchParams: true;
+            }
+        >
+    >,
     params: Readonly<
         PartialWithUndefined<{
             searchParams: RouteSearchParamsType;

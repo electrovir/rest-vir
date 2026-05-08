@@ -1,10 +1,10 @@
 import {type ApiDefinition, type EndpointDefinition, type WebSocketDefinition} from '@rest-vir/api';
 import {
+    type EndpointImplementation,
     type EndpointMethodImplementations,
-    type ImplementedEndpoint,
 } from './implement-endpoint.js';
 import {
-    type ImplementedWebSocket,
+    type WebSocketImplementation,
     type WebSocketListenerImplementations,
 } from './implement-websocket.js';
 
@@ -21,8 +21,9 @@ export function createApiImplementor<HostContext>(this: void) {
                 implementation: Readonly<
                     EndpointMethodImplementations<NoInfer<Endpoint>, HostContext>
                 >,
-            ): ImplementedEndpoint<Endpoint['path']> => {
+            ): EndpointImplementation<Endpoint['path']> => {
                 return {
+                    path: endpoint.path,
                     implementation,
                     definition: endpoint,
                     isEndpoint: true,
@@ -38,8 +39,9 @@ export function createApiImplementor<HostContext>(this: void) {
                 implementation: Readonly<
                     WebSocketListenerImplementations<NoInfer<ThisWebSocket>, HostContext>
                 >,
-            ): ImplementedWebSocket<ThisWebSocket['path']> => {
+            ): WebSocketImplementation<ThisWebSocket['path']> => {
                 return {
+                    path: webSocket.path,
                     implementation,
                     definition: webSocket,
                     isEndpoint: false,

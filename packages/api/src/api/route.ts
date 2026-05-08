@@ -46,7 +46,7 @@ export type CommonRouteDefinition = {
      * The client origin requirement for this route. If this is `undefined` or omitted, the api's
      * overall client origin requirement is fallen back to.
      */
-    clientOrigin?: OriginRequirement | undefined;
+    clientOriginRequirement?: OriginRequirement | undefined;
 };
 
 /**

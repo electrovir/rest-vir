@@ -1,15 +1,19 @@
-import {type ApiDefinition, type SetNullishPropertiesAsOptional} from '@rest-vir/api';
+import {
+    type ApiDefinition,
+    type OriginRequirement,
+    type SetNullishPropertiesAsOptional,
+} from '@rest-vir/api';
 import {type CreateHostContext} from './host-context.js';
-import {type ImplementedEndpoint} from './implement-endpoint.js';
-import {type ImplementedWebSocket} from './implement-websocket.js';
+import {type EndpointImplementation} from './implement-endpoint.js';
+import {type WebSocketImplementation} from './implement-websocket.js';
 import {type PostRouteHook} from './post-route-hook.js';
 import {type UserServerLogger} from './server-logger.js';
 
 export function implementApi<HostContext = unknown>() {
     return <const Api extends Readonly<ApiDefinition>>(
         api: Readonly<Api>,
-        implementation: Readonly<ApiImplementation<NoInfer<Api>, NoInfer<HostContext>>>,
-    ): Readonly<ImplementedApi<Api, HostContext>> => {
+        implementation: Readonly<ApiRouteImplementations<NoInfer<Api>, NoInfer<HostContext>>>,
+    ): Readonly<ApiImplementation<Api, HostContext>> => {
         return {
             definition: api,
             implementation,
@@ -17,15 +21,15 @@ export function implementApi<HostContext = unknown>() {
     };
 }
 
-export type ImplementedApi<
+export type ApiImplementation<
     Api extends Readonly<ApiDefinition> = ApiDefinition,
     HostContext = unknown,
 > = {
     definition: Readonly<Api>;
-    implementation: Readonly<ApiImplementation<Api, HostContext>>;
+    implementation: Readonly<ApiRouteImplementations<Api, HostContext>>;
 };
 
-export type ApiImplementation<
+export type ApiRouteImplementations<
     Api extends ApiDefinition = ApiDefinition,
     HostContext = any,
 > = SetNullishPropertiesAsOptional<{
@@ -38,7 +42,8 @@ export type ApiImplementation<
      * `onSend` hook.
      */
     postRouteHook: PostRouteHook<HostContext> | undefined;
+    clientOriginRequirement: OriginRequirement | undefined;
 }> & {
-    endpoints: Record<keyof Api['endpoints'], ImplementedEndpoint>;
-    webSockets: Record<keyof Api['webSockets'], ImplementedWebSocket>;
+    endpoints: Record<keyof Api['endpoints'], EndpointImplementation>;
+    webSockets: Record<keyof Api['webSockets'], WebSocketImplementation>;
 };

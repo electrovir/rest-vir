@@ -32,7 +32,7 @@ export class RestVirHandlerError extends Error {
  */
 export function createRestVirHandlerErrorPrefix(
     params: Readonly<{
-        path: string;
+        path: PropertyKey;
         apiName: string;
         isWebSocket: boolean | undefined;
         isEndpoint: boolean | undefined;
@@ -40,5 +40,5 @@ export function createRestVirHandlerErrorPrefix(
 ) {
     const routeNoun = params.isWebSocket ? 'WebSocket ' : params.isEndpoint ? 'Endpoint ' : '';
 
-    return `${routeNoun}'${params.path}' failed in service '${params.apiName}'`;
+    return `${routeNoun}'${String(params.path)}' failed in service '${params.apiName}'`;
 }

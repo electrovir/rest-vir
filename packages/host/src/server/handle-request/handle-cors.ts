@@ -1,6 +1,19 @@
-import {type SelectFrom, HttpMethod, HttpStatus} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {getObjectTypedKeys, HttpMethod, HttpStatus, type SelectFrom} from '@augment-vir/common';
+import {
+    AnyOrigin,
+    checkOriginRequirement,
+    type DefinableHttpMethod,
+    type OriginRequirement,
+} from '@rest-vir/api';
+import {restVirApiNameHeader} from '@rest-vir/client';
 import {convertDuration} from 'date-vir';
 import {type OutgoingHttpHeaders} from 'node:http';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
+import {RestVirHandlerError} from '../util/handler.error.js';
 import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js';
 
 /**
@@ -22,37 +35,35 @@ import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js
 export async function handleCors(
     this: void,
     {
+        api,
+        serverLogger,
         route,
         request,
     }: Readonly<
         SelectFrom<
             RouteHandlerParams,
             {
-                request: {
-                    headers: true;
-                    method: true;
-                    originalUrl: true;
-                };
-                route: {
-                    requiredClientOrigin: true;
-                    path: true;
-                    service: {
-                        serviceName: true;
-                        requiredClientOrigin: true;
-                        logger: true;
-                        customHeaders: true;
-                    };
-                    methods: true;
-                    isEndpoint: true;
-                    isWebSocket: true;
-                };
+                request: true;
+                route: true;
             }
-        >
+        > & {
+            api: ApiImplementation;
+            serverLogger: ServerLogger;
+        }
     >,
 ): Promise<HandledOutput> {
     const origin = request.headers.origin;
-    const matchedOrigin = await matchOrigin(route, origin);
-    const allowedMethods = route.isEndpoint ? getAllowedEndpointMethods(route) : [HttpMethod.Get];
+    const method = request.method.toUpperCase();
+    const allowedMethods: DefinableHttpMethod[] = route.isEndpoint
+        ? getObjectTypedKeys(route.definition.requests)
+        : [HttpMethod.Get];
+
+    const matchedOrigin = await matchOrigin({
+        route,
+        method,
+        api,
+        origin,
+    });
 
     if (request.method.toUpperCase() === HttpMethod.Options) {
         return {
@@ -60,17 +71,20 @@ export async function handleCors(
             headers: buildOptionsRequestCorsHeaders(
                 matchedOrigin,
                 allowedMethods,
-                route.service.customHeaders,
+                api.implementation.customHeaders || [],
             ),
         };
     } else if (matchedOrigin) {
         return {
-            headers: buildStandardCorsHeaders(matchedOrigin, route.service.customHeaders),
+            headers: buildStandardCorsHeaders(matchedOrigin, api.implementation.customHeaders),
         };
     } else {
-        route.service.logger.error(
+        serverLogger.error(
             new RestVirHandlerError(
-                route,
+                {
+                    apiName: api.definition.apiName,
+                    ...route,
+                },
                 `CORS rejected for origin '${origin}'.`,
                 HttpStatus.Forbidden,
             ),
@@ -84,14 +98,14 @@ export async function handleCors(
 
 function buildStandardCorsHeaders(
     matchedOrigin: NonNullable<MatchedOrigin>,
-    customHeaders: string[],
+    customHeaders: ReadonlyArray<string> | undefined,
 ): OutgoingHttpHeaders {
-    if (isAnyOrigin(matchedOrigin)) {
+    if (matchedOrigin === AnyOrigin) {
         return {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Expose-Headers': [
-                restVirServiceNameHeader,
-                ...customHeaders,
+                restVirApiNameHeader,
+                ...(customHeaders || []),
             ].join(','),
         };
     } else {
@@ -100,8 +114,8 @@ function buildStandardCorsHeaders(
             'Access-Control-Allow-Credentials': 'true',
             Vary: 'Origin',
             'Access-Control-Expose-Headers': [
-                restVirServiceNameHeader,
-                ...customHeaders,
+                restVirApiNameHeader,
+                ...(customHeaders || []),
             ].join(','),
         };
     }
@@ -129,7 +143,7 @@ const contentLengthHeaders = {
 function buildOptionsRequestCorsHeaders(
     matchedOrigin: MatchedOrigin,
     allowedMethods: HttpMethod[],
-    customHeaders: string[],
+    customHeaders: ReadonlyArray<string> | undefined,
 ): OutgoingHttpHeaders {
     if (matchedOrigin == undefined) {
         return contentLengthHeaders;
@@ -145,7 +159,7 @@ function buildOptionsRequestCorsHeaders(
             'Cookie',
             'Authorization',
             'Content-Type',
-            ...customHeaders,
+            ...(customHeaders || []),
         ].join(','),
         'Access-Control-Max-Age': accessControlMaxAgeValue,
 
@@ -160,57 +174,49 @@ function buildOptionsRequestCorsHeaders(
  * - `undefined`: should be used when the request origin is not valid and thus should be rejected.
  * - `AnyOrigin`: should be used when the endpoint accepts any origin.
  */
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 type MatchedOrigin = string | undefined | AnyOrigin;
 
-async function matchOrigin(
-    endpoint: Readonly<
-        SelectFrom<
-            EndpointDefinition | WebSocketDefinition,
-            {
-                requiredClientOrigin: true;
-                path: true;
-                service: {
-                    serviceName: true;
-                    requiredClientOrigin: true;
-                };
-                isEndpoint: true;
-                isWebSocket: true;
-            }
-        >
-    >,
-    origin: string | undefined,
-): Promise<MatchedOrigin> {
-    const endpointRequirement = await checkOriginRequirement(origin, endpoint.requiredClientOrigin);
+async function matchOrigin({
+    route,
+    method,
+    api,
+    origin,
+}: {
+    route: Readonly<EndpointImplementation | WebSocketImplementation>;
+    method: string;
+    api: ApiImplementation;
+    origin: string | undefined;
+}): Promise<MatchedOrigin> {
+    const routeOriginRequirement: OriginRequirement | undefined = route.isWebSocket
+        ? route.definition.clientOriginRequirement
+        : check.isKeyOf(method, route.definition.requests)
+          ? route.definition.requests[method]?.clientOriginRequirement
+          : undefined;
 
-    if (isAnyOrigin(endpointRequirement)) {
+    const routeOriginResult = await checkOriginRequirement(origin, routeOriginRequirement);
+
+    if (routeOriginResult === AnyOrigin) {
         return AnyOrigin;
-    } else if (endpointRequirement === false) {
+    } else if (routeOriginResult === false) {
         return undefined;
-    } else if (endpointRequirement === true) {
+    } else if (routeOriginResult === true) {
         return origin || AnyOrigin;
     }
 
     /** If the endpoint requirement is `undefined`, then we check the service requirement. */
 
-    const serviceRequirement = await checkOriginRequirement(
+    const serviceOriginResult = await checkOriginRequirement(
         origin,
-        endpoint.service.requiredClientOrigin,
+        api.implementation.clientOriginRequirement,
     );
 
-    if (isAnyOrigin(serviceRequirement)) {
-        return AnyOrigin;
-    } else if (serviceRequirement === false) {
+    if (serviceOriginResult === false) {
         return undefined;
-    } else if (serviceRequirement === true) {
+    } else if (serviceOriginResult === true) {
         return origin || AnyOrigin;
+    } else {
+        /** Fall back to any origin. */
+        return AnyOrigin;
     }
-
-    /**
-     * If the service requirement is `undefined`, something went wrong because service definitions
-     * are not allowed to have an `undefined` origin requirement.
-     */
-    throw new RestVirHandlerError(
-        endpoint,
-        `Request origin '${origin}' failed to get checked for endpoint '${endpoint.path}' or service '${endpoint.service.serviceName}'`,
-    );
 }

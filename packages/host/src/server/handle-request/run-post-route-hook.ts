@@ -1,7 +1,7 @@
 import {assert, check} from '@augment-vir/assert';
 import {type HttpStatus} from '@augment-vir/common';
 import {type BaseSearchParams, definableHttpMethods} from '@rest-vir/api';
-import {type ImplementedApi} from '../../implementation/implement-api.js';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {
     type PostRouteHook,
     type PostRouteHookParams,
@@ -31,7 +31,7 @@ export async function runPostRouteHook(
             postHook: PostRouteHook;
             originalBody: unknown;
             originalStatus: HttpStatus;
-            api: Readonly<ImplementedApi>;
+            api: Readonly<ApiImplementation>;
             serverLogger: ServerLogger;
         }
     >,

@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-commented-code */
 
 import {buildUrl} from 'url-vir';
-import {condenseResponse} from '../test/test-service.js';
+import {condenseResponse} from '../test/test-api.js';
 import {startService} from './start-service.js';
 import {describeServiceScript, getMockScriptCommand} from './test-start-service.mock.js';
 

@@ -1,4 +1,7 @@
-import {testApi} from './test-service.js';
+import {type DefinableHttpMethod} from '@rest-vir/api';
+import {type EndpointFetchParams} from '@rest-vir/client';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {testApi} from './test-api.js';
 
 /**
  * The type definition for {@link testEndpoint}.
@@ -7,13 +10,17 @@ import {testApi} from './test-service.js';
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type TestEndpoint = <EndpointToTest extends EndpointDefinition>(
-    endpoint: EndpointToTest,
-    ...args: CollapsedFetchEndpointParams<EndpointToTest, false>
+export type TestEndpoint = <
+    Endpoint extends EndpointImplementation,
+    Method extends Extract<keyof NoInfer<Endpoint>['definition']['requests'], DefinableHttpMethod>,
+>(
+    endpoint: Endpoint,
+    method: Method,
+    ...args: EndpointFetchParams<NoInfer<Endpoint['definition']>, NoInfer<Method>>
 ) => Promise<Response>;
 
 /**
- * Test your endpoint with real Request and Response objects!
+ * Test your endpoint with real Request and Response objects.
  *
  * @category Testing : Backend
  * @category Package : @rest-vir/run-service
@@ -28,8 +35,16 @@ export type TestEndpoint = <EndpointToTest extends EndpointDefinition>(
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
 export const testEndpoint = async function testEndpoint<
-    const EndpointToTest extends ImplementedEndpoint,
->(endpoint: EndpointToTest, ...args: CollapsedFetchEndpointParams<EndpointToTest, false>) {
+    const Endpoint extends EndpointImplementation,
+    const Method extends Extract<
+        keyof NoInfer<Endpoint>['definition']['requests'],
+        DefinableHttpMethod
+    >,
+>(
+    endpoint: Endpoint,
+    method: Method,
+    ...args: EndpointFetchParams<NoInfer<Endpoint['definition']>, NoInfer<Method>>
+) {
     const {fetchEndpoint, kill} = await testApi(
         {
             ...endpoint.service,

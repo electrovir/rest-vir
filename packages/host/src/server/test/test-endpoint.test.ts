@@ -1,5 +1,5 @@
+import {condenseResponse} from './test-api.js';
 import {testEndpoint} from './test-endpoint.js';
-import {condenseResponse} from './test-service.js';
 
 describe(testEndpoint.name, () => {
     it('tests a basic endpoint', async () => {

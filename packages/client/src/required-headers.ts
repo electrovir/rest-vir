@@ -1,28 +1,23 @@
 import {assert} from '@augment-vir/assert';
-import {mapObject, stringify, type PartialWithUndefined} from '@augment-vir/common';
-import {type EndpointMethodDefinition, type EndpointRequestHeadersType} from '@rest-vir/api';
+import {mapObject, stringify} from '@augment-vir/common';
+import {type EndpointMethodDefinition} from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
 
 export function extractRequiredHeaders(
     path: PropertyKey,
     endpointMethod: Readonly<EndpointMethodDefinition>,
-    params: Readonly<
-        PartialWithUndefined<{
-            requiredHeaders: EndpointRequestHeadersType;
-        }>
-    >,
+    headerValues: undefined | Record<string, string>,
 ): Record<string, string> {
     const headerRequirements: Record<string, Shape | RegExp> | undefined =
         endpointMethod.requiredRequestHeaders;
-    const setRequiredHeaderValues = params.requiredHeaders;
 
     if (headerRequirements) {
-        if (!setRequiredHeaderValues) {
+        if (!headerValues) {
             throw new Error(`Endpoint '${String(path)}' has required headers but none were set.`);
         }
 
         return mapObject(headerRequirements, (headerName, headerRequirement) => {
-            const headerValue = setRequiredHeaderValues[headerName];
+            const headerValue = headerValues[headerName];
 
             if (headerRequirement instanceof RegExp) {
                 if (!headerValue || !headerRequirement.test(headerValue)) {
@@ -49,7 +44,7 @@ export function extractRequiredHeaders(
             };
         });
     } else {
-        if (setRequiredHeaderValues && Object.keys(setRequiredHeaderValues).length) {
+        if (headerValues && Object.keys(headerValues).length) {
             throw new Error(
                 `Endpoint '${String(path)}' has no required headers but some were set.`,
             );

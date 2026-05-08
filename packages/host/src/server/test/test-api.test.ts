@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 import {exactShape} from 'object-shape-tester';
 import {buildUrl, parseUrl} from 'url-vir';
-import {condenseResponse, describeService, testApi, testExistingServer} from './test-service.js';
+import {condenseResponse, describeService, testApi, testExistingServer} from './test-api.js';
 
 describeService(
     {

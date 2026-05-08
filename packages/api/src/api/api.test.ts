@@ -26,7 +26,7 @@ describe('ApiInit', () => {
                     path: '/users',
                     requests: {
                         [HttpMethod.Get]: {
-                            clientOrigin: '',
+                            clientOriginRequirement: '',
                             responses: {
                                 [HttpStatus.Ok]: {
                                     responseData: defineShape({
@@ -60,7 +60,7 @@ describe('ApiInit', () => {
                     path: '/health',
                     requests: {
                         [HttpMethod.Get]: {
-                            clientOrigin: '',
+                            clientOriginRequirement: '',
                             responses: {
                                 [HttpStatus.Ok]: {
                                     responseData: defineShape({
@@ -75,7 +75,7 @@ describe('ApiInit', () => {
                     path: '/data',
                     requests: {
                         [HttpMethod.Post]: {
-                            clientOrigin: '',
+                            clientOriginRequirement: '',
                             requestData: defineShape({
                                 payload: '',
                             }),

@@ -1,10 +1,20 @@
 import {assert} from '@augment-vir/assert';
+import {type MaybePromise} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {type BaseRoutePath, defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {
+    type BaseRoutePath,
+    defineApi,
+    defineEndpoint,
+    HttpMethod,
+    HttpStatus,
+    type MakeBivariantFunction,
+} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {
+    type EndpointImplementation,
+    type EndpointMethodImplementationOutput,
+    type EndpointMethodImplementationParams,
     type EndpointMethodImplementations,
-    type ImplementedEndpoint,
 } from './implement-endpoint.js';
 import {createApiImplementor} from './implementor.js';
 
@@ -76,8 +86,24 @@ describe('implementEndpoint', () => {
 });
 
 describe('EndpointImplementation', () => {
+    it('has implementation methods', () => {
+        const endpointImplementation = {} as EndpointImplementation;
+
+        const methodImplementation = endpointImplementation.implementation[HttpMethod.Get];
+
+        assert
+            .tsType(methodImplementation)
+            .equals<
+                | undefined
+                | MakeBivariantFunction<
+                      EndpointMethodImplementationParams,
+                      MaybePromise<EndpointMethodImplementationOutput>
+                  >
+            >();
+    });
+
     it('can be assigned to from a specific instance', () => {
-        const testAssignment: ImplementedEndpoint = implementMockEndpoint(mockEndpoint, {
+        const testAssignment: EndpointImplementation = implementMockEndpoint(mockEndpoint, {
             [HttpMethod.Get]({context, method, endpointDefinition: endpoint}) {
                 assert.tsType(context).equals<MockContext>();
 
@@ -97,7 +123,9 @@ describe('EndpointImplementation', () => {
             },
         });
 
-        assert.tsType<keyof typeof testAssignment>().equals<'implementation' | 'definition'>();
+        assert
+            .tsType<keyof typeof testAssignment>()
+            .equals<'implementation' | 'definition' | 'path' | 'isEndpoint' | 'isWebSocket'>();
         assert.tsType(testAssignment.implementation).equals<EndpointMethodImplementations>();
         assert.tsType(testAssignment.definition.path).equals<BaseRoutePath>();
     });

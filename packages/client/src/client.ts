@@ -249,7 +249,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             throw new Error(`Method '${method}' does not exist on endpoint '${endpoint.path}'.`);
         }
 
-        const searchParams = extractSearchParams(endpoint.path, endpointMethod, genericParams);
+        const searchParams = extractSearchParams(endpointMethod, genericParams);
 
         if (endpoint.path.endsWith('/*') && genericParams.pathParams?.wildcard == undefined) {
             throw new Error('Missing value for wildcard param.');
@@ -312,7 +312,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const requiredHeaders = extractRequiredHeaders(
             endpoint.path,
             endpointMethod,
-            genericParams || {},
+            genericParams?.requiredHeaders,
         );
 
         const optionsHeaders: OutgoingHttpHeaders & Record<string, string> = mapObject(

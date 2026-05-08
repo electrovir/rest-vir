@@ -1,12 +1,16 @@
-import {assert, assertWrap} from '@augment-vir/assert';
-import {definableHttpMethods} from '@rest-vir/api';
+import {assert, assertWrap, check} from '@augment-vir/assert';
+import {ensureErrorAndPrependMessage} from '@augment-vir/common';
+import {type ApiDefinition, definableHttpMethods, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {extractRequiredHeaders, readHeaderValue} from '@rest-vir/client';
 import {assertValidShape} from 'object-shape-tester';
 import {
+    type EndpointImplementation,
     type EndpointMethodImplementationParams,
-    type ImplementedEndpoint,
 } from '../../implementation/implement-endpoint.js';
 import {type RunningServerInfo} from '../../implementation/raw-route-data.js';
+import {type ServerLogger} from '../../implementation/server-logger.js';
 import {type RestVirRequestContext} from '../run-api/attach-api.js';
+import {createRestVirHandlerErrorPrefix, RestVirHandlerError} from '../util/handler.error.js';
 import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js';
 import {buildHandlerParams} from './handler-params.js';
 
@@ -25,11 +29,15 @@ export async function handleEndpointRequest(
         response,
         attachId,
         server,
+        serverLogger,
+        api,
     }: Readonly<
         Omit<RouteHandlerParams, 'route'> & {
             attachId: string;
-            endpoint: Readonly<ImplementedEndpoint>;
+            endpoint: Readonly<EndpointImplementation>;
             server: Readonly<RunningServerInfo>;
+            serverLogger: Readonly<ServerLogger>;
+            api: ApiDefinition;
         }
     >,
 ): Promise<HandledOutput> {
@@ -44,6 +52,10 @@ export async function handleEndpointRequest(
         const requestData = restVirContext.requestData;
 
         const searchParams = restVirContext.searchParams;
+        const method = assertWrap.isIn(
+            assertWrap.isEnumValue(request.method.toUpperCase(), HttpMethod),
+            definableHttpMethods,
+        );
 
         const endpointParams: EndpointMethodImplementationParams = {
             ...buildHandlerParams({
@@ -52,66 +64,115 @@ export async function handleEndpointRequest(
                 response,
                 server,
             }),
-            method: assertWrap.isIn(request.method.toUpperCase(), definableHttpMethods),
-            endpointDefinition: endpoint,
+            method,
             context,
             searchParams,
+            endpointDefinition: endpoint.definition,
+            serverLogger,
         };
 
-        const endpointResult = (await endpoint.implementation(
-            endpointParams,
-        )) as EndpointImplementationOutput;
+        const endpointMethodImplementation = endpoint.implementation[method];
+        const endpointMethodDefinition = endpoint.definition.requests[method];
+
+        if (!endpointMethodImplementation) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                `No implementation found for method '${method}'.`,
+                HttpStatus.NotFound,
+            );
+        } else if (!endpointMethodDefinition) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                `No definition found for method '${method}'.`,
+                HttpStatus.NotFound,
+            );
+        }
+
+        const endpointResult = await endpointMethodImplementation(endpointParams);
 
         /** The implementation already handled the response (e.g. SSE streaming). */
         if ('responseHandled' in endpointResult) {
             return undefined;
             /** If the dev forgets to set a status code. */
-        } else if (!(endpointResult.statusCode as any)) {
-            throw new RestVirHandlerError(endpoint, 'Missing response status code.');
-        } else if (isErrorHttpStatus(endpointResult.statusCode)) {
-            endpoint.service.logger.error(
-                new RestVirHandlerError(
-                    endpoint,
-                    `Endpoint implementation returned error status: ${endpointResult.statusCode}`,
-                    endpointResult.statusCode,
-                ),
-            );
-            return {
-                statusCode: endpointResult.statusCode,
-                body: endpointResult.responseErrorMessage,
-                headers: endpointResult.headers,
-            };
-        } else if (endpointResult.responseData) {
-            if (endpoint.responseDataShape == undefined) {
-                throw new RestVirHandlerError(endpoint, 'Got response data but none was expected.');
-            }
-
-            if (!endpoint.bypassResponseValidation) {
-                assertValidShape(
-                    endpointResult.responseData,
-                    endpoint.responseDataShape,
-                    {
-                        allowExtraKeys: true,
-                    },
-                    'invalid response data',
-                );
-            }
-
-            return {
-                headers: {
-                    'content-type': endpointResult.dataType || 'application/json',
-                    ...endpointResult.headers,
-                },
-                statusCode: endpointResult.statusCode,
-                body: endpointResult.responseData,
-            };
-        } else {
-            return {
-                statusCode: endpointResult.statusCode,
-                headers: endpointResult.headers,
-            };
         }
+
+        const [
+            rawStatusCode,
+            statusResponse,
+        ] = Object.entries(endpointResult)[0] || [];
+        const statusCode = Number(rawStatusCode);
+
+        if (!check.isEnumValue(statusCode, HttpStatus)) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                `Invalid response status code: '${statusCode}'.`,
+                HttpStatus.InternalServerError,
+            );
+        } else if (!statusResponse) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                'Missing status code response.',
+                HttpStatus.InternalServerError,
+            );
+        }
+
+        const statusResponseDefinition =
+            endpoint.definition.requests[method]?.responses[statusCode];
+
+        if (statusResponseDefinition?.responseData) {
+            assertValidShape(statusResponse.responseData, statusResponseDefinition.responseData);
+        } else if (statusResponse.responseData) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                'Got response data but none was expected.',
+                HttpStatus.InternalServerError,
+            );
+        }
+
+        return {
+            statusCode,
+            body: statusResponse.responseData,
+            headers: extractRequiredHeaders(endpoint.path, endpointMethodDefinition, {
+                ...statusResponse.headers,
+                'content-type':
+                    readHeaderValue(statusResponse.headers || {}, 'content-type') ||
+                    'application/json',
+            }),
+        };
     } catch (error) {
-        throw ensureErrorAndPrependMessage(error, createRestVirHandlerErrorPrefix(endpoint));
+        throw ensureErrorAndPrependMessage(
+            error,
+            createRestVirHandlerErrorPrefix({
+                apiName: api.apiName,
+                isEndpoint: true,
+                isWebSocket: false,
+                path: endpoint.path,
+            }),
+        );
     }
 }

@@ -7,8 +7,10 @@ import {
     defineEndpoint,
     type EndpointDefinition,
     type EndpointMethodDefinition,
+    type EndpointResponseHeadersType,
     type ExtractEndpointMethodDefinition,
     type ResponseDefinitions,
+    type ResponseStatusDefinition,
 } from './endpoint.js';
 
 describe('ExtractEndpointMethodDefinition', () => {
@@ -70,7 +72,7 @@ describe('ExtractEndpointMethodDefinition', () => {
 describe('EndpointMethodDefinition', () => {
     it('allows requestData for POST', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Post> = {
-            clientOrigin: 'https://example.com',
+            clientOriginRequirement: 'https://example.com',
             requestData: defineShape({
                 name: '',
             }),
@@ -84,7 +86,7 @@ describe('EndpointMethodDefinition', () => {
 
     it('disallows requestData for GET', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Get> = {
-            clientOrigin: 'https://example.com',
+            clientOriginRequirement: 'https://example.com',
             // @ts-expect-error: GET does not allow requestData
             requestData: defineShape({
                 name: '',
@@ -96,7 +98,7 @@ describe('EndpointMethodDefinition', () => {
             },
         };
         const definition2: EndpointMethodDefinition<HttpMethod.Get> = {
-            clientOrigin: 'https://example.com',
+            clientOriginRequirement: 'https://example.com',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: defineShape(''),
@@ -107,7 +109,7 @@ describe('EndpointMethodDefinition', () => {
 
     it('allows searchParams', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Get> = {
-            clientOrigin: '',
+            clientOriginRequirement: '',
             searchParams: {
                 query: defineShape(''),
                 page: defineShape(0),
@@ -122,7 +124,7 @@ describe('EndpointMethodDefinition', () => {
 
     it('allows customProps', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Get> = {
-            clientOrigin: '',
+            clientOriginRequirement: '',
             customProps: {
                 someProp: 'hello',
             },
@@ -136,7 +138,7 @@ describe('EndpointMethodDefinition', () => {
 
     it('allows omitting optional fields', () => {
         const definition: EndpointMethodDefinition<HttpMethod.Post> = {
-            clientOrigin: '',
+            clientOriginRequirement: '',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: defineShape(''),
@@ -190,7 +192,7 @@ describe('EndpointDefinition', () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape({
@@ -200,7 +202,7 @@ describe('EndpointDefinition', () => {
                     },
                 },
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     requestData: defineShape({
                         name: '',
                     }),
@@ -221,6 +223,26 @@ describe('EndpointDefinition', () => {
             path: '/',
             requests: {},
         };
+    });
+
+    it('allows response shape access', () => {
+        const endpoint: EndpointDefinition = {
+            path: '/',
+            requests: {},
+        };
+
+        const responseDefinition =
+            endpoint.requests[HttpMethod.Get]?.responses[HttpStatus.Accepted];
+
+        assert.tsType(responseDefinition).equals<ResponseStatusDefinition | undefined>();
+    });
+});
+
+describe('EndpointResponseHeadersType', () => {
+    it('has default headers type', () => {
+        const defaultHeaders = {} as any as EndpointResponseHeadersType;
+
+        assert.tsType(defaultHeaders).equals<Record<string, string>>();
     });
 });
 

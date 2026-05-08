@@ -3,8 +3,8 @@
 import {type HttpStatus, type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
 import {type FastifyReply} from 'fastify';
 import {type OutgoingHttpHeaders} from 'node:http';
-import {type ImplementedEndpoint} from '../../implementation/implement-endpoint.js';
-import {type ImplementedWebSocket} from '../../implementation/implement-websocket.js';
+import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {type ServerRequest, type ServerResponse} from '../../implementation/raw-route-data.js';
 import {setRawResponseHeaders, setResponseHeaders} from '../util/headers.js';
 
@@ -65,8 +65,7 @@ export type HandledOutput =
 export type RouteHandlerParams = {
     request: ServerRequest;
     response: ServerResponse;
-    // todo: why accept both?
-    route: Readonly<ImplementedEndpoint | ImplementedWebSocket>;
+    route: Readonly<EndpointImplementation | WebSocketImplementation>;
 };
 
 /**

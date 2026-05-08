@@ -1,7 +1,11 @@
+import {check} from '@augment-vir/assert';
+import {awaitedForEach, ensureErrorAndPrependMessage} from '@augment-vir/common';
 import {ClusterManager, runInCluster, type WorkerRunner} from 'cluster-vir';
 import fastify, {type FastifyInstance, type FastifyPluginCallback} from 'fastify';
 import {getPortPromise} from 'portfinder';
-import {attachApi} from './attach-api.js';
+import {type ApiImplementation} from '../../implementation/implement-api.js';
+import {createServerLogger} from '../../implementation/server-logger.js';
+import {type ApiServerOptions, attachApi} from './attach-api.js';
 import {finalizeOptions, type RunApiOptions, type RunApiUserOptions} from './run-api-options.js';
 
 /**
@@ -65,50 +69,38 @@ export type FastifyPlugins = [plugin: FastifyPluginCallback, options?: any][];
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
 export async function startService(
-    service: Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                createContext: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-                logger: true;
-                postHook: true;
-            }
-        >
-    >,
-    userOptions: Readonly<RunApiUserOptions> = {},
+    api: Readonly<ApiImplementation>,
+    options: Readonly<RunApiUserOptions & ApiServerOptions>,
     fastifyPlugins: Readonly<FastifyPlugins> = [],
 ): Promise<StartServiceOutput> {
+    const serverLogger = createServerLogger(api.implementation.serverLogger);
+
     process.on('unhandledRejection', (reason) => {
-        service.logger.error(
+        serverLogger.error(
             ensureErrorAndPrependMessage(
                 reason,
-                `Unhandled async rejection in ${service.serviceName}:`,
+                `Unhandled async rejection in ${api.definition.apiName}:`,
             ),
         );
     });
 
-    const options = finalizeOptions(service.serviceOrigin, userOptions);
+    const finalOptions = finalizeOptions(options.serverOrigin, options);
 
     const port: number | boolean =
-        options.lockPort || check.isFalse(options.port)
-            ? options.port
+        finalOptions.lockPort || check.isFalse(finalOptions.port)
+            ? finalOptions.port
             : await getPortPromise({
-                  port: options.port,
+                  port: finalOptions.port,
               });
-    options.port = port;
+    finalOptions.port = port;
 
-    if (options.workerCount === 1 || !check.isNumber(port)) {
+    if (finalOptions.workerCount === 1 || !check.isNumber(port)) {
         /** Only run a single server. */
-        const result = await startServer(service, options, fastifyPlugins);
+        const result = await startServer(api, finalOptions, fastifyPlugins, options.serverOrigin);
 
-        if (options.port) {
-            service.logger.info(
-                `${service.serviceName} started on http://${result.host}:${result.port}`,
+        if (finalOptions.port) {
+            serverLogger.info(
+                `${api.definition.apiName} started on http://${result.host}:${result.port}`,
             );
         }
 
@@ -117,7 +109,12 @@ export async function startService(
         /** Run in a cluster. */
         const manager = runInCluster(
             async () => {
-                const {kill} = await startServer(service, options, fastifyPlugins);
+                const {kill} = await startServer(
+                    api,
+                    finalOptions,
+                    fastifyPlugins,
+                    options.serverOrigin,
+                );
 
                 return () => {
                     kill();
@@ -125,21 +122,21 @@ export async function startService(
             },
             {
                 startWorkersImmediately: false,
-                respawnWorkers: !options.preventWorkerRespawn,
-                workerCount: options.workerCount,
+                respawnWorkers: !finalOptions.preventWorkerRespawn,
+                workerCount: finalOptions.workerCount,
             },
         );
 
         if (check.instanceOf(manager, ClusterManager)) {
             await manager.startWorkers();
-            if (options.port) {
-                service.logger.info(
-                    `${service.serviceName} started on http://${options.host}:${options.port}`,
+            if (finalOptions.port) {
+                serverLogger.info(
+                    `${api.definition.apiName} started on http://${finalOptions.host}:${finalOptions.port}`,
                 );
             }
 
             return {
-                host: options.host,
+                host: finalOptions.host,
                 port,
                 cluster: manager,
                 kill() {
@@ -148,7 +145,7 @@ export async function startService(
             };
         } else {
             return {
-                host: options.host,
+                host: finalOptions.host,
                 port,
                 worker: manager,
                 kill() {
@@ -160,23 +157,10 @@ export async function startService(
 }
 
 async function startServer(
-    service: Readonly<
-        SelectFrom<
-            GenericServiceImplementation,
-            {
-                webSockets: true;
-                endpoints: true;
-                serviceName: true;
-                createContext: true;
-                serviceOrigin: true;
-                requiredClientOrigin: true;
-                logger: true;
-                postHook: true;
-            }
-        >
-    >,
+    api: Readonly<ApiImplementation>,
     {host, port}: Readonly<Pick<RunApiOptions, 'host' | 'port'>>,
     fastifyPlugins: Readonly<FastifyPlugins>,
+    serverOrigin: string,
 ): Promise<StartServiceOutput> {
     const server = fastify();
 
@@ -190,7 +174,8 @@ async function startServer(
         },
     );
 
-    await attachApi(server, service, {
+    await attachApi(server, api, {
+        serverOrigin,
         throwErrorsForExternalHandling: false,
     });
 

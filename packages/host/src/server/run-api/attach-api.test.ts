@@ -7,7 +7,7 @@ describe(extractRunningServerInfo.name, () => {
             it: 'handles a missing address',
             inputs: [
                 {
-                    serviceOrigin: 'http://localhost:4321',
+                    serverOrigin: 'http://localhost:4321',
                 },
                 {
                     server: {
@@ -25,7 +25,7 @@ describe(extractRunningServerInfo.name, () => {
             it: 'handles a string address',
             inputs: [
                 {
-                    serviceOrigin: 'http://localhost:4321',
+                    serverOrigin: 'http://localhost:4321',
                 },
                 {
                     server: {
@@ -43,7 +43,7 @@ describe(extractRunningServerInfo.name, () => {
             it: 'handles an address with a port',
             inputs: [
                 {
-                    serviceOrigin: 'http://localhost:4321',
+                    serverOrigin: 'http://localhost:4321',
                 },
                 {
                     server: {
@@ -65,7 +65,7 @@ describe(extractRunningServerInfo.name, () => {
             it: 'handles an service origin without a port',
             inputs: [
                 {
-                    serviceOrigin: 'http://localhost',
+                    serverOrigin: 'http://localhost',
                 },
                 {
                     server: {

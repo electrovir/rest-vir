@@ -16,7 +16,8 @@ import {
 } from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type ImplementedWebSocket<Path extends PropertyKey = PropertyKey> = {
+export type WebSocketImplementation<Path extends PropertyKey = PropertyKey> = {
+    path: Path;
     implementation: WebSocketListenerImplementations;
     definition: WebSocketDefinition & {
         path: Path;

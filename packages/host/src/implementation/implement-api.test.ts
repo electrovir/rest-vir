@@ -2,9 +2,9 @@ import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {defineApi, defineEndpoint, defineWebSocket, HttpMethod, HttpStatus} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
-import {type ApiImplementation, implementApi} from './implement-api.js';
-import {type ImplementedEndpoint} from './implement-endpoint.js';
-import {type ImplementedWebSocket} from './implement-websocket.js';
+import {type ApiRouteImplementations, implementApi} from './implement-api.js';
+import {type EndpointImplementation} from './implement-endpoint.js';
+import {type WebSocketImplementation} from './implement-websocket.js';
 import {createApiImplementor} from './implementor.js';
 
 const pingEndpoint = defineEndpoint({
@@ -77,14 +77,14 @@ const smallImplementor = createApiImplementor<unknown>()(smallApi);
 
 describe(implementApi.name, () => {
     it('returns the implementations object as-is', () => {
-        const implementations: ApiImplementation<typeof smallApi> = {
+        const implementations: ApiRouteImplementations<typeof smallApi> = {
             endpoints: {
-                '/ping': {} as ImplementedEndpoint,
-                '/users/create': {} as ImplementedEndpoint,
+                '/ping': {} as EndpointImplementation,
+                '/users/create': {} as EndpointImplementation,
             },
             webSockets: {
-                '/ws/chat': {} as ImplementedWebSocket,
-                '/ws/presence': {} as ImplementedWebSocket,
+                '/ws/chat': {} as WebSocketImplementation,
+                '/ws/presence': {} as WebSocketImplementation,
             },
         };
 
@@ -147,28 +147,28 @@ describe(implementApi.name, () => {
 
 describe('ApiImplementation', () => {
     it('keys endpoints by the api endpoint paths', () => {
-        type Implementation = ApiImplementation<typeof smallApi>;
+        type Implementation = ApiRouteImplementations<typeof smallApi>;
 
         assert.tsType<keyof Implementation['endpoints']>().equals<'/ping' | '/users/create'>();
     });
 
     it('keys webSockets by the api web socket paths', () => {
-        type Implementation = ApiImplementation<typeof smallApi>;
+        type Implementation = ApiRouteImplementations<typeof smallApi>;
 
         assert.tsType<keyof Implementation['webSockets']>().equals<'/ws/chat' | '/ws/presence'>();
     });
 
     it('rejects an extra endpoint key not declared on the api', () => {
-        const implementations: ApiImplementation<typeof smallApi> = {
+        const implementations: ApiRouteImplementations<typeof smallApi> = {
             endpoints: {
-                '/ping': {} as ImplementedEndpoint,
-                '/users/create': {} as ImplementedEndpoint,
+                '/ping': {} as EndpointImplementation,
+                '/users/create': {} as EndpointImplementation,
                 // @ts-expect-error: '/unknown' is not a registered endpoint path.
-                '/unknown': {} as ImplementedEndpoint,
+                '/unknown': {} as EndpointImplementation,
             },
             webSockets: {
-                '/ws/chat': {} as ImplementedWebSocket,
-                '/ws/presence': {} as ImplementedWebSocket,
+                '/ws/chat': {} as WebSocketImplementation,
+                '/ws/presence': {} as WebSocketImplementation,
             },
         };
 
@@ -178,16 +178,16 @@ describe('ApiImplementation', () => {
     it('rejects a missing endpoint key', () => {
         const incomplete = {
             endpoints: {
-                '/ping': {} as ImplementedEndpoint,
+                '/ping': {} as EndpointImplementation,
             },
             webSockets: {
-                '/ws/chat': {} as ImplementedWebSocket,
-                '/ws/presence': {} as ImplementedWebSocket,
+                '/ws/chat': {} as WebSocketImplementation,
+                '/ws/presence': {} as WebSocketImplementation,
             },
         };
 
         // @ts-expect-error: '/users/create' implementation is missing.
-        const implementations: ApiImplementation<typeof smallApi> = incomplete;
+        const implementations: ApiRouteImplementations<typeof smallApi> = incomplete;
 
         assert.isDefined(implementations);
     });
@@ -195,16 +195,16 @@ describe('ApiImplementation', () => {
     it('rejects a missing webSocket key', () => {
         const incomplete = {
             endpoints: {
-                '/ping': {} as ImplementedEndpoint,
-                '/users/create': {} as ImplementedEndpoint,
+                '/ping': {} as EndpointImplementation,
+                '/users/create': {} as EndpointImplementation,
             },
             webSockets: {
-                '/ws/chat': {} as ImplementedWebSocket,
+                '/ws/chat': {} as WebSocketImplementation,
             },
         };
 
         // @ts-expect-error: '/ws/presence' implementation is missing.
-        const implementations: ApiImplementation<typeof smallApi> = incomplete;
+        const implementations: ApiRouteImplementations<typeof smallApi> = incomplete;
 
         assert.isDefined(implementations);
     });
@@ -212,13 +212,13 @@ describe('ApiImplementation', () => {
     it('requires both endpoints and webSockets fields on the implementation object', () => {
         const onlyEndpoints = {
             endpoints: {
-                '/ping': {} as ImplementedEndpoint,
-                '/users/create': {} as ImplementedEndpoint,
+                '/ping': {} as EndpointImplementation,
+                '/users/create': {} as EndpointImplementation,
             },
         };
 
         // @ts-expect-error: webSockets field is missing.
-        const implementations: ApiImplementation<typeof smallApi> = onlyEndpoints;
+        const implementations: ApiRouteImplementations<typeof smallApi> = onlyEndpoints;
 
         assert.isDefined(implementations);
     });
