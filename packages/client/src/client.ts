@@ -252,10 +252,6 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
 
         const searchParams = extractSearchParams(endpointMethod, genericParams);
 
-        if (endpoint.path.endsWith('/*') && genericParams.pathParams?.wildcard == undefined) {
-            throw new Error('Missing value for wildcard param.');
-        }
-
         const pathname = endpoint.path
             .replaceAll(/\/:([^/]+)/g, (wholeMatch, paramName: string): string => {
                 pathParamsCount++;
@@ -272,13 +268,16 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
                     throw new Error(`Missing value for path param '${paramName}'.`);
                 }
             })
-            .replace(
-                /\/\*$/,
-                addPrefix({
-                    value: genericParams.pathParams?.wildcard || '',
+            .replace(/\/\*$/, () => {
+                pathParamsCount++;
+                if (genericParams.pathParams?.wildcard == undefined) {
+                    throw new Error('Missing value for wildcard param.');
+                }
+                return addPrefix({
+                    value: genericParams.pathParams.wildcard,
                     prefix: '/',
-                }),
-            );
+                });
+            });
 
         const builtUrl = buildUrl(this.baseUrl, {
             search: searchParams,
@@ -312,7 +311,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
 
         const requiredHeaders = extractRequiredHeaders(
             endpoint.path,
-            endpointMethod,
+            endpointMethod.requiredRequestHeaders,
             genericParams?.requiredHeaders,
         );
 

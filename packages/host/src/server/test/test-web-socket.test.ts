@@ -37,7 +37,27 @@ const api = defineApi({
 
 const implementor = createApiImplementor<undefined>()(api);
 
-const apiImplementation = implementApi<undefined>()(api, {
+const basicImplementation = implementor.implementWebSocket(basicWebSocket, {
+    open() {},
+    close() {},
+    message({webSocket}) {
+        webSocket.send('pong');
+    },
+});
+
+const noClientDataImplementation = implementor.implementWebSocket(noClientDataWebSocket, {
+    open({webSocket}) {
+        webSocket.send('ok');
+    },
+});
+
+const requiredProtocolsImplementation = implementor.implementWebSocket(requiredProtocolsWebSocket, {
+    message({webSocket}) {
+        webSocket.send('ok');
+    },
+});
+
+implementApi<undefined>()(api, {
     createHostContext() {
         return {
             context: undefined,
@@ -48,23 +68,9 @@ const apiImplementation = implementApi<undefined>()(api, {
     },
     endpoints: {},
     webSockets: {
-        '/socket': implementor.implementWebSocket(basicWebSocket, {
-            open() {},
-            close() {},
-            message({webSocket}) {
-                webSocket.send('pong');
-            },
-        }),
-        '/no-client-data': implementor.implementWebSocket(noClientDataWebSocket, {
-            open({webSocket}) {
-                webSocket.send('ok');
-            },
-        }),
-        '/required-protocols': implementor.implementWebSocket(requiredProtocolsWebSocket, {
-            message({webSocket}) {
-                webSocket.send('ok');
-            },
-        }),
+        '/socket': basicImplementation,
+        '/no-client-data': noClientDataImplementation,
+        '/required-protocols': requiredProtocolsImplementation,
     },
 });
 
@@ -75,22 +81,19 @@ describe(testWebSocket.name, () => {
             openedOnClient: false,
             messageOnClient: false,
         };
-        const webSocket = await testWebSocket(
-            apiImplementation.implementation.webSockets['/socket'],
-            {
-                listeners: {
-                    open() {
-                        listeners.openedOnClient = true;
-                    },
-                    close() {
-                        listeners.closedOnClient = true;
-                    },
-                    message() {
-                        listeners.messageOnClient = true;
-                    },
+        const webSocket = await testWebSocket(basicImplementation, {
+            listeners: {
+                open() {
+                    listeners.openedOnClient = true;
+                },
+                close() {
+                    listeners.closedOnClient = true;
+                },
+                message() {
+                    listeners.messageOnClient = true;
                 },
             },
-        );
+        });
 
         await waitUntil.isTrue(
             () => listeners.openedOnClient,
@@ -119,20 +122,16 @@ describe(testWebSocket.name, () => {
 describe(withWebSocketTest.name, () => {
     it(
         'tests a basic WebSocket connection',
-        withWebSocketTest(
-            apiImplementation.implementation.webSockets['/no-client-data'],
-            {},
-            async (webSocket) => {
-                const response = await webSocket.sendAndWaitForReply();
-                assert.strictEquals(response, 'ok');
-            },
-        ),
+        withWebSocketTest(noClientDataImplementation, {}, async (webSocket) => {
+            const response = await webSocket.sendAndWaitForReply();
+            assert.strictEquals(response, 'ok');
+        }),
     );
 
     it(
         'accepts protocols',
         withWebSocketTest(
-            apiImplementation.implementation.webSockets['/required-protocols'],
+            requiredProtocolsImplementation,
             {
                 protocols: ['hi'],
             },
@@ -148,7 +147,7 @@ describe(withWebSocketTest.name, () => {
     it('requires protocols', async () => {
         await assert.throws(
             withWebSocketTest(
-                apiImplementation.implementation.webSockets['/required-protocols'],
+                requiredProtocolsImplementation,
                 // @ts-expect-error: protocols are missing
                 {},
                 async () => {},
@@ -162,10 +161,10 @@ describe(withWebSocketTest.name, () => {
     it('rejects wrong protocol values', async () => {
         await assert.throws(
             withWebSocketTest(
-                apiImplementation.implementation.webSockets['/required-protocols'],
+                requiredProtocolsImplementation,
                 {
                     protocols: [
-                        'a',
+                        'hi',
                         // @ts-expect-error: this should be a string, but it'll get stringified anyway
                         -1,
                         // @ts-expect-error: this should be 'hi'

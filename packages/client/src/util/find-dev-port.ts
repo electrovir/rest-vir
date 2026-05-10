@@ -6,7 +6,7 @@ import {
     type MaybePromise,
     type PartialWithUndefined,
 } from '@augment-vir/common';
-import {type ApiDefinition, type BaseRoutePath} from '@rest-vir/api';
+import {type ApiDefinition, type EndpointDefinition} from '@rest-vir/api';
 import {convertDuration, type AnyDuration} from 'date-vir';
 import {buildUrl, parseUrl} from 'url-vir';
 import {type EndpointFetchParamObject} from '../endpoint-fetch/endpoint-params.js';
@@ -119,7 +119,7 @@ export async function findDevServicePort(
         const {port} = await waitUntil.isDefined(
             async () => {
                 return {
-                    port: await findLivePort(startOrigin, endpoint.path, {
+                    port: await findLivePort(startOrigin, endpoint, {
                         ...options,
                         isValidResponse(response) {
                             return response.headers.get(restVirApiNameHeader) === api.apiName;
@@ -164,8 +164,8 @@ export async function findDevServicePort(
  */
 export async function findLivePort(
     originWithStartingPort: string,
-    pathToCheck: BaseRoutePath,
-
+    /** The endpoint to send fetches to for detecting a live port. */
+    endpoint: EndpointDefinition,
     {
         fetchOverride,
         maxScanDistance = 100,
@@ -203,14 +203,18 @@ export async function findLivePort(
         }
 
         const newUrl = buildUrl(originWithStartingPort, {
-            pathname: pathToCheck,
+            pathname: endpoint.path,
             port,
         }).href;
 
         const response = await wrapInTry(() =>
-            fetch(newUrl, {
-                method: HttpMethod.Options,
-            }),
+            (fetchOverride || fetch)(
+                newUrl,
+                {
+                    method: HttpMethod.Options,
+                },
+                endpoint,
+            ),
         );
 
         if (

@@ -67,8 +67,9 @@ export type ResolveWildcard<HasWildcard extends boolean> = [HasWildcard] extends
         }>;
 
 /**
- * Resolves the pathParams portion of path params. Extracted to avoid re-evaluating
- * `NamedPathParams` multiple times inside {@link ExtractPathParams}.
+ * Resolves the named-param portion of path params as a flat record of `{name: string}` entries.
+ * Extracted to avoid re-evaluating `NamedPathParams` multiple times inside
+ * {@link ExtractPathParams}.
  *
  * Tuple wrapping (`[Named] extends [string]`) prevents distributive conditional behavior so that a
  * union like `'a' | 'b'` produces a single `Record<'a' | 'b', string>` instead of `Record<'a',
@@ -80,16 +81,10 @@ export type ResolveWildcard<HasWildcard extends boolean> = [HasWildcard] extends
  */
 export type ResolveNamedParams<Named extends string> =
     IsNever<Named> extends true
-        ? Readonly<{
-              pathParams?: undefined;
-          }>
+        ? Readonly<unknown>
         : [Named] extends [string]
-          ? Readonly<{
-                pathParams: Readonly<Record<Named, string>>;
-            }>
-          : Readonly<{
-                pathParams?: undefined;
-            }>;
+          ? Readonly<Record<Named, string>>
+          : Readonly<unknown>;
 
 /**
  * Generic path params.
@@ -97,10 +92,10 @@ export type ResolveNamedParams<Named extends string> =
  * @category Internal
  */
 export type GenericPathParams =
-    | PartialWithUndefined<{
+    | (PartialWithUndefined<{
           wildcard: string;
-          pathParams: Record<string, string>;
-      }>
+      }> &
+          Record<string, string | undefined>)
     | undefined;
 
 /**

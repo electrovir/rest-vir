@@ -16,12 +16,13 @@ import {
 } from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type WebSocketImplementation<Path extends PropertyKey = PropertyKey> = {
-    path: Path;
-    implementation: WebSocketListenerImplementations;
-    definition: WebSocketDefinition & {
-        path: Path;
-    };
+export type WebSocketImplementation<
+    ThisWebSocket extends Readonly<WebSocketDefinition> = WebSocketDefinition,
+    HostContext = unknown,
+> = {
+    path: ThisWebSocket['path'];
+    implementation: WebSocketListenerImplementations<ThisWebSocket, HostContext>;
+    definition: ThisWebSocket;
     isWebSocket: true;
     isEndpoint: false;
 };

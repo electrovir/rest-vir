@@ -21,7 +21,7 @@ export function createApiImplementor<HostContext>(this: void) {
                 implementation: Readonly<
                     EndpointMethodImplementations<NoInfer<Endpoint>, HostContext>
                 >,
-            ): EndpointImplementation<Endpoint> => {
+            ): EndpointImplementation<Endpoint, HostContext> => {
                 return {
                     path: endpoint.path,
                     implementation,
@@ -39,7 +39,7 @@ export function createApiImplementor<HostContext>(this: void) {
                 implementation: Readonly<
                     WebSocketListenerImplementations<NoInfer<ThisWebSocket>, HostContext>
                 >,
-            ): WebSocketImplementation<ThisWebSocket['path']> => {
+            ): WebSocketImplementation<ThisWebSocket, HostContext> => {
                 return {
                     path: webSocket.path,
                     implementation,

@@ -1,7 +1,9 @@
 import {
     type ApiDefinition,
+    type EndpointDefinition,
     type OriginRequirement,
     type SetNullishPropertiesAsOptional,
+    type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type CreateHostContext} from './host-context.js';
 import {type EndpointImplementation} from './implement-endpoint.js';
@@ -12,7 +14,7 @@ import {type UserServerLogger} from './server-logger.js';
 export function implementApi<HostContext = unknown>() {
     return <const Api extends Readonly<ApiDefinition>>(
         api: Readonly<Api>,
-        implementation: Readonly<ApiRouteImplementations<NoInfer<Api>, NoInfer<HostContext>>>,
+        implementation: Readonly<ApiRouteImplementations<NoInfer<Api>, HostContext>>,
     ): Readonly<ApiImplementation<Api, HostContext>> => {
         return {
             definition: api,
@@ -41,9 +43,21 @@ export type ApiRouteImplementations<
      * Fired after every request resolves, before it is sent. This hooks into Fastify with the
      * `onSend` hook.
      */
-    postRouteHook: PostRouteHook<HostContext> | undefined;
+    postRouteHook: PostRouteHook<NoInfer<HostContext>> | undefined;
     clientOriginRequirement: OriginRequirement | undefined;
 }> & {
-    endpoints: Record<keyof Api['endpoints'], EndpointImplementation>;
-    webSockets: Record<keyof Api['webSockets'], WebSocketImplementation>;
+    endpoints: {
+        [Path in keyof Api['endpoints']]: EndpointImplementation<
+            EndpointDefinition & {
+                path: Path;
+            },
+            NoInfer<HostContext>
+        >;
+    };
+    webSockets: {
+        [Path in keyof Api['webSockets']]: WebSocketImplementation<
+            WebSocketDefinition & {path: Path},
+            NoInfer<HostContext>
+        >;
+    };
 };

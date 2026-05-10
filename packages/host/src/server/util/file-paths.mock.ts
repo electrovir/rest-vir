@@ -1,11 +1,12 @@
 import {join, resolve} from 'node:path';
 
-export const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..');
+export const monoRepoDirPath = resolve(import.meta.dirname, '..', '..', '..', '..', '..');
 export const startServiceMocksDirPath = join(
     monoRepoDirPath,
     'packages',
-    'run-service',
+    'host',
     'src',
-    'start-service',
+    'server',
+    'run-api',
     'examples',
 );

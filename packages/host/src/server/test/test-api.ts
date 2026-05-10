@@ -247,7 +247,7 @@ export async function testExistingServer<const Api extends Readonly<ApiImplement
 
     await attachApi(server, api, {
         ...options,
-        serverOrigin: fetchOrigin,
+        externalOrigin: fetchOrigin,
     });
 
     const restVirClient = new RestVirClient(api.definition, fetchOrigin);

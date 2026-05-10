@@ -26,9 +26,10 @@ import {type ServerLogger} from './server-logger.js';
 
 export type EndpointImplementation<
     Endpoint extends Readonly<EndpointDefinition> = EndpointDefinition,
+    HostContext = unknown,
 > = {
     path: Endpoint['path'];
-    implementation: Readonly<EndpointMethodImplementations>;
+    implementation: Readonly<EndpointMethodImplementations<Endpoint, HostContext>>;
     definition: Readonly<Endpoint>;
     isWebSocket: false;
     isEndpoint: true;
@@ -63,9 +64,10 @@ export type EndpointMethodImplementations<
           [Method in keyof Endpoint['requests'] as Method extends DefinableHttpMethod
               ? Method
               : never]: Method extends DefinableHttpMethod
-              ? (
-                    params: EndpointMethodImplementationParams<Endpoint, Method, HostContext>,
-                ) => MaybePromise<EndpointMethodImplementationOutput<Endpoint, Method>>
+              ? MakeBivariantFunction<
+                    EndpointMethodImplementationParams<Endpoint, Method, HostContext>,
+                    MaybePromise<EndpointMethodImplementationOutput<Endpoint, Method>>
+                >
               : never;
       }
     : Partial<

@@ -7,9 +7,7 @@ describe(createRestVirHandlerErrorPrefix.name, () => {
             it: 'creates an endpoint prefix string',
             input: {
                 path: '/path',
-                service: {
-                    serviceName: 'test service',
-                },
+                apiName: 'test service',
                 isEndpoint: true,
                 isWebSocket: false,
             },
@@ -19,9 +17,7 @@ describe(createRestVirHandlerErrorPrefix.name, () => {
             it: 'creates a WebSocket prefix string',
             input: {
                 path: '/path',
-                service: {
-                    serviceName: 'test service',
-                },
+                apiName: 'test service',
                 isEndpoint: false,
                 isWebSocket: true,
             },
@@ -31,9 +27,7 @@ describe(createRestVirHandlerErrorPrefix.name, () => {
             it: 'creates a plain prefix string',
             input: {
                 path: '/path',
-                service: {
-                    serviceName: 'test service',
-                },
+                apiName: 'test service',
                 isEndpoint: false,
                 isWebSocket: false,
             },

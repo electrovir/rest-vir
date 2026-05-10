@@ -127,7 +127,7 @@ export async function handleRoute({
             });
         }
 
-        /* node:coverage ignore next: this can't actually be triggered but it should be covered as a potential future edge case. */
+        /* node:coverage ignore next 10: this can't actually be triggered but it should be covered as a potential future edge case. */
         throw new RestVirHandlerError(
             {
                 apiName: api.definition.apiName,

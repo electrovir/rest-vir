@@ -363,15 +363,18 @@ describe(checkOriginRequirement.name, () => {
         ]);
     });
 
-    describe('array with anyOrigin', () => {
-        it('returns true (not *) when anyOrigin is in an array', async () => {
-            const result = await checkOriginRequirement('https://example.com', [
-                {
-                    anyOrigin: true,
-                },
-            ]);
-            assert.isTrue(result);
-        });
+    it('returns true (not *) when anyOrigin is in an array', async () => {
+        const result = await checkOriginRequirement('https://example.com', [
+            {
+                anyOrigin: true,
+            },
+        ]);
+        assert.isTrue(result);
+    });
+
+    it('returns false for an object that matches no known requirement shape', async () => {
+        const result = await checkOriginRequirement('https://example.com', {} as OriginRequirement);
+        assert.isFalse(result);
     });
 });
 

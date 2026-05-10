@@ -86,6 +86,14 @@ describe(parseSecWebSocketProtocolHeader.name, () => {
             },
         },
         {
+            it: 'throws on a duplicate protocol followed by another protocol',
+            input: 'a,a,b',
+            throws: {
+                matchConstructor: SyntaxError,
+                matchMessage: 'duplicated',
+            },
+        },
+        {
             it: 'throws on whitespace at the start of the header',
             input: ' a,b',
             throws: {

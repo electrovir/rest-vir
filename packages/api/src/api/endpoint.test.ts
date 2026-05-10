@@ -1,10 +1,12 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {defineShape, type Shape} from 'object-shape-tester';
 import {type NoParam} from '../util/no-param.js';
 import {
     defineEndpoint,
+    extractEndpointMethodDefinition,
+    extractHttpMethod,
     type EndpointDefinition,
     type EndpointMethodDefinition,
     type EndpointResponseHeadersType,
@@ -24,7 +26,7 @@ describe('ExtractEndpointMethodDefinition', () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape({
@@ -34,7 +36,7 @@ describe('ExtractEndpointMethodDefinition', () => {
                     },
                 },
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     requestData: defineShape({
                         name: '',
                     }),
@@ -56,7 +58,7 @@ describe('ExtractEndpointMethodDefinition', () => {
 
         assert.tsType<ExtractedEndpointMethodDefinition>().equals<
             Readonly<{
-                clientOrigin: '';
+                clientOriginRequirement: '';
                 responses: Readonly<{
                     [HttpStatus.Ok]: Readonly<{
                         responseData: Shape<{
@@ -218,17 +220,27 @@ describe('EndpointDefinition', () => {
         };
     });
 
-    it('allows an endpoint with no methods', () => {
+    it('requires at least one method definition', () => {
         const endpoint: EndpointDefinition = {
             path: '/',
+            // @ts-expect-error: requests must declare at least one HTTP method
             requests: {},
         };
+        assert.isDefined(endpoint);
     });
 
     it('allows response shape access', () => {
         const endpoint: EndpointDefinition = {
             path: '/',
-            requests: {},
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
         };
 
         const responseDefinition =
@@ -252,7 +264,7 @@ describe(defineEndpoint.name, () => {
             path: '/',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -271,7 +283,7 @@ describe(defineEndpoint.name, () => {
             path: '/items',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape({
@@ -307,7 +319,7 @@ describe(defineEndpoint.name, () => {
             path: '/resource',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: 'https://get.com',
+                    clientOriginRequirement: 'https://get.com',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -315,7 +327,7 @@ describe(defineEndpoint.name, () => {
                     },
                 },
                 [HttpMethod.Post]: {
-                    clientOrigin: 'https://post.com',
+                    clientOriginRequirement: 'https://post.com',
                     requestData: defineShape({
                         value: 0,
                     }),
@@ -328,8 +340,12 @@ describe(defineEndpoint.name, () => {
             },
         });
 
-        assert.tsType(result.requests[HttpMethod.Get].clientOrigin).equals<'https://get.com'>();
-        assert.tsType(result.requests[HttpMethod.Post].clientOrigin).equals<'https://post.com'>();
+        assert
+            .tsType(result.requests[HttpMethod.Get].clientOriginRequirement)
+            .equals<'https://get.com'>();
+        assert
+            .tsType(result.requests[HttpMethod.Post].clientOriginRequirement)
+            .equals<'https://post.com'>();
     });
 
     it('preserves clientOrigin literal type', () => {
@@ -337,7 +353,7 @@ describe(defineEndpoint.name, () => {
             path: '/me',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: 'https://my-app.com',
+                    clientOriginRequirement: 'https://my-app.com',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -347,7 +363,9 @@ describe(defineEndpoint.name, () => {
             },
         });
 
-        assert.tsType(result.requests[HttpMethod.Get].clientOrigin).equals<'https://my-app.com'>();
+        assert
+            .tsType(result.requests[HttpMethod.Get].clientOriginRequirement)
+            .equals<'https://my-app.com'>();
     });
 
     it('preserves path literal type', () => {
@@ -355,7 +373,7 @@ describe(defineEndpoint.name, () => {
             path: '/widgets/42',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -373,7 +391,7 @@ describe(defineEndpoint.name, () => {
             path: '/admin',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     customProps: {
                         requiresAuth: true,
                         role: 'admin',
@@ -401,7 +419,7 @@ describe(defineEndpoint.name, () => {
             path: '/search',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     searchParams: {
                         query: queryShape,
                         limit: limitShape,
@@ -431,7 +449,7 @@ describe(defineEndpoint.name, () => {
             path: '/posts',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     requestData: bodyShape,
                     responses: {
                         [HttpStatus.Ok]: {
@@ -450,7 +468,7 @@ describe(defineEndpoint.name, () => {
             path: '/noop',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     requestData: undefined,
                     responses: {
                         [HttpStatus.Ok]: {
@@ -469,7 +487,7 @@ describe(defineEndpoint.name, () => {
             path: '/base',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -487,7 +505,7 @@ describe(defineEndpoint.name, () => {
             path: '/multi',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -495,7 +513,7 @@ describe(defineEndpoint.name, () => {
                     },
                 },
                 [HttpMethod.Put]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     requestData: defineShape({
                         updated: true,
                     }),
@@ -506,7 +524,7 @@ describe(defineEndpoint.name, () => {
                     },
                 },
                 [HttpMethod.Delete]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: defineShape(''),
@@ -524,4 +542,65 @@ describe(defineEndpoint.name, () => {
         // @ts-expect-error: this endpoint has no patch
         assert.isUndefined(result.requests[HttpMethod.Patch]);
     });
+});
+
+describe(extractEndpointMethodDefinition.name, () => {
+    const endpoint = defineEndpoint({
+        path: '/users',
+        requests: {
+            [HttpMethod.Get]: {
+                clientOriginRequirement: '',
+                responses: {
+                    [HttpStatus.Ok]: {
+                        responseData: defineShape({
+                            users: [''],
+                        }),
+                    },
+                },
+            },
+        },
+    });
+
+    it('returns the method definition when defined', () => {
+        const result = extractEndpointMethodDefinition(endpoint, HttpMethod.Get);
+        assert.strictEquals(result, endpoint.requests[HttpMethod.Get]);
+    });
+
+    it('returns undefined when method is not defined', () => {
+        const result = extractEndpointMethodDefinition(
+            endpoint as unknown as EndpointDefinition,
+            HttpMethod.Post,
+        );
+        assert.isUndefined(result);
+    });
+});
+
+describe(extractHttpMethod.name, () => {
+    itCases(extractHttpMethod, [
+        {
+            it: 'extracts uppercase GET',
+            input: 'GET',
+            expect: HttpMethod.Get,
+        },
+        {
+            it: 'normalizes lowercase post',
+            input: 'post',
+            expect: HttpMethod.Post,
+        },
+        {
+            it: 'normalizes mixed case Patch',
+            input: 'Patch',
+            expect: HttpMethod.Patch,
+        },
+        {
+            it: 'returns undefined for unknown methods',
+            input: 'HEAD',
+            expect: undefined,
+        },
+        {
+            it: 'returns undefined for empty string',
+            input: '',
+            expect: undefined,
+        },
+    ]);
 });

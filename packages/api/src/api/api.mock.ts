@@ -4,10 +4,18 @@ import {defineApi} from './api.js';
 import {defineEndpoint} from './endpoint.js';
 import {defineWebSocket} from './web-socket.js';
 
-/** Minimal endpoint: no methods. */
+/** Minimal endpoint: a single GET with no body or response data. */
 export const emptyEndpoint = defineEndpoint({
     path: '/empty',
-    requests: {},
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
+        },
+    },
 });
 
 /** GET-only endpoint with response data. */
@@ -15,7 +23,7 @@ export const usersEndpoint = defineEndpoint({
     path: '/users',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: defineShape({
@@ -37,7 +45,7 @@ export const usersCreateEndpoint = defineEndpoint({
     path: '/users/create',
     requests: {
         [HttpMethod.Post]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             requestData: defineShape({
                 name: '',
                 email: '',
@@ -63,7 +71,7 @@ export const itemByIdEndpoint = defineEndpoint({
     path: '/items/:id',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: defineShape({
@@ -78,7 +86,7 @@ export const itemByIdEndpoint = defineEndpoint({
             },
         },
         [HttpMethod.Put]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             requestData: defineShape({
                 title: '',
                 count: 0,
@@ -94,7 +102,7 @@ export const itemByIdEndpoint = defineEndpoint({
             },
         },
         [HttpMethod.Delete]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             responses: {
                 [HttpStatus.NoContent]: {
                     responseData: undefined,
@@ -109,7 +117,7 @@ export const searchEndpoint = defineEndpoint({
     path: '/search',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             searchParams: {
                 query: defineShape(''),
                 page: defineShape(0),
@@ -132,7 +140,7 @@ export const adminSettingsEndpoint = defineEndpoint({
     path: '/admin/settings',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://admin.example.com',
+            clientOriginRequirement: 'https://admin.example.com',
             customProps: {
                 requiresAuth: true,
                 roles: [
@@ -157,7 +165,7 @@ export const protectedEndpoint = defineEndpoint({
     path: '/protected',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             requiredRequestHeaders: {
                 authorization: defineShape(''),
                 'x-request-id': defineShape(''),
@@ -178,7 +186,7 @@ export const downloadEndpoint = defineEndpoint({
     path: '/download',
     requests: {
         [HttpMethod.Get]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: defineShape(''),
@@ -197,7 +205,7 @@ export const partnerApiEndpoint = defineEndpoint({
     path: '/partner-api',
     requests: {
         [HttpMethod.Post]: {
-            clientOrigin: /^https:\/\/.*\.partner\.com$/,
+            clientOriginRequirement: /^https:\/\/.*\.partner\.com$/,
             requestData: defineShape({
                 action: '',
             }),
@@ -215,7 +223,7 @@ export const pingEndpoint = defineEndpoint({
     path: '/ping',
     requests: {
         [HttpMethod.Post]: {
-            clientOrigin: {
+            clientOriginRequirement: {
                 anyOriginWithCredentials: true,
             },
             requestData: undefined,
@@ -235,7 +243,7 @@ export const itemPatchEndpoint = defineEndpoint({
     path: '/items/:id/patch',
     requests: {
         [HttpMethod.Patch]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             requestData: defineShape({
                 title: '',
             }),
@@ -256,7 +264,7 @@ export const traceEndpoint = defineEndpoint({
     path: '/trace',
     requests: {
         [HttpMethod.Trace]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: undefined,
@@ -271,7 +279,7 @@ export const fullRouteEndpoint = defineEndpoint({
     path: '/full-route',
     requests: {
         [HttpMethod.Post]: {
-            clientOrigin: 'https://app.example.com',
+            clientOriginRequirement: 'https://app.example.com',
             requestData: defineShape({
                 value: '',
             }),
@@ -372,7 +380,7 @@ export const secureWebSocket = defineWebSocket({
 /** Web socket with per-route clientOrigin. */
 export const partnerWebSocket = defineWebSocket({
     path: '/ws/partner',
-    clientOrigin: 'https://partner.example.com',
+    clientOriginRequirement: 'https://partner.example.com',
     clientMessage: defineShape(''),
     hostMessage: defineShape(0),
 });
@@ -396,10 +404,11 @@ export const fullRouteWebSocket = defineWebSocket({
     requiredRequestHeaders: {
         'sec-websocket-protocol': defineShape(''),
     },
-    clientOrigin: /^https:\/\/.*\.example\.com$/,
+    clientOriginRequirement: /^https:\/\/.*\.example\.com$/,
 });
 
 export const mockApi = defineApi({
+    apiName: 'mock api',
     endpoints: [
         emptyEndpoint,
         usersEndpoint,

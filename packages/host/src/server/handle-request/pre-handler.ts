@@ -285,9 +285,7 @@ function extractRequestData(
         } else {
             return undefined;
         }
-    }
-
-    if (
+    } else if (
         isFormDataShape(requestDataShape) &&
         headers['content-type']?.includes('multipart/form-data')
     ) {

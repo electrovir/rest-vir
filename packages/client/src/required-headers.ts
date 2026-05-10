@@ -1,28 +1,24 @@
 import {assert} from '@augment-vir/assert';
 import {mapObject, stringify} from '@augment-vir/common';
-import {type EndpointMethodDefinition} from '@rest-vir/api';
 import {assertValidShape, type Shape} from 'object-shape-tester';
 
 export function extractRequiredHeaders(
     path: PropertyKey,
-    endpointMethod: Readonly<EndpointMethodDefinition>,
+    requiredRequestHeaders: Record<string, Shape | RegExp> | undefined,
     headerValues: undefined | Record<string, string>,
 ): Record<string, string> {
-    const headerRequirements: Record<string, Shape | RegExp> | undefined =
-        endpointMethod.requiredRequestHeaders;
-
-    if (headerRequirements) {
+    if (requiredRequestHeaders) {
         if (!headerValues) {
             throw new Error(`Endpoint '${String(path)}' has required headers but none were set.`);
         }
 
-        return mapObject(headerRequirements, (headerName, headerRequirement) => {
+        return mapObject(requiredRequestHeaders, (headerName, headerRequirement) => {
             const headerValue = headerValues[headerName];
 
             if (headerRequirement instanceof RegExp) {
                 if (!headerValue || !headerRequirement.test(headerValue)) {
                     throw new Error(
-                        `Required header '${headerName}' value does not match RegExp requirement: '${stringify(headerValue)}'`,
+                        `Route '${String(path)}' required header '${headerName}' value does not match RegExp requirement: '${stringify(headerValue)}'`,
                     );
                 }
             } else {
@@ -34,7 +30,7 @@ export function extractRequiredHeaders(
                     {
                         allowExtraKeys: true,
                     },
-                    `Required header '${headerName}' value does not match shape requirement: '${stringify(headerValue)}'`,
+                    `Route '${String(path)}' required header '${headerName}' value does not match shape requirement: '${stringify(headerValue)}'`,
                 );
             }
 

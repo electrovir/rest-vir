@@ -1,4 +1,5 @@
 import {type Shape} from 'object-shape-tester';
+import {type IsNever} from 'type-fest';
 import {type NoParam} from '../util/no-param.js';
 import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
 
@@ -68,7 +69,11 @@ export type WebSocketConnectProtocolType<
             ThisWebSocket,
             WebSocketDefinition
         >['connectProtocol'] extends infer ProtocolShape extends Shape
-      ? Extract<ProtocolShape['runtimeType'], string>[] | undefined
+      ? IsNever<Extract<ProtocolShape['runtimeType'], string>> extends true
+          ? DefaultWebSocketProtocol
+          : undefined | null extends ProtocolShape['runtimeType']
+            ? Extract<ProtocolShape['runtimeType'], string>[] | undefined
+            : Extract<ProtocolShape['runtimeType'], string>[]
       : DefaultWebSocketProtocol;
 
 export type DefaultWebSocketProtocol = string[] | undefined;

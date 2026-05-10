@@ -1,9 +1,7 @@
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
-import fastify from 'fastify';
-import {implementApi} from '../../implementation/implement-api.js';
-import {createApiImplementor} from '../../implementation/implementor.js';
-import {attachApi} from '../../index.js';
+import {implementApi} from '../../../implementation/implement-api.js';
+import {createApiImplementor} from '../../../implementation/implementor.js';
 
 const healthEndpoint = defineEndpoint({
     path: '/health',
@@ -18,15 +16,20 @@ const healthEndpoint = defineEndpoint({
     },
 });
 
-const myApi = defineApi({
-    apiName: 'example api',
+export const mockApi = defineApi({
+    apiName: 'mock api',
     endpoints: [healthEndpoint],
     webSockets: [],
 });
 
-const implementor = createApiImplementor()(myApi);
+const implementor = createApiImplementor<undefined>()(mockApi);
 
-const myApiImplementation = implementApi()(myApi, {
+export const mockApiImplementation = implementApi<undefined>()(mockApi, {
+    createHostContext() {
+        return {
+            context: undefined,
+        };
+    },
     clientOriginRequirement: {
         anyOrigin: true,
     },
@@ -42,14 +45,4 @@ const myApiImplementation = implementApi()(myApi, {
         }),
     },
     webSockets: {},
-});
-
-const server = fastify();
-
-await attachApi(server, myApiImplementation, {
-    externalOrigin: 'http://localhost:3000',
-});
-
-await server.listen({
-    port: 3000,
 });

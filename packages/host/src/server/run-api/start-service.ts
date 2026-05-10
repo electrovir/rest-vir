@@ -84,7 +84,7 @@ export async function startService(
         );
     });
 
-    const finalOptions = finalizeOptions(options.serverOrigin, options);
+    const finalOptions = finalizeOptions(options.externalOrigin, options);
 
     const port: number | boolean =
         finalOptions.lockPort || check.isFalse(finalOptions.port)
@@ -96,7 +96,7 @@ export async function startService(
 
     if (finalOptions.workerCount === 1 || !check.isNumber(port)) {
         /** Only run a single server. */
-        const result = await startServer(api, finalOptions, fastifyPlugins, options.serverOrigin);
+        const result = await startServer(api, finalOptions, fastifyPlugins, options.externalOrigin);
 
         if (finalOptions.port) {
             serverLogger.info(
@@ -113,7 +113,7 @@ export async function startService(
                     api,
                     finalOptions,
                     fastifyPlugins,
-                    options.serverOrigin,
+                    options.externalOrigin,
                 );
 
                 return () => {
@@ -175,7 +175,7 @@ async function startServer(
     );
 
     await attachApi(server, api, {
-        serverOrigin,
+        externalOrigin: serverOrigin,
         throwErrorsForExternalHandling: false,
     });
 

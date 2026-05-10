@@ -1,5 +1,6 @@
-import {describe, itCases} from '@augment-vir/test';
-import {defineShape, nonEmptyStringShape} from 'object-shape-tester';
+import {assert} from '@augment-vir/assert';
+import {describe, it, itCases} from '@augment-vir/test';
+import {checkValidShape, defineShape, nonEmptyStringShape} from 'object-shape-tester';
 import {formDataShape, isFormDataShape} from './form-data-shape.js';
 
 describe(isFormDataShape.name, () => {
@@ -50,4 +51,18 @@ describe(isFormDataShape.name, () => {
             expect: false,
         },
     ]);
+});
+
+describe(formDataShape.name, () => {
+    it('accepts a FormData instance via checkValidShape', () => {
+        const shape = formDataShape();
+        assert.isTrue(checkValidShape(new FormData(), shape));
+    });
+
+    it('rejects a non-FormData value via checkValidShape', () => {
+        const shape = formDataShape();
+        assert.isFalse(checkValidShape({}, shape));
+        assert.isFalse(checkValidShape('not form data', shape));
+        assert.isFalse(checkValidShape(undefined, shape));
+    });
 });

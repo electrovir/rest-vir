@@ -44,7 +44,10 @@
         "@types/ws": "^8.18.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.68.4"
+        "@augment-vir/test": "^31.68.4",
+        "@types/node": "^25.3.0",
+        "c8": "^11.0.0",
+        "istanbul-smart-text-reporter": "^1.1.5"
     },
     "peerDependencies": {
         "object-shape-tester": ">=5"

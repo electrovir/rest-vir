@@ -190,7 +190,7 @@ describe(testEndpoint.name, () => {
                     },
                 ),
             {
-                matchMessage: "Given HTTP method 'GET' is not allowed for endpoint",
+                matchMessage: "Method 'GET' does not exist on endpoint '/echo'",
             },
         );
     });
@@ -216,10 +216,23 @@ describe(testEndpoint.name, () => {
                 testEndpoint(pathParamsImplementation, HttpMethod.Get, {
                     // @ts-expect-error: this endpoint is missing its wildcard
                     pathParams: {
-                        pathParams: {
-                            param1: 'hi',
-                            param2: 'bye',
-                        },
+                        param1: 'hi',
+                        param2: 'bye',
+                    },
+                }),
+            {
+                matchMessage: 'Missing value for wildcard param',
+            },
+        );
+    });
+    it('allows wildcard', async () => {
+        await assert.throws(
+            () =>
+                testEndpoint(pathParamsImplementation, HttpMethod.Get, {
+                    pathParams: {
+                        param1: 'hi',
+                        param2: 'bye',
+                        wildcard: 'wild',
                     },
                 }),
             {
@@ -260,10 +273,8 @@ describe(testEndpoint.name, () => {
     it('handles wildcard path params', async () => {
         const response = await testEndpoint(pathParamsImplementation, HttpMethod.Get, {
             pathParams: {
-                pathParams: {
-                    param1: 'hi',
-                    param2: 'bye',
-                },
+                param1: 'hi',
+                param2: 'bye',
                 wildcard: 'yo',
             },
         });

@@ -98,7 +98,9 @@ export function finalizeOptions(
     );
     options.workerCount = Math.max(1, options.workerCount);
 
-    assertValidShape(options, runApiOptionsShape);
+    assertValidShape(options, runApiOptionsShape, {
+        allowExtraKeys: true,
+    });
 
     return options;
 }

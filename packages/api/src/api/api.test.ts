@@ -9,11 +9,12 @@ import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
 
 describe('ApiInit', () => {
     it('allows omitting both endpoints and webSockets', () => {
-        const api: ApiInit = {};
+        const api: ApiInit = {apiName: 'test'};
     });
 
     it('allows empty endpoint and web socket arrays', () => {
         const api: ApiInit = {
+            apiName: 'test',
             endpoints: [],
             webSockets: [],
         };
@@ -21,6 +22,7 @@ describe('ApiInit', () => {
 
     it('accepts an array of endpoint definitions', () => {
         const api: ApiInit = {
+            apiName: 'test',
             endpoints: [
                 {
                     path: '/users',
@@ -43,6 +45,7 @@ describe('ApiInit', () => {
 
     it('accepts an array of web socket definitions', () => {
         const api: ApiInit = {
+            apiName: 'test',
             webSockets: [
                 {
                     path: '/chat',
@@ -55,6 +58,7 @@ describe('ApiInit', () => {
 
     it('accepts a full api with both endpoints and web sockets', () => {
         const api: ApiInit = {
+            apiName: 'test',
             endpoints: [
                 {
                     path: '/health',
@@ -106,7 +110,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -119,7 +123,7 @@ describe(defineApi.name, () => {
             path: '/items',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -130,6 +134,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [
                 usersEndpoint,
                 itemsEndpoint,
@@ -152,6 +157,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             webSockets: [
                 chatSocket,
                 eventsSocket,
@@ -168,7 +174,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -179,6 +185,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [usersEndpoint],
         });
 
@@ -192,6 +199,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             webSockets: [chatSocket],
         });
 
@@ -203,7 +211,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -216,7 +224,7 @@ describe(defineApi.name, () => {
             path: '/items',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -227,6 +235,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [
                 usersEndpoint,
                 itemsEndpoint,
@@ -247,6 +256,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             webSockets: [
                 chatSocket,
                 eventsSocket,
@@ -261,7 +271,7 @@ describe(defineApi.name, () => {
             path: '/shared',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -276,6 +286,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [sharedPathEndpoint],
             webSockets: [sharedPathSocket],
         });
@@ -289,7 +300,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -302,7 +313,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -315,6 +326,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
+                    apiName: 'test',
                     endpoints: [
                         firstEndpoint,
                         secondEndpoint,
@@ -340,6 +352,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
+                    apiName: 'test',
                     webSockets: [
                         firstSocket,
                         secondSocket,
@@ -356,7 +369,7 @@ describe(defineApi.name, () => {
             path: '/orders',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -369,7 +382,7 @@ describe(defineApi.name, () => {
             path: '/orders',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -382,6 +395,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
+                    apiName: 'test',
                     endpoints: [
                         firstEndpoint,
                         secondEndpoint,
@@ -406,6 +420,7 @@ describe(defineApi.name, () => {
         assert.throws(
             () =>
                 defineApi({
+                    apiName: 'test',
                     webSockets: [
                         firstSocket,
                         secondSocket,
@@ -422,7 +437,7 @@ describe(defineApi.name, () => {
             path: '/a',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -435,7 +450,7 @@ describe(defineApi.name, () => {
             path: '/a',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -448,7 +463,7 @@ describe(defineApi.name, () => {
             path: '/b',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -461,7 +476,7 @@ describe(defineApi.name, () => {
             path: '/b',
             requests: {
                 [HttpMethod.Put]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -473,6 +488,7 @@ describe(defineApi.name, () => {
 
         try {
             defineApi({
+                apiName: 'test',
                 endpoints: [
                     first,
                     second,
@@ -498,6 +514,7 @@ describe(defineApi.name, () => {
 
         try {
             defineApi({
+                apiName: 'test',
                 webSockets: [
                     first,
                     second,
@@ -515,7 +532,7 @@ describe(defineApi.name, () => {
             path: '/only-endpoint',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -526,6 +543,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [endpoint],
         });
 
@@ -540,6 +558,7 @@ describe(defineApi.name, () => {
         });
 
         const result = defineApi({
+            apiName: 'test',
             webSockets: [socket],
         });
 
@@ -552,7 +571,7 @@ describe(defineApi.name, () => {
             path: '/users',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -565,7 +584,7 @@ describe(defineApi.name, () => {
             path: '/items',
             requests: {
                 [HttpMethod.Get]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -578,7 +597,7 @@ describe(defineApi.name, () => {
             path: '/orders',
             requests: {
                 [HttpMethod.Post]: {
-                    clientOrigin: '',
+                    clientOriginRequirement: '',
                     responses: {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -613,6 +632,7 @@ describe(defineApi.name, () => {
         ];
 
         const result = defineApi({
+            apiName: 'test',
             endpoints: [
                 usersEndpoint,
                 itemsEndpoint,
@@ -640,6 +660,7 @@ describe(defineApi.name, () => {
         const endpoints: ReadonlyArray<EndpointDefinition> = [];
         const webSockets: ReadonlyArray<WebSocketDefinition> = [];
         const result = defineApi({
+            apiName: 'test',
             endpoints,
             webSockets,
         });
@@ -650,12 +671,13 @@ describe(defineApi.name, () => {
 
     it('is assignable to ApiDefinition', () => {
         const result = defineApi({
+            apiName: 'test',
             endpoints: [
                 defineEndpoint({
                     path: '/test',
                     requests: {
                         [HttpMethod.Get]: {
-                            clientOrigin: '',
+                            clientOriginRequirement: '',
                             responses: {
                                 [HttpStatus.Ok]: {
                                     responseData: undefined,
