@@ -12,7 +12,6 @@ describe(finalizeOptions.name, () => {
                 },
             ],
             expect: {
-                debug: false,
                 host: 'localhost',
                 port: 4000,
                 lockPort: false,
@@ -29,7 +28,6 @@ describe(finalizeOptions.name, () => {
                 },
             ],
             expect: {
-                debug: false,
                 host: 'localhost',
                 port: 3000,
                 lockPort: false,
@@ -46,7 +44,6 @@ describe(finalizeOptions.name, () => {
                 },
             ],
             expect: {
-                debug: false,
                 host: 'localhost',
                 port: 4000,
                 lockPort: false,

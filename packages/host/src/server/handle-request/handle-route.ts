@@ -122,6 +122,8 @@ export async function handleRoute({
                 webSocket,
                 attachId,
                 server,
+                api: api.definition,
+                serverLogger,
             });
         }
 

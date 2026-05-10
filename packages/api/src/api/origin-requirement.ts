@@ -74,6 +74,9 @@ export async function checkOriginRequirement(
         }
         return false;
     } else if (check.isString(originRequirement)) {
+        if (originRequirement === AnyOrigin) {
+            return AnyOrigin;
+        }
         return origin === originRequirement;
     } else if (check.instanceOf(originRequirement, RegExp)) {
         return !!origin && !!originRequirement.exec(origin);

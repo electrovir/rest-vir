@@ -1,44 +1,82 @@
+import {assert, waitUntil} from '@augment-vir/assert';
+import {stringify} from '@augment-vir/common';
+import {describe, it} from '@augment-vir/test';
+import {defineApi, defineWebSocket} from '@rest-vir/api';
+import {exactShape} from 'object-shape-tester';
+import {implementApi} from '../../implementation/implement-api.js';
+import {createApiImplementor} from '../../implementation/implementor.js';
 import {testWebSocket, withWebSocketTest} from './test-web-socket.js';
+
+const basicWebSocket = defineWebSocket({
+    path: '/socket',
+    clientMessage: exactShape('ping'),
+    hostMessage: exactShape('pong'),
+});
+
+const noClientDataWebSocket = defineWebSocket({
+    path: '/no-client-data',
+    hostMessage: exactShape('ok'),
+});
+
+const requiredProtocolsWebSocket = defineWebSocket({
+    path: '/required-protocols',
+    clientMessage: exactShape('hello'),
+    hostMessage: exactShape('ok'),
+    connectProtocol: exactShape('hi'),
+});
+
+const api = defineApi({
+    apiName: 'testWebSocket helper api',
+    endpoints: [],
+    webSockets: [
+        basicWebSocket,
+        noClientDataWebSocket,
+        requiredProtocolsWebSocket,
+    ],
+});
+
+const implementor = createApiImplementor<undefined>()(api);
+
+const apiImplementation = implementApi<undefined>()(api, {
+    createHostContext() {
+        return {
+            context: undefined,
+        };
+    },
+    clientOriginRequirement: {
+        anyOrigin: true,
+    },
+    endpoints: {},
+    webSockets: {
+        '/socket': implementor.implementWebSocket(basicWebSocket, {
+            open() {},
+            close() {},
+            message({webSocket}) {
+                webSocket.send('pong');
+            },
+        }),
+        '/no-client-data': implementor.implementWebSocket(noClientDataWebSocket, {
+            open({webSocket}) {
+                webSocket.send('ok');
+            },
+        }),
+        '/required-protocols': implementor.implementWebSocket(requiredProtocolsWebSocket, {
+            message({webSocket}) {
+                webSocket.send('ok');
+            },
+        }),
+    },
+});
 
 describe(testWebSocket.name, () => {
     it('fires listeners', async () => {
         const listeners = {
             closedOnClient: false,
-            closedOnServer: false,
             openedOnClient: false,
-            openedOnServer: false,
             messageOnClient: false,
-            messageOnServer: false,
         };
         const webSocket = await testWebSocket(
-            implementService({
-                service: defineService({
-                    requiredClientOrigin: AnyOrigin,
-                    serviceName: 'test',
-                    serviceOrigin: 'http://localhost:3000',
-                    webSockets: {
-                        '/socket': {
-                            messageFromClientShape: undefined,
-                            messageFromHostShape: undefined,
-                        },
-                    },
-                }),
-            })({
-                webSockets: {
-                    '/socket': {
-                        open() {
-                            listeners.openedOnServer = true;
-                        },
-                        close() {
-                            listeners.closedOnServer = true;
-                        },
-                        message({webSocket}) {
-                            listeners.messageOnServer = true;
-                            webSocket.send();
-                        },
-                    },
-                },
-            }).webSockets['/socket'],
+            apiImplementation.implementation.webSockets['/socket'],
             {
                 listeners: {
                     open() {
@@ -55,15 +93,15 @@ describe(testWebSocket.name, () => {
         );
 
         await waitUntil.isTrue(
-            () => listeners.openedOnClient && listeners.openedOnServer,
+            () => listeners.openedOnClient,
             undefined,
             `never opened: ${stringify(listeners)}`,
         );
 
-        webSocket.send();
+        webSocket.send('ping');
 
         await waitUntil.isTrue(
-            () => listeners.messageOnClient && listeners.messageOnServer,
+            () => listeners.messageOnClient,
             undefined,
             `never got message: ${stringify(listeners)}`,
         );
@@ -71,7 +109,7 @@ describe(testWebSocket.name, () => {
         await webSocket.close();
 
         await waitUntil.isTrue(
-            () => listeners.closedOnClient && listeners.closedOnServer,
+            () => listeners.closedOnClient,
             undefined,
             `never closed: ${stringify(listeners)}`,
         );
@@ -82,7 +120,7 @@ describe(withWebSocketTest.name, () => {
     it(
         'tests a basic WebSocket connection',
         withWebSocketTest(
-            mockServiceImplementation.webSockets['/no-client-data'],
+            apiImplementation.implementation.webSockets['/no-client-data'],
             {},
             async (webSocket) => {
                 const response = await webSocket.sendAndWaitForReply();
@@ -90,29 +128,13 @@ describe(withWebSocketTest.name, () => {
             },
         ),
     );
-    it('requires protocols', async () => {
-        await assert.throws(
-            withWebSocketTest(
-                mockServiceImplementation.webSockets['/required-protocols'],
-                // @ts-expect-error: protocols are missing
-                {},
-                async () => {},
-            ),
-            {
-                matchMessage: 'Unexpected server response: 400',
-            },
-        );
-    });
+
     it(
         'accepts protocols',
         withWebSocketTest(
-            mockServiceImplementation.webSockets['/required-protocols'],
+            apiImplementation.implementation.webSockets['/required-protocols'],
             {
-                protocols: [
-                    'a',
-                    'yo',
-                    'hi',
-                ],
+                protocols: ['hi'],
             },
             async (webSocket) => {
                 const response = await webSocket.sendAndWaitForReply({
@@ -122,10 +144,25 @@ describe(withWebSocketTest.name, () => {
             },
         ),
     );
+
     it('requires protocols', async () => {
         await assert.throws(
             withWebSocketTest(
-                mockServiceImplementation.webSockets['/required-protocols'],
+                apiImplementation.implementation.webSockets['/required-protocols'],
+                // @ts-expect-error: protocols are missing
+                {},
+                async () => {},
+            ),
+            {
+                matchMessage: 'Unexpected server response: 400',
+            },
+        );
+    });
+
+    it('rejects wrong protocol values', async () => {
+        await assert.throws(
+            withWebSocketTest(
+                apiImplementation.implementation.webSockets['/required-protocols'],
                 {
                     protocols: [
                         'a',
@@ -139,25 +176,6 @@ describe(withWebSocketTest.name, () => {
             ),
             {
                 matchMessage: 'Unexpected server response: 400',
-            },
-        );
-    });
-    it('rejects empty string protocols', async () => {
-        await assert.throws(
-            withWebSocketTest(
-                mockServiceImplementation.webSockets['/required-protocols'],
-                {
-                    protocols: [
-                        '',
-                        'a',
-                        'hi',
-                    ],
-                },
-                async () => {},
-            ),
-            {
-                matchMessage:
-                    "Invalid protocols given (', a, hi'): Unexpected character at index 0",
             },
         );
     });

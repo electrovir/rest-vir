@@ -1,7 +1,7 @@
 import {assert, assertWrap, check} from '@augment-vir/assert';
 import {ensureErrorAndPrependMessage} from '@augment-vir/common';
 import {type ApiDefinition, definableHttpMethods, HttpMethod, HttpStatus} from '@rest-vir/api';
-import {extractRequiredHeaders, readHeaderValue} from '@rest-vir/client';
+import {readHeaderValue} from '@rest-vir/client';
 import {assertValidShape} from 'object-shape-tester';
 import {
     type EndpointImplementation,
@@ -157,12 +157,12 @@ export async function handleEndpointRequest(
         return {
             statusCode,
             body: statusResponse.responseData,
-            headers: extractRequiredHeaders(endpoint.path, endpointMethodDefinition, {
+            headers: {
                 ...statusResponse.headers,
                 'content-type':
                     readHeaderValue(statusResponse.headers || {}, 'content-type') ||
                     'application/json',
-            }),
+            },
         };
     } catch (error) {
         throw ensureErrorAndPrependMessage(

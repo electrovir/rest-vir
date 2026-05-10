@@ -24,12 +24,12 @@ import {type RequireExactlyOne} from 'type-fest';
 import {type RunningServerInfo, type ServerRequest, type ServerResponse} from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type EndpointImplementation<Path extends PropertyKey = PropertyKey> = {
-    path: Path;
-    implementation: EndpointMethodImplementations;
-    definition: EndpointDefinition & {
-        path: Path;
-    };
+export type EndpointImplementation<
+    Endpoint extends Readonly<EndpointDefinition> = EndpointDefinition,
+> = {
+    path: Endpoint['path'];
+    implementation: Readonly<EndpointMethodImplementations>;
+    definition: Readonly<Endpoint>;
     isWebSocket: false;
     isEndpoint: true;
 };

@@ -1,6 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it, itCases} from '@augment-vir/test';
 import {
+    AnyOrigin,
     checkOriginRequirement,
     matchesOriginRequirement,
     type OriginCheckCallback,
@@ -130,6 +131,27 @@ describe(checkOriginRequirement.name, () => {
                     stringRequirement,
                 ],
                 expect: false,
+            },
+        ]);
+    });
+
+    describe('AnyOrigin string', () => {
+        itCases(checkOriginRequirement, [
+            {
+                it: 'returns * when AnyOrigin is supplied as a string requirement',
+                inputs: [
+                    'https://example.com',
+                    AnyOrigin,
+                ],
+                expect: AnyOrigin,
+            },
+            {
+                it: 'returns * for AnyOrigin with undefined origin',
+                inputs: [
+                    undefined,
+                    AnyOrigin,
+                ],
+                expect: AnyOrigin,
             },
         ]);
     });

@@ -165,6 +165,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const response = await (params?.fetchOverride || this.fetchOverride || fetch)(
             url,
             requestInit,
+            endpoint,
         );
 
         const status = assertWrap.isEnumValue(

@@ -1,137 +1,202 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {AnyOrigin} from '@rest-vir/api';
+import {AnyOrigin, defineApi, defineEndpoint, type OriginRequirement} from '@rest-vir/api';
+import {restVirApiNameHeader} from '@rest-vir/client';
+import {implementApi} from '../../implementation/implement-api.js';
+import {createApiImplementor} from '../../implementation/implementor.js';
+import {silentServerLogger} from '../../implementation/server-logger.js';
 import {handleCors} from './handle-cors.js';
 
-describe(handleCors.name, () => {
-    it('rejects an undefined service origin', async () => {
-        await assert.throws(
-            () =>
-                handleCors({
-                    request: {
-                        headers: {
-                            origin: 'http://example.com',
-                        },
-                        method: HttpMethod.Get,
-                        originalUrl: 'some path',
+function buildScenario({
+    endpointOriginRequirement,
+    apiOriginRequirement,
+}: {
+    endpointOriginRequirement?: OriginRequirement | undefined;
+    apiOriginRequirement?: OriginRequirement | undefined;
+} = {}) {
+    const endpoint = defineEndpoint({
+        path: '/example-path',
+        requests: {
+            [HttpMethod.Get]: {
+                responses: {
+                    [HttpStatus.Ok]: {
+                        responseData: undefined,
                     },
-                    route: {
-                        path: '/example-path',
-                        isEndpoint: true,
-                        isWebSocket: false,
-                        methods: {
-                            [HttpMethod.Get]: true,
-                        },
-                        service: {
-                            // @ts-expect-error: this cannot be `undefined` in the service
-                            requiredClientOrigin: undefined,
-                            serviceName: 'example service',
-                        },
-                    },
-                }),
-            {
-                matchMessage: 'failed to get checked for endpoint',
+                },
+                ...(endpointOriginRequirement
+                    ? {clientOriginRequirement: endpointOriginRequirement}
+                    : {}),
             },
-        );
+        },
     });
-    it('rejects a mismatched service origin', async () => {
+
+    const api = defineApi({
+        apiName: 'example api',
+        endpoints: [endpoint],
+        webSockets: [],
+    });
+
+    const implementor = createApiImplementor<undefined>()(api);
+
+    const endpointImplementation = implementor.implementEndpoint(endpoint, {
+        [HttpMethod.Get]() {
+            return {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            };
+        },
+    });
+
+    const apiImplementation = implementApi<undefined>()(api, {
+        createHostContext() {
+            return {
+                context: undefined,
+            };
+        },
+        ...(apiOriginRequirement ? {clientOriginRequirement: apiOriginRequirement} : {}),
+        endpoints: {
+            '/example-path': endpointImplementation,
+        },
+        webSockets: {},
+    });
+
+    return {
+        endpointImplementation,
+        apiImplementation,
+    };
+}
+
+function buildRequest(origin: string | undefined, method: HttpMethod = HttpMethod.Get) {
+    return {
+        headers: {
+            origin,
+        },
+        method,
+        originalUrl: '/example-path',
+    } as never;
+}
+
+describe(handleCors.name, () => {
+    it('rejects a mismatched api origin', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            apiOriginRequirement: 'https://example.com',
+        });
+
         assert.deepEquals(
             await handleCors({
-                request: {
-                    headers: {
-                        origin: 'http://example.com',
-                    },
-                    method: HttpMethod.Get,
-                    originalUrl: 'some path',
-                },
-                route: {
-                    path: '/example-path',
-                    isEndpoint: true,
-                    isWebSocket: false,
-                    methods: {
-                        [HttpMethod.Get]: true,
-                    },
-                    service: {
-                        requiredClientOrigin: 'https://example.com',
-                        serviceName: 'example service',
-                        logger: defaultServiceLogger,
-                        customHeaders: [],
-                    },
-                },
+                api: apiImplementation,
+                serverLogger: silentServerLogger,
+                request: buildRequest('http://example.com'),
+                route: endpointImplementation,
             }),
             {
                 statusCode: HttpStatus.Forbidden,
             },
         );
     });
-    it('matches a service origin', async () => {
+
+    it('matches an api origin', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            apiOriginRequirement: 'http://example.com',
+        });
+
         assert.deepEquals(
             await handleCors({
-                request: {
-                    headers: {
-                        origin: 'http://example.com',
-                    },
-                    method: HttpMethod.Get,
-                    originalUrl: 'some path',
-                },
-                route: {
-                    path: '/example-path',
-                    isEndpoint: true,
-                    isWebSocket: false,
-                    methods: {
-                        [HttpMethod.Get]: true,
-                    },
-                    service: {
-                        requiredClientOrigin: 'http://example.com',
-                        serviceName: 'example service',
-                        logger: defaultServiceLogger,
-                        customHeaders: [],
-                    },
-                },
+                api: apiImplementation,
+                serverLogger: silentServerLogger,
+                request: buildRequest('http://example.com'),
+                route: endpointImplementation,
             }),
             {
                 headers: {
                     'Access-Control-Allow-Origin': 'http://example.com',
                     'Access-Control-Allow-Credentials': 'true',
                     Vary: 'Origin',
-                    'Access-Control-Expose-Headers': restVirServiceNameHeader,
+                    'Access-Control-Expose-Headers': restVirApiNameHeader,
                 },
             },
         );
     });
-    it('allows any origin override in endpoint', async () => {
+
+    it('allows any origin override on the endpoint', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            endpointOriginRequirement: {anyOrigin: true},
+            apiOriginRequirement: 'https://example.com',
+        });
+
         assert.deepEquals(
             await handleCors({
-                request: {
-                    headers: {
-                        origin: 'http://example.com',
-                    },
-                    method: HttpMethod.Get,
-                    originalUrl: 'some path',
-                },
-                route: {
-                    path: '/example-path',
-                    isEndpoint: true,
-                    isWebSocket: false,
-                    methods: {
-                        [HttpMethod.Get]: true,
-                    },
-                    service: {
-                        requiredClientOrigin: 'https://example.com',
-                        serviceName: 'example service',
-                        logger: defaultServiceLogger,
-                        customHeaders: [],
-                    },
-                    requiredClientOrigin: AnyOrigin,
-                },
+                api: apiImplementation,
+                serverLogger: silentServerLogger,
+                request: buildRequest('http://example.com'),
+                route: endpointImplementation,
             }),
             {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Expose-Headers': restVirServiceNameHeader,
+                    'Access-Control-Expose-Headers': restVirApiNameHeader,
                 },
             },
         );
+    });
+
+    it('falls back to any origin when nothing is required', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario();
+
+        assert.deepEquals(
+            await handleCors({
+                api: apiImplementation,
+                serverLogger: silentServerLogger,
+                request: buildRequest('http://example.com'),
+                route: endpointImplementation,
+            }),
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Expose-Headers': restVirApiNameHeader,
+                },
+            },
+        );
+    });
+
+    it('handles an OPTIONS preflight with matched origin', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            apiOriginRequirement: 'http://example.com',
+        });
+
+        const result = await handleCors({
+            api: apiImplementation,
+            serverLogger: silentServerLogger,
+            request: buildRequest('http://example.com', HttpMethod.Options),
+            route: endpointImplementation,
+        });
+
+        assert.strictEquals(result?.statusCode, HttpStatus.NoContent);
+        assert.strictEquals(result?.headers?.['Access-Control-Allow-Origin'], 'http://example.com');
+        assert.strictEquals(result?.headers?.['Access-Control-Allow-Methods'], 'GET,OPTIONS');
+    });
+
+    it('handles an OPTIONS preflight with mismatched origin', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            apiOriginRequirement: 'https://example.com',
+        });
+
+        const result = await handleCors({
+            api: apiImplementation,
+            serverLogger: silentServerLogger,
+            request: buildRequest('http://example.com', HttpMethod.Options),
+            route: endpointImplementation,
+        });
+
+        assert.strictEquals(result?.statusCode, HttpStatus.NoContent);
+        /** No CORS-allow headers; just the content-length sentinel. */
+        assert.strictEquals(result?.headers?.['Content-Length'], '0');
+        assert.isUndefined(result?.headers?.['Access-Control-Allow-Origin']);
+    });
+
+    it('uses the AnyOrigin literal', () => {
+        assert.strictEquals(AnyOrigin, '*');
     });
 });

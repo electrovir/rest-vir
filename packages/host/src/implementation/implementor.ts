@@ -21,7 +21,7 @@ export function createApiImplementor<HostContext>(this: void) {
                 implementation: Readonly<
                     EndpointMethodImplementations<NoInfer<Endpoint>, HostContext>
                 >,
-            ): EndpointImplementation<Endpoint['path']> => {
+            ): EndpointImplementation<Endpoint> => {
                 return {
                     path: endpoint.path,
                     implementation,

@@ -1,27 +1,8 @@
+import {type MaybePromise, type PartialWithUndefined} from '@augment-vir/common';
 import {type WebSocketDefinition} from '@rest-vir/api';
-import {
-    type ClientWebSocket,
-    type CommonWebSocket,
-    type WebSocketConnectParamObject,
-    type WebSocketConnectParams,
-} from '@rest-vir/client';
-import {type WebSocketListenerImplementations} from '../../implementation/implement-websocket.js';
+import {type ClientWebSocket, type WebSocketConnectParamObject} from '@rest-vir/client';
+import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {testApi} from './test-api.js';
-
-/**
- * Type for {@link testWebSocket}.
- *
- * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
- */
-export type TestWebSocket = <
-    ThisWebSocket extends WebSocketDefinition,
-    WebSocketClass extends CommonWebSocket,
->(
-    webSocketDefinition: ThisWebSocket,
-    ...args: WebSocketConnectParams<NoInfer<ThisWebSocket>, WebSocketClass>
-) => Promise<ClientWebSocket<ThisWebSocket>>;
 
 /**
  * Test your WebSocket implementation with a real connection pipeline. Make sure to close your
@@ -29,49 +10,51 @@ export type TestWebSocket = <
  * after a test.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export const testWebSocket = async function testWebSocket<
-    const ThisWebSocket extends WebSocketDefinition,
-    const WebSocketClass extends CommonWebSocket,
->(
-    webSocketDefinition: ThisWebSocket,
-    webSocketImplementation: WebSocketListenerImplementations<NoInfer<ThisWebSocket>, any>,
-    params: WebSocketConnectParamObject<NoInfer<ThisWebSocket>, WebSocketClass>,
-) {
-    const {connectWebSocket, kill} = await testApi(
-        {
-            ...webSocketImplementation.service,
-            webSockets: {
-                [webSocketImplementation.path]: webSocketImplementation,
-            },
+export async function testWebSocket<const ThisWebSocket extends WebSocketImplementation>(
+    webSocket: ThisWebSocket,
+    params?: WebSocketConnectParamObject | undefined,
+): Promise<ClientWebSocket<ThisWebSocket['definition']>> {
+    const {connectWebSocket, kill} = await testApi({
+        definition: {
+            apiName: 'testWebSocket',
             endpoints: {},
+            webSockets: {
+                [webSocket.path]: webSocket.definition,
+            },
         },
-        {
-            debug: true,
+        implementation: {
+            endpoints: {},
+            webSockets: {
+                [webSocket.path]: webSocket,
+            },
         },
-    );
+    });
 
-    const webSocket = await (connectWebSocket[webSocketImplementation.path] as AnyFunction)(params);
+    const clientWebSocket = (await connectWebSocket(
+        webSocket.definition as WebSocketDefinition,
+        params as never,
+    )) as ClientWebSocket<ThisWebSocket['definition']>;
 
-    webSocket.addEventListener('close', () => {
+    clientWebSocket.addEventListener('close', () => {
         setTimeout(async () => {
             await kill();
         }, 1000);
     });
-    return webSocket;
-} as TestWebSocket;
+    return clientWebSocket;
+}
 
 /**
  * Callback type for {@link withWebSocketTest}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export type WithWebSocketTestCallback<ThisWebSocket extends ImplementedWebSocket> = (
-    clientWebSocket: ClientWebSocket<ThisWebSocket>,
+export type WithWebSocketTestCallback<ThisWebSocket extends WebSocketImplementation> = (
+    clientWebSocket: ClientWebSocket<ThisWebSocket['definition']>,
 ) => MaybePromise<void>;
 
 /**
@@ -84,20 +67,20 @@ export type WithWebSocketTestCallback<ThisWebSocket extends ImplementedWebSocket
  * This should be used in backend testing to verify your WebSocket implementation.
  *
  * @category Testing : Backend
- * @category Package : @rest-vir/run-service
+ * @category Package : @rest-vir/host
  * @example
  *
  * ```ts
- * import {withWebSocketTest} from '@rest-vir/run-service';
- * import {describe, it} from '@augment-vir/test'; // or use mocha, jest, etc. values
+ * import {withWebSocketTest} from '@rest-vir/host';
+ * import {describe, it} from '@augment-vir/test';
  *
  * describe('my WebSocket', () => {
  *     it(
  *         'does a thing',
  *         withWebSocketTest(
- *             myServiceImplementation.webSockets['/my-web-socket-path'],
+ *             myApiImplementation.implementation.webSockets['/my-web-socket-path'],
  *             {},
- *             (webSocket) => {
+ *             async (webSocket) => {
  *                 const response = await webSocket.sendAndWaitForReply();
  *                 assert.strictEquals(response, 'ok');
  *             },
@@ -106,15 +89,15 @@ export type WithWebSocketTestCallback<ThisWebSocket extends ImplementedWebSocket
  * });
  * ```
  *
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export function withWebSocketTest<const ThisWebSocket extends ImplementedWebSocket>(
-    webSocketDefinition: ThisWebSocket,
-    params: Omit<ConnectWebSocketParams<ThisWebSocket, false>, 'listeners'>,
+export function withWebSocketTest<const ThisWebSocket extends WebSocketImplementation>(
+    webSocket: ThisWebSocket,
+    params: PartialWithUndefined<Omit<WebSocketConnectParamObject, 'listeners'>>,
     callback: WithWebSocketTestCallback<ThisWebSocket>,
 ) {
     return async () => {
-        const clientWebSocket = await testWebSocket(webSocketDefinition, params as any);
+        const clientWebSocket = await testWebSocket(webSocket, params);
 
         await callback(clientWebSocket);
 

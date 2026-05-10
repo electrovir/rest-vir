@@ -1,14 +1,15 @@
-import {assert, check, waitUntil} from '@augment-vir/assert';
+import {check, waitUntil} from '@augment-vir/assert';
 import {
     ensureErrorAndPrependMessage,
     HttpMethod,
     wrapInTry,
     type MaybePromise,
     type PartialWithUndefined,
-    type SelectFrom,
 } from '@augment-vir/common';
+import {type ApiDefinition, type BaseRoutePath} from '@rest-vir/api';
 import {convertDuration, type AnyDuration} from 'date-vir';
 import {buildUrl, parseUrl} from 'url-vir';
+import {type EndpointFetchParamObject} from '../endpoint-fetch/endpoint-params.js';
 
 /**
  * This header is set on all responses handled by rest-vir so we know what service a response came
@@ -27,7 +28,14 @@ export const restVirApiNameHeader = 'rest-vir-api';
  * @category Package : @rest-vir/define-service
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
-export type FindPortOptions = Pick<GenericFetchEndpointParams, 'fetch'> &
+export type FindPortOptions = {
+    /**
+     * The origin to start finding with. If this does not include a port number, the port find will
+     * immediately abort. See, if needed, MDN to determine which part is the origin:
+     * https://developer.mozilla.org/docs/Web/API/Location
+     */
+    startOrigin: string;
+} & Pick<EndpointFetchParamObject, 'fetchOverride'> &
     PartialWithUndefined<{
         /**
          * The maximum number of ports that are scanned before giving up.
@@ -50,13 +58,6 @@ export type FindPortOptions = Pick<GenericFetchEndpointParams, 'fetch'> &
          * @default {seconds: 10}
          */
         timeout: AnyDuration;
-        /**
-         * A starting origin used to replace the service definition's origin, in case you need to
-         * keep your service definition's origin static for API publishing purposes.
-         *
-         * This defaults to whatever origin is already set on the given service definition.
-         */
-        startingOriginOverride: string;
     }>;
 
 /**
@@ -100,17 +101,8 @@ export type FindPortOptions = Pick<GenericFetchEndpointParams, 'fetch'> &
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
 export async function findDevServicePort(
-    service: Readonly<
-        SelectFrom<
-            ServiceDefinition,
-            {
-                endpoints: true;
-                serviceOrigin: true;
-                serviceName: true;
-            }
-        >
-    >,
-    options: Readonly<Omit<FindPortOptions, 'isValidResponse'>> = {},
+    api: Readonly<ApiDefinition>,
+    {startOrigin, ...options}: Readonly<FindPortOptions>,
 ): Promise<
     | {
           port: number;
@@ -119,9 +111,7 @@ export async function findDevServicePort(
     | undefined
 > {
     try {
-        const startingOrigin = options.startingOriginOverride || service.serviceOrigin;
-
-        const endpoint = Object.values(service.endpoints)[0];
+        const endpoint = Object.values(api.endpoints)[0];
         if (!endpoint) {
             throw new Error(`Service has no endpoints.`);
         }
@@ -129,12 +119,10 @@ export async function findDevServicePort(
         const {port} = await waitUntil.isDefined(
             async () => {
                 return {
-                    port: await findLivePort(startingOrigin, endpoint.path, {
+                    port: await findLivePort(startOrigin, endpoint.path, {
                         ...options,
                         isValidResponse(response) {
-                            return (
-                                response.headers.get(restVirApiNameHeader) === service.serviceName
-                            );
+                            return response.headers.get(restVirApiNameHeader) === api.apiName;
                         },
                     }),
                 };
@@ -148,7 +136,7 @@ export async function findDevServicePort(
             return undefined;
         }
 
-        const {origin} = buildUrl(startingOrigin, {
+        const {origin} = buildUrl(startOrigin, {
             port,
         });
 
@@ -159,7 +147,7 @@ export async function findDevServicePort(
     } catch (error) {
         throw ensureErrorAndPrependMessage(
             error,
-            `Cannot find dev origin for service '${service.serviceName}'`,
+            `Cannot find dev origin for service '${api.apiName}'`,
         );
     }
 }
@@ -176,15 +164,16 @@ export async function findDevServicePort(
  */
 export async function findLivePort(
     originWithStartingPort: string,
-    pathToCheck: EndpointPathBase,
+    pathToCheck: BaseRoutePath,
+
     {
-        fetch = globalThis.fetch,
+        fetchOverride,
         maxScanDistance = 100,
         isValidResponse,
         timeout = {
             seconds: 10,
         },
-    }: Readonly<Omit<FindPortOptions, 'overwriteOrigin'>> = {},
+    }: Readonly<Omit<FindPortOptions, 'startOrigin'>>,
 ): Promise<number | undefined> {
     const {port: originalPort} = parseUrl(originWithStartingPort);
     if (!originalPort) {
@@ -193,7 +182,9 @@ export async function findLivePort(
 
     const startingPort = Number(originalPort);
 
-    assert.isNumber(startingPort, `Given origin doesn't have a valid port.`);
+    if (!check.isNumber(startingPort)) {
+        return undefined;
+    }
 
     let findDistance: number = 0;
 
@@ -236,42 +227,4 @@ export async function findLivePort(
     }
 
     return findDistance + startingPort;
-}
-
-/**
- * Creates a copy of a service definition (without mutating the original service definition) that
- * maps the service's origin port to find the live port that's actually running.
- *
- * This is useful for situations in dev where backend automatically starts on a different port if
- * the original port is already in use.
- *
- * @category Client (Frontend) Connection
- * @category Package : @rest-vir/define-service
- * @example
- *
- * ```ts
- * import {mapServiceDevPort} from '@rest-vir/define-service';
- *
- * const mappedService = await mapServiceDevPort(myServiceDefinition);
- * ```
- *
- * @returns The service unchanged if it does not have a port number in its service origin.
- * @throws Error if no valid starting port can be found or if the max scan distance has been reached
- *   without finding a valid port.
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
- */
-export async function mapServiceDevPort<const SpecificService extends ServiceDefinition>(
-    service: Readonly<SpecificService>,
-    options: Readonly<Omit<FindPortOptions, 'isValidResponse'>> = {},
-): Promise<SpecificService> {
-    const {origin} = (await findDevServicePort(service, options)) || {};
-
-    if (!origin) {
-        return service;
-    }
-
-    return defineService({
-        ...service.init,
-        serviceOrigin: origin,
-    }) as SpecificService;
 }

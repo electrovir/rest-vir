@@ -1,3 +1,4 @@
+import {type MaybePromise} from '@augment-vir/common';
 import {
     type DefinableHttpMethod,
     type EndpointDefinition,
@@ -48,7 +49,7 @@ export type EndpointFetchParamObject<
      *
      * @default fetch // the global fetch
      */
-    fetchOverride: typeof fetch | undefined;
+    fetchOverride: ClientFetch | undefined;
     /** If `true`, automatic request data `'Content-Type'` header assignment will be skipped. */
     skipAutomaticContentTypeHeader: boolean | undefined;
     /**
@@ -65,3 +66,9 @@ export type EndpointFetchParamObject<
      */
     pathParams: ExtractPathParams<Endpoint extends {path: string} ? Endpoint['path'] : NoParam>;
 }>;
+
+export type ClientFetch = (
+    url: string,
+    requestInit: RequestInit,
+    endpoint: EndpointDefinition,
+) => MaybePromise<Response>;

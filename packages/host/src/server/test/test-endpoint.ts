@@ -4,64 +4,53 @@ import {type EndpointImplementation} from '../../implementation/implement-endpoi
 import {testApi} from './test-api.js';
 
 /**
- * The type definition for {@link testEndpoint}.
- *
- * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
- */
-export type TestEndpoint = <
-    Endpoint extends EndpointImplementation,
-    Method extends Extract<keyof NoInfer<Endpoint>['definition']['requests'], DefinableHttpMethod>,
->(
-    endpoint: Endpoint,
-    method: Method,
-    ...args: EndpointFetchParams<NoInfer<Endpoint['definition']>, NoInfer<Method>>
-) => Promise<Response>;
-
-/**
  * Test your endpoint with real Request and Response objects.
  *
  * @category Testing : Backend
- * @category Package : @rest-vir/run-service
+ * @category Package : @rest-vir/host
  * @example
  *
  * ```ts
- * import {testEndpoint} from '@rest-vir/run-service';
+ * import {testEndpoint} from '@rest-vir/host';
  *
- * const response = await testEndpoint(myServiceImplementation.endpoints['/my-endpoint']);
+ * const response = await testEndpoint(
+ *     myApiImplementation.implementation.endpoints['/my-endpoint'],
+ *     HttpMethod.Get,
+ * );
  * ```
  *
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
-export const testEndpoint = async function testEndpoint<
-    const Endpoint extends EndpointImplementation,
+export async function testEndpoint<
+    const Endpoint extends Readonly<EndpointImplementation>,
     const Method extends Extract<
         keyof NoInfer<Endpoint>['definition']['requests'],
         DefinableHttpMethod
     >,
 >(
-    endpoint: Endpoint,
+    endpoint: Readonly<Endpoint>,
     method: Method,
-    ...args: EndpointFetchParams<NoInfer<Endpoint['definition']>, NoInfer<Method>>
+    ...restParams: EndpointFetchParams<NoInfer<Endpoint>['definition'], NoInfer<Method>>
 ) {
-    const {fetchEndpoint, kill} = await testApi(
-        {
-            ...endpoint.service,
+    const {fetchEndpoint, kill} = await testApi({
+        definition: {
+            apiName: 'testEndpoint',
+            endpoints: {
+                [endpoint.path]: endpoint.definition,
+            },
+            webSockets: {},
+        },
+        implementation: {
             endpoints: {
                 [endpoint.path]: endpoint,
             },
             webSockets: {},
         },
-        {
-            debug: true,
-        },
-    );
+    });
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const response = await fetchEndpoint[endpoint.path]!(...args);
-
-    await kill();
-
-    return response;
-} as TestEndpoint;
+    try {
+        return await fetchEndpoint(endpoint.definition, method, ...restParams);
+    } finally {
+        await kill();
+    }
+}

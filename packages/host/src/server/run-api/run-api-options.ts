@@ -50,16 +50,6 @@ export const runApiOptionsShape = defineShape({
      * @default false
      */
     preventWorkerRespawn: false,
-
-    /**
-     * Set this to true to enable temporary extra logging. This should only be used in dev as it
-     * will fill up production log files if you have a decent amount of traffic.
-     *
-     * This works by overriding the given service's logger to ensure that it logs everything.
-     *
-     * @default false
-     */
-    debug: false,
 });
 
 /**

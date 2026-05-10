@@ -5,6 +5,7 @@ import {
     type BaseRoutePath,
     defineApi,
     defineEndpoint,
+    type EndpointDefinition,
     HttpMethod,
     HttpStatus,
     type MakeBivariantFunction,
@@ -85,14 +86,18 @@ describe('implementEndpoint', () => {
     });
 });
 
+describe('EndpointMethodImplementations', () => {
+    it('can be assigned to from specific instance', () => {
+        const testAssignment: EndpointMethodImplementations = {} as EndpointMethodImplementations<
+            typeof mockEndpoint
+        >;
+    });
+});
+
 describe('EndpointImplementation', () => {
     it('has implementation methods', () => {
-        const endpointImplementation = {} as EndpointImplementation;
-
-        const methodImplementation = endpointImplementation.implementation[HttpMethod.Get];
-
         assert
-            .tsType(methodImplementation)
+            .tsType<EndpointImplementation['implementation'][HttpMethod.Get]>()
             .equals<
                 | undefined
                 | MakeBivariantFunction<
@@ -126,7 +131,41 @@ describe('EndpointImplementation', () => {
         assert
             .tsType<keyof typeof testAssignment>()
             .equals<'implementation' | 'definition' | 'path' | 'isEndpoint' | 'isWebSocket'>();
-        assert.tsType(testAssignment.implementation).equals<EndpointMethodImplementations>();
+        assert
+            .tsType(testAssignment.implementation)
+            .equals<Readonly<EndpointMethodImplementations>>();
         assert.tsType(testAssignment.definition.path).equals<BaseRoutePath>();
+        assert.tsType(testAssignment.definition).equals<Readonly<EndpointDefinition>>();
+    });
+
+    it('maintains definition type', () => {
+        const testAssignment = implementMockEndpoint(mockEndpoint, {
+            [HttpMethod.Get]({context, method, endpointDefinition: endpoint}) {
+                assert.tsType(context).equals<MockContext>();
+
+                assert.tsType(endpoint).equals(mockEndpoint);
+                assert.strictEquals(endpoint, mockEndpoint);
+
+                assert.tsType(method).equals(HttpMethod.Get);
+                assert.strictEquals(method, HttpMethod.Get);
+
+                return {
+                    '200': {
+                        responseData: {
+                            hello: 'hi',
+                        },
+                    },
+                };
+            },
+        });
+
+        assert
+            .tsType<keyof typeof testAssignment>()
+            .equals<'implementation' | 'definition' | 'path' | 'isEndpoint' | 'isWebSocket'>();
+        assert
+            .tsType(testAssignment.implementation)
+            .equals<Readonly<EndpointMethodImplementations>>();
+        assert.tsType(testAssignment.definition.path).equals<(typeof mockEndpoint)['path']>();
+        assert.tsType(testAssignment.definition).equals<typeof mockEndpoint>();
     });
 });
