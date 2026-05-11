@@ -211,6 +211,7 @@ const placeholderEndpoint = defineEndpoint({
 });
 
 const wsApi = defineApi({
+    apiName: 'test',
     endpoints: [
         placeholderEndpoint,
     ],
@@ -434,6 +435,7 @@ const errorEndpoint = defineEndpoint({
 });
 
 const fullApi = defineApi({
+    apiName: 'test',
     endpoints: [
         simpleEndpoint,
         usersCreateEndpoint,
@@ -822,6 +824,117 @@ describe(RestVirClient.name, () => {
                 }),
             );
         });
+
+        it('falls back to globalThis.fetch when no override is provided', async () => {
+            const originalFetch = globalThis.fetch;
+            try {
+                globalThis.fetch = ((..._args: unknown[]) =>
+                    Promise.resolve(
+                        createMockResponse({
+                            headers: {
+                                'content-type': 'application/json',
+                            },
+                            body: 'hi',
+                        }),
+                    )) as unknown as typeof globalThis.fetch;
+
+                const client = new RestVirClient(fullApi, '');
+                const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
+                assert.strictEquals(result.Ok?.responseData, 'hi');
+            } finally {
+                globalThis.fetch = originalFetch;
+            }
+        });
+
+        it('throws when responseData is undefined-shaped but the server sends body data', async () => {
+            const client = new RestVirClient(fullApi, '', () =>
+                Promise.resolve(
+                    createMockResponse({
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        body: 'unexpected payload',
+                    }),
+                ),
+            );
+
+            await assert.throws(
+                async () =>
+                    await client.fetch(regexSearchEndpoint, HttpMethod.Get, {
+                        searchParams: {
+                            code: 'ABC',
+                        },
+                    }),
+                {
+                    matchMessage: 'unexpectedly present data',
+                },
+            );
+        });
+
+        it('throws when receiving an unexpected successful status with no response definition', async () => {
+            const client = new RestVirClient(fullApi, '', () =>
+                Promise.resolve(
+                    createMockResponse({
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        status: HttpStatus.Accepted,
+                        body: 'unexpected',
+                    }),
+                ),
+            );
+
+            await assert.throws(async () => await client.fetch(simpleEndpoint, HttpMethod.Get), {
+                matchMessage: 'unexpected successful response',
+            });
+        });
+    });
+
+    describe('fetchStream', () => {
+        it('returns the response body as a ReadableStream', async () => {
+            const client = new RestVirClient(fullApi, '', () => {
+                const response = new Response('hi', {
+                    status: HttpStatus.Ok,
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                });
+                return Promise.resolve(response);
+            });
+            const result = await client.fetchStream(simpleEndpoint, HttpMethod.Get);
+
+            assert.isDefined(result.Ok);
+            assert.instanceOf(result.Ok.responseData, ReadableStream);
+        });
+
+        it('throws when the response body is null', async () => {
+            const client = new RestVirClient(fullApi, '', () => {
+                const response = new Response(null, {
+                    status: HttpStatus.Ok,
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                });
+                return Promise.resolve(response);
+            });
+
+            await assert.throws(
+                async () => await client.fetchStream(simpleEndpoint, HttpMethod.Get),
+                {
+                    matchMessage: 'no body to stream',
+                },
+            );
+        });
+
+        it('builds wildcard path params correctly via the websocket builder', () => {
+            const wsClient = new RestVirClient(wsApi, 'https://example.com');
+            const url = wsClient.buildWebSocketUrl(wildcardWebSocket, {
+                pathParams: {
+                    wildcard: 'a/b/c',
+                } as never,
+            });
+            assert.strictEquals(url, 'wss://example.com/ws/files/a/b/c');
+        });
     });
 
     describe('buildEndpointUrl', () => {
@@ -1190,6 +1303,7 @@ describe(RestVirClient.name, () => {
             },
         });
         const integrationApi = defineApi({
+            apiName: 'test',
             endpoints: [integrationEndpoint],
         });
         const client = new RestVirClient(integrationApi, 'https://example.com', (url, init) => {
@@ -1251,6 +1365,7 @@ describe(RestVirClient.name, () => {
 
     it('restricts endpoint paths from defineApi', async () => {
         const otherApi = defineApi({
+            apiName: 'test',
             endpoints: [simpleEndpoint],
         });
         const otherEndpoint = defineEndpoint({

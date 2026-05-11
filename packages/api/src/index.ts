@@ -5,7 +5,6 @@ export * from './api/origin-requirement.js';
 export * from './api/route.js';
 export * from './api/web-socket-protocol-parse.js';
 export * from './api/web-socket.js';
-export * from './augments/function.js';
 export * from './augments/json.js';
 export * from './augments/object.js';
 export * from './util/header-util.js';

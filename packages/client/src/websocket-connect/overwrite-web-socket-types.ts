@@ -1,6 +1,5 @@
-import {type MaybePromise, type Overwrite} from '@augment-vir/common';
+import {type BivariantFunction, type MaybePromise, type Overwrite} from '@augment-vir/common';
 import {
-    type MakeBivariantFunction,
     type NoParam,
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
@@ -40,13 +39,15 @@ export type ConnectWebSocketListeners<
     WebSocketClass extends CommonWebSocket | NoParam,
 > =
     | Partial<{
-          [EventName in keyof CommonWebSocketEventMap]: MakeBivariantFunction<
-              WebSocketListenerParams<
-                  EventName,
-                  ThisWebSocket,
-                  WebSocketLocation.OnHost,
-                  WebSocketClass
-              >,
+          [EventName in keyof CommonWebSocketEventMap]: BivariantFunction<
+              [
+                  WebSocketListenerParams<
+                      EventName,
+                      ThisWebSocket,
+                      WebSocketLocation.OnHost,
+                      WebSocketClass
+                  >,
+              ],
               MaybePromise<void>
           >;
       }>

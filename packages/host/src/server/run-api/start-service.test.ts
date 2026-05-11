@@ -1,22 +1,47 @@
-/* eslint-disable sonarjs/no-commented-code */
-
+import {assert, waitUntil} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
+import {runShellCommand} from '@augment-vir/node';
+import {describe, it} from '@augment-vir/test';
+import {findDevServicePort, restVirApiNameHeader, RestVirClient} from '@rest-vir/client';
 import {buildUrl} from 'url-vir';
 import {condenseResponse} from '../test/test-api.js';
+import {
+    arrayOriginEndpoint,
+    asyncRejectionEndpoint,
+    emptyEndpoint,
+    emptyStringResponseEndpoint,
+    formDataEndpoint,
+    functionOriginEndpoint,
+    healthEndpoint,
+    incorrectlyHasResponseDataEndpoint,
+    longRunningEndpoint,
+    missingStatusCodeEndpoint,
+    mockApi,
+    mockWebsiteOrigin,
+    noClientDataWebSocket,
+    plainEndpoint,
+    requiredProtocolsWebSocket,
+    requiresOriginEndpoint,
+    returnsResponseErrorEndpoint,
+    searchParamsWebSocket,
+    sendsProtocolWebSocket,
+    testEndpoint,
+    withAllListenersWebSocket,
+    withSearchParamsEndpoint,
+} from './examples/mock-api-implementation.mock.js';
 import {startService} from './start-service.js';
 import {describeServiceScript, getMockScriptCommand} from './test-start-service.mock.js';
 
 describe(startService.name, () => {
     describeServiceScript('single-thread', ({it}) => {
         it('accepts a valid socket message', async ({connectWebSocket}) => {
-            const webSocket = await connectWebSocket(
-                mockService.webSockets['/no-client-data'].path,
-            );
+            const webSocket = await connectWebSocket(noClientDataWebSocket.path);
             const serverMessage = await webSocket.sendAndWaitForReply();
 
             assert.strictEquals(serverMessage, 'ok');
         });
         it('handles an async rejection', async ({fetchEndpoint, stderr}) => {
-            const response = await fetchEndpoint(mockService.endpoints['/async-rejection'].path);
+            const response = await fetchEndpoint(asyncRejectionEndpoint.path);
 
             assert.strictEquals(response.status, HttpStatus.Ok);
 
@@ -25,37 +50,29 @@ describe(startService.name, () => {
             });
         });
         it('can be dev port scanned', async ({address}) => {
-            const service = await mapServiceDevPort(
-                defineService({
-                    ...mockService.init,
-                    serviceOrigin: 'http://localhost:3690',
-                }),
-            );
+            const result = await findDevServicePort(mockApi, {
+                startOrigin: 'http://localhost:3690',
+                maxScanDistance: 20,
+            });
 
-            assert.strictEquals(service.serviceOrigin, address);
-            assert.strictEquals(service.serviceOrigin, 'http://localhost:3700');
+            assert.isDefined(result);
+            assert.strictEquals(result.origin, address);
+            assert.strictEquals(result.origin, 'http://localhost:3700');
         });
         it('fires websocket listeners', async ({connectWebSocket}) => {
-            const webSocket = await connectWebSocket(
-                mockService.webSockets['/with-all-listeners'].path,
-            );
+            const webSocket = await connectWebSocket(withAllListenersWebSocket.path);
 
             webSocket.send();
         });
         it('handles client message data that should not exist', async ({connectWebSocket}) => {
-            const webSocket = await connectWebSocket(
-                mockService.webSockets['/no-client-data'].path,
-            );
+            const webSocket = await connectWebSocket(noClientDataWebSocket.path);
 
             webSocket.send('something here');
         });
         it('rejects invalid WebSocket protocols', async ({connectWebSocket}) => {
-            await assert.throws(
-                () => connectWebSocket(mockService.webSockets['/required-protocols'].path),
-                {
-                    matchMessage: 'WebSocket connection failed',
-                },
-            );
+            await assert.throws(() => connectWebSocket(requiredProtocolsWebSocket.path), {
+                matchMessage: 'WebSocket connection failed',
+            });
         });
         it('receives web socket protocols', async ({connectWebSocket}) => {
             const mockProtocols = [
@@ -64,22 +81,16 @@ describe(startService.name, () => {
                 'hi2',
             ];
 
-            const webSocket = await connectWebSocket(
-                mockService.webSockets['/sends-protocol'].path,
-                mockProtocols,
-            );
+            const webSocket = await connectWebSocket(sendsProtocolWebSocket.path, mockProtocols);
 
             const serverMessage = await webSocket.sendAndWaitForReply();
 
             assert.deepEquals(serverMessage, mockProtocols);
         });
         it('rejects invalid WebSocket search params', async ({connectWebSocket}) => {
-            await assert.throws(
-                () => connectWebSocket(mockService.webSockets['/with-search-params'].path),
-                {
-                    matchMessage: 'WebSocket connection failed',
-                },
-            );
+            await assert.throws(() => connectWebSocket(searchParamsWebSocket.path), {
+                matchMessage: 'WebSocket connection failed',
+            });
         });
         it('accepts valid WebSocket search params', async ({connectWebSocket}) => {
             const mockSearchParams = {
@@ -92,7 +103,7 @@ describe(startService.name, () => {
             };
 
             const webSocket = await connectWebSocket(
-                buildUrl(mockService.webSockets['/with-search-params'].path, {
+                buildUrl(searchParamsWebSocket.path, {
                     search: mockSearchParams,
                 }).href,
             );
@@ -104,12 +115,9 @@ describe(startService.name, () => {
         it('errors on invalid response', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(
-                        mockService.endpoints['/incorrectly-has-response-data'].path,
-                        {
-                            method: HttpMethod.Get,
-                        },
-                    )
+                    await fetchEndpoint(incorrectlyHasResponseDataEndpoint.path, {
+                        method: HttpMethod.Get,
+                    })
                 ).status,
                 HttpStatus.InternalServerError,
             );
@@ -117,7 +125,7 @@ describe(startService.name, () => {
         it('errors on invalid status code', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/missing-status-code'].path, {
+                    await fetchEndpoint(missingStatusCodeEndpoint.path, {
                         method: HttpMethod.Get,
                     })
                 ).status,
@@ -125,26 +133,23 @@ describe(startService.name, () => {
             );
         });
         it('allows empty string response shape', async ({fetchEndpoint}) => {
-            const output = await fetchEndpoint(
-                mockService.endpoints['/empty-string-response'].path,
-                {
-                    method: HttpMethod.Get,
-                },
-            );
+            const output = await fetchEndpoint(emptyStringResponseEndpoint.path, {
+                method: HttpMethod.Get,
+            });
             assert.strictEquals(output.status, HttpStatus.Ok);
             assert.strictEquals(await output.text(), '');
         });
         it('rejects an unexpected method', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/test'].path, {
+                    await fetchEndpoint(testEndpoint.path, {
                         method: HttpMethod.Get,
                     })
                 ).status,
                 HttpStatus.MethodNotAllowed,
             );
         });
-        it('passes path params an unexpected method', async ({fetchEndpoint}) => {
+        it('passes path params', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await (
                     await fetchEndpoint('/with/first/second', {
@@ -161,7 +166,7 @@ describe(startService.name, () => {
             );
         });
         it('accepts form data', async ({fetchEndpoint}) => {
-            const response = await fetchEndpoint(mockService.endpoints['/form-data'].path, {
+            const response = await fetchEndpoint(formDataEndpoint.path, {
                 method: HttpMethod.Post,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -175,19 +180,19 @@ describe(startService.name, () => {
         it('does not parse body when content type is not json', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/test'].path, {
+                    await fetchEndpoint(testEndpoint.path, {
                         method: HttpMethod.Post,
                         body: JSON.stringify({
                             somethingHere: 'value',
                             testValue: 422,
-                        } satisfies (typeof mockService.endpoints)['/test']['RequestType']),
+                        }),
                     })
                 ).status,
                 HttpStatus.BadRequest,
             );
         });
         it('parses body when content type is json', async ({fetchEndpoint}) => {
-            const postResponse = await fetchEndpoint(mockService.endpoints['/test'].path, {
+            const postResponse = await fetchEndpoint(testEndpoint.path, {
                 method: HttpMethod.Post,
                 headers: {
                     'Content-Type': 'application/json',
@@ -195,7 +200,7 @@ describe(startService.name, () => {
                 body: JSON.stringify({
                     somethingHere: 'value',
                     testValue: 422,
-                } satisfies (typeof mockService.endpoints)['/test']['RequestType']),
+                }),
             });
 
             assert.isTrue(postResponse.ok);
@@ -211,13 +216,13 @@ describe(startService.name, () => {
         });
         it('rejects a missing origin when CORS is required', async ({fetchEndpoint}) => {
             assert.strictEquals(
-                (await fetchEndpoint(mockService.endpoints['/requires-origin'].path)).status,
+                (await fetchEndpoint(requiresOriginEndpoint.path)).status,
                 HttpStatus.Forbidden,
             );
         });
         it('rejects invalid endpoint search params', async ({fetchEndpoint}) => {
             assert.strictEquals(
-                (await fetchEndpoint(mockService.endpoints['/with-search-params'].path)).status,
+                (await fetchEndpoint(withSearchParamsEndpoint.path)).status,
                 HttpStatus.BadRequest,
             );
         });
@@ -225,7 +230,7 @@ describe(startService.name, () => {
             assert.strictEquals(
                 (
                     await fetchEndpoint(
-                        buildUrl(mockService.endpoints['/with-search-params'].path, {
+                        buildUrl(withSearchParamsEndpoint.path, {
                             search: {
                                 param1: ['hi'],
                                 param2: [
@@ -246,7 +251,7 @@ describe(startService.name, () => {
             assert.strictEquals(
                 (
                     await fetchEndpoint(
-                        buildUrl(mockService.endpoints['/with-search-params'].path, {
+                        buildUrl(withSearchParamsEndpoint.path, {
                             search: {
                                 param1: ['hi'],
                                 param2: [
@@ -267,7 +272,7 @@ describe(startService.name, () => {
         it('accepts endpoint with extra body data', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/test'].path, {
+                    await fetchEndpoint(testEndpoint.path, {
                         method: HttpMethod.Post,
                         headers: {
                             'Content-Type': 'application/json',
@@ -285,7 +290,7 @@ describe(startService.name, () => {
         it('rejects fetch to WebSocket path', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.webSockets['/no-client-data'].path, {
+                    await fetchEndpoint(noClientDataWebSocket.path, {
                         method: HttpMethod.Get,
                     })
                 ).status,
@@ -295,7 +300,7 @@ describe(startService.name, () => {
         it('passes a matching CORS origin', async ({fetchEndpoint}) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/requires-origin'].path, {
+                    await fetchEndpoint(requiresOriginEndpoint.path, {
                         headers: {
                             origin: mockWebsiteOrigin,
                         },
@@ -310,7 +315,7 @@ describe(startService.name, () => {
         }) => {
             assert.strictEquals(
                 (
-                    await fetchEndpoint(mockService.endpoints['/test'].path, {
+                    await fetchEndpoint(testEndpoint.path, {
                         method: HttpMethod.Options,
                     })
                 ).status,
@@ -320,19 +325,17 @@ describe(startService.name, () => {
         });
         it('gets blocked', async ({fetchEndpoint}) => {
             const startTime = Date.now();
-            const longRunningTime = fetchEndpoint(mockService.endpoints['/long-running'].path).then(
+            const longRunningTime = fetchEndpoint(longRunningEndpoint.path).then(
                 () => Date.now() - startTime,
             );
-            const plainTime = fetchEndpoint(mockService.endpoints['/plain'].path).then(
-                () => Date.now() - startTime,
-            );
+            const plainTime = fetchEndpoint(plainEndpoint.path).then(() => Date.now() - startTime);
 
             assert.isAtLeast(await plainTime, await longRunningTime);
         });
         it('handles function CORS requirements', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/function-origin'].path, {
+                    await fetchEndpoint(functionOriginEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             origin: 'https://electrovir.com',
@@ -347,7 +350,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/function-origin'].path, {
+                    await fetchEndpoint(functionOriginEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             origin: 'https://example.com',
@@ -359,7 +362,7 @@ describe(startService.name, () => {
                     headers: {
                         'access-control-allow-credentials': 'true',
                         'access-control-allow-origin': 'https://example.com',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                         vary: 'Origin',
                     },
                 },
@@ -367,7 +370,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/function-origin'].path, {
+                    await fetchEndpoint(functionOriginEndpoint.path, {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://electrovir.com',
@@ -382,7 +385,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/function-origin'].path, {
+                    await fetchEndpoint(functionOriginEndpoint.path, {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://example.com',
@@ -394,7 +397,7 @@ describe(startService.name, () => {
                     headers: {
                         'access-control-allow-credentials': 'true',
                         'access-control-allow-headers': 'Cookie,Authorization,Content-Type',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                         'access-control-allow-methods': 'GET,OPTIONS',
                         'access-control-allow-origin': 'https://example.com',
                         'access-control-max-age': '3600',
@@ -407,7 +410,7 @@ describe(startService.name, () => {
         it('handles array CORS requirements', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/array-origin'].path, {
+                    await fetchEndpoint(arrayOriginEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             origin: 'https://wikipedia.org',
@@ -422,7 +425,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/array-origin'].path, {
+                    await fetchEndpoint(arrayOriginEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             origin: 'https://example.com',
@@ -434,7 +437,7 @@ describe(startService.name, () => {
                     headers: {
                         'access-control-allow-credentials': 'true',
                         'access-control-allow-origin': 'https://example.com',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                         vary: 'Origin',
                     },
                 },
@@ -442,7 +445,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/array-origin'].path, {
+                    await fetchEndpoint(arrayOriginEndpoint.path, {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://wikipedia.org',
@@ -457,7 +460,7 @@ describe(startService.name, () => {
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/array-origin'].path, {
+                    await fetchEndpoint(arrayOriginEndpoint.path, {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://example.com',
@@ -469,7 +472,7 @@ describe(startService.name, () => {
                     headers: {
                         'access-control-allow-credentials': 'true',
                         'access-control-allow-headers': 'Cookie,Authorization,Content-Type',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                         'access-control-allow-methods': 'GET,OPTIONS',
                         'access-control-allow-origin': 'https://example.com',
                         'access-control-max-age': '3600',
@@ -479,10 +482,10 @@ describe(startService.name, () => {
                 'accepts a valid OPTIONS origin with an array',
             );
         });
-        it("accepts a service's AnyOrigin", async ({fetchEndpoint}) => {
+        it("accepts an api's AnyOrigin", async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/health'].path, {
+                    await fetchEndpoint(healthEndpoint.path, {
                         method: HttpMethod.Get,
                     }),
                 ),
@@ -490,14 +493,14 @@ describe(startService.name, () => {
                     status: HttpStatus.Ok,
                     headers: {
                         'access-control-allow-origin': '*',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
                 },
                 'accepts a get request without any origin',
             );
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/health'].path, {
+                    await fetchEndpoint(healthEndpoint.path, {
                         method: HttpMethod.Options,
                     }),
                 ),
@@ -505,7 +508,7 @@ describe(startService.name, () => {
                     status: HttpStatus.NoContent,
                     headers: {
                         'access-control-allow-headers': 'Cookie,Authorization,Content-Type',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                         'access-control-allow-methods': 'GET,OPTIONS',
                         'access-control-allow-origin': '*',
                         'access-control-max-age': '3600',
@@ -517,18 +520,17 @@ describe(startService.name, () => {
         it('generates an error response', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/returns-response-error'].path, {
+                    await fetchEndpoint(returnsResponseErrorEndpoint.path, {
                         method: HttpMethod.Get,
                     }),
                 ),
                 {
                     status: HttpStatus.NotAcceptable,
-                    body: 'INTENTIONAL ERROR',
+                    body: '"INTENTIONAL ERROR"',
                     headers: {
                         'access-control-allow-origin': '*',
-                        /** This header is automatically added by fastify. */
-                        'content-type': 'text/plain; charset=utf-8',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'content-type': 'application/json; charset=utf-8',
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
                 },
             );
@@ -536,7 +538,7 @@ describe(startService.name, () => {
         it('handles a context rejection', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/empty'].path, {
+                    await fetchEndpoint(emptyEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             authorization: 'reject',
@@ -547,7 +549,7 @@ describe(startService.name, () => {
                     status: HttpStatus.Unauthorized,
                     headers: {
                         'access-control-allow-origin': '*',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
                 },
             );
@@ -555,7 +557,7 @@ describe(startService.name, () => {
         it('handles failed context generation', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/empty'].path, {
+                    await fetchEndpoint(emptyEndpoint.path, {
                         method: HttpMethod.Get,
                         headers: {
                             authorization: 'error',
@@ -566,7 +568,7 @@ describe(startService.name, () => {
                     status: HttpStatus.InternalServerError,
                     headers: {
                         'access-control-allow-origin': '*',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
                 },
             );
@@ -574,7 +576,7 @@ describe(startService.name, () => {
         it('rejects unexpected request body', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/plain'].path, {
+                    await fetchEndpoint(plainEndpoint.path, {
                         method: HttpMethod.Post,
                         body: JSON.stringify({
                             somethingHere: 'hi',
@@ -590,7 +592,7 @@ describe(startService.name, () => {
                     headers: {
                         'access-control-allow-origin': '*',
                         'content-type': 'text/plain; charset=utf-8',
-                        'access-control-expose-headers': restVirServiceNameHeader,
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
                 },
             );
@@ -598,7 +600,7 @@ describe(startService.name, () => {
         it('404s on missing endpoint', async ({fetchEndpoint}) => {
             assert.deepEquals(
                 await condenseResponse(
-                    await fetchEndpoint(mockService.endpoints['/missing'].path, {
+                    await fetchEndpoint('/missing', {
                         method: HttpMethod.Get,
                     }),
                 ),
@@ -611,24 +613,21 @@ describe(startService.name, () => {
                 },
             );
         });
-        it('works with fetchEndpoint', async ({address}) => {
-            const output = await fetchEndpoint(
-                mergeDeep(mockService.endpoints['/empty'], {
-                    service: {
-                        serviceOrigin: address,
+        it('works with RestVirClient', async ({address}) => {
+            const client = new RestVirClient(mockApi, address);
+
+            const output = await client.fetch(emptyEndpoint, HttpMethod.Get);
+
+            assert.isTrue('Accepted' in output);
+            if ('Accepted' in output) {
+                assert.deepEquals(await condenseResponse(output.Accepted.response), {
+                    status: HttpStatus.Accepted,
+                    headers: {
+                        'access-control-allow-origin': '*',
+                        'access-control-expose-headers': restVirApiNameHeader,
                     },
-                }),
-            );
-
-            assert.isUndefined(output.data);
-
-            assert.deepEquals(await condenseResponse(output.response), {
-                status: HttpStatus.Accepted,
-                headers: {
-                    'access-control-allow-origin': '*',
-                    'access-control-expose-headers': restVirServiceNameHeader,
-                },
-            });
+                });
+            }
         });
     });
 
@@ -644,20 +643,18 @@ describe(startService.name, () => {
          */
         // it('does not get blocked', async ({fetchEndpoint}) => {
         //     const startTime = Date.now();
-        //     const longRunningTime = fetchEndpoint(
-        //         mockService.endpoints['/long-running'].path,
-        //     ).then(() => Date.now() - startTime);
-        //     const plainTime = fetchEndpoint(mockService.endpoints['/plain'].path).then(
+        //     const longRunningTime = fetchEndpoint(longRunningEndpoint.path).then(
         //         () => Date.now() - startTime,
         //     );
+        //     const plainTime = fetchEndpoint(plainEndpoint.path).then(() => Date.now() - startTime);
         //     assert.isBelow(await plainTime, await longRunningTime);
         // });
         it('runs on multiple threads', async ({fetchEndpoint}) => {
-            const response = await fetchEndpoint(mockService.endpoints['/empty'].path);
+            const response = await fetchEndpoint(emptyEndpoint.path);
             assert.deepEquals(await condenseResponse(response), {
                 headers: {
                     'access-control-allow-origin': '*',
-                    'access-control-expose-headers': restVirServiceNameHeader,
+                    'access-control-expose-headers': restVirApiNameHeader,
                 },
                 status: HttpStatus.Accepted,
             });

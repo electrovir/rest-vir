@@ -1,10 +1,9 @@
-import {type ErrorHttpStatus, type MaybePromise} from '@augment-vir/common';
+import {type BivariantFunction, type ErrorHttpStatus, type MaybePromise} from '@augment-vir/common';
 import {
     type BaseSearchParams,
     type DefaultErrorResponseType,
     type DefinableHttpMethod,
     type EndpointDefinition,
-    type MakeBivariantFunction,
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
@@ -25,8 +24,8 @@ export type IsOptionalHostContext<HostContext> = HostContext extends undefined
         ? true
         : false;
 
-export type CreateHostContextCallback<HostContext> = MakeBivariantFunction<
-    CreateHostContextParams,
+export type CreateHostContextCallback<HostContext> = BivariantFunction<
+    [CreateHostContextParams],
     MaybePromise<CreateHostContextOutput<HostContext>>
 >;
 

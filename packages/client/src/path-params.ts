@@ -81,10 +81,10 @@ export type ResolveWildcard<HasWildcard extends boolean> = [HasWildcard] extends
  */
 export type ResolveNamedParams<Named extends string> =
     IsNever<Named> extends true
-        ? Readonly<unknown>
+        ? unknown
         : [Named] extends [string]
           ? Readonly<Record<Named, string>>
-          : Readonly<unknown>;
+          : unknown;
 
 /**
  * Generic path params.

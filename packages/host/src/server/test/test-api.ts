@@ -175,7 +175,7 @@ export type ApiTestSuite<Api extends Readonly<ApiImplementation>> = {
 export async function testApi<const Api extends Readonly<ApiImplementation>>(
     api: Readonly<Api>,
     testApiOptions: Readonly<
-        Omit<PartialWithUndefined<RunApiUserOptions>, 'workerCount' | 'preventWorkerRespawn' | ''>
+        Omit<PartialWithUndefined<RunApiUserOptions>, 'workerCount' | 'preventWorkerRespawn'>
     > = {},
 ) {
     const {host = 'localhost', port} = mergeDefinedProperties<TestApiOptions>(

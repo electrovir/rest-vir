@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineShape, exactShape, tupleShape} from 'object-shape-tester';
+import {defineShape, exactShape, nullableShape, tupleShape} from 'object-shape-tester';
 import {type NoParam} from '../util/no-param.js';
 import {
     defineWebSocket,
@@ -391,6 +391,19 @@ describe('WebSocketConnectProtocolType', () => {
         assert.tsType<Result>().equals<string[] | undefined>();
     });
 
+    it('returns string[] | undefined for the NoParam default', () => {
+        const requiredProtocolsWebSocket = defineWebSocket({
+            path: '/required-protocols',
+            clientMessage: exactShape('hello'),
+            hostMessage: exactShape('ok'),
+            connectProtocol: exactShape('hi'),
+        });
+
+        type Result = WebSocketConnectProtocolType<typeof requiredProtocolsWebSocket>;
+
+        assert.tsType<Result>().equals<'hi'[]>();
+    });
+
     it('returns string[] | undefined when the definition omits connectProtocol', () => {
         type Result = WebSocketConnectProtocolType<{
             path: '/ws';
@@ -414,7 +427,7 @@ describe('WebSocketConnectProtocolType', () => {
             connectProtocol: ReturnType<typeof defineShape<string>>;
         }>;
 
-        assert.tsType<Result>().equals<string[] | undefined>();
+        assert.tsType<Result>().equals<string[]>();
     });
 
     it('narrows to a string-literal array when connectProtocol is an exactShape literal', () => {
@@ -423,10 +436,10 @@ describe('WebSocketConnectProtocolType', () => {
             connectProtocol: ReturnType<typeof exactShape<'v2'>>;
         }>;
 
-        assert.tsType<Result>().equals<'v2'[] | undefined>();
+        assert.tsType<Result>().equals<'v2'[]>();
     });
 
-    it('collapses to never[] | undefined when the shape runtimeType is not assignable to string', () => {
+    it('falls back when shape runtimeType is not assignable to string', () => {
         /**
          * `tupleShape` produces a Shape whose `runtimeType` is an array, not a string. After
          * `Extract<runtimeType, string>` strips out the non-string members, nothing is left.
@@ -436,24 +449,7 @@ describe('WebSocketConnectProtocolType', () => {
             connectProtocol: ReturnType<typeof tupleShape<['', 'v2']>>;
         }>;
 
-        assert.tsType<Result>().equals<never[] | undefined>();
-    });
-
-    it('always allows undefined regardless of input', () => {
-        assert.tsType<undefined>().matches<
-            WebSocketConnectProtocolType<{
-                path: '/ws';
-                connectProtocol: ReturnType<typeof defineShape<string>>;
-            }>
-        >();
-
-        assert.tsType<undefined>().matches<WebSocketConnectProtocolType>();
-
-        assert.tsType<undefined>().matches<
-            WebSocketConnectProtocolType<{
-                path: '/ws';
-            }>
-        >();
+        assert.tsType<Result>().equals<string[] | undefined>();
     });
 
     it('produces an array (never a single value) for any input', () => {
@@ -466,6 +462,19 @@ describe('WebSocketConnectProtocolType', () => {
         assert.tsType<NonNullable<Result>>().matches<readonly unknown[]>();
     });
 
+    it('passes possibly undefined up', () => {
+        const requiredProtocolsWebSocket = defineWebSocket({
+            path: '/required-protocols',
+            clientMessage: exactShape('hello'),
+            hostMessage: exactShape('ok'),
+            connectProtocol: nullableShape(exactShape('hi')),
+        });
+
+        type Result = WebSocketConnectProtocolType<typeof requiredProtocolsWebSocket>;
+
+        assert.tsType<Result>().equals<'hi'[] | undefined>();
+    });
+
     it('narrows correctly through a real defineWebSocket value with a string connectProtocol', () => {
         const fullDefinition = defineWebSocket({
             path: '/ws',
@@ -474,7 +483,7 @@ describe('WebSocketConnectProtocolType', () => {
 
         type Result = WebSocketConnectProtocolType<typeof fullDefinition>;
 
-        assert.tsType<Result>().equals<string[] | undefined>();
+        assert.tsType<Result>().equals<string[]>();
     });
 
     it('narrows correctly through a real defineWebSocket value with an exactShape connectProtocol', () => {
@@ -485,7 +494,7 @@ describe('WebSocketConnectProtocolType', () => {
 
         type Result = WebSocketConnectProtocolType<typeof fullDefinition>;
 
-        assert.tsType<Result>().equals<'graphql-ws'[] | undefined>();
+        assert.tsType<Result>().equals<'graphql-ws'[]>();
     });
 });
 

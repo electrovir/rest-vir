@@ -175,42 +175,50 @@ describe('ResolveWildcard', () => {
 });
 
 describe('ResolveNamedParams', () => {
-    it('requires pathParams record for a single param', () => {
-        assert.tsType<ResolveNamedParams<'id'>>().equals<
-            Readonly<{
-                pathParams: Readonly<Record<'id', string>>;
-            }>
-        >();
+    it('returns a flat record for a single param', () => {
+        assert.tsType<ResolveNamedParams<'id'>>().equals<Readonly<Record<'id', string>>>();
     });
 
-    it('requires pathParams record for a union of params', () => {
-        assert.tsType<ResolveNamedParams<'a' | 'b'>>().equals<
-            Readonly<{
-                pathParams: Readonly<Record<'a' | 'b', string>>;
-            }>
-        >();
+    it('returns a flat record for a union of params', () => {
+        assert
+            .tsType<ResolveNamedParams<'a' | 'b'>>()
+            .equals<Readonly<Record<'a' | 'b', string>>>();
     });
 
-    it('makes pathParams optional undefined for never', () => {
-        assert.tsType<ResolveNamedParams<never>>().equals<
-            Readonly<{
-                pathParams?: undefined;
-            }>
-        >();
+    it('contributes no keys for never', () => {
+        assert.tsType<ResolveNamedParams<never>>().equals<unknown>();
     });
 
-    it('requires pathParams record for generic string', () => {
-        assert.tsType<ResolveNamedParams<string>>().equals<
-            Readonly<{
-                pathParams: Readonly<Record<string, string>>;
-            }>
-        >();
+    it('returns a flat record for generic string', () => {
+        assert.tsType<ResolveNamedParams<string>>().equals<Readonly<Record<string, string>>>();
     });
 });
 
 describe('ExtractPathParams', () => {
     it('handles a simple path', () => {
         assert.tsType<ExtractPathParams<'/users'>>().equals<undefined>();
+    });
+
+    it('handles params and wildcard', () => {
+        type Result = ExtractPathParams<'/with/:param1/:param2/*'>;
+        assert.tsType<Result>().equals<
+            Readonly<{
+                wildcard: string;
+            }> &
+                Readonly<Record<'param1' | 'param2', string>>
+        >();
+
+        const testAssignment: Result = {
+            param1: 'hi',
+            param2: 'hi1',
+            wildcard: 'hi',
+        };
+
+        // @ts-expect-error: missing param1
+        const testAssignment2: Result = {
+            param2: 'hi1',
+            wildcard: 'hi',
+        };
     });
 
     it('handles root path', () => {
@@ -226,9 +234,7 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard?: undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'id', string>>;
-                }>
+                Readonly<Record<'id', string>>
         >();
     });
 
@@ -237,9 +243,7 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard?: undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'userId' | 'postId', string>>;
-                }>
+                Readonly<Record<'userId' | 'postId', string>>
         >();
     });
 
@@ -247,10 +251,7 @@ describe('ExtractPathParams', () => {
         assert.tsType<ExtractPathParams<'/files/*'>>().equals<
             Readonly<{
                 wildcard: string;
-            }> &
-                Readonly<{
-                    pathParams?: undefined;
-                }>
+            }>
         >();
     });
 
@@ -259,9 +260,7 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard: string;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'id', string>>;
-                }>
+                Readonly<Record<'id', string>>
         >();
     });
 
@@ -270,9 +269,7 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard: string;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'x' | 'y', string>>;
-                }>
+                Readonly<Record<'x' | 'y', string>>
         >();
     });
 
@@ -281,18 +278,15 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard?: string | undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<string, string>>;
-                }>
+                Readonly<Record<string, string>>
         >();
     });
 
     it('returns a loose union type for NoParam', () => {
         assert.tsType<ExtractPathParams>().equals<
-            | {
+            | ({
                   wildcard?: string;
-                  pathParams?: Record<string, string>;
-              }
+              } & Record<string, string | undefined>)
             | undefined
         >();
     });
@@ -302,9 +296,7 @@ describe('ExtractPathParams', () => {
             Readonly<{
                 wildcard?: undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'itemId', string>>;
-                }>
+                Readonly<Record<'itemId', string>>
         >();
     });
 

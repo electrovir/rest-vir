@@ -1,4 +1,4 @@
-import {type PartialWithUndefined} from '@augment-vir/common';
+import {type ArrayElement, type PartialWithUndefined} from '@augment-vir/common';
 import {type EndpointDefinition} from './endpoint.js';
 import {type BaseRoutePath} from './route.js';
 import {type WebSocketDefinition} from './web-socket.js';
@@ -79,7 +79,7 @@ export function defineApi<
     const WebSocketPaths extends ReadonlyArray<BaseRoutePath> = [],
 >(
     apiInit: Readonly<ApiInit<EndpointPaths, WebSocketPaths>>,
-): ApiDefinition<EndpointPaths[number], WebSocketPaths[number]> {
+): ApiDefinition<ArrayElement<EndpointPaths>, ArrayElement<WebSocketPaths>> {
     return {
         apiName: apiInit.apiName,
         endpoints: apiInit.endpoints

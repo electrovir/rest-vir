@@ -28,7 +28,7 @@ export function createApiImplementor<HostContext>(this: void) {
                     definition: endpoint,
                     isEndpoint: true,
                     isWebSocket: false,
-                };
+                } satisfies EndpointImplementation as EndpointImplementation<Endpoint, HostContext>;
             },
             implementWebSocket: <
                 const ThisWebSocket extends Readonly<WebSocketDefinition> & {

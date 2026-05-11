@@ -5,7 +5,7 @@ import {assertValidShape, type Shape} from 'object-shape-tester';
 export function extractRequiredHeaders(
     path: PropertyKey,
     requiredRequestHeaders: Record<string, Shape | RegExp> | undefined,
-    headerValues: undefined | Record<string, string>,
+    headerValues: undefined | Record<string, string | undefined>,
 ): Record<string, string> {
     if (requiredRequestHeaders) {
         if (!headerValues) {
@@ -34,9 +34,16 @@ export function extractRequiredHeaders(
                 );
             }
 
+            /**
+             * Omit the header from the result when its value is missing. This only happens when
+             * the shape allows undefined; otherwise `assertValidShape` would have already thrown.
+             */
+            if (!headerValue) {
+                return undefined;
+            }
             return {
                 key: headerName,
-                value: headerValue || '',
+                value: headerValue,
             };
         });
     } else {

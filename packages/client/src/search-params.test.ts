@@ -1,34 +1,18 @@
 import {assert} from '@augment-vir/assert';
-import {HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineShape} from 'object-shape-tester';
 import {extractSearchParams} from './search-params.js';
 
-const stubResponses = {
-    [HttpStatus.Ok]: {
-        responseData: undefined,
-    },
-};
-
 describe(extractSearchParams.name, () => {
     it('returns empty object when no search params are defined', () => {
-        const result = extractSearchParams(
-            '/test',
-            {
-                responses: stubResponses,
-            },
-            {},
-        );
+        const result = extractSearchParams({}, {});
 
         assert.deepEquals(result, {});
     });
 
     it('returns empty object when endpoint has no searchParams', () => {
         const result = extractSearchParams(
-            '/test',
-            {
-                responses: stubResponses,
-            },
+            {},
             {
                 searchParams: {
                     query: 'hello',
@@ -43,12 +27,10 @@ describe(extractSearchParams.name, () => {
 
     it('passes valid string search params through', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -64,12 +46,10 @@ describe(extractSearchParams.name, () => {
 
     it('passes valid string array search params through', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     tags: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -86,12 +66,10 @@ describe(extractSearchParams.name, () => {
     it('blocks array string when string is required', () => {
         assert.throws(() =>
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         tags: defineShape(''),
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -107,12 +85,10 @@ describe(extractSearchParams.name, () => {
 
     it('passes when search params are not provided', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {},
         );
@@ -123,12 +99,10 @@ describe(extractSearchParams.name, () => {
     it('omits undefined values with RegExp requirement', () => {
         assert.deepEquals(
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         id: /^\d+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -142,12 +116,10 @@ describe(extractSearchParams.name, () => {
 
     it('passes valid regex search params', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     id: /^\d+$/,
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -164,12 +136,10 @@ describe(extractSearchParams.name, () => {
     it('throws for regex search param that does not match', () => {
         assert.throws(() => {
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         id: /^\d+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -182,13 +152,11 @@ describe(extractSearchParams.name, () => {
 
     it('validates multiple search params independently', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                     page: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -206,12 +174,10 @@ describe(extractSearchParams.name, () => {
 
     it('ignores search params not defined in the endpoint', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -230,12 +196,10 @@ describe(extractSearchParams.name, () => {
     it('validates regex against each value in an array', () => {
         assert.throws(() => {
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         ids: /^\d+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -251,12 +215,10 @@ describe(extractSearchParams.name, () => {
 
     it('passes regex validation for all array values', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     ids: /^\d+$/,
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -278,10 +240,8 @@ describe(extractSearchParams.name, () => {
 
     it('returns the params object when endpoint has no searchParams definition', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: undefined,
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -296,26 +256,18 @@ describe(extractSearchParams.name, () => {
     });
 
     it('returns empty object when neither endpoint nor params have searchParams', () => {
-        const result = extractSearchParams(
-            '/test',
-            {
-                responses: stubResponses,
-            },
-            {},
-        );
+        const result = extractSearchParams({}, {});
 
         assert.deepEquals(result, {});
     });
 
     it('skips validation for a defined key that is absent from params', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     required: defineShape(''),
                     optional: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -331,12 +283,10 @@ describe(extractSearchParams.name, () => {
 
     it('skips validation when endpoint has requirements but params has no searchParams', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: undefined,
@@ -348,12 +298,10 @@ describe(extractSearchParams.name, () => {
 
     it('removes undefined values from the result', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     kept: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -371,12 +319,10 @@ describe(extractSearchParams.name, () => {
 
     it('skips validation for an undefined param value with a shape requirement', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     query: defineShape(''),
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -390,12 +336,10 @@ describe(extractSearchParams.name, () => {
 
     it('skips validation for an undefined param value with a regex requirement', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     id: /^\d+$/,
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -410,12 +354,10 @@ describe(extractSearchParams.name, () => {
     it('throws for shape validation failure on a string value', () => {
         assert.throws(() => {
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         count: defineShape(0),
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -430,12 +372,10 @@ describe(extractSearchParams.name, () => {
         assert.throws(
             () => {
                 extractSearchParams(
-                    '/test',
                     {
                         searchParams: {
                             codes: /^[A-Z]{3}$/,
                         },
-                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -457,12 +397,10 @@ describe(extractSearchParams.name, () => {
         assert.throws(
             () => {
                 extractSearchParams(
-                    '/test',
                     {
                         searchParams: {
                             myParam: /^valid$/,
                         },
-                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -481,12 +419,10 @@ describe(extractSearchParams.name, () => {
         assert.throws(
             () => {
                 extractSearchParams(
-                    '/test',
                     {
                         searchParams: {
                             myField: defineShape(0),
                         },
-                        responses: stubResponses,
                     },
                     {
                         searchParams: {
@@ -503,13 +439,11 @@ describe(extractSearchParams.name, () => {
 
     it('validates mixed shape and regex requirements independently', () => {
         const result = extractSearchParams(
-            '/test',
             {
                 searchParams: {
                     name: defineShape(''),
                     code: /^[A-Z]+$/,
                 },
-                responses: stubResponses,
             },
             {
                 searchParams: {
@@ -528,13 +462,11 @@ describe(extractSearchParams.name, () => {
     it('throws on shape requirement when mixed with passing regex', () => {
         assert.throws(() => {
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         name: defineShape(0),
                         code: /^[A-Z]+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -549,13 +481,11 @@ describe(extractSearchParams.name, () => {
     it('throws on regex requirement when mixed with passing shape', () => {
         assert.throws(() => {
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         name: defineShape(''),
                         code: /^[A-Z]+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {
@@ -570,12 +500,10 @@ describe(extractSearchParams.name, () => {
     it('allows non-string value for regexp search param', () => {
         assert.deepEquals(
             extractSearchParams(
-                '/test',
                 {
                     searchParams: {
                         count: /^\d+$/,
                     },
-                    responses: stubResponses,
                 },
                 {
                     searchParams: {

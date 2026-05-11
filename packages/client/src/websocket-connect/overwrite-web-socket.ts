@@ -61,6 +61,7 @@ export async function finalizeWebSocket<
         webSocket.addEventListener('error', listeners.error);
     }
     if (listeners?.message) {
+        // todo: fix this type
         webSocket.addEventListener('message', listeners.message);
     }
     if (listeners?.close) {

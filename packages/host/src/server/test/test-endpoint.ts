@@ -1,4 +1,4 @@
-import {type DefinableHttpMethod} from '@rest-vir/api';
+import {type DefinableHttpMethod, type EndpointDefinition} from '@rest-vir/api';
 import {type EndpointFetchParams} from '@rest-vir/client';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
 import {testApi} from './test-api.js';
@@ -22,7 +22,8 @@ import {testApi} from './test-api.js';
  * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function testEndpoint<
-    const Endpoint extends Readonly<EndpointImplementation>,
+    const HostContext,
+    const Endpoint extends Readonly<EndpointImplementation<EndpointDefinition, HostContext>>,
     const Method extends Extract<
         keyof NoInfer<Endpoint>['definition']['requests'],
         DefinableHttpMethod
@@ -30,6 +31,7 @@ export async function testEndpoint<
 >(
     endpoint: Readonly<Endpoint>,
     method: Method,
+    context: HostContext,
     ...restParams: EndpointFetchParams<NoInfer<Endpoint>['definition'], NoInfer<Method>>
 ) {
     const {fetchEndpoint, kill} = await testApi({

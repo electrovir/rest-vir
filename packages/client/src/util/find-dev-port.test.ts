@@ -1,8 +1,22 @@
 import {assert} from '@augment-vir/assert';
-import {wait} from '@augment-vir/common';
+import {HttpMethod, HttpStatus, wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
+import {defineEndpoint} from '@rest-vir/api';
 import {parseUrl} from 'url-vir';
-import {findDevServicePort, findLivePort, mapServiceDevPort} from './find-dev-port.js';
+import {findDevServicePort, findLivePort} from './find-dev-port.js';
+
+const testEndpoint = defineEndpoint({
+    path: '/test',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
+        },
+    },
+});
 
 describe(findDevServicePort.name, () => {
     async function testFindDevServicePort({
@@ -18,16 +32,15 @@ describe(findDevServicePort.name, () => {
 
         await findDevServicePort(
             {
+                apiName: 'test service',
                 endpoints: {
-                    '/test': {
-                        path: '/test',
-                    } as unknown as EndpointDefinition,
+                    '/test': testEndpoint,
                 },
-                serviceName: 'test service',
-                serviceOrigin: origin,
+                webSockets: {},
             },
             {
-                fetch(url) {
+                startOrigin: origin,
+                fetchOverride(url) {
                     const {port} = parseUrl(url);
                     const fetchPort = Number(port);
                     fetchedPorts.push(fetchPort);
@@ -119,11 +132,16 @@ describe(findDevServicePort.name, () => {
     it('rejects a service without endpoints', async () => {
         await assert.throws(
             () =>
-                findDevServicePort({
-                    endpoints: {},
-                    serviceName: '',
-                    serviceOrigin: '',
-                }),
+                findDevServicePort(
+                    {
+                        apiName: '',
+                        endpoints: {},
+                        webSockets: {},
+                    },
+                    {
+                        startOrigin: '',
+                    },
+                ),
             {
                 matchMessage: 'Service has no endpoints',
             },
@@ -134,8 +152,8 @@ describe(findDevServicePort.name, () => {
 describe(findLivePort.name, () => {
     it('does not require a isValidResponse option', async () => {
         assert.strictEquals(
-            await findLivePort('localhost:3000', '/my-path', {
-                fetch(url) {
+            await findLivePort('localhost:3000', testEndpoint, {
+                fetchOverride(url) {
                     const {port} = parseUrl(url);
                     const fetchPort = Number(port);
 
@@ -154,12 +172,54 @@ describe(findLivePort.name, () => {
             3002,
         );
     });
+    it('rejects an invalid (non-numeric) port', async () => {
+        await assert.throws(
+            () =>
+                findLivePort('localhost:not-a-number', testEndpoint, {
+                    fetchOverride() {
+                        return Promise.resolve({
+                            ok: false,
+                        } as unknown as Response);
+                    },
+                    maxScanDistance: 1,
+                }),
+            {
+                matchMessage: "doesn't have a valid port",
+            },
+        );
+    });
+
+    it('uses the global fetch when fetchOverride is omitted', async () => {
+        await assert.throws(
+            () =>
+                findLivePort('http://127.0.0.1:1', testEndpoint, {
+                    maxScanDistance: 0,
+                    timeout: {
+                        milliseconds: 500,
+                    },
+                }),
+            {
+                matchMessage: /Max port scan distance|timeout/i,
+            },
+        );
+    });
+
+    it('returns undefined when origin has no port', async () => {
+        const result = await findLivePort('localhost', testEndpoint, {
+            fetchOverride() {
+                return Promise.resolve({
+                    ok: true,
+                } as unknown as Response);
+            },
+            maxScanDistance: 1,
+        });
+        assert.isUndefined(result);
+    });
     it('times out', async () => {
         await assert.throws(
             () =>
-                findLivePort('localhost:3000', '/my-path', {
-                    async fetch(url) {
-                        const {port} = parseUrl(url);
+                findLivePort('localhost:3000', testEndpoint, {
+                    async fetchOverride() {
                         await wait({
                             milliseconds: 10,
                         });
@@ -177,45 +237,5 @@ describe(findLivePort.name, () => {
                 matchMessage: 'Port scan timeout reached',
             },
         );
-    });
-});
-
-describe(mapServiceDevPort.name, () => {
-    it('finds a new port', async () => {
-        const result = await mapServiceDevPort(mockService, {
-            fetch(url) {
-                const {port} = parseUrl(url);
-                const fetchPort = Number(port);
-
-                if (fetchPort === 3005) {
-                    return Promise.resolve({
-                        headers: {
-                            get() {
-                                return mockService.serviceName;
-                            },
-                        },
-                        ok: true,
-                    } as unknown as Response);
-                } else {
-                    return Promise.resolve({
-                        headers: {
-                            get() {
-                                return mockService.serviceName;
-                            },
-                        },
-                        ok: false,
-                    } as unknown as Response);
-                }
-            },
-            startingOriginOverride: 'http://localhost:3000',
-        });
-        assert.deepEquals(result.serviceOrigin, 'http://localhost:3005');
-    });
-    it('does not map a service without a port number', async () => {
-        const result = await mapServiceDevPort({
-            ...mockService,
-            serviceOrigin: 'http://localhost',
-        });
-        assert.deepEquals(result.serviceOrigin, 'http://localhost');
     });
 });

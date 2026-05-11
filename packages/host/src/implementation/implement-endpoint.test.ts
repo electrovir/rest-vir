@@ -1,14 +1,14 @@
 import {assert} from '@augment-vir/assert';
-import {type MaybePromise} from '@augment-vir/common';
+import {type BivariantFunction, type MaybePromise} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {
     type BaseRoutePath,
+    type DefinableHttpMethod,
     defineApi,
     defineEndpoint,
     type EndpointDefinition,
     HttpMethod,
     HttpStatus,
-    type MakeBivariantFunction,
 } from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {
@@ -96,12 +96,32 @@ describe('EndpointMethodImplementations', () => {
 
 describe('EndpointImplementation', () => {
     it('has implementation methods', () => {
+        type Implementations = EndpointImplementation['implementation'];
+
         assert
-            .tsType<EndpointImplementation['implementation'][HttpMethod.Get]>()
+            .tsType<Implementations>()
+            .equals<
+                Readonly<
+                    Partial<
+                        Record<
+                            DefinableHttpMethod,
+                            BivariantFunction<
+                                [EndpointMethodImplementationParams],
+                                MaybePromise<EndpointMethodImplementationOutput>
+                            >
+                        >
+                    >
+                >
+            >();
+
+        type Implementation = EndpointImplementation['implementation'][HttpMethod.Get];
+
+        assert
+            .tsType<Implementation>()
             .equals<
                 | undefined
-                | MakeBivariantFunction<
-                      EndpointMethodImplementationParams,
+                | BivariantFunction<
+                      [EndpointMethodImplementationParams],
                       MaybePromise<EndpointMethodImplementationOutput>
                   >
             >();
@@ -138,6 +158,13 @@ describe('EndpointImplementation', () => {
         assert.tsType(testAssignment.definition).equals<Readonly<EndpointDefinition>>();
     });
 
+    it('has a bare definition and path', () => {
+        const fakeImplementation: EndpointImplementation = {} as EndpointImplementation;
+
+        assert.tsType(fakeImplementation.definition).equals<Readonly<EndpointDefinition>>();
+        assert.tsType(fakeImplementation.path).equals<BaseRoutePath>();
+    });
+
     it('maintains definition type', () => {
         const testAssignment = implementMockEndpoint(mockEndpoint, {
             [HttpMethod.Get]({context, method, endpointDefinition: endpoint}) {
@@ -159,12 +186,17 @@ describe('EndpointImplementation', () => {
             },
         });
 
+        const genericTestAssignment: EndpointImplementation = testAssignment;
+
         assert
             .tsType<keyof typeof testAssignment>()
             .equals<'implementation' | 'definition' | 'path' | 'isEndpoint' | 'isWebSocket'>();
         assert
             .tsType(testAssignment.implementation)
-            .equals<Readonly<EndpointMethodImplementations>>();
+            .matches<Readonly<EndpointMethodImplementations>>();
+        assert
+            .tsType(testAssignment.implementation)
+            .equals<Readonly<EndpointMethodImplementations<typeof mockEndpoint, MockContext>>>();
         assert.tsType(testAssignment.definition.path).equals<(typeof mockEndpoint)['path']>();
         assert.tsType(testAssignment.definition).equals<typeof mockEndpoint>();
     });

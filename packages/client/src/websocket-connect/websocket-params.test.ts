@@ -1,4 +1,7 @@
+import {assert} from '@augment-vir/assert';
+import {type AnyObject} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
+import {defineWebSocket} from '@rest-vir/api';
 import {
     type adminWebSocket,
     type chatWebSocket,
@@ -9,8 +12,9 @@ import {
     type secureWebSocket,
     type versionedWebSocket,
 } from '@rest-vir/api/src/api/api.mock.js';
+import {exactShape} from 'object-shape-tester';
 import {type CommonWebSocket} from './common-web-socket.js';
-import {type WebSocketConnectParamObject} from './websocket-params.js';
+import {type WebSocketConnectParamObject, type WebSocketConnectParams} from './websocket-params.js';
 
 describe('WebSocketConnectParamObject', () => {
     it('can be assigned to from specific implementations', () => {
@@ -76,5 +80,35 @@ describe('WebSocketConnectParamObject', () => {
             >;
         const fromGlobalWebSocket: WebSocketConnectParamObject =
             {} as any as WebSocketConnectParamObject<typeof chatWebSocket, globalThis.WebSocket>;
+    });
+
+    it('requires protocol', () => {
+        const requiredProtocolsWebSocket = defineWebSocket({
+            path: '/required-protocols',
+            clientMessage: exactShape('hello'),
+            hostMessage: exactShape('ok'),
+            connectProtocol: exactShape('hi'),
+        });
+
+        type Result = WebSocketConnectParamObject<typeof requiredProtocolsWebSocket>;
+
+        assert.tsType<Pick<Result, 'protocols'>>().equals<{protocols: 'hi'[]}>();
+
+        type Result2 = WebSocketConnectParams<typeof requiredProtocolsWebSocket, CommonWebSocket>;
+
+        assert.tsType<Result2>().matches<[AnyObject]>();
+    });
+
+    it('listeners are optional', () => {
+        const webSocket = defineWebSocket({
+            path: '/required-protocols',
+        });
+
+        type Result = WebSocketConnectParamObject<typeof webSocket>;
+
+        assert.tsType<Pick<Result, 'listeners'>>().matches<{listeners?: AnyObject | undefined}>();
+
+        const noListeners = {} as Omit<WebSocketConnectParamObject, 'listeners'>;
+        const standard: WebSocketConnectParamObject = noListeners;
     });
 });

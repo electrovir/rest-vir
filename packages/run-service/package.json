@@ -39,31 +39,31 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.68.2",
-        "@augment-vir/common": "^31.68.2",
-        "@augment-vir/node": "^31.68.2",
+        "@augment-vir/assert": "^31.70.0",
+        "@augment-vir/common": "^31.70.0",
+        "@augment-vir/node": "^31.70.0",
         "@fastify/compress": "^8.3.1",
         "@fastify/websocket": "^11.2.0",
         "@rest-vir/define-service": "^1.7.2",
         "@rest-vir/implement-service": "^1.7.2",
         "cluster-vir": "^1.0.1",
-        "date-vir": "^8.2.1",
-        "fastify": "^5.8.4",
+        "date-vir": "^8.3.2",
+        "fastify": "^5.8.5",
         "light-my-request": "^6.6.0",
         "portfinder": "^1.0.38",
-        "type-fest": "^5.5.0",
-        "url-vir": "^2.1.8"
+        "type-fest": "^5.6.0",
+        "url-vir": "^2.1.9"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.68.2",
-        "@fastify/multipart": "^9.4.0",
+        "@augment-vir/test": "^31.70.0",
+        "@fastify/multipart": "^10.0.0",
         "@types/connect": "^3.4.38",
-        "@types/node": "^25.5.0",
+        "@types/node": "^25.6.2",
         "@types/ws": "^8.18.1",
         "c8": "^11.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "markdown-code-example-inserter": "^3.0.3",
-        "object-shape-tester": "^6.11.0"
+        "markdown-code-example-inserter": "^3.0.5",
+        "object-shape-tester": "^6.12.1"
     },
     "peerDependencies": {
         "@augment-vir/test": ">=30",

@@ -1,10 +1,12 @@
 import {
     type AnyObject,
+    type BivariantFunction,
     type ErrorHttpStatus,
     type HttpStatus,
     type MaybePromise,
 } from '@augment-vir/common';
 import {
+    type BaseRoutePath,
     type DefaultErrorResponseType,
     type DefaultResponseHeadersType,
     type DefinableHttpMethod,
@@ -14,7 +16,6 @@ import {
     type EndpointResponseHeadersType,
     type EndpointResponseType,
     type ExtractEndpointMethodDefinitionWithNoParam,
-    type MakeBivariantFunction,
     type NoParam,
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
@@ -25,12 +26,14 @@ import {type RunningServerInfo, type ServerRequest, type ServerResponse} from '.
 import {type ServerLogger} from './server-logger.js';
 
 export type EndpointImplementation<
-    Endpoint extends Readonly<EndpointDefinition> = EndpointDefinition,
+    Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
     HostContext = unknown,
 > = {
-    path: Endpoint['path'];
+    path: Endpoint extends EndpointDefinition ? Endpoint['path'] : BaseRoutePath;
     implementation: Readonly<EndpointMethodImplementations<Endpoint, HostContext>>;
-    definition: Readonly<Endpoint>;
+    definition: Endpoint extends EndpointDefinition
+        ? Readonly<Endpoint>
+        : Readonly<EndpointDefinition>;
     isWebSocket: false;
     isEndpoint: true;
 };
@@ -38,7 +41,7 @@ export type EndpointImplementation<
 export type EndpointMethodImplementationParams<
     Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
     Method extends Readonly<DefinableHttpMethod> | NoParam = NoParam,
-    HostContext = any,
+    HostContext = unknown,
 > = {
     serverLogger: ServerLogger;
     context: HostContext;
@@ -64,8 +67,8 @@ export type EndpointMethodImplementations<
           [Method in keyof Endpoint['requests'] as Method extends DefinableHttpMethod
               ? Method
               : never]: Method extends DefinableHttpMethod
-              ? MakeBivariantFunction<
-                    EndpointMethodImplementationParams<Endpoint, Method, HostContext>,
+              ? BivariantFunction<
+                    [EndpointMethodImplementationParams<Endpoint, Method, HostContext>],
                     MaybePromise<EndpointMethodImplementationOutput<Endpoint, Method>>
                 >
               : never;
@@ -73,8 +76,8 @@ export type EndpointMethodImplementations<
     : Partial<
           Record<
               DefinableHttpMethod,
-              MakeBivariantFunction<
-                  EndpointMethodImplementationParams,
+              BivariantFunction<
+                  [EndpointMethodImplementationParams],
                   MaybePromise<EndpointMethodImplementationOutput>
               >
           >

@@ -1,6 +1,5 @@
-import {type MaybePromise} from '@augment-vir/common';
+import {type BivariantFunction, type MaybePromise} from '@augment-vir/common';
 import {
-    type MakeBivariantFunction,
     type NoParam,
     type RouteSearchParamsType,
     type WebSocketClientMessageType,
@@ -32,8 +31,8 @@ export type WebSocketListenerImplementations<
     HostContext = unknown,
 > = Partial<{
     /** This will be called when the WebSocket is opened and created. */
-    open: MakeBivariantFunction<
-        WebSocketImplementationParams<ThisWebSocket, false, HostContext>,
+    open: BivariantFunction<
+        [WebSocketImplementationParams<ThisWebSocket, false, HostContext>],
         MaybePromise<void>
     >;
     /**
@@ -41,8 +40,8 @@ export type WebSocketListenerImplementations<
      *
      * @see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-message
      */
-    message: MakeBivariantFunction<
-        WebSocketImplementationParams<ThisWebSocket, true, HostContext>,
+    message: BivariantFunction<
+        [WebSocketImplementationParams<ThisWebSocket, true, HostContext>],
         MaybePromise<void>
     >;
     /**
@@ -50,8 +49,8 @@ export type WebSocketListenerImplementations<
      *
      * @see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-close-1
      */
-    close: MakeBivariantFunction<
-        WebSocketImplementationParams<ThisWebSocket, false, HostContext>,
+    close: BivariantFunction<
+        [WebSocketImplementationParams<ThisWebSocket, false, HostContext>],
         MaybePromise<void>
     >;
 }>;

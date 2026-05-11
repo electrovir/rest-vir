@@ -1,5 +1,20 @@
+import {waitUntil} from '@augment-vir/assert';
+import {DeferredPromise, log, type MaybePromise, removeColor, safeMatch} from '@augment-vir/common';
+import {
+    interpolationSafeWindowsPath,
+    ShellStderrEvent,
+    ShellStdoutEvent,
+    streamShellCommand,
+} from '@augment-vir/node';
+import {describe, it} from '@augment-vir/test';
+import {
+    type ClientWebSocket,
+    overwriteWebSocketMethods,
+    waitForOpenWebSocket,
+    WebSocketLocation,
+} from '@rest-vir/client';
 import {join} from 'node:path';
-import {defineShape, unknownShape} from 'object-shape-tester';
+import {unknownShape} from 'object-shape-tester';
 import {buildUrl} from 'url-vir';
 import {startServiceMocksDirPath} from '../util/file-paths.mock.js';
 
@@ -57,7 +72,7 @@ async function setupService(scriptName: string) {
 
     const serviceUrl = await serverStarted.promise;
 
-    const allWebSockets = [] as WebSocket[];
+    const allWebSockets: WebSocket[] = [];
 
     const params = {
         address: serviceUrl,
@@ -79,35 +94,20 @@ async function setupService(scriptName: string) {
 
             await waitForOpenWebSocket(webSocket);
 
-            const finalWebSocket = overwriteWebSocketMethods(
+            /**
+             * The script-mock spawns the service in a child process, so we don't have static access
+             * to the real WebSocket definition here. Wrap the raw WebSocket with
+             * `unknownShape`-typed messages so tests can use `sendAndWaitForReply` and friends.
+             */
+            return overwriteWebSocketMethods(
                 {
-                    /**
-                     * Allow any shape because in this testing framework we're not doing anything
-                     * specific to one endpoint.
-                     */
-                    messageFromClientShape: defineShape(unknownShape()),
-                    messageFromHostShape: defineShape(unknownShape()),
                     path: '/test',
-                    service: {
-                        serviceName: 'test',
-                        requiredClientOrigin: AnyOrigin,
-                        serviceOrigin: '',
-                    },
-                    customProps: undefined,
-                    isEndpoint: false,
-                    isWebSocket: true,
-                    MessageFromClientType: undefined,
-                    MessageFromHostType: undefined,
-                    protocolsShape: undefined,
-                    ProtocolsType: [],
-                    searchParamsShape: undefined,
-                    SearchParamsType: undefined,
+                    clientMessage: unknownShape(),
+                    hostMessage: unknownShape(),
                 },
                 webSocket,
                 WebSocketLocation.OnClient,
             );
-
-            return finalWebSocket;
         }) as TestConnectWebSocket,
         childProcess: shellTarget.childProcess,
         stdout,

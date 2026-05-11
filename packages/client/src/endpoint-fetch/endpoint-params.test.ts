@@ -15,7 +15,11 @@ import {
 } from '@rest-vir/api/src/api/api.mock.js';
 import {defineShape} from 'object-shape-tester';
 import {type GenericPathParams} from '../path-params.js';
-import type {EndpointFetchParamObject, EndpointFetchParams} from './endpoint-params.js';
+import type {
+    ClientFetch,
+    EndpointFetchParamObject,
+    EndpointFetchParams,
+} from './endpoint-params.js';
 
 describe('EndpointParamObject', () => {
     it('has default values', () => {
@@ -25,7 +29,7 @@ describe('EndpointParamObject', () => {
             requestData?: any;
             searchParams?: BaseSearchParams | undefined;
             options?: Omit<RequestInit, 'body' | 'method'> | undefined;
-            fetchOverride?: typeof fetch | undefined;
+            fetchOverride?: ClientFetch | undefined;
             skipAutomaticContentTypeHeader?: boolean | undefined;
             requiredHeaders?: Record<string, string> | undefined;
             pathParams?: GenericPathParams;
@@ -82,7 +86,7 @@ describe('EndpointParamObject', () => {
             requestData?: undefined;
             searchParams?: BaseSearchParams | undefined;
             options?: Omit<RequestInit, 'body' | 'method'> | undefined;
-            fetchOverride?: typeof fetch | undefined;
+            fetchOverride?: ClientFetch | undefined;
             skipAutomaticContentTypeHeader?: boolean | undefined;
             requiredHeaders?: undefined;
             pathParams?: undefined;
@@ -124,9 +128,7 @@ describe('EndpointParamObject', () => {
             Readonly<{
                 wildcard?: undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'userId', string>>;
-                }>
+                Readonly<Record<'userId', string>>
         >();
     });
 
@@ -137,9 +139,7 @@ describe('EndpointParamObject', () => {
             Readonly<{
                 wildcard?: undefined;
             }> &
-                Readonly<{
-                    pathParams: Readonly<Record<'userId' | 'postId', string>>;
-                }>
+                Readonly<Record<'userId' | 'postId', string>>
         >();
     });
 
@@ -158,9 +158,7 @@ describe('EndpointParamObject', () => {
             Readonly<{
                 wildcard: string;
             }> &
-                Readonly<{
-                    pathParams?: undefined;
-                }>
+                Readonly<unknown>
         >();
     });
 
