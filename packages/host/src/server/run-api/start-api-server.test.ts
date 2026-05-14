@@ -29,11 +29,11 @@ import {
     withAllListenersWebSocket,
     withSearchParamsEndpoint,
 } from './examples/mock-api-implementation.mock.js';
-import {startService} from './start-service.js';
-import {describeServiceScript, getMockScriptCommand} from './test-start-service.mock.js';
+import {startApiServer} from './start-api-server.js';
+import {describeApiServerScript, getMockScriptCommand} from './test-start-api-server.mock.js';
 
-describe(startService.name, () => {
-    describeServiceScript('single-thread', ({it}) => {
+describe(startApiServer.name, () => {
+    describeApiServerScript('single-thread', ({it}) => {
         it('accepts a valid socket message', async ({connectWebSocket}) => {
             const webSocket = await connectWebSocket(noClientDataWebSocket.path);
             const serverMessage = await webSocket.sendAndWaitForReply();
@@ -51,13 +51,13 @@ describe(startService.name, () => {
         });
         it('can be dev port scanned', async ({address}) => {
             const result = await findDevServicePort(mockApi, {
-                startOrigin: 'http://localhost:3690',
+                startOrigin: 'http://localhost:3790',
                 maxScanDistance: 20,
             });
 
             assert.isDefined(result);
             assert.strictEquals(result.origin, address);
-            assert.strictEquals(result.origin, 'http://localhost:3700');
+            assert.strictEquals(result.origin, 'http://localhost:3800');
         });
         it('fires websocket listeners', async ({connectWebSocket}) => {
             const webSocket = await connectWebSocket(withAllListenersWebSocket.path);
@@ -631,7 +631,7 @@ describe(startService.name, () => {
         });
     });
 
-    describeServiceScript('multi-threaded', ({it}) => {
+    describeApiServerScript('multi-threaded', ({it}) => {
         /**
          * Unfortunately this test is not reliable as an automated test. Instead, test it manually
          * by doing the following:
@@ -660,9 +660,9 @@ describe(startService.name, () => {
             });
         });
     });
-    describeServiceScript('locked-port', ({it}) => {
+    describeApiServerScript('locked-port', ({it}) => {
         it('locks the port number', ({address}) => {
-            assert.strictEquals(address, 'http://localhost:3789');
+            assert.strictEquals(address, 'http://localhost:3889');
         });
     });
 

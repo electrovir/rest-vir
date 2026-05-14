@@ -53,7 +53,7 @@ export const runApiOptionsShape = defineShape({
 });
 
 /**
- * Full options type for `startService`.
+ * Full options type for `startApiServer`.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
@@ -62,7 +62,7 @@ export const runApiOptionsShape = defineShape({
 export type RunApiOptions = typeof runApiOptionsShape.runtimeType;
 
 /**
- * User-provided options type for `startService`.
+ * User-provided options type for `startApiServer`.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
@@ -73,7 +73,7 @@ export type RunApiUserOptions = PartialWithUndefined<RunApiOptions>;
 
 /**
  * Combines user defined options with default options to create a full options type for
- * `startService`.
+ * `startApiServer`.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service

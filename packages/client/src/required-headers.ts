@@ -35,8 +35,8 @@ export function extractRequiredHeaders(
             }
 
             /**
-             * Omit the header from the result when its value is missing. This only happens when
-             * the shape allows undefined; otherwise `assertValidShape` would have already thrown.
+             * Omit the header from the result when its value is missing. This only happens when the
+             * shape allows undefined; otherwise `assertValidShape` would have already thrown.
              */
             if (!headerValue) {
                 return undefined;

@@ -240,7 +240,7 @@ function extractRequestData(
 
     if (dataShape == undefined) {
         if (body) {
-            throw new Error(`Did not expect any request data but received it.`);
+            throw new Error('Did not expect any request data but received it.');
         } else {
             return undefined;
         }

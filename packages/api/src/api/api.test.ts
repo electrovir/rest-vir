@@ -9,7 +9,9 @@ import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
 
 describe('ApiInit', () => {
     it('allows omitting both endpoints and webSockets', () => {
-        const api: ApiInit = {apiName: 'test'};
+        const api: ApiInit = {
+            apiName: 'test',
+        };
     });
 
     it('allows empty endpoint and web socket arrays', () => {

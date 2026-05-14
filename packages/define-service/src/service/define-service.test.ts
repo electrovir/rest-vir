@@ -29,7 +29,13 @@ describe(defineService.name, () => {
     it('preserves WebSocket protocols', () => {
         assert
             .tsType<(typeof mockService.webSockets)['/required-protocols']['ProtocolsType']>()
-            .equals<[string, string, 'hi']>();
+            .equals<
+                [
+                    string,
+                    string,
+                    'hi',
+                ]
+            >();
     });
     it('defaults WebSocket protocols', () => {
         assert

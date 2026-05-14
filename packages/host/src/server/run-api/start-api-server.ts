@@ -9,16 +9,16 @@ import {type ApiServerOptions, attachApi} from './attach-api.js';
 import {finalizeOptions, type RunApiOptions, type RunApiUserOptions} from './run-api-options.js';
 
 /**
- * Output of {@link startService}.
+ * Output of {@link startApiServer}.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type StartServiceOutput = {
+export type StartApiServerOutput = {
     /**
      * The port that the server actually started on. This depends on the options given to
-     * {@link startService}.
+     * {@link startApiServer}.
      */
     port: number;
     /**
@@ -50,16 +50,19 @@ export type StartServiceOutput = {
 
 /**
  * A list of plugins and their options that will be registered on the internal fastify instance
- * created by {@link startService}.
+ * created by {@link startApiServer}.
  *
  * @category Internal
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type FastifyPlugins = [plugin: FastifyPluginCallback, options?: any][];
+export type FastifyPlugins = [
+    plugin: FastifyPluginCallback,
+    options?: any,
+][];
 
 /**
- * Starts the given {@link ServiceImplementation} inside of a backend [Fastify
+ * Starts the given {@link ApiImplementation} inside of a backend [Fastify
  * server](https://www.npmjs.com/package/fastify).
  *
  * To attach the service endpoint handlers to an existing Fastify server, use {@link attachApi}.
@@ -68,11 +71,11 @@ export type FastifyPlugins = [plugin: FastifyPluginCallback, options?: any][];
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export async function startService(
+export async function startApiServer(
     api: Readonly<ApiImplementation>,
     options: Readonly<RunApiUserOptions & ApiServerOptions>,
     fastifyPlugins: Readonly<FastifyPlugins> = [],
-): Promise<StartServiceOutput> {
+): Promise<StartApiServerOutput> {
     const serverLogger = createServerLogger(api.implementation.serverLogger);
 
     process.on('unhandledRejection', (reason) => {
@@ -161,7 +164,7 @@ async function startServer(
     {host, port}: Readonly<Pick<RunApiOptions, 'host' | 'port'>>,
     fastifyPlugins: Readonly<FastifyPlugins>,
     serverOrigin: string,
-): Promise<StartServiceOutput> {
+): Promise<StartApiServerOutput> {
     const server = fastify();
 
     await awaitedForEach(

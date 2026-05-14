@@ -11,6 +11,7 @@ const baseConfig = defineConfig({
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
     ...baseConfig,
+    port: 8003,
 };
 
 export default webTestRunnerConfig;

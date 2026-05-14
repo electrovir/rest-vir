@@ -1,8 +1,8 @@
-import {startService} from '../start-service.js';
+import {startApiServer} from '../start-api-server.js';
 import {mockApiImplementation} from './mock-api-implementation.mock.js';
 
-await startService(mockApiImplementation, {
-    port: 3001,
+await startApiServer(mockApiImplementation, {
+    port: 3801,
     workerCount: 3,
-    externalOrigin: 'http://localhost:3001',
+    externalOrigin: 'http://localhost:3801',
 });

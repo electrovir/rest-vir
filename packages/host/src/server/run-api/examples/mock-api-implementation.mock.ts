@@ -1,5 +1,5 @@
 /* node:coverage disable */
-/** This is just a mock api used by the script-based start-service tests. */
+/** This is just a mock api used by the script-based start-api-server tests. */
 
 import {HttpMethod, HttpStatus, log, wait} from '@augment-vir/common';
 import {defineApi, defineEndpoint, defineWebSocket, formDataShape} from '@rest-vir/api';

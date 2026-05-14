@@ -221,18 +221,13 @@ describe(testEndpoint.name, () => {
     it('requires wildcard', async () => {
         await assert.throws(
             () =>
-                testEndpoint(
-                    pathParamsImplementation,
-                    HttpMethod.Get,
-                    createTestHostContext,
-                    {
-                        // @ts-expect-error: this endpoint is missing its wildcard
-                        pathParams: {
-                            param1: 'hi',
-                            param2: 'bye',
-                        },
+                testEndpoint(pathParamsImplementation, HttpMethod.Get, createTestHostContext, {
+                    // @ts-expect-error: this endpoint is missing its wildcard
+                    pathParams: {
+                        param1: 'hi',
+                        param2: 'bye',
                     },
-                ),
+                }),
             {
                 matchMessage: 'Missing value for wildcard param',
             },
@@ -241,18 +236,13 @@ describe(testEndpoint.name, () => {
     it('allows wildcard', async () => {
         await assert.throws(
             () =>
-                testEndpoint(
-                    pathParamsImplementation,
-                    HttpMethod.Get,
-                    createTestHostContext,
-                    {
-                        pathParams: {
-                            param1: 'hi',
-                            param2: 'bye',
-                            wildcard: 'wild',
-                        },
+                testEndpoint(pathParamsImplementation, HttpMethod.Get, createTestHostContext, {
+                    pathParams: {
+                        param1: 'hi',
+                        param2: 'bye',
+                        wildcard: 'wild',
                     },
-                ),
+                }),
             {
                 matchMessage: 'Missing value for wildcard param',
             },

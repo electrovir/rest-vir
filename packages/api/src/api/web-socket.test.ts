@@ -446,7 +446,14 @@ describe('WebSocketConnectProtocolType', () => {
          */
         type Result = WebSocketConnectProtocolType<{
             path: '/ws';
-            connectProtocol: ReturnType<typeof tupleShape<['', 'v2']>>;
+            connectProtocol: ReturnType<
+                typeof tupleShape<
+                    [
+                        '',
+                        'v2',
+                    ]
+                >
+            >;
         }>;
 
         assert.tsType<Result>().equals<string[] | undefined>();

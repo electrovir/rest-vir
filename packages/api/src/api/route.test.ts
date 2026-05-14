@@ -36,7 +36,10 @@ describe('RouteSearchParamsType', () => {
                   Partial<{
                       regExp: AllowedSearchParamValue;
                       stringShape: string;
-                      tupleShape: [string, string];
+                      tupleShape: [
+                          string,
+                          string,
+                      ];
                   }>
               > &
                   BaseSearchParams)

@@ -2,7 +2,7 @@ import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';
-import {startService} from '../../index.js';
+import {startApiServer} from '../../index.js';
 
 const healthEndpoint = defineEndpoint({
     path: '/health',
@@ -57,7 +57,7 @@ const myApiImplementation = implementApi<MyContext>()(myApi, {
     },
 });
 
-await startService(myApiImplementation, {
+await startApiServer(myApiImplementation, {
     port: 3000,
     externalOrigin: 'http://localhost:3000',
 });

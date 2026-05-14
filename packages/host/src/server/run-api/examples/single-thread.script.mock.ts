@@ -1,13 +1,13 @@
 import multipart from '@fastify/multipart';
-import {startService} from '../start-service.js';
+import {startApiServer} from '../start-api-server.js';
 import {mockApiImplementation} from './mock-api-implementation.mock.js';
 
-await startService(
+await startApiServer(
     mockApiImplementation,
     {
-        port: 3700,
+        port: 3800,
         workerCount: 1,
-        externalOrigin: 'http://localhost:3700',
+        externalOrigin: 'http://localhost:3800',
     },
     [
         [

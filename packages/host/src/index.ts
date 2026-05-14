@@ -20,7 +20,7 @@ export * from './server/handle-request/pre-handler.js';
 export * from './server/handle-request/run-post-route-hook.js';
 export * from './server/run-api/attach-api.js';
 export * from './server/run-api/run-api-options.js';
-export * from './server/run-api/start-service.js';
+export * from './server/run-api/start-api-server.js';
 export * from './server/test/test-api.js';
 export * from './server/test/test-endpoint.js';
 export * from './server/test/test-web-socket.js';

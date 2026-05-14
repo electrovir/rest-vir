@@ -113,7 +113,7 @@ export async function findDevServicePort(
     try {
         const endpoint = Object.values(api.endpoints)[0];
         if (!endpoint) {
-            throw new Error(`Service has no endpoints.`);
+            throw new Error('Service has no endpoints.');
         }
 
         const {port} = await waitUntil.isDefined(

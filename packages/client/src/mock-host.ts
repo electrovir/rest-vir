@@ -1,1 +1,3 @@
-// todo: implement me
+export function createMockHost() {
+    console.info('build me');
+}

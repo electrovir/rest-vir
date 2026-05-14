@@ -15,7 +15,10 @@ import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
 export type AllowedHeaders =
     | HeadersInit
     | Record<string, string | string[]>
-    | [string, string | string[]][]
+    | [
+          string,
+          string | string[],
+      ][]
     | IncomingHttpHeaders
     | OutgoingHttpHeaders;
 
@@ -53,7 +56,10 @@ export function mergeHeaders(...headers: AllowedHeaders[]): Headers {
 export function consolidateHeaders(headers: AllowedHeaders): Headers {
     const newHeaders = new Headers();
 
-    const headersArray: [string, string | number | undefined | string[]][] =
+    const headersArray: [
+        string,
+        string | number | undefined | string[],
+    ][] =
         headers instanceof Headers
             ? Array.from(headers.entries())
             : check.isArray(headers)

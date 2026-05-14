@@ -62,7 +62,10 @@ export type StartServiceOutput = {
  * @category Package : @rest-vir/run-service
  * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
  */
-export type FastifyPlugins = [plugin: FastifyPluginCallback, options?: any][];
+export type FastifyPlugins = [
+    plugin: FastifyPluginCallback,
+    options?: any,
+][];
 
 /**
  * Starts the given {@link ServiceImplementation} inside of a backend [Fastify

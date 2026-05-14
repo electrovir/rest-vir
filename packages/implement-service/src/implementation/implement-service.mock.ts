@@ -45,7 +45,13 @@ export const mockServiceImplementation = implementService({
         },
         '/required-protocols': {
             open({protocols}) {
-                assert.tsType(protocols).equals<[string, string, 'hi']>();
+                assert.tsType(protocols).equals<
+                    [
+                        string,
+                        string,
+                        'hi',
+                    ]
+                >();
             },
             message({webSocket}) {
                 webSocket.send('ok');

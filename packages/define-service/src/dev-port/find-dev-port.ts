@@ -127,7 +127,7 @@ export async function findDevServicePort(
 
         const endpoint = Object.values(service.endpoints)[0];
         if (!endpoint) {
-            throw new Error(`Service has no endpoints.`);
+            throw new Error('Service has no endpoints.');
         }
 
         const {port} = await waitUntil.isDefined(
@@ -198,7 +198,7 @@ export async function findLivePort(
 
     const startingPort = Number(originalPort);
 
-    assert.isNumber(startingPort, `Given origin doesn't have a valid port.`);
+    assert.isNumber(startingPort, "Given origin doesn't have a valid port.");
 
     let findDistance: number = 0;
 

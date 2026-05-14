@@ -50,8 +50,10 @@ describe('SetNullishPropertiesAsOptional', () => {
     });
 
     it('handles an empty object', () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         type Result = SetNullishPropertiesAsOptional<{}>;
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         assert.tsType<Result>().equals<{}>();
     });
 

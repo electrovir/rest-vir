@@ -17,9 +17,6 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/index.ts",
-    "module": "src/index.ts",
-    "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test web",

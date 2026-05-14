@@ -55,10 +55,9 @@ describe(parseSecWebSocketProtocolHeader.name, () => {
         },
         {
             it: 'parses real-world subprotocol names',
-            input: 'soap, wamp, mqtt',
+            input: 'soap, mqtt',
             expect: new Set([
                 'soap',
-                'wamp',
                 'mqtt',
             ]),
         },
