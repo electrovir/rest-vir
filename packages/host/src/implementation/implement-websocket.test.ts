@@ -135,7 +135,7 @@ describe('WebSocketImplementationParams', () => {
     it('narrows protocols to the connectProtocol runtime type when the websocket declares one', () => {
         type Params = WebSocketImplementationParams<typeof connectProtocolWebSocket, true>;
 
-        assert.tsType<Params['protocols']>().equals<'graphql-ws'[] | undefined>();
+        assert.tsType<Params['protocols']>().equals<'graphql-ws'[]>();
     });
 
     it('narrows searchParams to the declared searchParams runtime type', () => {

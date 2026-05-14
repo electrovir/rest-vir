@@ -65,7 +65,6 @@ function buildScenario({
         endpoints: {
             '/example-path': endpointImplementation,
         },
-        webSockets: {},
     });
 
     return {
@@ -327,7 +326,6 @@ describe(handleCors.name, () => {
             endpoints: {
                 '/example-path': endpointImplementation,
             },
-            webSockets: {},
         });
 
         const result = await handleCors({

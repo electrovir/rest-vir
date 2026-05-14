@@ -7,22 +7,11 @@ import {
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
-import {type IsAny, type IsUnknown, type RequireExactlyOne} from 'type-fest';
+import {type RequireExactlyOne} from 'type-fest';
 import {type ApiImplementation} from './implement-api.js';
 import {type RunningServerInfo, type ServerRequest, type ServerResponse} from './raw-route-data.js';
 
-export type CreateHostContext<HostContext> =
-    IsOptionalHostContext<HostContext> extends true
-        ? undefined | CreateHostContextCallback<HostContext>
-        : CreateHostContextCallback<HostContext>;
-
-export type IsOptionalHostContext<HostContext> = HostContext extends undefined
-    ? true
-    : IsAny<HostContext> extends true
-      ? true
-      : IsUnknown<HostContext> extends true
-        ? true
-        : false;
+export type CreateHostContext<HostContext> = CreateHostContextCallback<HostContext>;
 
 export type CreateHostContextCallback<HostContext> = BivariantFunction<
     [CreateHostContextParams],

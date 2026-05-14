@@ -1,5 +1,7 @@
-import {type DefinableHttpMethod, type EndpointDefinition} from '@rest-vir/api';
+import {defineApi, type DefinableHttpMethod, type EndpointDefinition} from '@rest-vir/api';
 import {type EndpointFetchParams} from '@rest-vir/client';
+import {type CreateHostContext} from '../../implementation/host-context.js';
+import {implementApi} from '../../implementation/implement-api.js';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
 import {testApi} from './test-api.js';
 
@@ -31,24 +33,21 @@ export async function testEndpoint<
 >(
     endpoint: Readonly<Endpoint>,
     method: Method,
-    context: HostContext,
+    createHostContext: CreateHostContext<HostContext>,
     ...restParams: EndpointFetchParams<NoInfer<Endpoint>['definition'], NoInfer<Method>>
 ) {
-    const {fetchEndpoint, kill} = await testApi({
-        definition: {
-            apiName: 'testEndpoint',
-            endpoints: {
-                [endpoint.path]: endpoint.definition,
-            },
-            webSockets: {},
-        },
-        implementation: {
-            endpoints: {
-                [endpoint.path]: endpoint,
-            },
-            webSockets: {},
+    const apiDefinition = defineApi({
+        apiName: `endpoint-test-${endpoint.path}`,
+        endpoints: [endpoint.definition],
+    });
+    const apiImplementation = implementApi<HostContext>()(apiDefinition, {
+        createHostContext,
+        endpoints: {
+            [endpoint.path]: endpoint,
         },
     });
+
+    const {fetchEndpoint, kill} = await testApi(apiImplementation);
 
     try {
         return await fetchEndpoint(endpoint.definition, method, ...restParams);

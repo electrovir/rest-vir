@@ -38419,7 +38419,7 @@ export const webSocket399 = defineWebSocket({
 });
 
 export const largeApi = defineApi({
-    name: 'large-api',
+    apiName: 'large-api',
     endpoints: [
         endpoint0,
         endpoint1,

@@ -363,7 +363,6 @@ const sseImplementation = implementApi<undefined>()(sseApi, {
             },
         }),
     },
-    webSockets: {},
 });
 
 describe('responseHandled (SSE)', () => {

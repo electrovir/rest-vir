@@ -16,12 +16,11 @@ import {
     type ClientWebSocket,
     type CommonWebSocket,
     type EndpointFetchParams,
-    finalizeWebSocket,
+    finalizeClientWebSocket,
     restVirApiNameHeader,
     RestVirClient,
     type WebSocketConnectParamObject,
     type WebSocketConnectParams,
-    WebSocketLocation,
 } from '@rest-vir/client';
 import fastify, {type FastifyInstance} from 'fastify';
 import {type InjectOptions} from 'light-my-request';
@@ -341,11 +340,10 @@ export async function testExistingServer<const Api extends Readonly<ApiImplement
             });
         }
 
-        const finalized = await finalizeWebSocket(
+        const finalized = await finalizeClientWebSocket(
             webSocketDefinition,
             webSocket,
             params?.listeners,
-            WebSocketLocation.OnClient,
         );
 
         if (options.port == undefined) {

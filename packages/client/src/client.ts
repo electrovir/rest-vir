@@ -5,6 +5,7 @@ import {
     HttpStatus,
     isErrorHttpStatus,
     mapObject,
+    typedObjectFromEntries,
     type MaybePromise,
     type RequiredAndNotNull,
 } from '@augment-vir/common';
@@ -41,10 +42,10 @@ import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
 import {type CommonWebSocket} from './websocket-connect/common-web-socket.js';
 import {
-    WebSocketLocation,
     type OverwriteWebSocketMethods,
+    type WebSocketLocation,
 } from './websocket-connect/overwrite-web-socket-types.js';
-import {finalizeWebSocket} from './websocket-connect/overwrite-web-socket.js';
+import {finalizeClientWebSocket} from './websocket-connect/overwrite-web-socket.js';
 import {assertValidWebSocketProtocols} from './websocket-connect/web-socket-protocols.js';
 import {
     type WebSocketConnectParamObject,
@@ -317,9 +318,9 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
 
         const optionsHeaders: OutgoingHttpHeaders & Record<string, string> = mapObject(
             genericParams?.options?.headers instanceof Headers
-                ? Object.fromEntries(genericParams.options.headers.entries())
+                ? typedObjectFromEntries(Array.from(genericParams.options.headers.entries()))
                 : check.isArray(genericParams?.options?.headers)
-                  ? Object.fromEntries(genericParams.options.headers)
+                  ? typedObjectFromEntries(genericParams.options.headers)
                   : genericParams?.options?.headers || {},
             (key, value) => {
                 return {
@@ -415,11 +416,10 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             WebSocketClass,
             WebSocketLocation.OnClient,
             ThisWebSocket
-        > = await finalizeWebSocket<ThisWebSocket, WebSocketClass, WebSocketLocation.OnClient>(
+        > = await finalizeClientWebSocket<ThisWebSocket, WebSocketClass>(
             webSocket,
             new webSocketConstructor(url, params?.protocols, webSocket),
             params?.listeners,
-            WebSocketLocation.OnClient,
         );
 
         return clientWebSocket;

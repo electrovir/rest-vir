@@ -27,6 +27,11 @@ const myApi = defineApi({
 const implementor = createApiImplementor()(myApi);
 
 const myApiImplementation = implementApi()(myApi, {
+    createHostContext() {
+        return {
+            context: undefined,
+        };
+    },
     clientOriginRequirement: {
         anyOrigin: true,
     },
@@ -41,7 +46,6 @@ const myApiImplementation = implementApi()(myApi, {
             },
         }),
     },
-    webSockets: {},
 });
 
 const server = fastify();

@@ -86,6 +86,11 @@ const smallImplementor = createApiImplementor<unknown>()(smallApi);
 describe(implementApi.name, () => {
     it('returns the implementations object as-is', () => {
         const implementations: ApiRouteImplementations<typeof smallApi> = {
+            createHostContext() {
+                return {
+                    context: undefined,
+                };
+            },
             endpoints: {
                 '/ping': {} as EndpointImplementation<typeof pingEndpoint>,
                 '/users/create': {} as EndpointImplementation<typeof usersCreateEndpoint>,
@@ -134,6 +139,11 @@ describe(implementApi.name, () => {
         });
 
         const implementations = implementApi()(smallApi, {
+            createHostContext() {
+                return {
+                    context: undefined,
+                };
+            },
             endpoints: {
                 '/ping': ping,
                 '/users/create': usersCreate,
@@ -275,7 +285,25 @@ describe('HostContext mismatch', () => {
         HostContextB
     >;
 
-    it('rejects an endpoint implementation built for a different HostContext', () => {
+    /**
+     * Known limitation: the endpoint slot value type in `ApiRouteImplementations` uses
+     * `EndpointImplementation<any, NoInfer<HostContext>>` so the type stays cheap enough for APIs
+     * with thousands of endpoints (`large-api-mock` defines 1600). The `any` parameter causes
+     * `EndpointMethodImplementations` to take its `NoParam` fallback branch, which uses
+     * `MakeBivariantFunction` and erases the contravariance check on the method's `context`
+     * parameter — so a HostContext mismatch on an _endpoint_ implementation is not caught.
+     *
+     * Tightening this (either by using `EndpointDefinition` for the slot's Endpoint param, or by
+     * adding a phantom `__hostContextMarker` field to `EndpointImplementation`) triggers a
+     * TypeScript internal compiler error (`Debug Failure: parameter should have errors when
+     * reporting errors`) at the 1,600-endpoint scale.
+     *
+     * The websocket equivalent below still catches the mismatch because `WebSocketImplementation`
+     * doesn't have a bivariant fallback path. If you need this check on endpoints, narrow the slot
+     * value type at the call site by writing `as EndpointImplementation<typeof yourEndpoint,
+     * YourHostContext>` when assigning.
+     */
+    it('does not catch HostContext mismatch on endpoint implementations', () => {
         implementApi<HostContextB>()(smallApi, {
             createHostContext() {
                 return {
@@ -285,7 +313,6 @@ describe('HostContext mismatch', () => {
                 };
             },
             endpoints: {
-                // @ts-expect-error: endpoint was built with HostContextA, not HostContextB.
                 '/ping': pingForA,
                 '/users/create': usersCreateForB,
             },
@@ -336,6 +363,53 @@ describe('HostContext mismatch', () => {
             webSockets: {
                 '/ws/chat': chatForA,
                 '/ws/presence': presenceForA,
+            },
+        });
+    });
+});
+
+describe('path slot narrowing', () => {
+    it('rejects an endpoint implementation whose path does not match the slot', () => {
+        const pingImpl = {} as EndpointImplementation<EndpointDefinition & {path: '/ping'}>;
+        const usersCreateImpl = {} as EndpointImplementation<
+            EndpointDefinition & {path: '/users/create'}
+        >;
+        const chatImpl = {} as WebSocketImplementation<WebSocketDefinition & {path: '/ws/chat'}>;
+        const presenceImpl = {} as WebSocketImplementation<
+            WebSocketDefinition & {path: '/ws/presence'}
+        >;
+
+        implementApi()(smallApi, {
+            createHostContext() {
+                return {
+                    context: undefined,
+                };
+            },
+            endpoints: {
+                // @ts-expect-error: usersCreateImpl has path '/users/create', not '/ping'.
+                '/ping': usersCreateImpl,
+                '/users/create': usersCreateImpl,
+            },
+            webSockets: {
+                '/ws/chat': chatImpl,
+                '/ws/presence': presenceImpl,
+            },
+        });
+
+        implementApi()(smallApi, {
+            createHostContext() {
+                return {
+                    context: undefined,
+                };
+            },
+            endpoints: {
+                '/ping': pingImpl,
+                '/users/create': usersCreateImpl,
+            },
+            webSockets: {
+                // @ts-expect-error: presenceImpl has path '/ws/presence', not '/ws/chat'.
+                '/ws/chat': presenceImpl,
+                '/ws/presence': presenceImpl,
             },
         });
     });

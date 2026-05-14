@@ -39,7 +39,7 @@ const healthEndpointImplementation = implementor.implementEndpoint(healthEndpoin
     },
 });
 
-const myApiImplementation = implementApi()(myApi, {
+const myApiImplementation = implementApi<MyContext>()(myApi, {
     createHostContext() {
         const context: MyContext = {
             databaseConnector: {},
@@ -55,7 +55,6 @@ const myApiImplementation = implementApi()(myApi, {
     endpoints: {
         '/health': healthEndpointImplementation,
     },
-    webSockets: {},
 });
 
 await startService(myApiImplementation, {

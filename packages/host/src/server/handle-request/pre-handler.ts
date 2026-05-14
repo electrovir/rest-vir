@@ -81,11 +81,11 @@ export async function preHandler({
             ? api.definition.webSockets[pathMatch.webSocketPath]
             : undefined;
     const endpointImplementation = pathMatch.endpointPath
-        ? api.implementation.endpoints[pathMatch.endpointPath]
+        ? api.implementation.endpoints?.[pathMatch.endpointPath]
         : undefined;
     const webSocketImplementation =
         request.ws && pathMatch.webSocketPath
-            ? api.implementation.webSockets[pathMatch.webSocketPath]
+            ? api.implementation.webSockets?.[pathMatch.webSocketPath]
             : undefined;
 
     const routeDefinition: Readonly<EndpointDefinition | WebSocketDefinition> | undefined =
@@ -242,9 +242,9 @@ export async function preHandler({
     };
 
     try {
-        const contextOutput = await api.implementation.createHostContext?.(contextParams);
+        const contextOutput = await api.implementation.createHostContext(contextParams);
 
-        if (contextOutput?.reject) {
+        if (contextOutput.reject) {
             serverLogger.error(
                 new RestVirHandlerError(
                     {
@@ -266,7 +266,7 @@ export async function preHandler({
                 response,
             );
         }
-        attachedRestVirContext.context = contextOutput?.context;
+        attachedRestVirContext.context = contextOutput.context;
 
         return undefined;
     } catch (error) {
@@ -281,7 +281,7 @@ function extractRequestData(
 ): unknown {
     if (requestDataShape == undefined) {
         if (body) {
-            throw new Error(`Did not expect any request data but received it.`);
+            throw new Error('Did not expect any request data but received it.');
         } else {
             return undefined;
         }

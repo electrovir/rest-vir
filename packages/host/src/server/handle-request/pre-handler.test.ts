@@ -48,7 +48,6 @@ const apiImplementation = implementApi<undefined>()(api, {
             },
         }),
     },
-    webSockets: {},
 });
 
 describe(preHandler.name, () => {

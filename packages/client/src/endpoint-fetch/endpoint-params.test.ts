@@ -157,8 +157,7 @@ describe('EndpointParamObject', () => {
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
                 wildcard: string;
-            }> &
-                Readonly<unknown>
+            }>
         >();
     });
 

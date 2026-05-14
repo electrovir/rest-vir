@@ -133,12 +133,14 @@ const pathParamsImplementation = implementor.implementEndpoint(pathParamsEndpoin
     },
 });
 
+function createTestHostContext() {
+    return {
+        context: undefined,
+    };
+}
+
 implementApi<undefined>()(api, {
-    createHostContext() {
-        return {
-            context: undefined,
-        };
-    },
+    createHostContext: createTestHostContext,
     clientOriginRequirement: {
         anyOrigin: true,
     },
@@ -148,12 +150,15 @@ implementApi<undefined>()(api, {
         '/throws-error': throwsErrorImplementation,
         '/with/:param1/:param2/*': pathParamsImplementation,
     },
-    webSockets: {},
 });
 
 describe(testEndpoint.name, () => {
     it('tests a basic endpoint', async () => {
-        const response = await testEndpoint(emptyImplementation, HttpMethod.Get);
+        const response = await testEndpoint(
+            emptyImplementation,
+            HttpMethod.Get,
+            createTestHostContext,
+        );
 
         assert.deepEquals(await condenseResponse(response), {
             headers: {
@@ -168,6 +173,7 @@ describe(testEndpoint.name, () => {
         const response = await testEndpoint(
             echoImplementation,
             HttpMethod.Post,
+            createTestHostContext,
             // @ts-expect-error: params are required for the request body
             {},
         );
@@ -182,6 +188,7 @@ describe(testEndpoint.name, () => {
                     echoImplementation,
                     // @ts-expect-error: incorrect method
                     HttpMethod.Get,
+                    createTestHostContext,
                     {
                         requestData: {
                             somethingHere: 'hi',
@@ -201,6 +208,7 @@ describe(testEndpoint.name, () => {
                 testEndpoint(
                     pathParamsImplementation,
                     HttpMethod.Get,
+                    createTestHostContext,
                     // @ts-expect-error: this endpoint is missing its path params
                     {},
                 ),
@@ -213,13 +221,18 @@ describe(testEndpoint.name, () => {
     it('requires wildcard', async () => {
         await assert.throws(
             () =>
-                testEndpoint(pathParamsImplementation, HttpMethod.Get, {
-                    // @ts-expect-error: this endpoint is missing its wildcard
-                    pathParams: {
-                        param1: 'hi',
-                        param2: 'bye',
+                testEndpoint(
+                    pathParamsImplementation,
+                    HttpMethod.Get,
+                    createTestHostContext,
+                    {
+                        // @ts-expect-error: this endpoint is missing its wildcard
+                        pathParams: {
+                            param1: 'hi',
+                            param2: 'bye',
+                        },
                     },
-                }),
+                ),
             {
                 matchMessage: 'Missing value for wildcard param',
             },
@@ -228,13 +241,18 @@ describe(testEndpoint.name, () => {
     it('allows wildcard', async () => {
         await assert.throws(
             () =>
-                testEndpoint(pathParamsImplementation, HttpMethod.Get, {
-                    pathParams: {
-                        param1: 'hi',
-                        param2: 'bye',
-                        wildcard: 'wild',
+                testEndpoint(
+                    pathParamsImplementation,
+                    HttpMethod.Get,
+                    createTestHostContext,
+                    {
+                        pathParams: {
+                            param1: 'hi',
+                            param2: 'bye',
+                            wildcard: 'wild',
+                        },
                     },
-                }),
+                ),
             {
                 matchMessage: 'Missing value for wildcard param',
             },
@@ -242,18 +260,27 @@ describe(testEndpoint.name, () => {
     });
 
     it('handles an internal error', async () => {
-        const response = await testEndpoint(throwsErrorImplementation, HttpMethod.Get);
+        const response = await testEndpoint(
+            throwsErrorImplementation,
+            HttpMethod.Get,
+            createTestHostContext,
+        );
 
         assert.strictEquals(response.status, HttpStatus.InternalServerError);
     });
 
     it('tests a post request', async () => {
-        const response = await testEndpoint(echoImplementation, HttpMethod.Post, {
-            requestData: {
-                somethingHere: 'hi',
-                testValue: -1,
+        const response = await testEndpoint(
+            echoImplementation,
+            HttpMethod.Post,
+            createTestHostContext,
+            {
+                requestData: {
+                    somethingHere: 'hi',
+                    testValue: -1,
+                },
             },
-        });
+        );
 
         assert.deepEquals(await condenseResponse(response), {
             headers: {
@@ -271,13 +298,18 @@ describe(testEndpoint.name, () => {
     });
 
     it('handles wildcard path params', async () => {
-        const response = await testEndpoint(pathParamsImplementation, HttpMethod.Get, {
-            pathParams: {
-                param1: 'hi',
-                param2: 'bye',
-                wildcard: 'yo',
+        const response = await testEndpoint(
+            pathParamsImplementation,
+            HttpMethod.Get,
+            createTestHostContext,
+            {
+                pathParams: {
+                    param1: 'hi',
+                    param2: 'bye',
+                    wildcard: 'yo',
+                },
             },
-        });
+        );
 
         assert.strictEquals(response.status, HttpStatus.Ok);
         assert.deepEquals(await response.json(), {

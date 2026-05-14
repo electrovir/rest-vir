@@ -57,16 +57,17 @@ const requiredProtocolsImplementation = implementor.implementWebSocket(requiredP
     },
 });
 
+function createTestHostContext() {
+    return {
+        context: undefined,
+    };
+}
+
 implementApi<undefined>()(api, {
-    createHostContext() {
-        return {
-            context: undefined,
-        };
-    },
+    createHostContext: createTestHostContext,
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {},
     webSockets: {
         '/socket': basicImplementation,
         '/no-client-data': noClientDataImplementation,
@@ -81,7 +82,7 @@ describe(testWebSocket.name, () => {
             openedOnClient: false,
             messageOnClient: false,
         };
-        const webSocket = await testWebSocket(basicImplementation, {
+        const webSocket = await testWebSocket(basicImplementation, createTestHostContext, {
             listeners: {
                 open() {
                     listeners.openedOnClient = true;
@@ -122,16 +123,22 @@ describe(testWebSocket.name, () => {
 describe(withWebSocketTest.name, () => {
     it(
         'tests a basic WebSocket connection',
-        withWebSocketTest(noClientDataImplementation, {}, async (webSocket) => {
-            const response = await webSocket.sendAndWaitForReply();
-            assert.strictEquals(response, 'ok');
-        }),
+        withWebSocketTest(
+            noClientDataImplementation,
+            createTestHostContext,
+            {},
+            async (webSocket) => {
+                const response = await webSocket.sendAndWaitForReply();
+                assert.strictEquals(response, 'ok');
+            },
+        ),
     );
 
     it(
         'accepts protocols',
         withWebSocketTest(
             requiredProtocolsImplementation,
+            createTestHostContext,
             {
                 protocols: ['hi'],
             },
@@ -148,6 +155,7 @@ describe(withWebSocketTest.name, () => {
         await assert.throws(
             withWebSocketTest(
                 requiredProtocolsImplementation,
+                createTestHostContext,
                 // @ts-expect-error: protocols are missing
                 {},
                 async () => {},
@@ -162,6 +170,7 @@ describe(withWebSocketTest.name, () => {
         await assert.throws(
             withWebSocketTest(
                 requiredProtocolsImplementation,
+                createTestHostContext,
                 {
                     protocols: [
                         'hi',

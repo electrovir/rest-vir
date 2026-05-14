@@ -204,8 +204,8 @@ export async function attachApi(
         ]);
 
         allPaths.forEach((path) => {
-            const webSocketImplementation = api.implementation.webSockets[path];
-            const endpointImplementation = api.implementation.endpoints[path];
+            const webSocketImplementation = api.implementation.webSockets?.[path];
+            const endpointImplementation = api.implementation.endpoints?.[path];
 
             if (endpointImplementation && webSocketImplementation) {
                 server.route({

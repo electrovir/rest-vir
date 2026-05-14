@@ -35,10 +35,9 @@ import {
  * @category Package : @rest-vir/define-service
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
-export async function finalizeWebSocket<
+export async function finalizeClientWebSocket<
     const ThisWebSocket extends Readonly<WebSocketDefinition>,
     const WebSocketClass extends CommonWebSocket,
-    const Location extends WebSocketLocation,
 >(
     webSocketDefinition: ThisWebSocket,
     /** An already-constructed WebSocket instance. */
@@ -46,13 +45,12 @@ export async function finalizeWebSocket<
     listeners:
         | ConnectWebSocketListeners<NoInfer<ThisWebSocket>, NoInfer<WebSocketClass>>
         | undefined,
-    location: Location,
-): Promise<OverwriteWebSocketMethods<WebSocketClass, Location, ThisWebSocket>> {
-    const webSocket = overwriteWebSocketMethods<ThisWebSocket, WebSocketClass, Location>(
-        webSocketDefinition,
-        webSocketInstance,
-        location,
-    );
+): Promise<OverwriteWebSocketMethods<WebSocketClass, WebSocketLocation.OnClient, ThisWebSocket>> {
+    const webSocket = overwriteWebSocketMethods<
+        ThisWebSocket,
+        WebSocketClass,
+        WebSocketLocation.OnClient
+    >(webSocketDefinition, webSocketInstance, WebSocketLocation.OnClient);
 
     if (listeners?.open) {
         webSocket.addEventListener('open', listeners.open);
@@ -61,7 +59,6 @@ export async function finalizeWebSocket<
         webSocket.addEventListener('error', listeners.error);
     }
     if (listeners?.message) {
-        // todo: fix this type
         webSocket.addEventListener('message', listeners.message);
     }
     if (listeners?.close) {

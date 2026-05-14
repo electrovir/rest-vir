@@ -2,7 +2,6 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {implementApi} from '@rest-vir/host/src/implementation/implement-api.js';
-import {type EndpointMethodImplementations} from '@rest-vir/host/src/implementation/implement-endpoint.js';
 import {type WebSocketListenerImplementations} from '@rest-vir/host/src/implementation/implement-websocket.js';
 import {createApiImplementor} from '@rest-vir/host/src/implementation/implementor.js';
 import {
@@ -2022,7 +2021,15 @@ const dummyMethodHandler = () => {
     };
 };
 
-const dummyEndpointImplementation: EndpointMethodImplementations = {
+/**
+ * Plain object literal (no explicit `EndpointMethodImplementations` annotation): the no-generic
+ * form of that type resolves its method parameter to `EndpointMethodImplementationParams<unique
+ * symbol, unique symbol, unknown>`, which is incompatible with each endpoint's specific parameter
+ * type. Without the annotation, TS infers each handler as a zero-argument function, which is
+ * contravariant-ly assignable to any specific-method signature so the shared dummy fits every
+ * endpoint slot.
+ */
+const dummyEndpointImplementation = {
     [HttpMethod.Get]: dummyMethodHandler,
     [HttpMethod.Post]: dummyMethodHandler,
     [HttpMethod.Put]: dummyMethodHandler,
@@ -2037,10 +2044,13 @@ const dummyWebSocketImplementation = {
     close() {},
 } satisfies WebSocketListenerImplementations;
 
-const endpoint0Implementation = implementor.implementEndpoint(
-    endpoint0,
-    dummyEndpointImplementation,
-);
+const endpoint0Implementation = implementor.implementEndpoint(endpoint0, {
+    [HttpMethod.Post]() {
+        return {
+            responseHandled: true,
+        };
+    },
+});
 const endpoint1Implementation = implementor.implementEndpoint(
     endpoint1,
     dummyEndpointImplementation,
@@ -10040,7 +10050,12 @@ const webSocket399Implementation = implementor.implementWebSocket(
 );
 
 /** Dummy implementations covering every endpoint and web socket declared in `largeApi`. */
-export const largeApiImplementation = implementApi(largeApi, {
+export const largeApiImplementation = implementApi()(largeApi, {
+    createHostContext() {
+        return {
+            context: undefined,
+        };
+    },
     endpoints: {
         '/reports/item-0': endpoint0Implementation,
         '/reports/item-1': endpoint1Implementation,
@@ -12055,35 +12070,41 @@ export const largeApiImplementation = implementApi(largeApi, {
 describe('largeApiImplementation', () => {
     it('covers every endpoint declared in largeApi', () => {
         assert.deepEquals(
-            new Set(Object.keys(largeApiImplementation.endpoints)),
+            new Set(Object.keys(largeApiImplementation.implementation.endpoints)),
             new Set(Object.keys(largeApi.endpoints)),
         );
     });
 
     it('covers every web socket declared in largeApi', () => {
         assert.deepEquals(
-            new Set(Object.keys(largeApiImplementation.webSockets)),
+            new Set(Object.keys(largeApiImplementation.implementation.webSockets)),
             new Set(Object.keys(largeApi.webSockets)),
         );
     });
 
     it('exposes 1600 endpoint implementations', () => {
-        assert.strictEquals(Object.keys(largeApiImplementation.endpoints).length, 1600);
+        assert.strictEquals(
+            Object.keys(largeApiImplementation.implementation.endpoints).length,
+            1600,
+        );
     });
 
     it('exposes 400 web socket implementations', () => {
-        assert.strictEquals(Object.keys(largeApiImplementation.webSockets).length, 400);
+        assert.strictEquals(
+            Object.keys(largeApiImplementation.implementation.webSockets).length,
+            400,
+        );
     });
 
     it('preserves the api endpoint path-key union', () => {
         assert
-            .tsType<keyof typeof largeApiImplementation.endpoints>()
+            .tsType<keyof typeof largeApiImplementation.implementation.endpoints>()
             .equals<keyof typeof largeApi.endpoints>();
     });
 
     it('preserves the api web socket path-key union', () => {
         assert
-            .tsType<keyof typeof largeApiImplementation.webSockets>()
+            .tsType<keyof typeof largeApiImplementation.implementation.webSockets>()
             .equals<keyof typeof largeApi.webSockets>();
     });
 });

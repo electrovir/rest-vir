@@ -1,9 +1,12 @@
 import {type MaybePromise} from '@augment-vir/common';
+import {defineApi, type WebSocketDefinition} from '@rest-vir/api';
 import {
     type ClientWebSocket,
     type CommonWebSocket,
     type WebSocketConnectParamObject,
 } from '@rest-vir/client';
+import {type CreateHostContext} from '../../implementation/host-context.js';
+import {implementApi} from '../../implementation/implement-api.js';
 import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {testApi} from './test-api.js';
 
@@ -17,27 +20,27 @@ import {testApi} from './test-api.js';
  * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function testWebSocket<
-    const ThisWebSocket extends Readonly<WebSocketImplementation>,
+    const HostContext,
+    const ThisWebSocket extends Readonly<WebSocketImplementation<WebSocketDefinition, HostContext>>,
     WebSocketClass extends CommonWebSocket,
 >(
     webSocket: ThisWebSocket,
+    createHostContext: CreateHostContext<HostContext>,
     params: WebSocketConnectParamObject<NoInfer<ThisWebSocket>['definition'], WebSocketClass>,
 ): Promise<ClientWebSocket<ThisWebSocket['definition'], WebSocketClass>> {
-    const {connectWebSocket, kill} = await testApi({
-        definition: {
-            apiName: 'testWebSocket',
-            endpoints: {},
-            webSockets: {
-                [webSocket.path]: webSocket.definition,
-            },
-        },
-        implementation: {
-            endpoints: {},
-            webSockets: {
-                [webSocket.path]: webSocket,
-            },
+    const apiDefinition = defineApi({
+        apiName: `websocket-test-${webSocket.path}`,
+        webSockets: [webSocket.definition],
+    });
+
+    const apiImplementation = implementApi<HostContext>()(apiDefinition, {
+        createHostContext,
+        webSockets: {
+            [webSocket.path]: webSocket,
         },
     });
+
+    const {connectWebSocket, kill} = await testApi(apiImplementation);
 
     const clientWebSocket = (await connectWebSocket(
         webSocket.definition,
@@ -101,10 +104,12 @@ export type WithWebSocketTestCallback<
  * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function withWebSocketTest<
-    const ThisWebSocket extends Readonly<WebSocketImplementation>,
+    const HostContext,
+    const ThisWebSocket extends Readonly<WebSocketImplementation<WebSocketDefinition, HostContext>>,
     const WebSocketClass extends CommonWebSocket,
 >(
     webSocket: ThisWebSocket,
+    createHostContext: CreateHostContext<HostContext>,
     params: Omit<
         WebSocketConnectParamObject<NoInfer<ThisWebSocket>['definition'], WebSocketClass>,
         'listeners'
@@ -113,7 +118,11 @@ export function withWebSocketTest<
 ) {
     return async () => {
         const clientWebSocket: ClientWebSocket<ThisWebSocket['definition'], WebSocketClass> =
-            await testWebSocket(webSocket, params satisfies WebSocketConnectParamObject as any);
+            await testWebSocket(
+                webSocket,
+                createHostContext,
+                params satisfies WebSocketConnectParamObject as any,
+            );
 
         await callback(clientWebSocket);
 
