@@ -94,28 +94,12 @@ export function consolidateHeaders(headers: AllowedHeaders): Headers {
  * @category Package : @rest-vir/define-service
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
-export function headersToObject(headers: AllowedHeaders): Record<string, string | string[]> {
-    const consolidatedHeaders = consolidateHeaders(headers);
-    const headersObject: Record<string, string | string[]> = {};
-
-    Array.from(consolidatedHeaders.entries()).forEach(
-        ([
-            key,
-            value,
-        ]) => {
-            const existingValue = headersObject[key];
-            if (existingValue == undefined) {
-                headersObject[key] = value;
-            } else if (check.isArray(existingValue)) {
-                existingValue.push(value);
-            } else {
-                headersObject[key] = [
-                    existingValue,
-                    value,
-                ];
-            }
-        },
-    );
-
-    return headersObject;
+export function headersToObject(headers: AllowedHeaders): Record<string, string> {
+    /**
+     * `consolidateHeaders` returns a `Headers` instance whose `.entries()` iterator yields each
+     * key at most once (multi-value headers are joined into a comma-separated string per the
+     * Fetch standard), so the resulting object's values are always strings. There's no need to
+     * handle a duplicate-key branch here.
+     */
+    return Object.fromEntries(consolidateHeaders(headers).entries());
 }
