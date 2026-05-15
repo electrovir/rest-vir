@@ -1,16 +1,27 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineShape, type Shape} from 'object-shape-tester';
+import {defineShape, exactShape, type Shape} from 'object-shape-tester';
 import {type NoParam} from '../util/no-param.js';
 import {
+    definableHttpMethods,
     defineEndpoint,
     extractEndpointMethodDefinition,
     extractHttpMethod,
+    httpMethodsWithBodies,
+    type BaseRequiredResponseHeaders,
+    type DefaultErrorResponseType,
+    type DefaultResponseHeadersType,
+    type DefaultResponseType,
     type EndpointDefinition,
     type EndpointMethodDefinition,
+    type EndpointRequestHeadersType,
+    type EndpointRequestType,
     type EndpointResponseHeadersType,
+    type EndpointResponseType,
     type ExtractEndpointMethodDefinition,
+    type ExtractEndpointMethodDefinitionWithNoParam,
+    type ExtractRequiredHeaderValue,
     type ResponseDefinitions,
     type ResponseStatusDefinition,
 } from './endpoint.js';
@@ -572,6 +583,389 @@ describe(extractEndpointMethodDefinition.name, () => {
             HttpMethod.Post,
         );
         assert.isUndefined(result);
+    });
+});
+
+describe('definableHttpMethods', () => {
+    it('contains exactly the definable methods, frozen as const', () => {
+        assert.deepEquals(definableHttpMethods, [
+            HttpMethod.Get,
+            HttpMethod.Put,
+            HttpMethod.Post,
+            HttpMethod.Delete,
+            HttpMethod.Patch,
+            HttpMethod.Trace,
+        ]);
+    });
+
+    it('excludes HttpMethod.Options and HttpMethod.Head', () => {
+        assert.isFalse(definableHttpMethods.includes(HttpMethod.Options as never));
+        assert.isFalse(definableHttpMethods.includes(HttpMethod.Head as never));
+    });
+});
+
+describe('httpMethodsWithBodies', () => {
+    it('contains only methods that allow request bodies', () => {
+        assert.deepEquals(httpMethodsWithBodies, [
+            HttpMethod.Post,
+            HttpMethod.Put,
+            HttpMethod.Patch,
+            HttpMethod.Delete,
+        ]);
+    });
+
+    it('excludes HttpMethod.Get and HttpMethod.Trace', () => {
+        assert.isFalse(httpMethodsWithBodies.includes(HttpMethod.Get as never));
+        assert.isFalse(httpMethodsWithBodies.includes(HttpMethod.Trace as never));
+    });
+});
+
+describe('ExtractEndpointMethodDefinitionWithNoParam', () => {
+    it('falls back to NoParam when given NoParam', () => {
+        assert
+            .tsType<ExtractEndpointMethodDefinitionWithNoParam<NoParam, NoParam>>()
+            .equals<NoParam>();
+    });
+
+    it('falls back to NoParam when method is NoParam', () => {
+        const endpoint = defineEndpoint({
+            path: '/x',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+
+        assert
+            .tsType<ExtractEndpointMethodDefinitionWithNoParam<typeof endpoint, NoParam>>()
+            .equals<NoParam>();
+    });
+
+    it('extracts a concrete method definition', () => {
+        const endpoint = defineEndpoint({
+            path: '/x',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+
+        type Extracted = ExtractEndpointMethodDefinitionWithNoParam<
+            typeof endpoint,
+            HttpMethod.Get
+        >;
+
+        assert.tsType<Extracted>().equals<
+            Readonly<{
+                responses: Readonly<{
+                    [HttpStatus.Ok]: Readonly<{
+                        responseData: Shape<string>;
+                    }>;
+                }>;
+            }>
+        >();
+    });
+});
+
+describe('EndpointRequestType', () => {
+    it('returns the shape runtimeType for a defined requestData', () => {
+        const endpoint = defineEndpoint({
+            path: '/posts',
+            requests: {
+                [HttpMethod.Post]: {
+                    requestData: defineShape({
+                        title: '',
+                    }),
+                    responses: {
+                        [HttpStatus.Created]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert
+            .tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>()
+            .equals<{title: string}>();
+    });
+
+    it('returns undefined when requestData is explicitly undefined', () => {
+        const endpoint = defineEndpoint({
+            path: '/posts',
+            requests: {
+                [HttpMethod.Post]: {
+                    requestData: undefined,
+                    responses: {
+                        [HttpStatus.Created]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>().equals<undefined>();
+    });
+
+    it('returns undefined when requestData is omitted', () => {
+        const endpoint = defineEndpoint({
+            path: '/posts',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Get>>().equals<undefined>();
+    });
+
+    it('falls back to any when given NoParam', () => {
+        assert.tsType<EndpointRequestType<NoParam, NoParam>>().matches<any>();
+    });
+
+    it('falls back to any for a method not defined on the endpoint', () => {
+        const endpoint = defineEndpoint({
+            path: '/get-only',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>().matches<any>();
+    });
+});
+
+describe('EndpointResponseType', () => {
+    it('returns the runtimeType of a defined responseData', () => {
+        const endpoint = defineEndpoint({
+            path: '/users',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape({
+                                id: '',
+                            }),
+                        },
+                    },
+                },
+            },
+        });
+
+        assert
+            .tsType<EndpointResponseType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>>()
+            .equals<{id: string}>();
+    });
+
+    it('returns the error default for undeclared error statuses', () => {
+        const endpoint = defineEndpoint({
+            path: '/users',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert
+            .tsType<
+                EndpointResponseType<
+                    typeof endpoint,
+                    HttpMethod.Get,
+                    HttpStatus.InternalServerError
+                >
+            >()
+            .equals<DefaultErrorResponseType>();
+    });
+
+    it('returns unknown for undeclared success statuses', () => {
+        const endpoint = defineEndpoint({
+            path: '/users',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        assert
+            .tsType<EndpointResponseType<typeof endpoint, HttpMethod.Get, HttpStatus.Accepted>>()
+            .equals<unknown>();
+    });
+
+    it('falls back to unknown when given NoParam', () => {
+        assert.tsType<EndpointResponseType<NoParam, NoParam, NoParam>>().equals<unknown>();
+    });
+});
+
+describe('DefaultResponseType', () => {
+    it('is the error response type for error statuses', () => {
+        assert
+            .tsType<DefaultResponseType<HttpStatus.InternalServerError>>()
+            .equals<DefaultErrorResponseType>();
+    });
+
+    it('is unknown for success statuses', () => {
+        assert.tsType<DefaultResponseType<HttpStatus.Ok>>().equals<unknown>();
+    });
+});
+
+describe('DefaultErrorResponseType', () => {
+    it('is string | undefined', () => {
+        assert.tsType<DefaultErrorResponseType>().equals<string | undefined>();
+    });
+});
+
+describe('DefaultResponseHeadersType', () => {
+    it('is Record<string, string>', () => {
+        assert.tsType<DefaultResponseHeadersType>().equals<Record<string, string>>();
+    });
+});
+
+describe('BaseRequiredResponseHeaders', () => {
+    it('accepts a record of Shape values', () => {
+        const headers: BaseRequiredResponseHeaders = {
+            'x-shape': defineShape(''),
+        };
+        assert.isDefined(headers['x-shape']);
+    });
+
+    it('accepts a record of RegExp values', () => {
+        const headers: BaseRequiredResponseHeaders = {
+            'x-regex': /^[a-z]+$/,
+        };
+        assert.isDefined(headers['x-regex']);
+    });
+});
+
+describe('ExtractRequiredHeaderValue', () => {
+    it('extracts the string portion of a Shape runtime type', () => {
+        type Result = ExtractRequiredHeaderValue<ReturnType<typeof defineShape<string>>>;
+        assert.tsType<Result>().equals<string>();
+    });
+
+    it('narrows to a string-literal Shape runtime type', () => {
+        const literalShape = exactShape('v1');
+        type Result = ExtractRequiredHeaderValue<typeof literalShape>;
+        assert.tsType<Result>().equals<'v1'>();
+    });
+
+    it('falls back to string for a RegExp requirement', () => {
+        assert.tsType<ExtractRequiredHeaderValue<RegExp>>().equals<string>();
+    });
+});
+
+describe('EndpointResponseHeadersType (with required headers)', () => {
+    it('merges declared required headers with default headers', () => {
+        const endpoint = defineEndpoint({
+            path: '/with-headers',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOriginRequirement: '',
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                            requiredResponseHeaders: {
+                                'x-request-id': defineShape(''),
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        type Result = EndpointResponseHeadersType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>;
+
+        const merged: Result = {
+            'x-request-id': 'abc-123',
+            'x-extra': 'value',
+        };
+        assert.strictEquals(merged['x-request-id'], 'abc-123');
+        assert.tsType<Result['x-request-id']>().equals<string>();
+        assert.tsType<Result>().matches<Record<string, string>>();
+    });
+
+    it('returns the default headers type when no required headers are declared', () => {
+        const endpoint = defineEndpoint({
+            path: '/no-headers',
+            requests: {
+                [HttpMethod.Get]: {
+                    clientOriginRequirement: '',
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                },
+            },
+        });
+
+        type Result = EndpointResponseHeadersType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>;
+
+        assert.tsType<Result>().equals<DefaultResponseHeadersType>();
+    });
+});
+
+describe('EndpointRequestHeadersType', () => {
+    it('falls back to a generic record when given NoParam', () => {
+        assert.tsType<EndpointRequestHeadersType>().equals<Record<string, string> | undefined>();
+    });
+
+    it('returns undefined when the route does not declare requiredRequestHeaders', () => {
+        type Result = EndpointRequestHeadersType<
+            EndpointMethodDefinition<HttpMethod.Get> & {requiredRequestHeaders?: undefined}
+        >;
+
+        assert.tsType<Result>().equals<undefined>();
+    });
+
+    it('returns a partial record of declared required headers', () => {
+        const authShape = defineShape('');
+        type Result = EndpointRequestHeadersType<
+            EndpointMethodDefinition<HttpMethod.Get> & {
+                requiredRequestHeaders: {
+                    authorization: typeof authShape;
+                    'x-tenant': RegExp;
+                };
+            }
+        >;
+
+        const sample: Result = {
+            authorization: 'bearer xyz',
+            'x-tenant': 't-42',
+        };
+        assert.strictEquals(sample.authorization, 'bearer xyz');
+        assert.tsType<NonNullable<Result>['authorization']>().equals<string | undefined>();
     });
 });
 

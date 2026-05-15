@@ -1,6 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {consolidateHeaders, headersToObject, mergeHeaders} from './header-util.js';
+import {
+    type AllowedHeaders,
+    consolidateHeaders,
+    headersToObject,
+    mergeHeaders,
+} from './header-util.js';
 
 describe(mergeHeaders.name, () => {
     it('merges multiple plain object headers into a single Headers instance', () => {
@@ -59,6 +64,34 @@ describe(mergeHeaders.name, () => {
         const result = mergeHeaders();
         assert.instanceOf(result, Headers);
         assert.deepEquals(Array.from(result.entries()), []);
+    });
+
+    it('merges across different container shapes in a single call', () => {
+        const headersInstance = new Headers({
+            'x-headers-instance': 'h',
+        });
+        const result = mergeHeaders(
+            headersInstance,
+            {
+                'x-plain': 'p',
+            },
+            [
+                [
+                    'x-array',
+                    'a',
+                ],
+            ],
+            {
+                'x-multi': [
+                    'one',
+                    'two',
+                ],
+            },
+        );
+        assert.strictEquals(result.get('x-headers-instance'), 'h');
+        assert.strictEquals(result.get('x-plain'), 'p');
+        assert.strictEquals(result.get('x-array'), 'a');
+        assert.strictEquals(result.get('x-multi'), 'one, two');
     });
 });
 
@@ -134,5 +167,72 @@ describe(headersToObject.name, () => {
         });
         // Headers normalizes multi-values into a single comma-joined string
         assert.strictEquals(result['x-multi'], 'one, two');
+    });
+
+    it('accepts a Headers instance and yields a plain object', () => {
+        const result = headersToObject(
+            new Headers({
+                'x-one': 'one',
+            }),
+        );
+        assert.deepEquals(result, {
+            'x-one': 'one',
+        });
+    });
+
+    it('accepts an entries-array input and yields a plain object', () => {
+        const result = headersToObject([
+            [
+                'x-one',
+                'one',
+            ],
+            [
+                'x-two',
+                'two',
+            ],
+        ]);
+        assert.deepEquals(result, {
+            'x-one': 'one',
+            'x-two': 'two',
+        });
+    });
+});
+
+describe('AllowedHeaders', () => {
+    it('accepts every supported input shape', () => {
+        const headersInstance: AllowedHeaders = new Headers();
+        const plainRecord: AllowedHeaders = {
+            'x-one': 'one',
+        };
+        const stringArrayRecord: AllowedHeaders = {
+            'x-multi': [
+                'one',
+                'two',
+            ],
+        };
+        const entriesArray: AllowedHeaders = [
+            [
+                'x-one',
+                'one',
+            ],
+        ];
+        const outgoingNumberRecord: AllowedHeaders = {
+            'x-num': 42,
+        };
+        const incomingHttpHeaders: AllowedHeaders = {
+            'content-type': 'application/json',
+            cookie: [
+                'a=1',
+                'b=2',
+            ],
+        };
+
+        /** Each declared value is structurally assignable; the assertions just keep them live. */
+        assert.isDefined(headersInstance);
+        assert.isDefined(plainRecord);
+        assert.isDefined(stringArrayRecord);
+        assert.isDefined(entriesArray);
+        assert.isDefined(outgoingNumberRecord);
+        assert.isDefined(incomingHttpHeaders);
     });
 });

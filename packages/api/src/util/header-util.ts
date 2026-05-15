@@ -96,10 +96,10 @@ export function consolidateHeaders(headers: AllowedHeaders): Headers {
  */
 export function headersToObject(headers: AllowedHeaders): Record<string, string> {
     /**
-     * `consolidateHeaders` returns a `Headers` instance whose `.entries()` iterator yields each
-     * key at most once (multi-value headers are joined into a comma-separated string per the
-     * Fetch standard), so the resulting object's values are always strings. There's no need to
-     * handle a duplicate-key branch here.
+     * `consolidateHeaders` returns a `Headers` instance whose `.entries()` iterator yields each key
+     * at most once (multi-value headers are joined into a comma-separated string per the Fetch
+     * standard), so the resulting object's values are always strings. There's no need to handle a
+     * duplicate-key branch here.
      */
     return Object.fromEntries(consolidateHeaders(headers).entries());
 }

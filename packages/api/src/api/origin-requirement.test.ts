@@ -6,6 +6,7 @@ import {
     matchesOriginRequirement,
     type OriginCheckCallback,
     type OriginRequirement,
+    type OriginRequirementResult,
 } from './origin-requirement.js';
 
 describe(checkOriginRequirement.name, () => {
@@ -467,4 +468,116 @@ describe(matchesOriginRequirement.name, () => {
             expect: false,
         },
     ]);
+});
+
+describe('AnyOrigin', () => {
+    it('is the literal string "*"', () => {
+        assert.strictEquals(AnyOrigin, '*');
+    });
+
+    it('has a literal `*` type', () => {
+        assert.tsType<typeof AnyOrigin>().equals<'*'>();
+    });
+});
+
+describe('OriginRequirement', () => {
+    it('accepts a string requirement', () => {
+        const requirement: OriginRequirement = 'https://example.com';
+        assert.strictEquals(requirement, 'https://example.com');
+    });
+
+    it('accepts a RegExp requirement', () => {
+        const requirement: OriginRequirement = /\.example\.com$/;
+        assert.instanceOf(requirement, RegExp);
+    });
+
+    it('accepts a sync callback', () => {
+        const requirement: OriginRequirement = () => true;
+        assert.strictEquals(typeof requirement, 'function');
+    });
+
+    it('accepts an async callback', () => {
+        const requirement: OriginRequirement = async () => Promise.resolve(true);
+        assert.strictEquals(typeof requirement, 'function');
+    });
+
+    it('accepts {anyOrigin: true}', () => {
+        const requirement: OriginRequirement = {
+            anyOrigin: true,
+        };
+        assert.isDefined(requirement);
+    });
+
+    it('accepts {anyOriginWithCredentials: true}', () => {
+        const requirement: OriginRequirement = {
+            anyOriginWithCredentials: true,
+        };
+        assert.isDefined(requirement);
+    });
+
+    it('rejects an object setting both anyOrigin and anyOriginWithCredentials', () => {
+        // @ts-expect-error: RequireExactlyOne prohibits setting both keys at once.
+        const requirement: OriginRequirement = {
+            anyOrigin: true,
+            anyOriginWithCredentials: true,
+        };
+        assert.isDefined(requirement);
+    });
+
+    it('rejects an empty object', () => {
+        // @ts-expect-error: at least one of anyOrigin/anyOriginWithCredentials is required.
+        const requirement: OriginRequirement = {};
+        assert.isDefined(requirement);
+    });
+});
+
+describe('OriginCheckCallback', () => {
+    it('accepts a sync function returning boolean', () => {
+        const callback: OriginCheckCallback = () => true;
+        assert.strictEquals(typeof callback, 'function');
+    });
+
+    it('accepts an async function returning a boolean promise', () => {
+        const callback: OriginCheckCallback = async () => Promise.resolve(true);
+        assert.strictEquals(typeof callback, 'function');
+    });
+
+    it('takes an origin that may be undefined', async () => {
+        const callback: OriginCheckCallback = (origin) => {
+            assert.tsType(origin).equals<string | undefined>();
+            return origin == undefined;
+        };
+        assert.isTrue(await callback(undefined));
+        assert.isFalse(await callback('https://example.com'));
+    });
+});
+
+describe('OriginRequirementResult', () => {
+    it('is the union boolean | undefined | "*"', () => {
+        const trueValue: OriginRequirementResult = true;
+        const falseValue: OriginRequirementResult = false;
+        const undefinedValue: OriginRequirementResult = undefined;
+        const anyOriginValue: OriginRequirementResult = AnyOrigin;
+
+        assert.deepEquals(
+            [
+                trueValue,
+                falseValue,
+                undefinedValue,
+                anyOriginValue,
+            ],
+            [
+                true,
+                false,
+                undefined,
+                '*',
+            ],
+        );
+    });
+
+    it('rejects other strings', () => {
+        // @ts-expect-error: only '*' is allowed as a string member of OriginRequirementResult.
+        const bad: OriginRequirementResult = 'allowed';
+        assert.isDefined(bad);
+    });
 });

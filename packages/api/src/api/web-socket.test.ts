@@ -4,9 +4,11 @@ import {defineShape, exactShape, nullableShape, tupleShape} from 'object-shape-t
 import {type NoParam} from '../util/no-param.js';
 import {
     defineWebSocket,
+    type DefaultWebSocketProtocol,
     type WebSocketClientMessageType,
     type WebSocketConnectProtocolType,
     type WebSocketDefinition,
+    type WebSocketHostMessageType,
 } from './web-socket.js';
 
 describe('WebSocketDefinition', () => {
@@ -595,5 +597,76 @@ describe('WebSocketClientMessageType', () => {
          * undefined>['runtimeType']` = `Shape['runtimeType']` = `any`.
          */
         assert.tsType<Result>().matches<any>();
+    });
+});
+
+describe('WebSocketHostMessageType', () => {
+    it('resolves to undefined when hostMessage is explicitly undefined', () => {
+        const explicitUndefined = defineWebSocket({
+            path: '/ws/explicit-undefined',
+            clientMessage: defineShape(''),
+            hostMessage: undefined,
+        });
+
+        type Result = WebSocketHostMessageType<typeof explicitUndefined>;
+
+        assert.tsType<Result>().equals<undefined>();
+    });
+
+    it('resolves to the runtime type of a string-shaped hostMessage', () => {
+        const stringHost = defineWebSocket({
+            path: '/ws/string-host',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(''),
+        });
+
+        type Result = WebSocketHostMessageType<typeof stringHost>;
+
+        assert.tsType<Result>().equals<string>();
+    });
+
+    it('resolves to the runtime type of a numeric-shaped hostMessage', () => {
+        const numericHost = defineWebSocket({
+            path: '/ws/numeric-host',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape(0),
+        });
+
+        type Result = WebSocketHostMessageType<typeof numericHost>;
+
+        assert.tsType<Result>().equals<number>();
+    });
+
+    it('resolves to the runtime object shape of a complex hostMessage', () => {
+        const objectHost = defineWebSocket({
+            path: '/ws/object-host',
+            clientMessage: defineShape(''),
+            hostMessage: defineShape({
+                event: '',
+                payload: 0,
+            }),
+        });
+
+        type Result = WebSocketHostMessageType<typeof objectHost>;
+
+        assert.tsType<Result>().equals<{event: string; payload: number}>();
+    });
+
+    it('resolves to the literal runtime type of an exactShape hostMessage', () => {
+        const exactHost = defineWebSocket({
+            path: '/ws/exact-host',
+            clientMessage: defineShape(''),
+            hostMessage: exactShape('ready'),
+        });
+
+        type Result = WebSocketHostMessageType<typeof exactHost>;
+
+        assert.tsType<Result>().equals<'ready'>();
+    });
+});
+
+describe('DefaultWebSocketProtocol', () => {
+    it('is string[] | undefined', () => {
+        assert.tsType<DefaultWebSocketProtocol>().equals<string[] | undefined>();
     });
 });

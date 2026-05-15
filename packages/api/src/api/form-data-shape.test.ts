@@ -65,4 +65,14 @@ describe(formDataShape.name, () => {
         assert.isFalse(checkValidShape('not form data', shape));
         assert.isFalse(checkValidShape(undefined, shape));
     });
+
+    it("exposes a FormData runtime type on the shape's `runtimeType`", () => {
+        const shape = formDataShape();
+        assert.tsType<typeof shape.runtimeType>().equals<FormData>();
+    });
+
+    it('defaults its runtime value to an empty FormData instance', () => {
+        const shape = formDataShape();
+        assert.instanceOf(shape.default, FormData);
+    });
 });

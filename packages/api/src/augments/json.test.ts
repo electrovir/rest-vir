@@ -29,5 +29,53 @@ describe(parseJsonWithUndefined.name, () => {
             input: 'this is not [ valid } JSON',
             expect: 'this is not [ valid } JSON',
         },
+        {
+            it: 'parses JSON null',
+            input: 'null',
+            expect: null,
+        },
+        {
+            it: 'parses JSON number primitives',
+            input: '42',
+            expect: 42,
+        },
+        {
+            it: 'parses JSON boolean primitives',
+            input: 'true',
+            expect: true,
+        },
+        {
+            it: 'parses JSON string primitives',
+            input: '"hello"',
+            expect: 'hello',
+        },
+        {
+            it: 'parses JSON arrays',
+            input: '[1,2,3]',
+            expect: [
+                1,
+                2,
+                3,
+            ],
+        },
+        {
+            it: 'parses nested JSON',
+            input: JSON.stringify({
+                outer: {
+                    inner: [
+                        1,
+                        2,
+                    ],
+                },
+            }),
+            expect: {
+                outer: {
+                    inner: [
+                        1,
+                        2,
+                    ],
+                },
+            },
+        },
     ]);
 });

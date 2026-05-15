@@ -7,6 +7,15 @@ import {defineEndpoint, type EndpointDefinition} from './endpoint.js';
 import {type BaseRoutePath} from './route.js';
 import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
 
+describe(DefineApiError.name, () => {
+    it('is an Error subclass with the ApiDefinitionError name', () => {
+        const error = new DefineApiError('something broke');
+        assert.instanceOf(error, Error);
+        assert.strictEquals(error.name, 'ApiDefinitionError');
+        assert.strictEquals(error.message, 'something broke');
+    });
+});
+
 describe('ApiInit', () => {
     it('allows omitting both endpoints and webSockets', () => {
         const api: ApiInit = {
@@ -669,6 +678,23 @@ describe(defineApi.name, () => {
 
         assert.tsType<keyof typeof result.endpoints>().equals<BaseRoutePath>();
         assert.tsType<keyof typeof result.webSockets>().equals<BaseRoutePath>();
+    });
+
+    it('preserves the apiName on the returned definition', () => {
+        const result = defineApi({
+            apiName: 'my-named-api',
+        });
+
+        assert.strictEquals(result.apiName, 'my-named-api');
+    });
+
+    it('returns empty path-keyed records when endpoints and web sockets are omitted', () => {
+        const result = defineApi({
+            apiName: 'empty-api',
+        });
+
+        assert.deepEquals(result.endpoints, {});
+        assert.deepEquals(result.webSockets, {});
     });
 
     it('is assignable to ApiDefinition', () => {

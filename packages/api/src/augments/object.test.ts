@@ -168,4 +168,29 @@ describe('SetNullishPropertiesAsOptional', () => {
             42?: number | undefined;
         }>();
     });
+
+    it('handles symbol-keyed properties', () => {
+        const symbolKey: unique symbol = Symbol('marker');
+        type Result = SetNullishPropertiesAsOptional<{
+            [symbolKey]: string | undefined;
+            present: number;
+        }>;
+
+        assert.tsType<Result>().equals<{
+            [symbolKey]?: string | undefined;
+            present: number;
+        }>();
+    });
+
+    it('handles a mixed null + undefined union typed as optional', () => {
+        type Result = SetNullishPropertiesAsOptional<{
+            value: string | null | undefined;
+            required: number;
+        }>;
+
+        assert.tsType<Result>().equals<{
+            required: number;
+            value?: string | null | undefined;
+        }>();
+    });
 });
