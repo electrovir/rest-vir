@@ -20,6 +20,7 @@ import type {
     EndpointFetchParamObject,
     EndpointFetchParams,
 } from './endpoint-params.js';
+import {createMockResponse} from './mock-fetch.js';
 
 describe('EndpointParamObject', () => {
     it('has default values', () => {
@@ -177,6 +178,31 @@ describe('EndpointParamObject', () => {
         assert.tsType<Result>().matches<{
             requiredHeaders?: undefined;
         }>();
+    });
+});
+
+describe('ClientFetch', () => {
+    it('accepts a function with (url, requestInit, endpoint) returning a Response', () => {
+        const fetcher: ClientFetch = (url, requestInit, endpoint) => {
+            assert.tsType<typeof url>().equals<string>();
+            assert.tsType<typeof requestInit>().equals<RequestInit>();
+            assert.tsType<typeof endpoint.path>().matches<string>();
+            return createMockResponse();
+        };
+        assert.isFunction(fetcher);
+    });
+
+    it('accepts an async function returning a Response', () => {
+        const fetcher: ClientFetch = async () => {
+            return Promise.resolve(createMockResponse());
+        };
+        assert.isFunction(fetcher);
+    });
+    it('accepts a sync function', () => {
+        const fetcher: ClientFetch = () => {
+            return createMockResponse();
+        };
+        assert.isFunction(fetcher);
     });
 });
 

@@ -1,3 +1,5 @@
+/* eslint-disable @virmator/prefer-parse-url */
+
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
@@ -8,6 +10,7 @@ import {
     createMockEndpointResponse,
     createMockFetch,
     createMockResponse,
+    MockResponseBodyStream,
 } from './mock-fetch.js';
 
 const testEndpoint = defineEndpoint({
@@ -121,6 +124,49 @@ async function readBodyStream(response: Response): Promise<unknown> {
 
     return result;
 }
+
+describe('MockResponseBodyStream', () => {
+    it('is a ReadableStream subclass', () => {
+        const stream = new MockResponseBodyStream('hi', () => {});
+        assert.instanceOf(stream, ReadableStream);
+    });
+
+    it('invokes the getReader callback exactly once per getReader call', () => {
+        let getReaderCalls = 0;
+        const stream = new MockResponseBodyStream('hi', () => {
+            getReaderCalls++;
+        });
+        stream.getReader();
+        assert.strictEquals(getReaderCalls, 1);
+    });
+
+    it('streams a Uint8Array body verbatim', async () => {
+        const body = new TextEncoder().encode('payload');
+        const stream = new MockResponseBodyStream(body, () => {});
+        const reader = stream.getReader();
+        const {value} = await reader.read();
+        assert.strictEquals(new TextDecoder().decode(value), 'payload');
+    });
+
+    it('JSON-encodes a non-string, non-Uint8Array body', async () => {
+        const stream = new MockResponseBodyStream(
+            {
+                hi: 'bye',
+            },
+            () => {},
+        );
+        const reader = stream.getReader();
+        const {value} = await reader.read();
+        assert.strictEquals(new TextDecoder().decode(value), '{"hi":"bye"}');
+    });
+
+    it('closes immediately when given no body', async () => {
+        const stream = new MockResponseBodyStream(undefined, () => {});
+        const reader = stream.getReader();
+        const {done} = await reader.read();
+        assert.isTrue(done);
+    });
+});
 
 describe(createMockResponse.name, () => {
     it('supports Response.body for a string body', async () => {
@@ -258,6 +304,74 @@ describe(createMockResponse.name, () => {
         assert.isTrue(response.bodyUsed);
         await assert.throws(() => response.json());
     });
+    it('defaults to Ok status and an ok:true response', () => {
+        const response = createMockResponse();
+        assert.strictEquals(response.status, HttpStatus.Ok);
+        assert.isTrue(response.ok);
+    });
+
+    it('sets ok:false for an error status', () => {
+        const response = createMockResponse({
+            status: HttpStatus.InternalServerError,
+        });
+        assert.isFalse(response.ok);
+        assert.strictEquals(response.status, HttpStatus.InternalServerError);
+    });
+
+    it('sets ok:false for a client error status', () => {
+        const response = createMockResponse({
+            status: HttpStatus.NotFound,
+        });
+        assert.isFalse(response.ok);
+    });
+
+    it('defaults the content-type header to application/json', () => {
+        const response = createMockResponse();
+        assert.strictEquals(response.headers.get('content-type'), 'application/json');
+    });
+
+    it('merges caller-provided headers with the default content-type', () => {
+        const response = createMockResponse({
+            headers: {
+                'x-custom': 'value',
+            },
+        });
+        assert.strictEquals(response.headers.get('content-type'), 'application/json');
+        assert.strictEquals(response.headers.get('x-custom'), 'value');
+    });
+
+    it('appends caller-provided content-type to the default rather than replacing it', () => {
+        const response = createMockResponse({
+            headers: {
+                'content-type': 'text/plain',
+            },
+        });
+        assert.strictEquals(response.headers.get('content-type'), 'application/json, text/plain');
+    });
+
+    it('coerces a URL instance into a string url', () => {
+        const response = createMockResponse({
+            url: new URL('https://example.com/path'),
+        });
+        assert.strictEquals(response.url, 'https://example.com/path');
+    });
+
+    it('exposes statusText, redirected, and type passthroughs', () => {
+        const response = createMockResponse({
+            statusText: 'OK!',
+            redirected: true,
+            type: 'cors',
+        });
+        assert.strictEquals(response.statusText, 'OK!');
+        assert.isTrue(response.redirected);
+        assert.strictEquals(response.type, 'cors');
+    });
+
+    it('defaults redirected to false', () => {
+        const response = createMockResponse();
+        assert.isFalse(response.redirected);
+    });
+
     it('supports Response.clone()', async () => {
         const response = createMockResponse({
             body: {

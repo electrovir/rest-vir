@@ -15,8 +15,15 @@ import {
     type usersEndpoint,
 } from '@rest-vir/api/src/api/api.mock.js';
 import {defineShape} from 'object-shape-tester';
-import type {EndpointFetchOutput, ResolveShapeType} from './endpoint-response.js';
-import {readHeaderValue, readResponseHeaders} from './endpoint-response.js';
+import type {
+    DefinedEndpointFetchOutputs,
+    DefinedEndpointFetchStreamOutputs,
+    EndpointFetchOutput,
+    EndpointFetchStreamOutput,
+    ResolveShapeType,
+    UnknownFetchOutput,
+} from './endpoint-response.js';
+import {httpStatusToKey, readHeaderValue, readResponseHeaders} from './endpoint-response.js';
 
 const authLoginEndpoint = defineEndpoint({
     path: '/auth/login',
@@ -279,6 +286,96 @@ describe('EndpointFetchOutput', () => {
         assert
             .tsType<NonNullable<Result['unexpectedError']>['responseData']>()
             .equals<DefaultErrorResponseType>();
+    });
+});
+
+describe('UnknownFetchOutput', () => {
+    it('has the four error-shape keys', () => {
+        const sample: UnknownFetchOutput = {
+            status: HttpStatus.InternalServerError,
+            responseData: 'boom',
+            headers: {
+                'content-type': 'text/plain',
+            },
+            response: new Response(),
+        };
+        assert.strictEquals(sample.status, HttpStatus.InternalServerError);
+    });
+
+    it('allows responseData to be string or undefined', () => {
+        assert.tsType<UnknownFetchOutput['responseData']>().equals<DefaultErrorResponseType>();
+    });
+
+    it('uses DefaultResponseHeadersType for its headers', () => {
+        assert.tsType<UnknownFetchOutput['headers']>().equals<DefaultResponseHeadersType>();
+    });
+});
+
+describe('DefinedEndpointFetchOutputs', () => {
+    it('produces a record keyed by HttpStatus name', () => {
+        type Result = DefinedEndpointFetchOutputs<typeof usersCreateEndpoint, HttpMethod.Post>;
+
+        assert.tsType<keyof Result>().equals<'Created' | 'BadRequest'>();
+    });
+
+    it('returns an empty object for an endpoint with no matching method', () => {
+        type Result = DefinedEndpointFetchOutputs<typeof usersCreateEndpoint, HttpMethod.Get>;
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        assert.tsType<Result>().equals<{}>();
+    });
+});
+
+describe('DefinedEndpointFetchStreamOutputs', () => {
+    it('replaces responseData with a ReadableStream<Uint8Array>', () => {
+        type Result = DefinedEndpointFetchStreamOutputs<typeof usersEndpoint, HttpMethod.Get>;
+
+        assert
+            .tsType<NonNullable<Result['Ok']>['responseData']>()
+            .equals<ReadableStream<Uint8Array>>();
+    });
+
+    it('preserves the error fallback for error statuses', () => {
+        type Result = DefinedEndpointFetchStreamOutputs<
+            typeof usersCreateEndpoint,
+            HttpMethod.Post
+        >;
+
+        assert
+            .tsType<NonNullable<Result['BadRequest']>['responseData']>()
+            .equals<ReadableStream<Uint8Array> | string | undefined>();
+    });
+});
+
+describe('EndpointFetchStreamOutput', () => {
+    it('exactly-one-of unions ReadableStream success cases with unexpectedError', () => {
+        const result = {} as EndpointFetchStreamOutput<typeof usersEndpoint, HttpMethod.Get>;
+
+        if (result.Ok) {
+            assert.tsType<typeof result.Ok.responseData>().equals<ReadableStream<Uint8Array>>();
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        } else if (result.unexpectedError) {
+            assert
+                .tsType<typeof result.unexpectedError.responseData>()
+                .equals<DefaultErrorResponseType>();
+        }
+    });
+});
+
+describe('httpStatusToKey', () => {
+    it('maps numeric HttpStatus values back to their enum key names', () => {
+        assert.strictEquals(httpStatusToKey[HttpStatus.Ok], 'Ok');
+        assert.strictEquals(httpStatusToKey[HttpStatus.Created], 'Created');
+        assert.strictEquals(httpStatusToKey[HttpStatus.BadRequest], 'BadRequest');
+        assert.strictEquals(httpStatusToKey[HttpStatus.InternalServerError], 'InternalServerError');
+    });
+
+    it('has a mapping for every HttpStatus value', () => {
+        Object.values(HttpStatus).forEach((status) => {
+            if (typeof status === 'number') {
+                assert.isDefined(httpStatusToKey[status]);
+            }
+        });
     });
 });
 

@@ -183,7 +183,9 @@ export async function findLivePort(
     const startingPort = Number(originalPort);
 
     if (!check.isNumber(startingPort)) {
-        return undefined;
+        throw new TypeError(
+            `Origin '${originWithStartingPort}' doesn't have a valid port: '${originalPort}'.`,
+        );
     }
 
     let findDistance: number = 0;

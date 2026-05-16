@@ -1,7 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {type AnyObject} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {defineWebSocket} from '@rest-vir/api';
+import {
+    defineWebSocket,
+    type DefaultWebSocketProtocol,
+    type WebSocketDefinition,
+} from '@rest-vir/api';
 import {
     type adminWebSocket,
     type chatWebSocket,
@@ -14,7 +18,12 @@ import {
 } from '@rest-vir/api/src/api/api.mock.js';
 import {exactShape} from 'object-shape-tester';
 import {type CommonWebSocket} from './common-web-socket.js';
-import {type WebSocketConnectParamObject, type WebSocketConnectParams} from './websocket-params.js';
+import {
+    type WebSocketConnectParamObject,
+    type WebSocketConnectParams,
+    type WebSocketConnectWebSocketConstructor,
+    type WebSocketConnectWebSocketConstructorParams,
+} from './websocket-params.js';
 
 describe('WebSocketConnectParamObject', () => {
     it('can be assigned to from specific implementations', () => {
@@ -110,5 +119,44 @@ describe('WebSocketConnectParamObject', () => {
 
         const noListeners = {} as Omit<WebSocketConnectParamObject, 'listeners'>;
         const standard: WebSocketConnectParamObject = noListeners;
+    });
+});
+
+describe('WebSocketConnectWebSocketConstructorParams', () => {
+    it('is a three-element tuple of [url, protocols, webSocketDefinition]', () => {
+        assert.tsType<WebSocketConnectWebSocketConstructorParams>().equals<
+            [
+                string,
+                DefaultWebSocketProtocol,
+                WebSocketDefinition,
+            ]
+        >();
+    });
+});
+
+describe('WebSocketConnectWebSocketConstructor', () => {
+    it('falls back to CommonWebSocket when given NoParam', () => {
+        type Result = WebSocketConnectWebSocketConstructor;
+
+        assert.tsType<InstanceType<Result>>().matches<CommonWebSocket>();
+    });
+
+    it('preserves a specific WebSocket class as its instance type', () => {
+        class MyMockWebSocket implements CommonWebSocket {
+            public readyState = 0;
+            public send = () => {};
+            public addEventListener = () => {};
+            public removeEventListener = () => {};
+            public close = () => {};
+            constructor(
+                _url: string,
+                _protocols: DefaultWebSocketProtocol,
+                _webSocket: WebSocketDefinition,
+            ) {}
+        }
+
+        type Result = WebSocketConnectWebSocketConstructor<MyMockWebSocket>;
+
+        assert.tsType<InstanceType<Result>>().equals<MyMockWebSocket>();
     });
 });

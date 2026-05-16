@@ -2,8 +2,15 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {defineEndpoint} from '@rest-vir/api';
+import type {AnyDuration} from 'date-vir';
 import {parseUrl} from 'url-vir';
-import {findDevServicePort, findLivePort} from './find-dev-port.js';
+import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
+import {
+    findDevServicePort,
+    findLivePort,
+    restVirApiNameHeader,
+    type FindPortOptions,
+} from './find-dev-port.js';
 
 const testEndpoint = defineEndpoint({
     path: '/test',
@@ -45,25 +52,15 @@ describe(findDevServicePort.name, () => {
                     const fetchPort = Number(port);
                     fetchedPorts.push(fetchPort);
 
-                    if (fetchPort === workingPort) {
-                        return Promise.resolve({
-                            headers: {
-                                get() {
-                                    return 'test service';
-                                },
-                            },
-                            ok: true,
-                        } as unknown as Response);
-                    } else {
-                        return Promise.resolve({
-                            headers: {
-                                get() {
-                                    return 'test service';
-                                },
-                            },
-                            ok: false,
-                        } as unknown as Response);
-                    }
+                    return createMockResponse({
+                        headers: {
+                            [restVirApiNameHeader]: 'test service',
+                        },
+                        status:
+                            fetchPort === workingPort
+                                ? HttpStatus.Ok
+                                : HttpStatus.InternalServerError,
+                    });
                 },
                 maxScanDistance,
             },
@@ -157,15 +154,12 @@ describe(findLivePort.name, () => {
                     const {port} = parseUrl(url);
                     const fetchPort = Number(port);
 
-                    if (fetchPort === 3002) {
-                        return Promise.resolve({
-                            ok: true,
-                        } as unknown as Response);
-                    } else {
-                        return Promise.resolve({
-                            ok: false,
-                        } as unknown as Response);
-                    }
+                    return createMockResponse({
+                        status:
+                            fetchPort === 3002
+                                ? HttpStatus.Ok
+                                : HttpStatus.InternalServerError,
+                    });
                 },
                 maxScanDistance: 10,
             }),
@@ -177,9 +171,9 @@ describe(findLivePort.name, () => {
             () =>
                 findLivePort('localhost:not-a-number', testEndpoint, {
                     fetchOverride() {
-                        return Promise.resolve({
-                            ok: false,
-                        } as unknown as Response);
+                        return createMockResponse({
+                            status: HttpStatus.InternalServerError,
+                        });
                     },
                     maxScanDistance: 1,
                 }),
@@ -207,9 +201,7 @@ describe(findLivePort.name, () => {
     it('returns undefined when origin has no port', async () => {
         const result = await findLivePort('localhost', testEndpoint, {
             fetchOverride() {
-                return Promise.resolve({
-                    ok: true,
-                } as unknown as Response);
+                return createMockResponse();
             },
             maxScanDistance: 1,
         });
@@ -224,9 +216,9 @@ describe(findLivePort.name, () => {
                             milliseconds: 10,
                         });
 
-                        return {
-                            ok: false,
-                        } as unknown as Response;
+                        return createMockResponse({
+                            status: HttpStatus.InternalServerError,
+                        });
                     },
                     maxScanDistance: 10_000,
                     timeout: {
@@ -237,5 +229,145 @@ describe(findLivePort.name, () => {
                 matchMessage: 'Port scan timeout reached',
             },
         );
+    });
+
+    it('skips ports whose isValidResponse callback returns false', async () => {
+        let calls = 0;
+        const port = await findLivePort('localhost:3000', testEndpoint, {
+            fetchOverride() {
+                calls++;
+                return createMockResponse();
+            },
+            isValidResponse(response) {
+                return response.ok && calls >= 2;
+            },
+            maxScanDistance: 5,
+        });
+        assert.strictEquals(port, 3001);
+    });
+
+    it('throws Max port scan distance when nothing valid is found', async () => {
+        await assert.throws(
+            () =>
+                findLivePort('localhost:3000', testEndpoint, {
+                    fetchOverride() {
+                        return createMockResponse({
+                            status: HttpStatus.InternalServerError,
+                        });
+                    },
+                    maxScanDistance: 2,
+                }),
+            {
+                matchMessage: 'Max port scan distance reached',
+            },
+        );
+    });
+
+    it('treats a thrown fetchOverride as a non-match and keeps scanning', async () => {
+        let attempt = 0;
+        const port = await findLivePort('localhost:3000', testEndpoint, {
+            fetchOverride() {
+                attempt++;
+                if (attempt < 3) {
+                    throw new Error('boom');
+                }
+                return createMockResponse();
+            },
+            maxScanDistance: 5,
+        });
+        assert.strictEquals(port, 3002);
+    });
+});
+
+describe('restVirApiNameHeader', () => {
+    it('has the canonical rest-vir-api header name', () => {
+        assert.strictEquals(restVirApiNameHeader, 'rest-vir-api');
+    });
+
+    it('uses the value set on the rest-vir-api header to match the apiName', async () => {
+        const apiWithName = {
+            apiName: 'special-api-name',
+            endpoints: {
+                '/test': testEndpoint,
+            },
+            webSockets: {},
+        };
+
+        const result = await findDevServicePort(apiWithName, {
+            startOrigin: 'localhost:3000',
+            fetchOverride() {
+                return createMockResponse({
+                    headers: {
+                        [restVirApiNameHeader]: 'special-api-name',
+                    },
+                });
+            },
+            maxScanDistance: 0,
+        });
+        assert.deepEquals(result, {
+            port: 3000,
+            origin: 'localhost:3000',
+        });
+    });
+
+    it('rejects a port whose rest-vir-api header does not match the apiName', async () => {
+        const apiWithName = {
+            apiName: 'special-api-name',
+            endpoints: {
+                '/test': testEndpoint,
+            },
+            webSockets: {},
+        };
+
+        await assert.throws(
+            () =>
+                findDevServicePort(apiWithName, {
+                    startOrigin: 'localhost:3000',
+                    fetchOverride() {
+                        return createMockResponse({
+                            headers: {
+                                [restVirApiNameHeader]: 'a-different-api',
+                            },
+                        });
+                    },
+                    maxScanDistance: 0,
+                    timeout: {
+                        milliseconds: 250,
+                    },
+                }),
+            {
+                matchMessage: 'special-api-name',
+            },
+        );
+    });
+});
+
+describe('FindPortOptions', () => {
+    it('requires startOrigin', () => {
+        const options: FindPortOptions = {
+            startOrigin: 'localhost:3000',
+        };
+        assert.strictEquals(options.startOrigin, 'localhost:3000');
+    });
+
+    it('accepts a maxScanDistance, isValidResponse, timeout, and fetchOverride', () => {
+        const options: FindPortOptions = {
+            startOrigin: 'localhost:3000',
+            maxScanDistance: 25,
+            isValidResponse: () => true,
+            timeout: {
+                seconds: 3,
+            } satisfies AnyDuration,
+            fetchOverride: () => createMockResponse(),
+        };
+        assert.strictEquals(options.maxScanDistance, 25);
+    });
+
+    it('makes everything but startOrigin optional', () => {
+        assert
+            .tsType<keyof FindPortOptions>()
+            .equals<
+                'startOrigin' | 'fetchOverride' | 'maxScanDistance' | 'isValidResponse' | 'timeout'
+            >();
     });
 });
