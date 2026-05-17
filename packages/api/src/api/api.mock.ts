@@ -120,8 +120,8 @@ export const searchEndpoint = defineEndpoint({
             clientOriginRequirement: 'https://app.example.com',
             searchParams: {
                 query: defineShape(''),
-                page: defineShape(0),
-                limit: defineShape(0),
+                page: defineShape(''),
+                limit: defineShape(''),
             },
             responses: {
                 [HttpStatus.Ok]: {

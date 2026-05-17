@@ -46,7 +46,12 @@ const basicImplementation = implementor.implementWebSocket(basicWebSocket, {
 });
 
 const noClientDataImplementation = implementor.implementWebSocket(noClientDataWebSocket, {
-    open({webSocket}) {
+    /**
+     * Reply on `message` rather than `open` so the test's `sendAndWaitForReply` listener is
+     * attached before the host reply is dispatched. An `open`-time reply races the client's
+     * listener registration.
+     */
+    message({webSocket}) {
         webSocket.send('ok');
     },
 });

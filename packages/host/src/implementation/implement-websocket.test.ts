@@ -141,12 +141,10 @@ describe('WebSocketImplementationParams', () => {
     it('narrows searchParams to the declared searchParams runtime type', () => {
         type Params = WebSocketImplementationParams<typeof searchParamsWebSocket, true>;
 
-        type ExpectedSearchParams = Readonly<
-            Partial<{
-                readonly roomId: string;
-                readonly token: string;
-            }>
-        > &
+        type ExpectedSearchParams = Readonly<{
+            readonly roomId: string;
+            readonly token: string;
+        }> &
             BaseSearchParams;
 
         assert.tsType<Params['searchParams']>().equals<ExpectedSearchParams>();

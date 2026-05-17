@@ -65,18 +65,9 @@ export function handleSearchParams({
         : check.isKeyOf(method, route.definition.requests)
           ? route.definition.requests[method]?.searchParams
           : undefined;
-    const rawQuery = request.query;
+    const rawQuery = (request.query || {}) as RouteSearchParamsType;
 
-    const searchParams = wrapInTry(() =>
-        extractSearchParams(
-            {
-                searchParams: searchParamRequirement,
-            },
-            {
-                searchParams: rawQuery as RouteSearchParamsType,
-            },
-        ),
-    );
+    const searchParams = wrapInTry(() => extractSearchParams(searchParamRequirement, rawQuery));
 
     if (searchParams instanceof Error) {
         serverLogger.error(

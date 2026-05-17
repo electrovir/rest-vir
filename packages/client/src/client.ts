@@ -251,7 +251,10 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             throw new Error(`Method '${method}' does not exist on endpoint '${endpoint.path}'.`);
         }
 
-        const searchParams = extractSearchParams(endpointMethod, genericParams);
+        const searchParams = extractSearchParams(
+            endpointMethod.searchParams,
+            genericParams.searchParams,
+        );
 
         const pathname = endpoint.path
             .replaceAll(/\/:([^/]+)/g, (wholeMatch, paramName: string): string => {

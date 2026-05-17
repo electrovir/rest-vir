@@ -125,7 +125,7 @@ describe('EndpointMethodDefinition', () => {
             clientOriginRequirement: '',
             searchParams: {
                 query: defineShape(''),
-                page: defineShape(0),
+                page: defineShape(''),
             },
             responses: {
                 [HttpStatus.Ok]: {
@@ -424,7 +424,7 @@ describe(defineEndpoint.name, () => {
 
     it('preserves searchParams types', () => {
         const queryShape = defineShape('');
-        const limitShape = defineShape(0);
+        const limitShape = defineShape('');
 
         const result = defineEndpoint({
             path: '/search',
@@ -444,10 +444,12 @@ describe(defineEndpoint.name, () => {
             },
         });
 
-        assert.tsType(result.requests[HttpMethod.Get].searchParams).equals<{
-            readonly query: typeof queryShape;
-            readonly limit: typeof limitShape;
-        }>();
+        assert.tsType(result.requests[HttpMethod.Get].searchParams).equals<
+            Readonly<{
+                query: typeof queryShape;
+                limit: typeof limitShape;
+            }>
+        >();
     });
 
     it('preserves requestData shape type for POST', () => {

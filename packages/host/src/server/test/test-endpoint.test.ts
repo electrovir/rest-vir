@@ -234,19 +234,20 @@ describe(testEndpoint.name, () => {
         );
     });
     it('allows wildcard', async () => {
-        await assert.throws(
-            () =>
-                testEndpoint(pathParamsImplementation, HttpMethod.Get, createTestHostContext, {
-                    pathParams: {
-                        param1: 'hi',
-                        param2: 'bye',
-                        wildcard: 'wild',
-                    },
-                }),
+        const response = await testEndpoint(
+            pathParamsImplementation,
+            HttpMethod.Get,
+            createTestHostContext,
             {
-                matchMessage: 'Missing value for wildcard param',
+                pathParams: {
+                    param1: 'hi',
+                    param2: 'bye',
+                    wildcard: 'wild',
+                },
             },
         );
+
+        assert.strictEquals(response.status, HttpStatus.Ok);
     });
 
     it('handles an internal error', async () => {

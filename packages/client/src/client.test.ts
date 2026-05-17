@@ -17,7 +17,7 @@ import {
     parseJsonWithUndefined,
     type WebSocketDefinition,
 } from '@rest-vir/api';
-import {defineShape, exactShape} from 'object-shape-tester';
+import {defineShape, exactShape, nullableShape} from 'object-shape-tester';
 import {readResponseBodyAsJsonOrText, RestVirClient} from './client.js';
 import {type HttpStatusByKey} from './endpoint-fetch/endpoint-response.js';
 import {createMockFetch, createMockResponse} from './endpoint-fetch/mock-fetch.js';
@@ -326,7 +326,7 @@ const searchEndpoint = defineEndpoint({
         [HttpMethod.Get]: {
             searchParams: {
                 query: defineShape(''),
-                page: defineShape(0),
+                page: nullableShape(''),
             },
             responses: {
                 [HttpStatus.Ok]: {
@@ -1014,7 +1014,7 @@ describe(RestVirClient.name, () => {
             const url = client.buildEndpointUrl(searchEndpoint, HttpMethod.Get, {
                 searchParams: {
                     query: 'hello',
-                    page: 2,
+                    page: '2',
                 },
             });
             assert.strictEquals(url, 'https://example.com/search?query=hello&page=2');

@@ -123,12 +123,12 @@ export const requiresOriginEndpoint = defineEndpoint({
 
 export const withSearchParamsEndpoint = defineEndpoint({
     path: '/with-search-params',
-    searchParams: {
-        param1: tupleShape(''),
-        param2: defineShape(['']),
-    },
     requests: {
         [HttpMethod.Get]: {
+            searchParams: {
+                param1: defineShape(''),
+                param2: defineShape(['']),
+            },
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: undefined,
@@ -136,6 +136,10 @@ export const withSearchParamsEndpoint = defineEndpoint({
             },
         },
         [HttpMethod.Post]: {
+            searchParams: {
+                param1: defineShape(''),
+                param2: defineShape(['']),
+            },
             responses: {
                 [HttpStatus.Ok]: {
                     responseData: undefined,

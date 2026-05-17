@@ -1,519 +1,547 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineShape} from 'object-shape-tester';
+import {defineShape, exactShape, nullableShape} from 'object-shape-tester';
 import {extractSearchParams} from './search-params.js';
 
 describe(extractSearchParams.name, () => {
-    it('returns empty object when no search params are defined', () => {
-        const result = extractSearchParams({}, {});
+    describe('no requirements declared', () => {
+        it('returns empty object when neither side has search params', () => {
+            assert.deepEquals(extractSearchParams(undefined, undefined), {});
+        });
 
-        assert.deepEquals(result, {});
-    });
-
-    it('returns empty object when endpoint has no searchParams', () => {
-        const result = extractSearchParams(
-            {},
-            {
-                searchParams: {
+        it('passes a single-value supplied param through as a single string', () => {
+            assert.deepEquals(
+                extractSearchParams(undefined, {
                     query: 'hello',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            query: ['hello'],
-        });
-    });
-
-    it('passes valid string search params through', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    query: 'hello',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            query: ['hello'],
-        });
-    });
-
-    it('passes valid string array search params through', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    tags: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    tags: 'a',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            tags: ['a'],
-        });
-    });
-
-    it('blocks array string when string is required', () => {
-        assert.throws(() =>
-            extractSearchParams(
+                }),
                 {
-                    searchParams: {
-                        tags: defineShape(''),
+                    query: 'hello',
+                },
+            );
+        });
+
+        it('passes a supplied array through as an array of strings', () => {
+            assert.deepEquals(
+                extractSearchParams(undefined, {
+                    tags: [
+                        'a',
+                        'b',
+                    ],
+                }),
+                {
+                    tags: [
+                        'a',
+                        'b',
+                    ],
+                },
+            );
+        });
+
+        it('stringifies non-string primitives in the supplied value', () => {
+            assert.deepEquals(
+                extractSearchParams(undefined, {
+                    count: 42,
+                    flag: true,
+                }),
+                {
+                    count: '42',
+                    flag: 'true',
+                },
+            );
+        });
+
+        it('drops undefined values', () => {
+            assert.deepEquals(
+                extractSearchParams(undefined, {
+                    kept: 'hello',
+                    removed: undefined as unknown as string,
+                }),
+                {
+                    kept: 'hello',
+                },
+            );
+        });
+    });
+
+    describe('single Shape requirement', () => {
+        it('passes a single string value', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        query: defineShape(''),
                     },
-                },
+                    {
+                        query: 'hello',
+                    },
+                ),
                 {
-                    searchParams: {
+                    query: 'hello',
+                },
+            );
+        });
+
+        it('unwraps a one-element array to satisfy a single-value shape', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        query: defineShape(''),
+                    },
+                    {
+                        query: ['hello'],
+                    },
+                ),
+                {
+                    query: 'hello',
+                },
+            );
+        });
+
+        it('rejects a multi-element array against a single-value shape', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            query: defineShape(''),
+                        },
+                        {
+                            query: [
+                                'a',
+                                'b',
+                            ],
+                        },
+                    ),
+                {
+                    matchMessage: 'query',
+                },
+            );
+        });
+
+        it('rejects a value that fails the shape', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            code: exactShape('expected-only'),
+                        },
+                        {
+                            code: 'something-else',
+                        },
+                    ),
+                {
+                    matchMessage: 'code',
+                },
+            );
+        });
+
+        it('coerces a number to a string before validating', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        page: defineShape(''),
+                    },
+                    {
+                        page: 2,
+                    },
+                ),
+                {
+                    page: '2',
+                },
+            );
+        });
+    });
+
+    describe('array Shape requirement', () => {
+        it('passes an array of strings', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        tags: defineShape(['']),
+                    },
+                    {
                         tags: [
                             'a',
                             'b',
+                            'c',
                         ],
                     },
-                },
-            ),
-        );
-    });
-
-    it('passes when search params are not provided', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                },
-            },
-            {},
-        );
-
-        assert.deepEquals(result, {});
-    });
-
-    it('omits undefined values with RegExp requirement', () => {
-        assert.deepEquals(
-            extractSearchParams(
+                ),
                 {
-                    searchParams: {
+                    tags: [
+                        'a',
+                        'b',
+                        'c',
+                    ],
+                },
+            );
+        });
+
+        it('wraps a single string into a one-element array to satisfy an array shape', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        tags: defineShape(['']),
+                    },
+                    {
+                        tags: 'a',
+                    },
+                ),
+                {
+                    tags: ['a'],
+                },
+            );
+        });
+
+        it('rejects an array value that fails the shape', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            codes: exactShape([
+                                'a',
+                                'b',
+                            ]),
+                        },
+                        {
+                            codes: [
+                                'a',
+                                'b',
+                                'extra',
+                            ],
+                        },
+                    ),
+                {
+                    matchMessage: 'codes',
+                },
+            );
+        });
+    });
+
+    describe('single RegExp requirement', () => {
+        it('passes a single matching value', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
                         id: /^\d+$/,
                     },
-                },
-                {
-                    searchParams: {
-                        id: undefined,
+                    {
+                        id: '123',
                     },
-                },
-            ),
-            {},
-        );
-    });
-
-    it('passes valid regex search params', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    id: /^\d+$/,
-                },
-            },
-            {
-                searchParams: {
+                ),
+                {
                     id: '123',
                 },
-            },
-        );
-
-        assert.deepEquals(result, {
-            id: ['123'],
+            );
         });
-    });
 
-    it('throws for regex search param that does not match', () => {
-        assert.throws(() => {
-            extractSearchParams(
+        it('throws when the value does not match the regex', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            id: /^\d+$/,
+                        },
+                        {
+                            id: 'abc',
+                        },
+                    ),
                 {
-                    searchParams: {
-                        id: /^\d+$/,
-                    },
+                    matchMessage: 'id',
                 },
+            );
+        });
+
+        it('throws when the value is missing', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            id: /^\d+$/,
+                        },
+                        undefined,
+                    ),
                 {
-                    searchParams: {
-                        id: 'abc',
+                    matchMessage: 'id',
+                },
+            );
+        });
+
+        it('throws when the value is multi-element', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            id: /^\d+$/,
+                        },
+                        {
+                            id: [
+                                '1',
+                                '2',
+                            ],
+                        },
+                    ),
+                {
+                    matchMessage: 'id',
+                },
+            );
+        });
+
+        it('coerces non-string primitive to a string before validating', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        count: /^\d+$/,
                     },
+                    {
+                        count: 42,
+                    },
+                ),
+                {
+                    count: '42',
                 },
             );
         });
     });
 
-    it('validates multiple search params independently', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                    page: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    query: 'hello',
-                    page: '1',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            query: ['hello'],
-            page: ['1'],
-        });
-    });
-
-    it('ignores search params not defined in the endpoint', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    query: 'hello',
-                    extra: 'ignored-by-validation',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            query: ['hello'],
-            extra: ['ignored-by-validation'],
-        });
-    });
-
-    it('validates regex against each value in an array', () => {
-        assert.throws(() => {
-            extractSearchParams(
-                {
-                    searchParams: {
-                        ids: /^\d+$/,
-                    },
-                },
-                {
-                    searchParams: {
-                        ids: [
-                            '123',
-                            'abc',
+    describe('RegExp array requirement', () => {
+        it('passes when every value matches at least one regex', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        values: [
+                            /^\d+$/,
+                            /^[a-z]+$/,
                         ],
                     },
-                },
-            );
-        });
-    });
-
-    it('passes regex validation for all array values', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    ids: /^\d+$/,
-                },
-            },
-            {
-                searchParams: {
-                    ids: [
+                    {
+                        values: [
+                            '123',
+                            'abc',
+                            '456',
+                        ],
+                    },
+                ),
+                {
+                    values: [
                         '123',
+                        'abc',
                         '456',
                     ],
                 },
-            },
-        );
-
-        assert.deepEquals(result, {
-            ids: [
-                '123',
-                '456',
-            ],
+            );
         });
-    });
 
-    it('returns the params object when endpoint has no searchParams definition', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: undefined,
-            },
-            {
-                searchParams: {
-                    anything: 'goes',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            anything: ['goes'],
-        });
-    });
-
-    it('returns empty object when neither endpoint nor params have searchParams', () => {
-        const result = extractSearchParams({}, {});
-
-        assert.deepEquals(result, {});
-    });
-
-    it('skips validation for a defined key that is absent from params', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    required: defineShape(''),
-                    optional: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    required: 'value',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            required: ['value'],
-        });
-    });
-
-    it('skips validation when endpoint has requirements but params has no searchParams', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                },
-            },
-            {
-                searchParams: undefined,
-            },
-        );
-
-        assert.deepEquals(result, {});
-    });
-
-    it('removes undefined values from the result', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    kept: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    kept: 'hello',
-                    removed: undefined as unknown as string,
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            kept: ['hello'],
-        });
-        assert.isFalse('removed' in result);
-    });
-
-    it('skips validation for an undefined param value with a shape requirement', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    query: defineShape(''),
-                },
-            },
-            {
-                searchParams: {
-                    query: undefined as unknown as string,
-                },
-            },
-        );
-
-        assert.deepEquals(result, {});
-    });
-
-    it('skips validation for an undefined param value with a regex requirement', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    id: /^\d+$/,
-                },
-            },
-            {
-                searchParams: {
-                    id: undefined as unknown as string,
-                },
-            },
-        );
-
-        assert.deepEquals(result, {});
-    });
-
-    it('throws for shape validation failure on a string value', () => {
-        assert.throws(() => {
-            extractSearchParams(
-                {
-                    searchParams: {
-                        count: defineShape(0),
+        it('accepts any number of values, not just the regex count', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        values: [
+                            /^\d+$/,
+                            /^[a-z]+$/,
+                        ],
                     },
-                },
-                {
-                    searchParams: {
-                        count: 'not-a-number' as unknown as number,
+                    {
+                        values: ['123'],
                     },
+                ),
+                {
+                    values: ['123'],
                 },
             );
         });
-    });
 
-    it('throws for regex failure on one element in an array', () => {
-        assert.throws(
-            () => {
+        it('wraps a single supplied value into a one-element array', () => {
+            assert.deepEquals(
                 extractSearchParams(
                     {
-                        searchParams: {
-                            codes: /^[A-Z]{3}$/,
-                        },
+                        values: [
+                            /^\d+$/,
+                            /^[a-z]+$/,
+                        ],
                     },
                     {
-                        searchParams: {
-                            codes: [
-                                'ABC',
-                                'ab',
+                        values: 'abc',
+                    },
+                ),
+                {
+                    values: ['abc'],
+                },
+            );
+        });
+
+        it('throws when an element matches none of the supplied regexes', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            values: [
+                                /^\d+$/,
+                                /^[a-z]+$/,
                             ],
                         },
-                    },
-                );
-            },
-            {
-                matchMessage: 'codes',
-            },
-        );
-    });
-
-    it('includes the search key name in regex error messages', () => {
-        assert.throws(
-            () => {
-                extractSearchParams(
-                    {
-                        searchParams: {
-                            myParam: /^valid$/,
+                        {
+                            values: [
+                                '123',
+                                'ABC',
+                            ],
                         },
-                    },
-                    {
-                        searchParams: {
-                            myParam: 'invalid',
-                        },
-                    },
-                );
-            },
-            {
-                matchMessage: 'myParam',
-            },
-        );
-    });
-
-    it('includes the search key name in shape error messages', () => {
-        assert.throws(
-            () => {
-                extractSearchParams(
-                    {
-                        searchParams: {
-                            myField: defineShape(0),
-                        },
-                    },
-                    {
-                        searchParams: {
-                            myField: 'wrong' as unknown as number,
-                        },
-                    },
-                );
-            },
-            {
-                matchMessage: 'myField',
-            },
-        );
-    });
-
-    it('validates mixed shape and regex requirements independently', () => {
-        const result = extractSearchParams(
-            {
-                searchParams: {
-                    name: defineShape(''),
-                    code: /^[A-Z]+$/,
+                    ),
+                {
+                    matchMessage: 'values',
                 },
-            },
-            {
-                searchParams: {
-                    name: 'hello',
-                    code: 'ABC',
-                },
-            },
-        );
-
-        assert.deepEquals(result, {
-            name: ['hello'],
-            code: ['ABC'],
+            );
         });
-    });
 
-    it('throws on shape requirement when mixed with passing regex', () => {
-        assert.throws(() => {
-            extractSearchParams(
+        it('throws when no value is provided', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            values: [
+                                /^\d+$/,
+                                /^[a-z]+$/,
+                            ],
+                        },
+                        undefined,
+                    ),
                 {
-                    searchParams: {
-                        name: defineShape(0),
-                        code: /^[A-Z]+$/,
-                    },
-                },
-                {
-                    searchParams: {
-                        name: 'bad' as unknown as number,
-                        code: 'ABC',
-                    },
+                    matchMessage: 'values',
                 },
             );
         });
     });
 
-    it('throws on regex requirement when mixed with passing shape', () => {
-        assert.throws(() => {
-            extractSearchParams(
+    describe('required vs optional shapes', () => {
+        it('throws when a non-nullable shape is omitted', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            query: defineShape(''),
+                        },
+                        undefined,
+                    ),
                 {
-                    searchParams: {
+                    matchMessage: 'query',
+                },
+            );
+        });
+
+        it('throws when a non-nullable shape value is undefined', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            query: defineShape(''),
+                        },
+                        {
+                            query: undefined as unknown as string,
+                        },
+                    ),
+                {
+                    matchMessage: 'query',
+                },
+            );
+        });
+
+        it('passes when an optional (nullableShape) is omitted', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        query: nullableShape(''),
+                    },
+                    undefined,
+                ),
+                {},
+            );
+        });
+
+        it('passes when an optional (nullableShape) value is undefined', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        query: nullableShape(''),
+                    },
+                    {
+                        query: undefined as unknown as string,
+                    },
+                ),
+                {},
+            );
+        });
+
+        it('throws when an optional shape value is present but invalid', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            code: nullableShape(exactShape('expected-only')),
+                        },
+                        {
+                            code: 'wrong',
+                        },
+                    ),
+                {
+                    matchMessage: 'code',
+                },
+            );
+        });
+    });
+
+    describe('mixed requirements and extra keys', () => {
+        it('passes through keys not declared in the route', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
+                        query: defineShape(''),
+                    },
+                    {
+                        query: 'hello',
+                        extra: 'untouched',
+                    },
+                ),
+                {
+                    query: 'hello',
+                    extra: 'untouched',
+                },
+            );
+        });
+
+        it('validates each declared requirement independently', () => {
+            assert.deepEquals(
+                extractSearchParams(
+                    {
                         name: defineShape(''),
                         code: /^[A-Z]+$/,
                     },
-                },
-                {
-                    searchParams: {
-                        name: 'good',
-                        code: 'bad-lowercase',
+                    {
+                        name: 'hello',
+                        code: 'ABC',
                     },
+                ),
+                {
+                    name: 'hello',
+                    code: 'ABC',
                 },
             );
         });
-    });
 
-    it('allows non-string value for regexp search param', () => {
-        assert.deepEquals(
-            extractSearchParams(
+        it('throws on the first failing requirement', () => {
+            assert.throws(
+                () =>
+                    extractSearchParams(
+                        {
+                            name: defineShape(''),
+                            code: /^[A-Z]+$/,
+                        },
+                        {
+                            name: 'hello',
+                            code: 'lowercase',
+                        },
+                    ),
                 {
-                    searchParams: {
-                        count: /^\d+$/,
-                    },
+                    matchMessage: 'code',
                 },
-                {
-                    searchParams: {
-                        count: 42,
-                    },
-                },
-            ),
-            {
-                count: ['42'],
-            },
-        );
+            );
+        });
     });
 });

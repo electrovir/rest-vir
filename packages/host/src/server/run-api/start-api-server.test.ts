@@ -374,6 +374,7 @@ describe(startApiServer.name, () => {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://electrovir.com',
+                            'access-control-request-method': HttpMethod.Get,
                         },
                     }),
                 ),
@@ -389,6 +390,7 @@ describe(startApiServer.name, () => {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://example.com',
+                            'access-control-request-method': HttpMethod.Get,
                         },
                     }),
                 ),
@@ -449,6 +451,7 @@ describe(startApiServer.name, () => {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://wikipedia.org',
+                            'access-control-request-method': HttpMethod.Get,
                         },
                     }),
                 ),
@@ -464,6 +467,7 @@ describe(startApiServer.name, () => {
                         method: HttpMethod.Options,
                         headers: {
                             origin: 'https://example.com',
+                            'access-control-request-method': HttpMethod.Get,
                         },
                     }),
                 ),
@@ -526,7 +530,7 @@ describe(startApiServer.name, () => {
                 ),
                 {
                     status: HttpStatus.NotAcceptable,
-                    body: '"INTENTIONAL ERROR"',
+                    body: 'INTENTIONAL ERROR',
                     headers: {
                         'access-control-allow-origin': '*',
                         'content-type': 'application/json; charset=utf-8',

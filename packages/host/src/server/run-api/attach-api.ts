@@ -18,6 +18,7 @@ import {type FastifyInstance} from 'fastify';
 import {buildUrl, parseUrl} from 'url-vir';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {type RunningServerInfo} from '../../implementation/raw-route-data.js';
+import {RejectRequestError} from '../../implementation/reject-request.error.js';
 import {createServerLogger} from '../../implementation/server-logger.js';
 import {handleHandlerOutput, type HandleRouteOptions} from '../handle-request/endpoint-handler.js';
 import {handleRoute} from '../handle-request/handle-route.js';
@@ -170,6 +171,20 @@ export async function attachApi(
 
                 return handleHandlerOutput(preHandlerResult, response);
             } catch (error) {
+                /**
+                 * `RejectRequestError` is the explicit "reject this request with my status" signal
+                 * from a host context creator (or any pre-handler step). Honor its status and body
+                 * instead of always collapsing to a 500.
+                 */
+                if (error instanceof RejectRequestError) {
+                    return handleHandlerOutput(
+                        {
+                            statusCode: error.httpStatus,
+                            body: error.responseErrorMessage,
+                        },
+                        response,
+                    );
+                }
                 serverLogger.error(
                     ensureErrorClass(
                         error,
@@ -199,8 +214,8 @@ export async function attachApi(
         });
 
         const allPaths = new Set([
-            ...getObjectTypedKeys(api.implementation.webSockets),
-            ...getObjectTypedKeys(api.implementation.endpoints),
+            ...getObjectTypedKeys(api.implementation.webSockets || {}),
+            ...getObjectTypedKeys(api.implementation.endpoints || {}),
         ]);
 
         allPaths.forEach((path) => {

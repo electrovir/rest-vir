@@ -53,19 +53,32 @@ export async function handleCors(
     >,
 ): Promise<HandledOutput> {
     const origin = request.headers.origin;
-    const method = request.method.toUpperCase();
+    const requestMethod = request.method.toUpperCase();
+    const isPreflight = requestMethod === HttpMethod.Options;
     const allowedMethods: DefinableHttpMethod[] = route.isEndpoint
         ? getObjectTypedKeys(route.definition.requests)
         : [HttpMethod.Get];
 
+    /**
+     * On a CORS preflight, the request's own method is OPTIONS, but the question being asked is
+     * about the method the browser plans to use next. That target method is announced via the
+     * `Access-Control-Request-Method` header, so we look up the per-method origin requirement
+     * using that header rather than OPTIONS itself.
+     */
+    const accessControlRequestMethod = request.headers['access-control-request-method'];
+    const methodForOriginCheck =
+        isPreflight && check.isString(accessControlRequestMethod)
+            ? accessControlRequestMethod.toUpperCase()
+            : requestMethod;
+
     const matchedOrigin = await matchOrigin({
         route,
-        method,
+        method: methodForOriginCheck,
         api,
         origin,
     });
 
-    if (request.method.toUpperCase() === HttpMethod.Options) {
+    if (isPreflight) {
         return {
             statusCode: HttpStatus.NoContent,
             headers: buildOptionsRequestCorsHeaders(
@@ -194,17 +207,18 @@ async function matchOrigin({
           ? route.definition.requests[method]?.clientOriginRequirement
           : undefined;
 
-    const routeOriginResult = await checkOriginRequirement(origin, routeOriginRequirement);
-
-    if (routeOriginResult === AnyOrigin) {
-        return AnyOrigin;
-    } else if (routeOriginResult === false) {
-        return undefined;
-    } else if (routeOriginResult === true) {
-        return origin || AnyOrigin;
+    if (routeOriginRequirement != undefined) {
+        const result = await checkOriginRequirement(origin, routeOriginRequirement);
+        if (result === false) {
+            return undefined;
+        } else if (result === AnyOrigin) {
+            return AnyOrigin;
+        } else if (result === true) {
+            return origin || AnyOrigin;
+        }
     }
 
-    /** If the endpoint requirement is `undefined`, then we check the service requirement. */
+    /** If the route requirements are all `undefined`, then we check the service requirement. */
 
     const serviceOriginResult = await checkOriginRequirement(
         origin,
@@ -215,6 +229,8 @@ async function matchOrigin({
         return undefined;
     } else if (serviceOriginResult === true) {
         return origin || AnyOrigin;
+    } else if (serviceOriginResult === AnyOrigin) {
+        return AnyOrigin;
     } else {
         /** Fall back to any origin. */
         return AnyOrigin;

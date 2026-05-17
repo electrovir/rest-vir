@@ -140,7 +140,9 @@ export async function handleEndpointRequest(
             endpoint.definition.requests[method]?.responses[statusCode];
 
         if (statusResponseDefinition?.responseData) {
-            assertValidShape(statusResponse.responseData, statusResponseDefinition.responseData);
+            assertValidShape(statusResponse.responseData, statusResponseDefinition.responseData, {
+                allowExtraKeys: true,
+            });
         } else if (statusResponse.responseData) {
             throw new RestVirHandlerError(
                 {

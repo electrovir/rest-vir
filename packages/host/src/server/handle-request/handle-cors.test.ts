@@ -73,10 +73,19 @@ function buildScenario({
     };
 }
 
-function buildRequest(origin: string | undefined, method: HttpMethod = HttpMethod.Get) {
+function buildRequest(
+    origin: string | undefined,
+    method: HttpMethod = HttpMethod.Get,
+    accessControlRequestMethod?: HttpMethod | undefined,
+) {
     return {
         headers: {
             origin,
+            ...(accessControlRequestMethod
+                ? {
+                      'access-control-request-method': accessControlRequestMethod,
+                  }
+                : {}),
         },
         method,
         originalUrl: '/example-path',
@@ -276,6 +285,92 @@ describe(handleCors.name, () => {
         });
 
         assert.strictEquals(result?.headers?.['Access-Control-Allow-Origin'], '*');
+    });
+
+    it('uses the per-method origin requirement on a preflight via Access-Control-Request-Method', async () => {
+        const endpoint = defineEndpoint({
+            path: '/example-path',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                    clientOriginRequirement: {
+                        anyOrigin: true,
+                    },
+                },
+                [HttpMethod.Post]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    },
+                    clientOriginRequirement: 'https://only-this.example.com',
+                },
+            },
+        });
+
+        const api = defineApi({
+            apiName: 'example api',
+            endpoints: [endpoint],
+            webSockets: [],
+        });
+
+        const implementor = createApiImplementor<undefined>()(api);
+
+        const endpointImplementation = implementor.implementEndpoint(endpoint, {
+            [HttpMethod.Get]() {
+                return {
+                    [HttpStatus.Ok]: {
+                        responseData: undefined,
+                    },
+                };
+            },
+            [HttpMethod.Post]() {
+                return {
+                    [HttpStatus.Ok]: {
+                        responseData: undefined,
+                    },
+                };
+            },
+        });
+
+        const apiImplementation = implementApi<undefined>()(api, {
+            createHostContext() {
+                return {
+                    context: undefined,
+                };
+            },
+            endpoints: {
+                '/example-path': endpointImplementation,
+            },
+        });
+
+        const getPreflight = await handleCors({
+            api: apiImplementation,
+            serverLogger: silentServerLogger,
+            request: buildRequest(
+                'http://other.example.com',
+                HttpMethod.Options,
+                HttpMethod.Get,
+            ),
+            route: endpointImplementation,
+        });
+        assert.strictEquals(getPreflight?.headers?.['Access-Control-Allow-Origin'], '*');
+
+        const postPreflight = await handleCors({
+            api: apiImplementation,
+            serverLogger: silentServerLogger,
+            request: buildRequest(
+                'http://other.example.com',
+                HttpMethod.Options,
+                HttpMethod.Post,
+            ),
+            route: endpointImplementation,
+        });
+        assert.isUndefined(postPreflight?.headers?.['Access-Control-Allow-Origin']);
     });
 
     it('includes custom headers in the OPTIONS preflight response', async () => {

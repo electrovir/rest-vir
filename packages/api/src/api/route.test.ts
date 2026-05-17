@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {defineShape, tupleShape} from 'object-shape-tester';
+import {defineShape, nullableShape, tupleShape, unionShape} from 'object-shape-tester';
 import {defineEndpoint} from './endpoint.js';
 import {
     type AllowedSearchParamValue,
@@ -11,6 +11,8 @@ import {
     type CommonRouteDefinition,
     type ExtractSearchParamValue,
     type RouteSearchParamsType,
+    type SearchParamRequirement,
+    type SearchParamShape,
 } from './route.js';
 
 describe('RouteSearchParamsType', () => {
@@ -36,16 +38,14 @@ describe('RouteSearchParamsType', () => {
         type TestTypes = RouteSearchParamsType<typeof endpoint.requests.GET>;
 
         assert.tsType<TestTypes>().equals<
-            | (Readonly<
-                  Partial<{
-                      regExp: AllowedSearchParamValue;
-                      stringShape: string;
-                      tupleShape: [
-                          string,
-                          string,
-                      ];
-                  }>
-              > &
+            | (Readonly<{
+                  regExp: string;
+                  stringShape: string;
+                  tupleShape: [
+                      string,
+                      string,
+                  ];
+              }> &
                   BaseSearchParams)
             | undefined
         >();
@@ -279,7 +279,128 @@ describe('ExtractSearchParamValue', () => {
         >();
     });
 
-    it('falls back to AllowedSearchParamValue for a RegExp requirement', () => {
-        assert.tsType<ExtractSearchParamValue<RegExp>>().equals<AllowedSearchParamValue>();
+    it('returns string for a single RegExp requirement', () => {
+        assert.tsType<ExtractSearchParamValue<RegExp>>().equals<string>();
+    });
+
+    it('returns string[] for a tuple of RegExp requirements', () => {
+        assert.tsType<ExtractSearchParamValue<ReadonlyArray<RegExp>>>().equals<string[]>();
+    });
+});
+
+describe('SearchParamShape', () => {
+    it('accepts a single-string Shape', () => {
+        const stringShape = defineShape('');
+        const requirement: SearchParamShape = stringShape;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts a string[] Shape', () => {
+        const arrayShape = defineShape(['']);
+        const requirement: SearchParamShape = arrayShape;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts a tupleShape of strings', () => {
+        const twoStrings = tupleShape('', '');
+        const requirement: SearchParamShape = twoStrings;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts a nullable string Shape', () => {
+        const nullableString = nullableShape('');
+        const requirement: SearchParamShape = nullableString;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts a string | string[] union Shape', () => {
+        const union = unionShape('', ['']);
+        const requirement: SearchParamShape = union;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a numeric Shape', () => {
+        const numberShape = defineShape(0);
+        // @ts-expect-error: a numeric Shape's runtime type is `number`, not `string | string[]`.
+        const requirement: SearchParamShape = numberShape;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a boolean Shape', () => {
+        const boolShape = defineShape(true);
+        // @ts-expect-error: a boolean Shape's runtime type is `boolean`, not `string | string[]`.
+        const requirement: SearchParamShape = boolShape;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects an object Shape', () => {
+        const objectShape = defineShape({
+            field: '',
+        });
+        // @ts-expect-error: an object Shape's runtime type is an object, not `string | string[]`.
+        const requirement: SearchParamShape = objectShape;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects an array-of-numbers Shape', () => {
+        const numberArrayShape = defineShape([0]);
+        // @ts-expect-error: a `number[]` runtime type doesn't fit `string | readonly string[]`.
+        const requirement: SearchParamShape = numberArrayShape;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a tupleShape of numbers', () => {
+        const numericTuple = tupleShape(0, 0);
+        // @ts-expect-error: a numeric tuple isn't assignable to `string | readonly string[]`.
+        const requirement: SearchParamShape = numericTuple;
+        assert.isDefined(requirement);
+    });
+});
+
+describe('SearchParamRequirement', () => {
+    it('accepts a Shape', () => {
+        const stringShape = defineShape('');
+        const requirement: SearchParamRequirement = stringShape;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts a RegExp', () => {
+        const requirement: SearchParamRequirement = /^\d+$/;
+        assert.isDefined(requirement);
+    });
+
+    it('accepts an array of RegExp', () => {
+        const requirement: SearchParamRequirement = [
+            /^\d+$/,
+            /^[a-z]+$/,
+        ];
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a non-string-typed Shape', () => {
+        const numberShape = defineShape(0);
+        // @ts-expect-error: numeric Shape isn't a SearchParamShape.
+        const requirement: SearchParamRequirement = numberShape;
+        assert.isDefined(requirement);
+    });
+
+    it('rejects an array of non-RegExp values', () => {
+        // @ts-expect-error: array elements must be RegExp.
+        const requirement: SearchParamRequirement = ['not-a-regex'];
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a raw string', () => {
+        // @ts-expect-error: a plain string is not a valid requirement form.
+        const requirement: SearchParamRequirement = 'plain';
+        assert.isDefined(requirement);
+    });
+
+    it('rejects a plain object', () => {
+        const requirement: SearchParamRequirement = {
+            // @ts-expect-error: a plain object is not a valid requirement form.
+            not: 'allowed',
+        };
+        assert.isDefined(requirement);
     });
 });

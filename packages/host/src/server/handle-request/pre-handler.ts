@@ -21,6 +21,7 @@ import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester
 import {type CreateHostContextParams} from '../../implementation/host-context.js';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {RejectRequestError} from '../../implementation/reject-request.error.js';
 import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {
     type RunningServerInfo,
@@ -270,6 +271,13 @@ export async function preHandler({
 
         return undefined;
     } catch (error) {
+        /**
+         * Preserve the original error class when rethrowing so downstream handlers (e.g. the
+         * RejectRequestError branch in handleRoute) can still recognize it.
+         */
+        if (error instanceof RejectRequestError) {
+            throw error;
+        }
         throw ensureErrorAndPrependMessage(error, 'Failed to generate request context.');
     }
 }
