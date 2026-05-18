@@ -57,7 +57,9 @@ describe(isAllOrigins.name, () => {
 
 describe('originRequirementShape', () => {
     it('works on AnyOrigin', () => {
-        assertValidShape(AnyOrigin, defineShape(originRequirementShape));
+        assertValidShape(AnyOrigin, defineShape(originRequirementShape), {
+            allowExtraKeys: true,
+        });
     });
     it('blocks a random object', () => {
         assert.throws(() =>
@@ -66,6 +68,9 @@ describe('originRequirementShape', () => {
                     hello: 'there',
                 },
                 defineShape(originRequirementShape),
+                {
+                    allowExtraKeys: true,
+                },
             ),
         );
     });

@@ -96,6 +96,33 @@ const handledEndpoint = defineEndpoint({
     },
 });
 
+const multiMethodEndpoint = defineEndpoint({
+    path: '/multi',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        read: '',
+                    }),
+                },
+            },
+        },
+        [HttpMethod.Post]: {
+            requestData: defineShape({
+                write: '',
+            }),
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        ack: '',
+                    }),
+                },
+            },
+        },
+    },
+});
+
 const chatWebSocket = defineWebSocket({
     path: '/chat',
     clientMessage: defineShape(''),
@@ -121,6 +148,7 @@ const mockApi = defineApi({
         errorThrowingEndpoint,
         handledEndpoint,
         uploadEndpoint,
+        multiMethodEndpoint,
     ],
     webSockets: [
         chatWebSocket,
@@ -232,6 +260,38 @@ describe(createMockHost.name, () => {
         assert.strictEquals(result.unexpectedError.status, HttpStatus.NotImplemented);
     });
 
+    it('allows a mock endpoint to implement only a subset of its methods', async () => {
+        const client = createMockHost(mockApi, {
+            endpoints: {
+                '/multi': {
+                    [HttpMethod.Get]() {
+                        return {
+                            [HttpStatus.Ok]: {
+                                responseData: {
+                                    read: 'value',
+                                },
+                            },
+                        };
+                    },
+                },
+            },
+        });
+
+        const getResult = await client.fetch(multiMethodEndpoint).GET();
+        assert.isDefined(getResult.Ok);
+        assert.deepEquals(getResult.Ok.responseData, {
+            read: 'value',
+        });
+
+        const postResult = await client.fetch(multiMethodEndpoint).POST({
+            requestData: {
+                write: 'data',
+            },
+        });
+        assert.isDefined(postResult.unexpectedError);
+        assert.strictEquals(postResult.unexpectedError.status, HttpStatus.NotImplemented);
+    });
+
     it('returns 500 InternalServerError when the implementation throws', async () => {
         const client = createMockHost(mockApi, {
             endpoints: {
@@ -336,8 +396,9 @@ describe(createMockHost.name, () => {
         const client = createMockHost(mockApi, {
             endpoints: {
                 '/handled': {
+                    // @ts-expect-error: missing result
                     [HttpMethod.Get]() {
-                        return {} as never;
+                        return {};
                     },
                 },
             },
@@ -353,12 +414,13 @@ describe(createMockHost.name, () => {
         const client = createMockHost(mockApi, {
             endpoints: {
                 '/no-impl': {
+                    // @ts-expect-error: invalid HTTP status
                     [HttpMethod.Get]() {
                         return {
                             999: {
                                 responseData: undefined,
                             },
-                        } as never;
+                        };
                     },
                 },
             },

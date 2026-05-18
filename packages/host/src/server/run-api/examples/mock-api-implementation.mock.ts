@@ -535,16 +535,16 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                     return {
                         [HttpStatus.Ok]: {
                             // sending data when the definition forbids it
-                            responseData: 'should not be here' as never,
+                            responseData: 'should not be here',
                         },
                     };
                 },
             },
         ),
         '/missing-status-code': implementor.implementEndpoint(missingStatusCodeEndpoint, {
+            // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
-                // intentionally returns no recognized status entry
-                return {} as never;
+                return {};
             },
         }),
         '/empty-string-response': implementor.implementEndpoint(emptyStringResponseEndpoint, {

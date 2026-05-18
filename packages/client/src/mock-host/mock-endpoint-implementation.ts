@@ -18,7 +18,9 @@ export type MockEndpointParamsExtras = {
 };
 
 /**
- * Implementation record for an endpoint's methods on the client (mock) side.
+ * Implementation record for an endpoint's methods on the client (mock) side. Every method is
+ * optional. A mock host may implement only the subset of methods it cares about. Requests for an
+ * unimplemented method return HTTP 501 Not Implemented.
  *
  * @category Internal
  * @category Package : @rest-vir/client
@@ -27,7 +29,7 @@ export type MockEndpointParamsExtras = {
 export type MockEndpointMethodImplementations<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
     Context = unknown,
-> = EndpointMethodImplementationsBase<Endpoint, Context, MockEndpointParamsExtras>;
+> = Partial<EndpointMethodImplementationsBase<Endpoint, Context, MockEndpointParamsExtras>>;
 
 /**
  * Implementation envelope for a single endpoint on the client (mock) side.

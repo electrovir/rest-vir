@@ -441,6 +441,9 @@ describe(defineService.name, () => {
                 code: 1,
             },
             service.webSockets['/my-web-socket'].messageFromClientShape,
+            {
+                allowExtraKeys: true,
+            },
         );
         assert.throws(() =>
             assertValidShape(
@@ -448,6 +451,9 @@ describe(defineService.name, () => {
                     code: 3,
                 },
                 service.webSockets['/my-web-socket'].messageFromClientShape,
+                {
+                    allowExtraKeys: true,
+                },
             ),
         );
 

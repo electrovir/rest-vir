@@ -1,8 +1,13 @@
 import {assert} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus} from '@augment-vir/common';
+import {type AnyObject, HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
+import {
+    type RunningServerInfo,
+    type ServerRequest,
+    type ServerResponse,
+} from '../../implementation/raw-route-data.js';
 import {silentServerLogger} from '../../implementation/server-logger.js';
 import {handleEndpointRequest} from './handle-endpoint.js';
 
@@ -24,26 +29,6 @@ const api = defineApi({
     endpoints: [endpointDefinition],
     webSockets: [],
 });
-
-function buildRequest(method: HttpMethod) {
-    return {
-        method,
-        originalUrl: '/example',
-        params: {},
-        headers: {},
-        restVirContext: {
-            attach: {
-                context: undefined,
-                requestData: undefined,
-                searchParams: {},
-                protocols: [],
-            },
-        },
-    } as never;
-}
-
-const noopResponse = {} as never;
-const server = {} as never;
 
 describe(handleEndpointRequest.name, () => {
     it('throws when the api implementation is missing a definition for the dispatched method', async () => {
@@ -70,10 +55,23 @@ describe(handleEndpointRequest.name, () => {
             async () =>
                 await handleEndpointRequest({
                     endpoint: forgedImplementation,
-                    request: buildRequest(HttpMethod.Post),
-                    response: noopResponse,
+                    request: {
+                        method: HttpMethod.Post,
+                        originalUrl: '/example',
+                        params: {},
+                        headers: {},
+                        restVirContext: {
+                            attach: {
+                                context: undefined,
+                                requestData: undefined,
+                                searchParams: {},
+                                protocols: [],
+                            },
+                        },
+                    } as AnyObject as ServerRequest,
+                    response: {} as ServerResponse,
                     attachId: 'attach',
-                    server,
+                    server: {} as RunningServerInfo,
                     serverLogger: silentServerLogger,
                     api,
                 }),

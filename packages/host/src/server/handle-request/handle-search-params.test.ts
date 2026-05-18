@@ -76,15 +76,18 @@ const noSearchImplementation: EndpointImplementation = {
                 },
             };
         },
-    } as never,
+    },
 };
 
-function buildRequest(query: Readonly<Record<string, unknown>> | undefined, method = HttpMethod.Get) {
+function buildRequest(
+    query: Readonly<Record<string, unknown>> | undefined,
+    method = HttpMethod.Get,
+) {
     return {
         method,
         originalUrl: '/search',
         query,
-    } as never;
+    };
 }
 
 describe(handleSearchParams.name, () => {

@@ -74,6 +74,9 @@ function finalizeServiceDefinition<
                     ...endpointInit,
                 },
                 endpointInitShape,
+                {
+                    allowExtraKeys: true,
+                },
             );
             const endpoint = {
                 ...endpointInit,
@@ -114,6 +117,9 @@ function finalizeServiceDefinition<
                     ...webSocketInit,
                 },
                 webSocketInitShape,
+                {
+                    allowExtraKeys: true,
+                },
             );
             const webSocketDefinition = {
                 ...webSocketInit,

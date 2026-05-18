@@ -56,14 +56,30 @@ describe(isFormDataShape.name, () => {
 describe(formDataShape.name, () => {
     it('accepts a FormData instance via checkValidShape', () => {
         const shape = formDataShape();
-        assert.isTrue(checkValidShape(new FormData(), shape));
+        assert.isTrue(
+            checkValidShape(new FormData(), shape, {
+                allowExtraKeys: true,
+            }),
+        );
     });
 
     it('rejects a non-FormData value via checkValidShape', () => {
         const shape = formDataShape();
-        assert.isFalse(checkValidShape({}, shape));
-        assert.isFalse(checkValidShape('not form data', shape));
-        assert.isFalse(checkValidShape(undefined, shape));
+        assert.isFalse(
+            checkValidShape({}, shape, {
+                allowExtraKeys: true,
+            }),
+        );
+        assert.isFalse(
+            checkValidShape('not form data', shape, {
+                allowExtraKeys: true,
+            }),
+        );
+        assert.isFalse(
+            checkValidShape(undefined, shape, {
+                allowExtraKeys: true,
+            }),
+        );
     });
 
     it("exposes a FormData runtime type on the shape's `runtimeType`", () => {

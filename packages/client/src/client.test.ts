@@ -776,7 +776,7 @@ describe(RestVirClient.name, () => {
             await client.fetch(userByIdEndpoint).GET({
                 pathParams: {
                     userId: '1',
-                } as never,
+                },
             });
 
             assert.strictEquals(captured.url, 'https://example.com/users/1');
@@ -925,7 +925,7 @@ describe(RestVirClient.name, () => {
             const url = wsClient.buildWebSocketUrl(wildcardWebSocket, {
                 pathParams: {
                     wildcard: 'a/b/c',
-                } as never,
+                },
             });
             assert.strictEquals(url, 'wss://example.com/ws/files/a/b/c');
         });
@@ -943,7 +943,7 @@ describe(RestVirClient.name, () => {
             const url = client.buildEndpointUrl(userByIdEndpoint, HttpMethod.Get, {
                 pathParams: {
                     userId: '42',
-                } as never,
+                },
             });
             assert.strictEquals(url, 'https://example.com/users/42');
         });
@@ -953,14 +953,21 @@ describe(RestVirClient.name, () => {
                 pathParams: {
                     userId: '1',
                     postId: '2',
-                } as never,
+                },
             });
             assert.strictEquals(url, 'https://example.com/users/1/posts/2');
         });
 
         it('throws when a wildcard is missing', () => {
             assert.throws(
-                () => client.buildEndpointUrl(filesEndpoint, HttpMethod.Get, {} as never),
+                () =>
+                    client.buildEndpointUrl(
+                        filesEndpoint,
+                        HttpMethod.Get,
+
+                        // @ts-expect-error: missing wildcard path param
+                        {},
+                    ),
                 {
                     matchMessage: 'wildcard',
                 },
@@ -971,7 +978,8 @@ describe(RestVirClient.name, () => {
             assert.throws(
                 () =>
                     client.buildEndpointUrl(userByIdEndpoint, HttpMethod.Get, {
-                        pathParams: {} as never,
+                        // @ts-expect-error: missing path param
+                        pathParams: {},
                     }),
                 {
                     matchMessage: 'userId',
@@ -983,9 +991,10 @@ describe(RestVirClient.name, () => {
             assert.throws(
                 () =>
                     client.buildEndpointUrl(simpleEndpoint, HttpMethod.Get, {
+                        // @ts-expect-error: expected path param
                         pathParams: {
                             extra: 'oops',
-                        } as never,
+                        },
                     }),
                 {
                     matchMessage: '/simple',
@@ -1225,7 +1234,12 @@ describe(RestVirClient.name, () => {
         it('throws when required headers are missing', () => {
             assert.throws(
                 () =>
-                    client.buildEndpointRequestInit(protectedEndpoint, HttpMethod.Get, {} as never),
+                    client.buildEndpointRequestInit(
+                        protectedEndpoint,
+                        HttpMethod.Get,
+                        // @ts-expect-error: missing required headers
+                        {},
+                    ),
                 {
                     matchMessage: '/protected',
                 },
@@ -1318,7 +1332,7 @@ describe(RestVirClient.name, () => {
         const result = await client.fetch(integrationEndpoint).POST({
             pathParams: {
                 itemId: '99',
-            } as never,
+            },
             searchParams: {
                 mode: 'fast',
             },
@@ -1455,7 +1469,7 @@ describe('RestVirClient.connectWebSocket', () => {
             webSocketConstructor: MockWebSocket,
             pathParams: {
                 roomId: '42',
-            } as never,
+            },
         });
 
         assert.strictEquals(
@@ -1556,7 +1570,7 @@ describe('RestVirClient.connectWebSocket', () => {
         });
 
         socket.addEventListener('message', () => {});
-        assert.throws(() => getLastMockWebSocket().sendFromHost(42 as never));
+        assert.throws(() => getLastMockWebSocket().sendFromHost(42));
 
         await socket.close();
     });
@@ -1569,7 +1583,8 @@ describe('RestVirClient.connectWebSocket', () => {
 
         assert.throws(
             () => {
-                socket.send('disallowed' as never);
+                // @ts-expect-error: unexpected message
+                socket.send('disallowed');
             },
             {
                 matchMessage: 'does not expect any message data',
@@ -1781,8 +1796,9 @@ describe('RestVirClient.connectWebSocket', () => {
                 client.connectWebSocket(exactProtocolWebSocket, {
                     webSocketConstructor: MockWebSocket,
                     protocols: [
+                        // @ts-expect-error: invalid protocol
                         'soap-ws',
-                    ] as never,
+                    ],
                 }),
             {
                 matchMessage: 'failed protocol requirement',
@@ -1896,7 +1912,7 @@ describe('RestVirClient.buildWebSocketUrl', () => {
         const url = client.buildWebSocketUrl(pathParamsWebSocket, {
             pathParams: {
                 roomId: 'r1',
-            } as never,
+            },
         });
         assert.strictEquals(url, 'wss://example.com/ws/rooms/r1');
     });
@@ -1906,7 +1922,8 @@ describe('RestVirClient.buildWebSocketUrl', () => {
         assert.throws(
             () =>
                 client.buildWebSocketUrl(pathParamsWebSocket, {
-                    pathParams: {} as never,
+                    // @ts-expect-error: missing path param
+                    pathParams: {},
                 }),
             {
                 matchMessage: 'roomId',
@@ -1919,7 +1936,8 @@ describe('RestVirClient.buildWebSocketUrl', () => {
         assert.throws(
             () =>
                 client.buildWebSocketUrl(wildcardWebSocket, {
-                    pathParams: {} as never,
+                    // @ts-expect-error: missing wildcard path param
+                    pathParams: {},
                 }),
             {
                 matchMessage: 'wildcard',

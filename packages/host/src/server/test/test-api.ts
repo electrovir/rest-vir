@@ -10,6 +10,7 @@ import {describe, it} from '@augment-vir/test';
 import {
     type DefinableHttpMethod,
     type EndpointDefinition,
+    NoParam,
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {
@@ -288,14 +289,12 @@ export async function testExistingServer<const Api extends Readonly<ApiImplement
     };
 
     const connectWebSocket: ConnectTestWebSocket<Api> = async (webSocketDefinition, ...args) => {
-        const params = args[0] as WebSocketConnectParamObject | undefined;
+        const params: WebSocketConnectParamObject | undefined = args[0];
         const protocols = params?.protocols ?? [];
 
         const webSocketUrl = restVirClient.buildWebSocketUrl(
-            webSocketDefinition as WebSocketDefinition & {
-                path: keyof Api['definition']['webSockets'];
-            },
-            params as never,
+            webSocketDefinition as unknown as NoParam,
+            params,
         );
 
         const webSocket: globalThis.WebSocket =

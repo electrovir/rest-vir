@@ -780,22 +780,21 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
             },
         }),
         '/bad-status-code': gapsImplementor.implementEndpoint(badStatusCodeEndpoint, {
+            // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
-                // intentionally return an unrecognized HTTP status code
                 return {
                     [999 as HttpStatus]: {
                         responseData: undefined,
                     },
-                } as never;
+                };
             },
         }),
         '/missing-status': gapsImplementor.implementEndpoint(missingStatusEndpoint, {
+            // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
-                // valid status code with falsy status response triggers the
-                // "Missing status code response" branch in handle-endpoint.
                 return {
                     [HttpStatus.Ok]: undefined,
-                } as never;
+                };
             },
         }),
         '/unexpected-data': gapsImplementor.implementEndpoint(unexpectedDataEndpoint, {
@@ -803,7 +802,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 return {
                     [HttpStatus.Ok]: {
                         // sending data when the definition forbids it
-                        responseData: 'should not be here' as never,
+                        responseData: 'should not be here',
                     },
                 };
             },
@@ -824,17 +823,22 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/multi-method': gapsImplementor.implementEndpoint(multiMethodEndpoint, {
-            [HttpMethod.Get]() {
-                return {
-                    [HttpStatus.Ok]: {
-                        responseData: undefined,
-                    },
-                };
+        '/multi-method': gapsImplementor.implementEndpoint(
+            multiMethodEndpoint,
+
+            // @ts-expect-error: intentionally wrong
+            {
+                [HttpMethod.Get]() {
+                    return {
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                    };
+                },
+                // POST is intentionally omitted; we'll patch the implementation below to
+                // make the request still reach handleEndpointRequest.
             },
-            // POST is intentionally omitted; we'll patch the implementation below to
-            // make the request still reach handleEndpointRequest.
-        } as never),
+        ),
         '/no-request-data': gapsImplementor.implementEndpoint(noRequestDataEndpoint, {
             [HttpMethod.Post]() {
                 return {

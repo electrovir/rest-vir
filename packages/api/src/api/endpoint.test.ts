@@ -1,4 +1,4 @@
-import {assert} from '@augment-vir/assert';
+import {assert, check} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {defineShape, exactShape, type Shape} from 'object-shape-tester';
@@ -601,8 +601,8 @@ describe('definableHttpMethods', () => {
     });
 
     it('excludes HttpMethod.Options and HttpMethod.Head', () => {
-        assert.isFalse(definableHttpMethods.includes(HttpMethod.Options as never));
-        assert.isFalse(definableHttpMethods.includes(HttpMethod.Head as never));
+        assert.isFalse(check.isIn(HttpMethod.Options, definableHttpMethods));
+        assert.isFalse(check.isIn(HttpMethod.Head, definableHttpMethods));
     });
 });
 
@@ -617,8 +617,8 @@ describe('httpMethodsWithBodies', () => {
     });
 
     it('excludes HttpMethod.Get and HttpMethod.Trace', () => {
-        assert.isFalse(httpMethodsWithBodies.includes(HttpMethod.Get as never));
-        assert.isFalse(httpMethodsWithBodies.includes(HttpMethod.Trace as never));
+        assert.isFalse(check.isIn(HttpMethod.Get, httpMethodsWithBodies));
+        assert.isFalse(check.isIn(HttpMethod.Trace, httpMethodsWithBodies));
     });
 });
 

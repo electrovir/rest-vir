@@ -108,7 +108,9 @@ export function finalizeOptions(
     );
     options.workerCount = Math.max(1, options.workerCount);
 
-    assertValidShape(options, startServiceOptionsShape);
+    assertValidShape(options, startServiceOptionsShape, {
+        allowExtraKeys: true,
+    });
 
     return options;
 }

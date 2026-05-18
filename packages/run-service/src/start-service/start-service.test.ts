@@ -651,7 +651,7 @@ describe(startService.name, () => {
          * Unfortunately this test is not reliable as an automated test. Instead, test it manually
          * by doing the following:
          *
-         * 1. Run `npx tsx <path-to-multithreaded-script-file>`.
+         * 1. Run `npx tsx packages/run-service/src/start-service/examples/multi-threaded.script.mock.ts`.
          * 2. Hit the `/long-running` endpoint in a browser.
          * 3. Quickly, in a separate tab, open `/empty`.
          * 4. `/empty` should resolve immediately while `/long-running` is still loading.

@@ -18,6 +18,7 @@ import {
     type DefinableHttpMethod,
     type EndpointDefinition,
     type ExtractEndpointMethodDefinition,
+    type NoParam,
     type ResponseStatusDefinition,
     type RouteSearchParamsType,
     type WebSocketDefinition,
@@ -462,8 +463,10 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     }
 
     public buildWebSocketUrl<
-        const ThisWebSocket extends WebSocketDefinition & {path: keyof ClientApi['webSockets']},
-        WebSocketClass extends CommonWebSocket,
+        const ThisWebSocket extends
+            | (WebSocketDefinition & {path: keyof ClientApi['webSockets']})
+            | NoParam = NoParam,
+        WebSocketClass extends CommonWebSocket | NoParam = NoParam,
     >(
         webSocket: ThisWebSocket,
         webSocketParams:
@@ -471,10 +474,11 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             | undefined,
     ) {
         const params: WebSocketConnectParamObject | undefined = webSocketParams;
+        const genericWebSocket = webSocket as WebSocketDefinition;
 
         const httpUrl = this.buildEndpointUrl(
             {
-                path: webSocket.path as any,
+                path: genericWebSocket.path as any,
                 requests: {
                     [HttpMethod.Get]: {
                         responses: {
@@ -482,7 +486,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
                                 responseData: undefined,
                             },
                         },
-                        searchParams: webSocket.searchParams,
+                        searchParams: genericWebSocket.searchParams,
                     },
                 },
             },

@@ -5,6 +5,7 @@ import {AnyOrigin, defineApi, defineEndpoint, type OriginRequirement} from '@res
 import {restVirApiNameHeader} from '@rest-vir/client';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';
+import {type ServerRequest} from '../../implementation/raw-route-data.js';
 import {silentServerLogger} from '../../implementation/server-logger.js';
 import {handleCors} from './handle-cors.js';
 
@@ -89,7 +90,7 @@ function buildRequest(
         },
         method,
         originalUrl: '/example-path',
-    } as never;
+    } as ServerRequest;
 }
 
 describe(handleCors.name, () => {
@@ -351,11 +352,7 @@ describe(handleCors.name, () => {
         const getPreflight = await handleCors({
             api: apiImplementation,
             serverLogger: silentServerLogger,
-            request: buildRequest(
-                'http://other.example.com',
-                HttpMethod.Options,
-                HttpMethod.Get,
-            ),
+            request: buildRequest('http://other.example.com', HttpMethod.Options, HttpMethod.Get),
             route: endpointImplementation,
         });
         assert.strictEquals(getPreflight?.headers?.['Access-Control-Allow-Origin'], '*');
@@ -363,11 +360,7 @@ describe(handleCors.name, () => {
         const postPreflight = await handleCors({
             api: apiImplementation,
             serverLogger: silentServerLogger,
-            request: buildRequest(
-                'http://other.example.com',
-                HttpMethod.Options,
-                HttpMethod.Post,
-            ),
+            request: buildRequest('http://other.example.com', HttpMethod.Options, HttpMethod.Post),
             route: endpointImplementation,
         });
         assert.isUndefined(postPreflight?.headers?.['Access-Control-Allow-Origin']);

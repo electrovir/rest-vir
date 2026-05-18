@@ -188,7 +188,7 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
                     context: contextOutput.context,
                     webSocketDefinition: this.webSocketDefinition,
                     requestHeaders: {},
-                    protocols: this.protocols as never,
+                    protocols: this.protocols,
                     searchParams: this.searchParams,
                     webSocket: this.hostFacingMockWebSocket,
                     ...(eventName === 'open'
@@ -227,7 +227,7 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
                     context: contextOutput.context,
                     webSocketDefinition: this.webSocketDefinition,
                     requestHeaders: {},
-                    protocols: this.protocols as never,
+                    protocols: this.protocols,
                     searchParams: this.searchParams,
                     webSocket: this.hostFacingMockWebSocket,
                     message: parsedMessage,
