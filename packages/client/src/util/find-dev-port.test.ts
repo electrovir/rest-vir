@@ -6,7 +6,7 @@ import type {AnyDuration} from 'date-vir';
 import {parseUrl} from 'url-vir';
 import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
 import {
-    findDevServicePort,
+    findDevServerPort,
     findLivePort,
     restVirApiNameHeader,
     type FindPortOptions,
@@ -25,7 +25,7 @@ const testEndpoint = defineEndpoint({
     },
 });
 
-describe(findDevServicePort.name, () => {
+describe(findDevServerPort.name, () => {
     async function testFindDevServicePort({
         origin,
         workingPort,
@@ -37,7 +37,7 @@ describe(findDevServicePort.name, () => {
     }) {
         const fetchedPorts: number[] = [];
 
-        await findDevServicePort(
+        await findDevServerPort(
             {
                 apiName: 'test service',
                 endpoints: {
@@ -129,7 +129,7 @@ describe(findDevServicePort.name, () => {
     it('rejects a service without endpoints', async () => {
         await assert.throws(
             () =>
-                findDevServicePort(
+                findDevServerPort(
                     {
                         apiName: '',
                         endpoints: {},
@@ -140,7 +140,7 @@ describe(findDevServicePort.name, () => {
                     },
                 ),
             {
-                matchMessage: 'Service has no endpoints',
+                matchMessage: 'Api has no endpoints',
             },
         );
     });
@@ -155,10 +155,7 @@ describe(findLivePort.name, () => {
                     const fetchPort = Number(port);
 
                     return createMockResponse({
-                        status:
-                            fetchPort === 3002
-                                ? HttpStatus.Ok
-                                : HttpStatus.InternalServerError,
+                        status: fetchPort === 3002 ? HttpStatus.Ok : HttpStatus.InternalServerError,
                     });
                 },
                 maxScanDistance: 10,
@@ -293,7 +290,7 @@ describe('restVirApiNameHeader', () => {
             webSockets: {},
         };
 
-        const result = await findDevServicePort(apiWithName, {
+        const result = await findDevServerPort(apiWithName, {
             startOrigin: 'localhost:3000',
             fetchOverride() {
                 return createMockResponse({
@@ -321,7 +318,7 @@ describe('restVirApiNameHeader', () => {
 
         await assert.throws(
             () =>
-                findDevServicePort(apiWithName, {
+                findDevServerPort(apiWithName, {
                     startOrigin: 'localhost:3000',
                     fetchOverride() {
                         return createMockResponse({

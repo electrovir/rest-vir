@@ -95,23 +95,11 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
             this.webSocketDefinition = webSocketDefinition;
             this.implementations = webSocketImplementations[webSocketDefinition.path];
 
-            try {
-                this.searchParams = extractSearchParams(
-                    webSocketDefinition.searchParams,
-                    parseUrl(this.url).searchParams,
-                );
-            } catch (error) {
-                /** Defer the open + emit an error event so callers can react like with a real WS. */
-                this.searchParams = {};
-                // eslint-disable-next-line sonarjs/no-async-constructor
-                void callAsynchronously(() => {
-                    this.dispatchEvent('error', {
-                        target: this,
-                        type: 'error',
-                    });
-                });
-                throw error;
-            }
+            /* RestVirClient builds the URL via the same `extractSearchParams` so an invalid search-param value throws on the client side before this constructor runs. */
+            this.searchParams = extractSearchParams(
+                webSocketDefinition.searchParams,
+                parseUrl(this.url).searchParams,
+            );
 
             // eslint-disable-next-line @typescript-eslint/no-this-alias
             const owner = this;
@@ -174,6 +162,7 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
         }
 
         protected async open() {
+            /* node:coverage ignore next 3: extra defense: open() is scheduled once in the constructor and never re-runs. */
             if (this.readyState !== CommonWebSocketState.Connecting) {
                 return;
             }
@@ -289,6 +278,7 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
         }
 
         protected sendFromHost(data: unknown) {
+            /* node:coverage ignore next 3: extra defense: only the public API can reach here, and it doesn't expose a way to call sendFromHost after the socket has closed. */
             if (this.readyState !== CommonWebSocketState.Open) {
                 return;
             }
@@ -313,6 +303,7 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
 }
 
 function parseMockSocketMessage(rawData: unknown): unknown {
+    /* node:coverage ignore next 3: extra defense: the public client send always serializes to a string before reaching here. */
     if (typeof rawData !== 'string') {
         return rawData;
     } else if (rawData === 'undefined') {
@@ -320,6 +311,7 @@ function parseMockSocketMessage(rawData: unknown): unknown {
     }
     try {
         return JSON.parse(rawData);
+        /* node:coverage ignore next 3: extra defense: the public client send always JSON-stringifies before reaching here. */
     } catch {
         return rawData;
     }

@@ -202,7 +202,7 @@ function coerceRawValue(rawValue: unknown): unknown {
     if (rawValue == undefined) {
         return rawValue;
     } else if (check.isArray(rawValue)) {
-        return filterMap(rawValue, (value) => String(value), check.isTruthy);
+        return filterMap(rawValue, (value) => String(value), check.isDefined);
     } else {
         return stringify(rawValue);
     }

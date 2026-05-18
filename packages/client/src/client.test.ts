@@ -637,6 +637,7 @@ describe(RestVirClient.name, () => {
                     }),
                 ),
             );
+
             const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
 
             assert.isDefined(result.Ok);

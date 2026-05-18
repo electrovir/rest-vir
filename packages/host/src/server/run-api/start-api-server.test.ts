@@ -2,7 +2,7 @@ import {assert, waitUntil} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {runShellCommand} from '@augment-vir/node';
 import {describe, it} from '@augment-vir/test';
-import {findDevServicePort, restVirApiNameHeader, RestVirClient} from '@rest-vir/client';
+import {findDevServerPort, restVirApiNameHeader, RestVirClient} from '@rest-vir/client';
 import {buildUrl} from 'url-vir';
 import {condenseResponse} from '../test/test-api.js';
 import {
@@ -50,7 +50,7 @@ describe(startApiServer.name, () => {
             });
         });
         it('can be dev port scanned', async ({address}) => {
-            const result = await findDevServicePort(mockApi, {
+            const result = await findDevServerPort(mockApi, {
                 startOrigin: 'http://localhost:3790',
                 maxScanDistance: 20,
             });

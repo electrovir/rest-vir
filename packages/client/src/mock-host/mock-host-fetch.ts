@@ -13,7 +13,6 @@ import {parseUrl} from 'url-vir';
 import {readResponseBodyAsJsonOrText} from '../client.js';
 import {type ClientFetch} from '../endpoint-fetch/endpoint-params.js';
 import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
-import {buildMethodNotAllowedMessage} from '../error-messages.js';
 import {extractSearchParams} from '../search-params.js';
 import {type MockEndpointMethodImplementations} from './mock-endpoint-implementation.js';
 import {type MockCreateHostContext} from './mock-host-context.js';
@@ -61,23 +60,22 @@ export function createMockHostFetch<
                 requestInit.method,
                 `Missing request init in mock fetch to endpoint '${endpoint.path}'.`,
             );
-            const method = extractHttpMethod(rawMethod);
-            const methodDefinition = method
-                ? extractEndpointMethodDefinition(endpoint, method)
-                : undefined;
-            if (!method || !methodDefinition) {
-                return createMockResponse({
-                    status: HttpStatus.MethodNotAllowed,
-                    body: buildMethodNotAllowedMessage({
-                        method: rawMethod,
-                        url,
-                    }),
-                });
-            }
-
+            /**
+             * RestVirClient validates the method against the endpoint before calling this fetch
+             * override, so there's no point in throwing specific errors here.
+             */
+            const method = assertWrap.isDefined(
+                extractHttpMethod(rawMethod),
+                `Invalid method received: '${rawMethod}'.`,
+            );
+            const methodDefinition = assertWrap.isDefined(
+                extractEndpointMethodDefinition(endpoint, method),
+                `Missing method definition for '${method}' on endpoint '${endpoint.path}'.`,
+            );
             const methodImplementations: MockEndpointMethodImplementations | undefined =
                 endpointImplementations[endpoint.path];
             const implementation = methodImplementations?.[method];
+
             if (!implementation) {
                 return createMockResponse({
                     status: HttpStatus.NotImplemented,
@@ -89,8 +87,7 @@ export function createMockHostFetch<
                 methodDefinition.searchParams,
                 parseUrl(url).searchParams,
             );
-
-            const requestHeaders = headersToObject(requestInit.headers || {});
+            const requestHeaders = headersToObject(requestInit.headers);
             const requestData = await readRequestData(requestInit, requestHeaders);
 
             const contextOutput = await resolveMockHostContext(createHostContext, {
@@ -126,7 +123,7 @@ export function createMockHostFetch<
             return createMockResponse({
                 status: HttpStatus.InternalServerError,
                 body: extractErrorMessage(
-                    ensureErrorAndPrependMessage(error, 'Mock endpoint implementation threw'),
+                    ensureErrorAndPrependMessage(error, 'Mock endpoint implementation crashed.'),
                 ),
             });
         }
@@ -167,12 +164,14 @@ function buildMockResponseFromResult(
         return createMockResponse({
             status: HttpStatus.NoContent,
         });
-    } else if (!check.isEnumValue(status, HttpStatus)) {
+    }
+    const numericStatus = Number(status);
+    if (!check.isEnumValue(numericStatus, HttpStatus)) {
         throw new Error(`Invalid status returned by mock implementation: ${status}`);
     }
 
     return createMockResponse({
-        status,
+        status: numericStatus,
         body: statusValue.responseData,
         headers: statusValue.headers,
     });

@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {
     type AllowedHeaders,
     consolidateHeaders,
@@ -142,60 +142,67 @@ describe(consolidateHeaders.name, () => {
 });
 
 describe(headersToObject.name, () => {
-    it('converts plain object headers into a record', () => {
-        const result = headersToObject({
-            'x-one': 'one',
-            'x-two': 'two',
-        });
-        assert.deepEquals(result, {
-            'x-one': 'one',
-            'x-two': 'two',
-        });
-    });
-
-    it('returns an empty object for empty input', () => {
-        const result = headersToObject({});
-        assert.deepEquals(result, {});
-    });
-
-    it('coerces array values into a single comma-joined string when normalized', () => {
-        const result = headersToObject({
-            'x-multi': [
-                'one',
-                'two',
-            ],
-        });
-        // Headers normalizes multi-values into a single comma-joined string
-        assert.strictEquals(result['x-multi'], 'one, two');
-    });
-
-    it('accepts a Headers instance and yields a plain object', () => {
-        const result = headersToObject(
-            new Headers({
+    itCases(headersToObject, [
+        {
+            it: 'converts plain object headers into a record',
+            input: {
+                'x-one': 'one',
+                'x-two': 'two',
+            },
+            expect: {
+                'x-one': 'one',
+                'x-two': 'two',
+            },
+        },
+        {
+            it: 'returns an empty object for empty input',
+            input: {},
+            expect: {},
+        },
+        {
+            it: 'handles undefined',
+            input: undefined,
+            expect: {},
+        },
+        {
+            it: 'coerces array values into a single comma-joined string when normalized',
+            input: {
+                'x-multi': [
+                    'one',
+                    'two',
+                ],
+            },
+            expect: {
+                'x-multi': 'one, two',
+            },
+        },
+        {
+            it: 'accepts a Headers instance and yields a plain object',
+            input: new Headers({
                 'x-one': 'one',
             }),
-        );
-        assert.deepEquals(result, {
-            'x-one': 'one',
-        });
-    });
-
-    it('accepts an entries-array input and yields a plain object', () => {
-        const result = headersToObject([
-            [
-                'x-one',
-                'one',
+            expect: {
+                'x-one': 'one',
+            },
+        },
+        {
+            it: 'accepts an entries-array input and yields a plain object',
+            input: [
+                [
+                    'x-one',
+                    'one',
+                ],
+                [
+                    'x-two',
+                    'two',
+                ],
             ],
-            [
-                'x-two',
-                'two',
-            ],
-        ]);
-        assert.deepEquals(result, {
-            'x-one': 'one',
-            'x-two': 'two',
-        });
-    });
+            expect: {
+                'x-one': 'one',
+                'x-two': 'two',
+            },
+        },
+    ]);
 });
 
 describe('AllowedHeaders', () => {

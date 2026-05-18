@@ -12,21 +12,20 @@ import {buildUrl, parseUrl} from 'url-vir';
 import {type EndpointFetchParamObject} from '../endpoint-fetch/endpoint-params.js';
 
 /**
- * This header is set on all responses handled by rest-vir so we know what service a response came
- * from.
+ * This header is set on all responses handled by rest-vir so we know what api a response came from.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export const restVirApiNameHeader = 'rest-vir-api';
 
 /**
- * Options for {@link findDevServicePort} and {@link findLivePort}.
+ * Options for {@link findDevServerPort} and {@link findLivePort}.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export type FindPortOptions = {
     /**
@@ -61,46 +60,50 @@ export type FindPortOptions = {
     }>;
 
 /**
- * Use this to find a service's port number when started without a locked-in port. This allows a
- * client (usually a website frontend) to find which port the server started on by scanning ports
- * starting with the port defined in the service's `serviceOrigin` property.
+ * Use this to find an api's port number when its server was started without a locked-in port. The
+ * client (usually a website frontend) scans upward from the port in `startOrigin`, sending an
+ * `OPTIONS` request to the api's first endpoint until one responds with a matching
+ * {@link restVirApiNameHeader}.
  *
- * If the service has no port in its `serviceOrigin` property, this function throws an error.
- *
- * Note that the service given must have at least one endpoint defined for this function to work.
- *
- * This is used in `defineService` if the `findActiveDevPort` option is set to true.
+ * Note that the api given must have at least one endpoint defined for this function to work.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
+ * @category Package : @rest-vir/client
  * @example
  *
  * ```ts
- * import {findDevServicePort, defineService, AnyOrigin} from '@rest-vir/define-service';
+ * import {HttpMethod, HttpStatus, defineApi, defineEndpoint} from '@rest-vir/api';
+ * import {findDevServerPort} from '@rest-vir/client';
  *
- * const myService = defineService({
- *     serviceName: 'my-service',
- *     serviceOrigin: 'https://localhost:3000',
- *     requiredClientOrigin: AnyOrigin,
- *     endpoints: {
- *         '/my-path': {
- *             methods: {
- *                 [HttpMethod.Get]: true,
+ * const myApi = defineApi({
+ *     apiName: 'my-api',
+ *     endpoints: [
+ *         defineEndpoint({
+ *             path: '/my-path',
+ *             requests: {
+ *                 [HttpMethod.Get]: {
+ *                     responses: {
+ *                         [HttpStatus.Ok]: {
+ *                             responseData: undefined,
+ *                         },
+ *                     },
+ *                 },
  *             },
- *             requestDataShape: undefined,
- *             responseDataShape: undefined,
- *         },
- *     },
+ *         }),
+ *     ],
+ *     webSockets: [],
  * });
  *
- * const {origin} = await findDevServicePort(myService);
+ * const {origin} = await findDevServerPort(myApi, {
+ *     startOrigin: 'https://localhost:3000',
+ * });
  * ```
  *
- * @returns `undefined` if the given service has no port in its service origin.
- * @throws Error If the max scan distance has been reached without finding a valid port.
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @returns `undefined` if `startOrigin` has no port to start scanning from.
+ * @throws Error If the max scan distance or timeout is reached without finding a valid port.
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
-export async function findDevServicePort(
+export async function findDevServerPort(
     api: Readonly<ApiDefinition>,
     {startOrigin, ...options}: Readonly<FindPortOptions>,
 ): Promise<
@@ -113,7 +116,7 @@ export async function findDevServicePort(
     try {
         const endpoint = Object.values(api.endpoints)[0];
         if (!endpoint) {
-            throw new Error('Service has no endpoints.');
+            throw new Error('Api has no endpoints.');
         }
 
         const {port} = await waitUntil.isDefined(
@@ -157,10 +160,10 @@ export async function findDevServicePort(
  * alive and matches, if provided, `isValidResponse`.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @returns `undefined` if the given origin has no port number to start with
- * @throws Error if the max scan distance has been reached without finding a valid port.
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @returns `undefined` if the given origin has no port number to start with.
+ * @throws Error if the max scan distance or timeout is reached without finding a valid port.
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export async function findLivePort(
     originWithStartingPort: string,

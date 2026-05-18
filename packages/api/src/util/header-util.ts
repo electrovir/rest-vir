@@ -94,7 +94,10 @@ export function consolidateHeaders(headers: AllowedHeaders): Headers {
  * @category Package : @rest-vir/define-service
  * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
  */
-export function headersToObject(headers: AllowedHeaders): Record<string, string> {
+export function headersToObject(headers: AllowedHeaders | undefined): Record<string, string> {
+    if (!headers) {
+        return {};
+    }
     /**
      * `consolidateHeaders` returns a `Headers` instance whose `.entries()` iterator yields each key
      * at most once (multi-value headers are joined into a comma-separated string per the Fetch
