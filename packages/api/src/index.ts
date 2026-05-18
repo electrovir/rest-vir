@@ -7,6 +7,9 @@ export * from './api/web-socket-protocol-parse.js';
 export * from './api/web-socket.js';
 export * from './augments/json.js';
 export * from './augments/object.js';
+export * from './implementation/endpoint-implementation.js';
+export * from './implementation/host-context.js';
+export * from './implementation/web-socket-implementation.js';
 export * from './util/header-util.js';
 export * from './util/no-param.js';
 

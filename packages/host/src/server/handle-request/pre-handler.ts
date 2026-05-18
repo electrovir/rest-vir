@@ -15,7 +15,7 @@ import {
     type EndpointDefinition,
     type WebSocketDefinition,
 } from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/client';
+import {buildMethodNotAllowedMessage, restVirApiNameHeader} from '@rest-vir/client';
 import {type IncomingHttpHeaders} from 'node:http';
 import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
 import {type CreateHostContextParams} from '../../implementation/host-context.js';
@@ -179,7 +179,10 @@ export async function preHandler({
                     isWebSocket: !!webSocketDefinition,
                     path: routeDefinition.path,
                 },
-                `Method '${request.method.toUpperCase()}' rejected: '${request.originalUrl}'`,
+                buildMethodNotAllowedMessage({
+                    method: request.method,
+                    url: request.originalUrl,
+                }),
                 HttpStatus.MethodNotAllowed,
             ),
         );

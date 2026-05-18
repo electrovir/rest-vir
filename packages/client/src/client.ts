@@ -27,6 +27,7 @@ import {assertValidShape} from 'object-shape-tester';
 import {type Constructor} from 'type-fest';
 import {buildUrl} from 'url-vir';
 import {
+    type ClientFetch,
     type EndpointFetchParamObject,
     type EndpointFetchParams,
 } from './endpoint-fetch/endpoint-params.js';
@@ -59,7 +60,13 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         /** All route paths are joined to this URL. */
         public baseUrl: string,
         /** Optional fetch override to wrap or reimplement the native `fetch` function. */
-        public fetchOverride?: typeof fetch | undefined,
+        public fetchOverride?: ClientFetch | undefined,
+        /**
+         * Optional WebSocket constructor used as the fallback when
+         * {@link RestVirClient.connectWebSocket} is called without an explicit
+         * `webSocketConstructor` param.
+         */
+        public webSocketConstructor?: WebSocketConnectWebSocketConstructor | undefined,
     ) {}
 
     public async fetch<
@@ -413,6 +420,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         );
 
         const webSocketConstructor: Constructor<WebSocketClass> = (params?.webSocketConstructor ||
+            this.webSocketConstructor ||
             defaultWebSocket) as Constructor<WebSocketClass>;
 
         const clientWebSocket: OverwriteWebSocketMethods<

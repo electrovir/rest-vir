@@ -7,7 +7,6 @@ import {
     type NoParam,
     type WebSocketDefinition,
 } from '@rest-vir/api';
-import {type IncomingHttpHeaders} from 'node:http';
 import {defineShape, exactShape} from 'object-shape-tester';
 import {
     type WebSocketImplementationParams,
@@ -80,25 +79,21 @@ const wsApi = defineApi({
 
 describe('WebSocketImplementationParams', () => {
     it('defaults to unknown context, NoParam-typed websocket fields, and no message field', () => {
-        type Params = WebSocketImplementationParams;
-
-        assert.tsType<Params['context']>().equals<unknown>();
-        assert.tsType<Params['webSocket']>().equals<ServerWebSocket>();
-        assert.tsType<Params['requestHeaders']>().equals<IncomingHttpHeaders>();
-        assert.tsType<Params['request']>().equals<ServerRequest>();
-        assert.tsType<Params['server']>().equals<RunningServerInfo>();
+        assert.tsType<WebSocketImplementationParams['context']>().equals<unknown>();
+        assert.tsType<WebSocketImplementationParams['webSocket']>().equals<ServerWebSocket>();
+        assert
+            .tsType<WebSocketImplementationParams['requestHeaders']>()
+            .equals<Readonly<Record<string, string | string[] | undefined>>>();
+        assert.tsType<WebSocketImplementationParams['request']>().equals<ServerRequest>();
+        assert.tsType<WebSocketImplementationParams['server']>().equals<RunningServerInfo>();
     });
 
     it('allows undefined for protocols at the NoParam default', () => {
-        type Params = WebSocketImplementationParams;
-
-        assert.tsType<Params['protocols']>().equals<string[] | undefined>();
+        assert.tsType<WebSocketImplementationParams['protocols']>().equals<string[] | undefined>();
     });
 
     it('produces a non-nullable BaseSearchParams default for searchParams', () => {
-        type Params = WebSocketImplementationParams;
-
-        assert.tsType<Params['searchParams']>().equals<BaseSearchParams>();
+        assert.tsType<WebSocketImplementationParams['searchParams']>().equals<BaseSearchParams>();
     });
 
     it('omits the message field when WithMessage is false', () => {
@@ -175,9 +170,9 @@ describe('WebSocketImplementationParams', () => {
     });
 
     it('keeps webSocketDefinition wide at the NoParam default', () => {
-        type Params = WebSocketImplementationParams;
-
-        assert.tsType<Params['webSocketDefinition']>().equals<Readonly<WebSocketDefinition>>();
+        assert
+            .tsType<WebSocketImplementationParams['webSocketDefinition']>()
+            .equals<Readonly<WebSocketDefinition>>();
     });
 });
 
@@ -244,11 +239,9 @@ describe('WebSocketImplementation', () => {
     });
 
     it('returns MaybePromise<void> from each callback', () => {
-        type Implementation = WebSocketListenerImplementations;
-
-        type OpenReturn = ReturnType<NonNullable<Implementation['open']>>;
-        type MessageReturn = ReturnType<NonNullable<Implementation['message']>>;
-        type CloseReturn = ReturnType<NonNullable<Implementation['close']>>;
+        type OpenReturn = ReturnType<NonNullable<WebSocketListenerImplementations['open']>>;
+        type MessageReturn = ReturnType<NonNullable<WebSocketListenerImplementations['message']>>;
+        type CloseReturn = ReturnType<NonNullable<WebSocketListenerImplementations['close']>>;
 
         assert.tsType<OpenReturn>().equals<void | Promise<void>>();
         assert.tsType<MessageReturn>().equals<void | Promise<void>>();

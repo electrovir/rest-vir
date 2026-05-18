@@ -1,141 +1,61 @@
+import {type DefinableHttpMethod, type EndpointDefinition, type NoParam} from '@rest-vir/api';
 import {
-    type AnyObject,
-    type BivariantFunction,
-    type ErrorHttpStatus,
-    type HttpStatus,
-    type MaybePromise,
-} from '@augment-vir/common';
-import {
-    type BaseRoutePath,
-    type DefaultErrorResponseType,
-    type DefaultResponseHeadersType,
-    type DefinableHttpMethod,
-    type EndpointDefinition,
-    type EndpointMethodDefinition,
-    type EndpointRequestType,
-    type EndpointResponseHeadersType,
-    type EndpointResponseType,
-    type ExtractEndpointMethodDefinitionWithNoParam,
-    type NoParam,
-    type RouteSearchParamsType,
-    type SetNullishPropertiesAsOptional,
+    type BaseEndpointMethodImplementationParams,
+    type EndpointImplementationBase,
+    type EndpointMethodImplementationsBase,
 } from '@rest-vir/api';
-import {type IncomingHttpHeaders} from 'node:http';
-import {type RequireExactlyOne} from 'type-fest';
 import {type RunningServerInfo, type ServerRequest, type ServerResponse} from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type EndpointImplementation<
-    Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
-    HostContext = unknown,
-> = {
-    path: Endpoint extends EndpointDefinition ? Endpoint['path'] : BaseRoutePath;
-    implementation: Readonly<EndpointMethodImplementations<Endpoint, HostContext>>;
-    definition: Endpoint extends EndpointDefinition
-        ? Readonly<Endpoint>
-        : Readonly<EndpointDefinition>;
-    isWebSocket: false;
-    isEndpoint: true;
+/**
+ * Environment-specific extras that the fastify-backed host adds on top of
+ * {@link BaseEndpointMethodImplementationParams} for every endpoint method implementation.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type HostEndpointParamsExtras = {
+    serverLogger: ServerLogger;
+    request: ServerRequest;
+    response: ServerResponse;
+    server: RunningServerInfo;
 };
 
+/**
+ * Parameters passed into an endpoint method implementation on the host (fastify-backed) side.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
 export type EndpointMethodImplementationParams<
     Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
     Method extends Readonly<DefinableHttpMethod> | NoParam = NoParam,
     HostContext = unknown,
-> = {
-    serverLogger: ServerLogger;
-    context: HostContext;
-    method: Method extends DefinableHttpMethod ? Method : DefinableHttpMethod;
-    endpointDefinition: Endpoint extends EndpointDefinition
-        ? Readonly<Exclude<Endpoint, NoParam>>
-        : Readonly<EndpointDefinition>;
-    requestHeaders: IncomingHttpHeaders;
-    request: ServerRequest;
-    response: ServerResponse;
-    requestData: EndpointRequestType<Endpoint, Method>;
-    searchParams: RouteSearchParamsType<
-        ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>
-    >;
-    server: RunningServerInfo;
-};
+> = BaseEndpointMethodImplementationParams<Endpoint, Method, HostContext> &
+    HostEndpointParamsExtras;
 
+/**
+ * Implementation record for an endpoint's methods on the host (fastify-backed) side.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
 export type EndpointMethodImplementations<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
     HostContext = unknown,
-> = Endpoint extends EndpointDefinition
-    ? {
-          [Method in keyof Endpoint['requests'] as Method extends DefinableHttpMethod
-              ? Method
-              : never]: Method extends DefinableHttpMethod
-              ? BivariantFunction<
-                    [EndpointMethodImplementationParams<Endpoint, Method, HostContext>],
-                    MaybePromise<EndpointMethodImplementationOutput<Endpoint, Method>>
-                >
-              : never;
-      }
-    : Partial<
-          Record<
-              DefinableHttpMethod,
-              BivariantFunction<
-                  [EndpointMethodImplementationParams],
-                  MaybePromise<EndpointMethodImplementationOutput>
-              >
-          >
-      >;
+> = EndpointMethodImplementationsBase<Endpoint, HostContext, HostEndpointParamsExtras>;
 
-export type EndpointMethodDefinedStatusOutputs<
-    Endpoint extends EndpointDefinition | NoParam = NoParam,
-    Method extends DefinableHttpMethod | NoParam = NoParam,
-> = Endpoint extends EndpointDefinition
-    ? Method extends DefinableHttpMethod
-        ? {
-              [Status in keyof Extract<
-                  Endpoint['requests'][Method],
-                  EndpointMethodDefinition
-              >['responses']]: Status extends HttpStatus
-                  ? EndpointImplementationStatusOutput<Endpoint, Method, Status>
-                  : never;
-          }
-        : DefaultEndpointMethodStatusOutputs
-    : DefaultEndpointMethodStatusOutputs;
-
-export type EndpointImplementationStatusOutput<
-    Endpoint extends EndpointDefinition | NoParam = NoParam,
-    Method extends DefinableHttpMethod | NoParam = NoParam,
-    Status extends HttpStatus | NoParam = NoParam,
-> = SetNullishPropertiesAsOptional<{
-    responseData: EndpointResponseType<Endpoint, Method, Status>;
-    headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
-}>;
-
-export type DefaultEndpointMethodStatusOutputs = Partial<
-    Record<HttpStatus, EndpointImplementationStatusOutput>
->;
-
-export type EndpointMethodImplementationOutput<
-    Endpoint extends EndpointDefinition | NoParam = NoParam,
-    Method extends DefinableHttpMethod | NoParam = NoParam,
-> =
-    EndpointMethodDefinedStatusOutputs<Endpoint, Method> extends infer DefinedStatuses extends
-        AnyObject
-        ? RequireExactlyOne<
-              DefinedStatuses &
-                  Record<
-                      Exclude<ErrorHttpStatus, keyof DefinedStatuses>,
-                      {
-                          responseData: DefaultErrorResponseType;
-                          headers?: DefaultResponseHeadersType | undefined;
-                      }
-                  > & {
-                      [Status in Exclude<
-                          ErrorHttpStatus,
-                          keyof DefinedStatuses
-                      >]: SetNullishPropertiesAsOptional<{
-                          responseData: EndpointResponseType<Endpoint, Method, Status>;
-                          headers?:
-                              | EndpointResponseHeadersType<Endpoint, Method, Status>
-                              | undefined;
-                      }>;
-                  } & {responseHandled: true}
-          >
-        : never;
+/**
+ * Implementation envelope for a single endpoint on the host (fastify-backed) side.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type EndpointImplementation<
+    Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,
+    HostContext = unknown,
+> = EndpointImplementationBase<Endpoint, HostContext, HostEndpointParamsExtras>;

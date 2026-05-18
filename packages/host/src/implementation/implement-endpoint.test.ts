@@ -7,13 +7,13 @@ import {
     defineApi,
     defineEndpoint,
     type EndpointDefinition,
+    type EndpointMethodImplementationOutput,
     HttpMethod,
     HttpStatus,
 } from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {
     type EndpointImplementation,
-    type EndpointMethodImplementationOutput,
     type EndpointMethodImplementationParams,
     type EndpointMethodImplementations,
 } from './implement-endpoint.js';

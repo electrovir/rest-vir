@@ -1,13 +1,9 @@
-import {type BivariantFunction, type MaybePromise} from '@augment-vir/common';
+import {type NoParam, type WebSocketDefinition} from '@rest-vir/api';
 import {
-    type NoParam,
-    type RouteSearchParamsType,
-    type WebSocketClientMessageType,
-    type WebSocketConnectProtocolType,
-    type WebSocketDefinition,
+    type BaseWebSocketImplementationParams,
+    type WebSocketImplementationBase,
+    type WebSocketListenerImplementationsBase,
 } from '@rest-vir/api';
-import {type IncomingHttpHeaders} from 'node:http';
-import {type IsEqual} from 'type-fest';
 import {
     type RunningServerInfo,
     type ServerRequest,
@@ -15,48 +11,25 @@ import {
 } from './raw-route-data.js';
 import {type ServerLogger} from './server-logger.js';
 
-export type WebSocketImplementation<
-    ThisWebSocket extends Readonly<WebSocketDefinition> = WebSocketDefinition,
-    HostContext = unknown,
+/**
+ * Environment-specific extras that the fastify-backed host adds on top of
+ * {@link BaseWebSocketImplementationParams} for every WebSocket listener implementation.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type HostWebSocketParamsExtras<
+    ThisWebSocket extends Readonly<WebSocketDefinition> | NoParam = NoParam,
 > = {
-    path: ThisWebSocket['path'];
-    implementation: WebSocketListenerImplementations<ThisWebSocket, HostContext>;
-    definition: ThisWebSocket;
-    isWebSocket: true;
-    isEndpoint: false;
+    serverLogger: ServerLogger;
+    webSocket: ServerWebSocket<ThisWebSocket>;
+    request: ServerRequest;
+    server: RunningServerInfo;
 };
 
-export type WebSocketListenerImplementations<
-    ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
-    HostContext = unknown,
-> = Partial<{
-    /** This will be called when the WebSocket is opened and created. */
-    open: BivariantFunction<
-        [WebSocketImplementationParams<ThisWebSocket, false, HostContext>],
-        MaybePromise<void>
-    >;
-    /**
-     * This will be called on every received WebSocket message.
-     *
-     * @see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-message
-     */
-    message: BivariantFunction<
-        [WebSocketImplementationParams<ThisWebSocket, true, HostContext>],
-        MaybePromise<void>
-    >;
-    /**
-     * This will be called when the WebSocket is closed.
-     *
-     * @see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-close-1
-     */
-    close: BivariantFunction<
-        [WebSocketImplementationParams<ThisWebSocket, false, HostContext>],
-        MaybePromise<void>
-    >;
-}>;
-
 /**
- * Parameters for event callbacks in {@link WebSocketListenerImplementations}.
+ * Parameters for event callbacks in {@link WebSocketListenerImplementations} on the host side.
  *
  * @category Internal
  * @category Package : @rest-vir/host
@@ -66,21 +39,37 @@ export type WebSocketImplementationParams<
     ThisWebSocket extends Readonly<WebSocketDefinition> | NoParam = NoParam,
     WithMessage extends boolean = boolean,
     HostContext = unknown,
-> = {
-    serverLogger: ServerLogger;
-    context: HostContext;
-    webSocket: ServerWebSocket<ThisWebSocket>;
-    webSocketDefinition: ThisWebSocket extends WebSocketDefinition
-        ? Readonly<ThisWebSocket>
-        : Readonly<WebSocketDefinition>;
-    requestHeaders: IncomingHttpHeaders;
-    request: ServerRequest;
-    protocols: WebSocketConnectProtocolType<ThisWebSocket>;
-    searchParams: NonNullable<RouteSearchParamsType<ThisWebSocket>>;
-    /** The actual running server info. */
-    server: RunningServerInfo;
-} & (IsEqual<WithMessage, true> extends true
-    ? {
-          message: WebSocketClientMessageType<ThisWebSocket>;
-      }
-    : unknown);
+> = BaseWebSocketImplementationParams<ThisWebSocket, WithMessage, HostContext> &
+    HostWebSocketParamsExtras<ThisWebSocket>;
+
+/**
+ * Listener record for a WebSocket on the host (fastify-backed) side.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type WebSocketListenerImplementations<
+    ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
+    HostContext = unknown,
+> = WebSocketListenerImplementationsBase<
+    ThisWebSocket,
+    HostContext,
+    HostWebSocketParamsExtras<ThisWebSocket>
+>;
+
+/**
+ * Implementation envelope for a single WebSocket on the host (fastify-backed) side.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export type WebSocketImplementation<
+    ThisWebSocket extends Readonly<WebSocketDefinition> = WebSocketDefinition,
+    HostContext = unknown,
+> = WebSocketImplementationBase<
+    ThisWebSocket,
+    HostContext,
+    HostWebSocketParamsExtras<ThisWebSocket>
+>;
