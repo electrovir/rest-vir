@@ -84,7 +84,7 @@ export async function handleCors(
             headers: buildOptionsRequestCorsHeaders(
                 matchedOrigin,
                 allowedMethods,
-                api.implementation.customHeaders || [],
+                api.implementation.customHeaders,
             ),
         };
     } else if (matchedOrigin) {

@@ -13,7 +13,17 @@ import {type ServerLogger} from '../../implementation/server-logger.js';
 import {type RestVirRequestContext} from '../run-api/attach-api.js';
 import {RestVirHandlerError} from '../util/handler.error.js';
 
-function rawMessageToString(rawMessage: WsWebSocket.Data): string {
+/**
+ * Normalize the various shapes `ws` may deliver an incoming message in (string, Buffer, Buffer[],
+ * ArrayBuffer) into a UTF-8 string. Exported for direct unit testing because the default `ws`
+ * configuration only emits `Buffer` for the JSON-stringified payloads sent by the client wrapper,
+ * so the other branches are otherwise unreachable from the integration tests.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export function rawMessageToString(rawMessage: WsWebSocket.Data): string {
     if (typeof rawMessage === 'string') {
         return rawMessage;
     } else if (Array.isArray(rawMessage)) {

@@ -39,7 +39,7 @@ export function getMockScriptCommand(scriptName: string) {
     ].join(' ');
 }
 
-async function setupService(scriptName: string) {
+export async function setupService(scriptName: string) {
     const serverStarted = new DeferredPromise<string>();
 
     const stdout: string[] = [];
@@ -64,7 +64,6 @@ async function setupService(scriptName: string) {
             serverStarted.resolve(url);
         }
     });
-    /* node:coverage ignore next 11: keep this in case of errors */
     shellTarget.listen(ShellStderrEvent, (event) => {
         const text = removeColor(String(event.detail));
         stderr.push(text.toLowerCase());
@@ -85,9 +84,12 @@ async function setupService(scriptName: string) {
      */
     shellTarget.childProcess.on('exit', (code) => {
         if (!serverStarted.isSettled) {
+            /* node:coverage ignore next: `streamShellCommand` runs the script through a shell wrapper that always reports a numeric exit code, so the `?? '<null>'` fallback only fires if the child is killed without the shell translating the signal. */
+            const codeString = code ?? '<null>';
+
             serverStarted.reject(
                 new Error(
-                    `Service script '${scriptName}' exited with code ${code ?? '<null>'} before startup.`,
+                    `Service script '${scriptName}' exited with code ${codeString} before startup.`,
                 ),
             );
         }
