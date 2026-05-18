@@ -18,15 +18,27 @@
     "type": "module",
     "scripts": {
         "compile": "virmator compile",
-        "start": "runstorm --colors green,blue \"npm run start:backend\" \"npm run start:frontend\"",
-        "start:backend": "tsx src/server.ts",
+        "start": "runstorm --colors green,blue --names backend,frontend \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "tsx src/server/demo-server.script.ts",
         "start:frontend": "virmator frontend",
         "test": "exit 0",
         "test:coverage": "npm test",
         "test:docs": "exit 0"
     },
     "dependencies": {
-        "element-vir": "^26.15.1"
+        "@augment-vir/assert": "^31.70.0",
+        "@augment-vir/common": "^31.70.0",
+        "@rest-vir/api": "*",
+        "@rest-vir/client": "*",
+        "@rest-vir/host": "*",
+        "element-vir": "^26.15.1",
+        "object-shape-tester": "^6.12.1",
+        "type-fest": "^5.6.0",
+        "vira": "^31.18.1"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.3",
+        "vite": "^8.0.10"
     },
     "engines": {
         "node": ">=22"
