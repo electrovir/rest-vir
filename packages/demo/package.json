@@ -19,7 +19,7 @@
     "scripts": {
         "compile": "virmator compile",
         "start": "runstorm --colors green,blue --names backend,frontend \"npm run start:backend\" \"npm run start:frontend\"",
-        "start:backend": "tsx src/server/demo-server.script.ts",
+        "start:backend": "tsx --watch src/server/demo-server.script.ts",
         "start:frontend": "virmator frontend",
         "test": "exit 0",
         "test:coverage": "npm test",

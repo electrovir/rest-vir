@@ -47,7 +47,7 @@ export type MockHostParams<Api extends Readonly<ApiDefinition>, Context> = Parti
  *     },
  * });
  *
- * const usersResponse = await mockClient.fetch(myApi.endpoints['/users'], HttpMethod.Get);
+ * const usersResponse = await mockClient.fetch(myApi.endpoints['/users']).GET();
  * const chat = await mockClient.connectWebSocket(myApi.webSockets['/chat']);
  * ```
  *

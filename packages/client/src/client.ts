@@ -6,6 +6,8 @@ import {
     isErrorHttpStatus,
     mapObject,
     typedObjectFromEntries,
+    type AnyFunction,
+    type BivariantFunction,
     type MaybePromise,
     type RequiredAndNotNull,
 } from '@augment-vir/common';
@@ -69,39 +71,65 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         public webSocketConstructor?: WebSocketConnectWebSocketConstructor | undefined,
     ) {}
 
-    public async fetch<
-        const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']},
-        const Method extends Extract<keyof NoInfer<Endpoint>['requests'], DefinableHttpMethod>,
-    >(
+    /**
+     * Return a method-keyed object for the given endpoint. Each property is a function that runs
+     * the fetch for that specific HTTP method.
+     *
+     * @example
+     *
+     * ```ts
+     * const response = await client.fetch(healthEndpoint).GET();
+     * const created = await client.fetch(usersEndpoint).POST({requestData: ...});
+     * ```
+     */
+    public fetch<const Endpoint extends EndpointDefinition & {path: keyof ClientApi['endpoints']}>(
         endpoint: Endpoint,
-        method: Method,
-        ...restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>
-    ): Promise<EndpointFetchOutput<Endpoint, Method>> {
-        return (await this.runEndpointRequest(
-            endpoint,
-            method,
-            restParams,
-            async ({response, headers, responseDefinition}) => {
-                const responseData = await readResponseBodyAsJsonOrText(response, headers);
+    ) {
+        return mapObject(endpoint.requests, (method) => {
+            return {
+                key: method,
+                value: async (
+                    ...restParams: EndpointFetchParams<Endpoint, typeof method>
+                ): Promise<EndpointFetchOutput<Endpoint, typeof method>> => {
+                    return (await this.runEndpointRequest(
+                        endpoint satisfies EndpointDefinition as EndpointDefinition,
+                        method,
+                        restParams[0],
+                        async ({response, headers, responseDefinition}) => {
+                            const responseData = await readResponseBodyAsJsonOrText(
+                                response,
+                                headers,
+                            );
 
-                if (responseDefinition.responseData) {
-                    assertValidShape(
-                        responseData,
-                        responseDefinition.responseData,
-                        {
-                            allowExtraKeys: true,
+                            if (responseDefinition.responseData) {
+                                assertValidShape(
+                                    responseData,
+                                    responseDefinition.responseData,
+                                    {
+                                        allowExtraKeys: true,
+                                    },
+                                    `Response from endpoint '${endpoint.path}' has invalid data.`,
+                                );
+                            } else if (responseData) {
+                                throw new Error(
+                                    `Response from endpoint '${endpoint.path}' has unexpectedly present data.`,
+                                );
+                            }
+
+                            return responseData;
                         },
-                        `Response from endpoint '${endpoint.path}' has invalid data.`,
-                    );
-                } else if (responseData) {
-                    throw new Error(
-                        `Response from endpoint '${endpoint.path}' has unexpectedly present data.`,
-                    );
-                }
-
-                return responseData;
-            },
-        )) as EndpointFetchOutput<Endpoint, Method>;
+                    )) as EndpointFetchOutput<Endpoint, typeof method>;
+                },
+            };
+        }) satisfies Partial<Record<DefinableHttpMethod, AnyFunction>> as {
+            [Method in Extract<
+                keyof NoInfer<Endpoint>['requests'],
+                DefinableHttpMethod
+            >]: BivariantFunction<
+                EndpointFetchParams<NoInfer<Endpoint>, Method>,
+                Promise<EndpointFetchOutput<Endpoint, Method>>
+            >;
+        };
     }
 
     /**
@@ -119,7 +147,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         method: Method,
         ...restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>
     ): Promise<EndpointFetchStreamOutput<Endpoint, Method>> {
-        return (await this.runEndpointRequest(endpoint, method, restParams, ({response}) => {
+        return (await this.runEndpointRequest(endpoint, method, restParams[0], ({response}) => {
             if (!response.body) {
                 throw new Error(
                     `Endpoint '${endpoint.path}' returned an ok response with no body to stream.`,
@@ -142,7 +170,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
     >(
         endpoint: Endpoint,
         method: Method,
-        restParams: EndpointFetchParams<NoInfer<Endpoint>, NoInfer<Method>>,
+        params: EndpointFetchParamObject | undefined,
         getResponseData: (params: {
             response: Response;
             status: HttpStatus;
@@ -150,17 +178,14 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             responseDefinition: ResponseStatusDefinition;
         }) => MaybePromise<unknown>,
     ): Promise<Record<string, UnknownFetchOutput>> {
-        const params: EndpointFetchParamObject | undefined = restParams[0];
-
         if (!check.hasKey(this.api.endpoints, endpoint.path)) {
             throw new Error(`Cannot fetch: this api has no '${endpoint.path}' endpoint.`);
         }
 
-        const endpointMethodDefinition = extractEndpointMethodDefinition(endpoint, method);
-
-        if (!endpointMethodDefinition) {
-            throw new Error(`Endpoint '${endpoint.path}' does not support method '${method}'.`);
-        }
+        const endpointMethodDefinition = assertWrap.isDefined(
+            extractEndpointMethodDefinition(endpoint, method),
+            `Endpoint '${endpoint.path}' does not support method '${method}'.`,
+        );
 
         const {requestInit, url} = this.buildEndpointRequestInit(
             endpoint,

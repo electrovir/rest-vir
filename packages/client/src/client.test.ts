@@ -638,7 +638,7 @@ describe(RestVirClient.name, () => {
                 ),
             );
 
-            const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
+            const result = await client.fetch(simpleEndpoint).GET();
 
             assert.isDefined(result.Ok);
 
@@ -660,7 +660,7 @@ describe(RestVirClient.name, () => {
                     }),
                 ),
             );
-            const result = await client.fetch(errorEndpoint, HttpMethod.Get);
+            const result = await client.fetch(errorEndpoint).GET();
 
             assert.isDefined(result.NotFound);
             assert.deepEquals(result.NotFound.responseData, {
@@ -680,7 +680,7 @@ describe(RestVirClient.name, () => {
                     }),
                 ),
             );
-            const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
+            const result = await client.fetch(simpleEndpoint).GET();
 
             assert.isDefined(result.unexpectedError);
             assert.strictEquals(result.unexpectedError.responseData, 'oops');
@@ -706,30 +706,23 @@ describe(RestVirClient.name, () => {
 
             await assert.throws(
                 async () =>
-                    await client.fetch(
+                    await client
                         // @ts-expect-error: `otherEndpoint` is not in `fullApi`.
-                        otherEndpoint,
-                        HttpMethod.Get,
-                    ),
+                        .fetch(otherEndpoint)
+                        .GET(),
                 {
                     matchMessage: '/other',
                 },
             );
         });
 
-        it('throws when method is not defined on the endpoint', async () => {
+        it('omits undeclared methods from the fetch result object', () => {
             const client = new RestVirClient(fullApi, '', () =>
                 Promise.resolve(createMockResponse()),
             );
-
-            await assert.throws(
-                async () =>
-                    // @ts-expect-error: simpleEndpoint does not support POST.
-                    await client.fetch(simpleEndpoint, HttpMethod.Post),
-                {
-                    matchMessage: HttpMethod.Post,
-                },
-            );
+            const fetchers = client.fetch(simpleEndpoint) as Record<string, unknown>;
+            assert.isFunction(fetchers.GET);
+            assert.isUndefined(fetchers.POST);
         });
 
         it('uses fetchOverride from params instead of constructor', async () => {
@@ -743,7 +736,7 @@ describe(RestVirClient.name, () => {
                     }),
                 ),
             );
-            const result = await client.fetch(simpleEndpoint, HttpMethod.Get, {
+            const result = await client.fetch(simpleEndpoint).GET({
                 fetchOverride: () =>
                     Promise.resolve(
                         createMockResponse({
@@ -780,7 +773,7 @@ describe(RestVirClient.name, () => {
                 );
             });
 
-            await client.fetch(userByIdEndpoint, HttpMethod.Get, {
+            await client.fetch(userByIdEndpoint).GET({
                 pathParams: {
                     userId: '1',
                 } as never,
@@ -809,7 +802,7 @@ describe(RestVirClient.name, () => {
                 );
             });
 
-            const result = await client.fetch(usersCreateEndpoint, HttpMethod.Post, {
+            const result = await client.fetch(usersCreateEndpoint).POST({
                 requestData: {
                     name: 'Alice',
                     email: 'a@b.com',
@@ -840,7 +833,7 @@ describe(RestVirClient.name, () => {
                     )) as unknown as typeof globalThis.fetch;
 
                 const client = new RestVirClient(fullApi, '');
-                const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
+                const result = await client.fetch(simpleEndpoint).GET();
                 assert.strictEquals(result.Ok?.responseData, 'hi');
             } finally {
                 globalThis.fetch = originalFetch;
@@ -861,7 +854,7 @@ describe(RestVirClient.name, () => {
 
             await assert.throws(
                 async () =>
-                    await client.fetch(regexSearchEndpoint, HttpMethod.Get, {
+                    await client.fetch(regexSearchEndpoint).GET({
                         searchParams: {
                             code: 'ABC',
                         },
@@ -885,7 +878,7 @@ describe(RestVirClient.name, () => {
                 ),
             );
 
-            await assert.throws(async () => await client.fetch(simpleEndpoint, HttpMethod.Get), {
+            await assert.throws(async () => await client.fetch(simpleEndpoint).GET(), {
                 matchMessage: 'unexpected successful response',
             });
         });
@@ -1322,7 +1315,7 @@ describe(RestVirClient.name, () => {
             );
         });
 
-        const result = await client.fetch(integrationEndpoint, HttpMethod.Post, {
+        const result = await client.fetch(integrationEndpoint).POST({
             pathParams: {
                 itemId: '99',
             } as never,
@@ -1359,7 +1352,7 @@ describe(RestVirClient.name, () => {
                 body: 'hi',
             }),
         );
-        const result = await client.fetch(simpleEndpoint, HttpMethod.Get);
+        const result = await client.fetch(simpleEndpoint).GET();
         assert.isDefined(result.Ok);
         assert.strictEquals(result.Ok.responseData, 'hi');
     });
@@ -1393,12 +1386,14 @@ describe(RestVirClient.name, () => {
             ),
         );
 
-        assert.isDefined((await client.fetch(simpleEndpoint, HttpMethod.Get)).Ok);
+        assert.isDefined((await client.fetch(simpleEndpoint).GET()).Ok);
 
         await assert.throws(
             async () =>
-                // @ts-expect-error: `otherEndpoint` is not in `otherApi`.
-                await client.fetch(otherEndpoint, HttpMethod.Get),
+                await client
+                    // @ts-expect-error: `otherEndpoint` is not in `otherApi`.
+                    .fetch(otherEndpoint)
+                    .GET(),
         );
     });
 });

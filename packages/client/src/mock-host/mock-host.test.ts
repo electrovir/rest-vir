@@ -147,7 +147,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(echoEndpoint, HttpMethod.Post, {
+        const result = await client.fetch(echoEndpoint).POST({
             requestData: {
                 value: 'hello',
             },
@@ -179,7 +179,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        await client.fetch(searchEndpoint, HttpMethod.Get, {
+        await client.fetch(searchEndpoint).GET({
             searchParams: {
                 query: 'world',
             },
@@ -212,7 +212,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        await client.fetch(echoEndpoint, HttpMethod.Post, {
+        await client.fetch(echoEndpoint).POST({
             requestData: {
                 value: 'ignored',
             },
@@ -226,7 +226,7 @@ describe(createMockHost.name, () => {
     it('returns 501 NotImplemented when the path has no mock implementation', async () => {
         const client = createMockHost(mockApi);
 
-        const result = await client.fetch(unsupportedMethodEndpoint, HttpMethod.Get);
+        const result = await client.fetch(unsupportedMethodEndpoint).GET();
 
         assert.isDefined(result.unexpectedError);
         assert.strictEquals(result.unexpectedError.status, HttpStatus.NotImplemented);
@@ -243,7 +243,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(errorThrowingEndpoint, HttpMethod.Get);
+        const result = await client.fetch(errorThrowingEndpoint).GET();
 
         assert.isDefined(result.unexpectedError);
         assert.strictEquals(result.unexpectedError.status, HttpStatus.InternalServerError);
@@ -266,7 +266,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(echoEndpoint, HttpMethod.Post, {
+        const result = await client.fetch(echoEndpoint).POST({
             requestData: {
                 value: 'ignored',
             },
@@ -290,7 +290,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(handledEndpoint, HttpMethod.Get);
+        const result = await client.fetch(handledEndpoint).GET();
 
         assert.isDefined(result.NoContent);
         assert.strictEquals(result.NoContent.status, HttpStatus.NoContent);
@@ -321,7 +321,7 @@ describe(createMockHost.name, () => {
         const formData = new FormData();
         formData.append('file', new Blob(['hello']), 'hello.txt');
 
-        const result = await client.fetch(uploadEndpoint, HttpMethod.Post, {
+        const result = await client.fetch(uploadEndpoint).POST({
             requestData: formData,
         });
 
@@ -343,7 +343,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(handledEndpoint, HttpMethod.Get);
+        const result = await client.fetch(handledEndpoint).GET();
 
         assert.isDefined(result.unexpectedError);
         assert.strictEquals(result.unexpectedError.status, HttpStatus.InternalServerError);
@@ -364,7 +364,7 @@ describe(createMockHost.name, () => {
             },
         });
 
-        const result = await client.fetch(unsupportedMethodEndpoint, HttpMethod.Get);
+        const result = await client.fetch(unsupportedMethodEndpoint).GET();
 
         assert.isDefined(result.unexpectedError);
         assert.strictEquals(result.unexpectedError.status, HttpStatus.InternalServerError);

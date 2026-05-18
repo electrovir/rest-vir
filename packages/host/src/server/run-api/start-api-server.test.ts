@@ -620,7 +620,7 @@ describe(startApiServer.name, () => {
         it('works with RestVirClient', async ({address}) => {
             const client = new RestVirClient(mockApi, address);
 
-            const output = await client.fetch(emptyEndpoint, HttpMethod.Get);
+            const output = await client.fetch(emptyEndpoint).GET();
 
             assert.isTrue('Accepted' in output);
             if ('Accepted' in output) {
