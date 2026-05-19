@@ -1,14 +1,14 @@
 import {type BivariantFunction, type MaybePromise, type Overwrite} from '@augment-vir/common';
+import {type AnyDuration} from 'date-vir';
+import {type HasRequiredKeys, type IsAny} from 'type-fest';
+import {type RouteSearchParamsType} from '../api/route.js';
 import {
-    type NoParam,
-    type RouteSearchParamsType,
-    type SetNullishPropertiesAsOptional,
     type WebSocketClientMessageType,
     type WebSocketDefinition,
     type WebSocketHostMessageType,
-} from '@rest-vir/api';
-import {type AnyDuration} from 'date-vir';
-import {type HasRequiredKeys, type IsAny} from 'type-fest';
+} from '../api/web-socket.js';
+import {type SetNullishPropertiesAsOptional} from '../augments/object.js';
+import {type NoParam} from '../util/no-param.js';
 import {type CommonWebSocket, type CommonWebSocketEventMap} from './common-web-socket.js';
 
 /**

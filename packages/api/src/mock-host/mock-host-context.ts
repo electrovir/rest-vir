@@ -1,4 +1,7 @@
-import {type BaseCreateHostContextParams, type CreateHostContextBase} from '@rest-vir/api';
+import {
+    type BaseCreateHostContextParams,
+    type CreateHostContextBase,
+} from '../implementation/host-context.js';
 
 /**
  * Environment-specific extras that the mock-host adds on top of {@link BaseCreateHostContextParams}

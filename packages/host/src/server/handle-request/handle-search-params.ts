@@ -8,12 +8,12 @@ import {
     type SelectFrom,
 } from '@augment-vir/common';
 import {
+    extractSearchParams,
     type ApiDefinition,
     type BaseSearchParams,
     type CommonRouteDefinition,
     type RouteSearchParamsType,
 } from '@rest-vir/api';
-import {extractSearchParams} from '@rest-vir/api';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
 import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {type ServerRequest} from '../../implementation/raw-route-data.js';

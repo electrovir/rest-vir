@@ -1,8 +1,11 @@
 import {assert, waitUntil} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, wait} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {defineApi, defineEndpoint, defineWebSocket, formDataShape} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
+import {defineApi} from '../api/api.js';
+import {defineEndpoint} from '../api/endpoint.js';
+import {formDataShape} from '../api/form-data-shape.js';
+import {defineWebSocket} from '../api/web-socket.js';
 import {createMockHost} from './mock-host.js';
 
 const echoEndpoint = defineEndpoint({
@@ -123,6 +126,49 @@ const multiMethodEndpoint = defineEndpoint({
     },
 });
 
+const userEndpoint = defineEndpoint({
+    path: '/users/:userId',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        userId: '',
+                    }),
+                },
+            },
+        },
+    },
+});
+
+const filesEndpoint = defineEndpoint({
+    path: '/files/*',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: defineShape({
+                        wildcard: '',
+                    }),
+                },
+            },
+        },
+    },
+});
+
+const multiStatusReturnEndpoint = defineEndpoint({
+    path: '/multi-status-return',
+    requests: {
+        [HttpMethod.Get]: {
+            responses: {
+                [HttpStatus.Ok]: {
+                    responseData: undefined,
+                },
+            },
+        },
+    },
+});
+
 const chatWebSocket = defineWebSocket({
     path: '/chat',
     clientMessage: defineShape(''),
@@ -149,6 +195,9 @@ const mockApi = defineApi({
         handledEndpoint,
         uploadEndpoint,
         multiMethodEndpoint,
+        userEndpoint,
+        filesEndpoint,
+        multiStatusReturnEndpoint,
     ],
     webSockets: [
         chatWebSocket,
@@ -304,6 +353,99 @@ describe(createMockHost.name, () => {
         });
 
         const result = await client.fetch(errorThrowingEndpoint).GET();
+
+        assert.isDefined(result.unexpectedError);
+        assert.strictEquals(result.unexpectedError.status, HttpStatus.InternalServerError);
+    });
+
+    it('passes named path params to the implementation', async () => {
+        let receivedUserId: string | undefined;
+        const client = createMockHost(mockApi, {
+            endpoints: {
+                '/users/:userId': {
+                    [HttpMethod.Get]({pathParams}) {
+                        receivedUserId = pathParams?.userId;
+                        return {
+                            [HttpStatus.Ok]: {
+                                responseData: {
+                                    userId: pathParams?.userId || '',
+                                },
+                            },
+                        };
+                    },
+                },
+            },
+        });
+
+        const result = await client.fetch(userEndpoint).GET({
+            pathParams: {
+                userId: 'alice',
+            },
+        });
+
+        assert.strictEquals(receivedUserId, 'alice');
+        assert.isDefined(result.Ok);
+        assert.deepEquals(result.Ok.responseData, {
+            userId: 'alice',
+        });
+    });
+
+    it('passes wildcard path param to the implementation', async () => {
+        let receivedWildcard: string | undefined;
+        const client = createMockHost(mockApi, {
+            endpoints: {
+                '/files/*': {
+                    [HttpMethod.Get]({pathParams}) {
+                        receivedWildcard = pathParams?.wildcard;
+                        return {
+                            [HttpStatus.Ok]: {
+                                responseData: {
+                                    wildcard: pathParams?.wildcard || '',
+                                },
+                            },
+                        };
+                    },
+                },
+            },
+        });
+
+        const result = await client.fetch(filesEndpoint).GET({
+            pathParams: {
+                wildcard: 'docs/readme.md',
+            },
+        });
+
+        assert.strictEquals(receivedWildcard, 'docs/readme.md');
+        assert.isDefined(result.Ok);
+        assert.deepEquals(result.Ok.responseData, {
+            wildcard: 'docs/readme.md',
+        });
+    });
+
+    it('returns 500 when the implementation returns multiple status entries', async () => {
+        const client = createMockHost(mockApi, {
+            endpoints: {
+                '/multi-status-return': {
+                    [HttpMethod.Get]() {
+                        /**
+                         * Bypass the `RequireExactlyOne` type narrowing so we can return an
+                         * intentionally-malformed result with two status keys. The framework should
+                         * reject this at runtime with a 500.
+                         */
+                        return {
+                            [HttpStatus.Ok]: {
+                                responseData: undefined,
+                            },
+                            [HttpStatus.Accepted]: {
+                                responseData: undefined,
+                            },
+                        } as never;
+                    },
+                },
+            },
+        });
+
+        const result = await client.fetch(multiStatusReturnEndpoint).GET();
 
         assert.isDefined(result.unexpectedError);
         assert.strictEquals(result.unexpectedError.status, HttpStatus.InternalServerError);

@@ -2,11 +2,6 @@ import {assert} from '@augment-vir/assert';
 import {type AnyObject} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {
-    defineWebSocket,
-    type DefaultWebSocketProtocol,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
-import {
     type adminWebSocket,
     type chatWebSocket,
     type emptyWebSocket,
@@ -17,6 +12,11 @@ import {
     type versionedWebSocket,
 } from '@rest-vir/api/src/api/api.mock.js';
 import {exactShape} from 'object-shape-tester';
+import {
+    defineWebSocket,
+    type DefaultWebSocketProtocol,
+    type WebSocketDefinition,
+} from '../api/web-socket.js';
 import {type CommonWebSocket} from './common-web-socket.js';
 import {
     type WebSocketConnectParamObject,

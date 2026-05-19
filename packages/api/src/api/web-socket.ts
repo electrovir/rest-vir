@@ -64,8 +64,8 @@ export type WebSocketDefinition = {
 } & CommonRouteDefinition;
 
 /**
- * A single protocol-list requirement for a WebSocket. See
- * {@link WebSocketDefinition.connectProtocol} for the meaning of each form.
+ * A single protocol-list requirement for a WebSocket. See `WebSocketDefinition.connectProtocol` for
+ * the meaning of each form.
  *
  * @category Internal
  * @category Package : @rest-vir/api

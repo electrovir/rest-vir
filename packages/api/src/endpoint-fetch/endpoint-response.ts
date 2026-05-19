@@ -8,6 +8,8 @@ import {
     type ErrorHttpStatus,
     type ExtractKeysWithMatchingValues,
 } from '@augment-vir/common';
+import {type Shape} from 'object-shape-tester';
+import {type RequireExactlyOne} from 'type-fest';
 import {
     type DefaultErrorResponseType,
     type DefaultResponseHeadersType,
@@ -15,9 +17,7 @@ import {
     type EndpointDefinition,
     type EndpointMethodDefinition,
     type EndpointResponseHeadersType,
-} from '@rest-vir/api';
-import {type Shape} from 'object-shape-tester';
-import {type RequireExactlyOne} from 'type-fest';
+} from '../api/endpoint.js';
 
 export type DefinedEndpointFetchOutputs<
     Endpoint extends EndpointDefinition,

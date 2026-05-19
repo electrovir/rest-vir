@@ -1,13 +1,13 @@
 import {check} from '@augment-vir/assert';
 import {filterMap, getObjectTypedEntries, getObjectTypedKeys, stringify} from '@augment-vir/common';
+import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
 import {
     type AllowedSearchParamValue,
     type AllowedSingleSearchParamValue,
     type BaseSearchParams,
     type RouteSearchParamsType,
     type SearchParamRequirement,
-} from '@rest-vir/api';
-import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
+} from './api/route.js';
 
 /**
  * Walk the supplied search params, validate each one against its requirement (if any), and produce

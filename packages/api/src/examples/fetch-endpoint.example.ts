@@ -1,6 +1,5 @@
-import {defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {defineApi, defineEndpoint, HttpMethod, HttpStatus, RestVirClient} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
-import {RestVirClient} from '../index.js';
 
 const healthEndpoint = defineEndpoint({
     path: '/health',

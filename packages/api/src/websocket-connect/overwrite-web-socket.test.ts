@@ -1,8 +1,8 @@
 import {assert, assertWrap} from '@augment-vir/assert';
 import {wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineWebSocket} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
+import {defineWebSocket} from '../api/web-socket.js';
 import {
     type CommonWebSocket,
     type CommonWebSocketEventMap,

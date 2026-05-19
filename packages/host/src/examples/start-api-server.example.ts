@@ -1,6 +1,6 @@
 import {defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
+import {createApiImplementor, implementApi, startApiServer} from '@rest-vir/host';
 import {defineShape} from 'object-shape-tester';
-import {createApiImplementor, implementApi, startApiServer} from '../index.js';
 
 const healthEndpoint = defineEndpoint({
     path: '/health',

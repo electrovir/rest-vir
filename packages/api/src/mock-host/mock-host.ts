@@ -1,5 +1,5 @@
 import {type PartialWithUndefined} from '@augment-vir/common';
-import {type ApiDefinition} from '@rest-vir/api';
+import {type ApiDefinition} from '../api/api.js';
 import {RestVirClient} from '../client.js';
 import {type MockCreateHostContext} from './mock-host-context.js';
 import {createMockHostFetch} from './mock-host-fetch.js';

@@ -10,9 +10,11 @@ import {
     type Values,
     wrapInTry,
 } from '@augment-vir/common';
-import {type NoParam, parseJsonWithUndefined, type WebSocketDefinition} from '@rest-vir/api';
 import {convertDuration} from 'date-vir';
 import {assertValidShape} from 'object-shape-tester';
+import {type WebSocketDefinition} from '../api/web-socket.js';
+import {parseJsonWithUndefined} from '../augments/json.js';
+import {type NoParam} from '../util/no-param.js';
 import {
     type CommonWebSocket,
     type CommonWebSocketEventMap,

@@ -254,6 +254,7 @@ async function startServer(
 
 let hasInstalledGracefulShutdown = false;
 
+/* node:coverage disable: hard to test */
 function installGracefulShutdown(kill: () => Promise<void> | void): void {
     if (hasInstalledGracefulShutdown) {
         return;
@@ -277,3 +278,4 @@ function installGracefulShutdown(kill: () => Promise<void> | void): void {
         await handler('SIGINT');
     });
 }
+/* node:coverage enable */

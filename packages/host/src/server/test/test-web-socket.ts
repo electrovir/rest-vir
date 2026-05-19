@@ -1,9 +1,10 @@
 import {type MaybePromise} from '@augment-vir/common';
-import {defineApi, type WebSocketDefinition} from '@rest-vir/api';
 import {
+    defineApi,
     type ClientWebSocket,
     type CommonWebSocket,
     type WebSocketConnectParamObject,
+    type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type CreateHostContext} from '../../implementation/host-context.js';
 import {implementApi} from '../../implementation/implement-api.js';

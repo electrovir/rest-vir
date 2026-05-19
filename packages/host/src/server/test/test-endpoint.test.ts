@@ -1,8 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {defineApi, defineEndpoint} from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/api';
+import {defineApi, defineEndpoint, restVirApiNameHeader} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';

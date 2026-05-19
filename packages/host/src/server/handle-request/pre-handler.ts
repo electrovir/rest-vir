@@ -9,16 +9,14 @@ import {
     wrapInTry,
 } from '@augment-vir/common';
 import {
+    buildMethodNotAllowedMessage,
     extractEndpointMethodDefinition,
     extractHttpMethod,
     isFormDataShape,
-    type EndpointDefinition,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
-import {
-    buildMethodNotAllowedMessage,
     matchesWebSocketProtocolRequirement,
     restVirApiNameHeader,
+    type EndpointDefinition,
+    type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type IncomingHttpHeaders} from 'node:http';
 import {checkValidShape, type Shape} from 'object-shape-tester';

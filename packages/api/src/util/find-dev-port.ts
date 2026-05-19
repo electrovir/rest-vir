@@ -6,9 +6,10 @@ import {
     type MaybePromise,
     type PartialWithUndefined,
 } from '@augment-vir/common';
-import {type ApiDefinition, type EndpointDefinition} from '@rest-vir/api';
 import {convertDuration, type AnyDuration} from 'date-vir';
 import {buildUrl, parseUrl} from 'url-vir';
+import {type ApiDefinition} from '../api/api.js';
+import {type EndpointDefinition} from '../api/endpoint.js';
 import {type EndpointFetchParamObject} from '../endpoint-fetch/endpoint-params.js';
 
 /**
@@ -72,8 +73,13 @@ export type FindPortOptions = {
  * @example
  *
  * ```ts
- * import {HttpMethod, HttpStatus, defineApi, defineEndpoint} from '@rest-vir/api';
- * import {findDevServerPort} from '@rest-vir/api';
+ * import {
+ *     HttpMethod,
+ *     HttpStatus,
+ *     defineApi,
+ *     defineEndpoint,
+ *     findDevServerPort,
+ * } from '@rest-vir/api';
  *
  * const myApi = defineApi({
  *     apiName: 'my-api',

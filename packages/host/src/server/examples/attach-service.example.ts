@@ -1,9 +1,9 @@
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
+import {attachApi} from '@rest-vir/host';
 import fastify from 'fastify';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';
-import {attachApi} from '../../index.js';
 
 const healthEndpoint = defineEndpoint({
     path: '/health',

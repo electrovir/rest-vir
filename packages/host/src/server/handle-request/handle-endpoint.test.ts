@@ -80,4 +80,58 @@ describe(handleEndpointRequest.name, () => {
             },
         );
     });
+
+    it('throws when the implementation returns multiple status entries', async () => {
+        /**
+         * Forge an implementation that returns two status keys at once. The framework's
+         * `RequireExactlyOne` type prevents this in user code; we bypass it to hit the runtime
+         * guard.
+         */
+        const multiStatusImplementation: EndpointImplementation = {
+            path: endpointDefinition.path,
+            isEndpoint: true,
+            isWebSocket: false,
+            definition: endpointDefinition,
+            implementation: {
+                [HttpMethod.Get]: () =>
+                    ({
+                        [HttpStatus.Ok]: {
+                            responseData: undefined,
+                        },
+                        [HttpStatus.Accepted]: {
+                            responseData: undefined,
+                        },
+                    }) as never,
+            },
+        };
+
+        await assert.throws(
+            async () =>
+                await handleEndpointRequest({
+                    endpoint: multiStatusImplementation,
+                    request: {
+                        method: HttpMethod.Get,
+                        originalUrl: '/example',
+                        params: {},
+                        headers: {},
+                        restVirContext: {
+                            attach: {
+                                context: undefined,
+                                requestData: undefined,
+                                searchParams: {},
+                                protocols: [],
+                            },
+                        },
+                    } as AnyObject as ServerRequest,
+                    response: {} as ServerResponse,
+                    attachId: 'attach',
+                    server: {} as RunningServerInfo,
+                    serverLogger: silentServerLogger,
+                    api,
+                }),
+            {
+                matchMessage: 'Expected exactly one status code response key',
+            },
+        );
+    });
 });

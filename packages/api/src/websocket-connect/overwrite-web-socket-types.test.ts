@@ -1,7 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineWebSocket, type NoParam} from '@rest-vir/api';
 import {defineShape, exactShape} from 'object-shape-tester';
+import {defineWebSocket} from '../api/web-socket.js';
+import {type NoParam} from '../util/no-param.js';
 import {type CommonWebSocket} from './common-web-socket.js';
 import {
     type ClientWebSocket,

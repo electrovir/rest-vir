@@ -1,8 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
-import {defineWebSocket} from '@rest-vir/api';
 import {defineShape, exactShape} from 'object-shape-tester';
-import {assertValidWebSocketProtocols} from './web-socket-protocols.js';
+import {defineWebSocket} from '../api/web-socket.js';
+import {
+    assertValidWebSocketProtocols,
+    matchesWebSocketProtocolRequirement,
+} from './web-socket-protocols.js';
 
 const noProtocolWebSocket = defineWebSocket({
     path: '/ws/no-protocol',
@@ -129,5 +132,31 @@ describe(assertValidWebSocketProtocols.name, () => {
         assert.throws(() => assertValidWebSocketProtocols(['a/b'], noProtocolWebSocket), {
             matchMessage: '/ws/no-protocol',
         });
+    });
+});
+
+describe(matchesWebSocketProtocolRequirement.name, () => {
+    it('matches against a RegExp requirement', () => {
+        assert.isTrue(matchesWebSocketProtocolRequirement('graphql-ws', /^graphql-/));
+        assert.isFalse(matchesWebSocketProtocolRequirement('mqtt', /^graphql-/));
+    });
+
+    it('matches against an array-of-alternatives requirement', () => {
+        const requirement = [
+            exactShape('graphql-ws'),
+            /^v\d+$/,
+        ];
+        assert.isTrue(matchesWebSocketProtocolRequirement('graphql-ws', requirement));
+        assert.isTrue(matchesWebSocketProtocolRequirement('v1', requirement));
+        assert.isFalse(matchesWebSocketProtocolRequirement('mqtt', requirement));
+    });
+
+    it('returns false for an unrecognized requirement form', () => {
+        /**
+         * The public `WebSocketConnectProtocolRequirement` type narrows requirements to Shape /
+         * RegExp / array-of-either. The fallback `return false` exists as a runtime guard for
+         * consumers who cast through `as any` or otherwise bypass the type. Exercise it here.
+         */
+        assert.isFalse(matchesWebSocketProtocolRequirement('anything', {} as never));
     });
 });

@@ -1,6 +1,7 @@
 import {assertWrap} from '@augment-vir/assert';
 import {type AnyObject, getOrSet, type MaybePromise} from '@augment-vir/common';
-import {parseJsonWithUndefined, type WebSocketDefinition} from '@rest-vir/api';
+import {type WebSocketDefinition} from '../api/web-socket.js';
+import {parseJsonWithUndefined} from '../augments/json.js';
 import {
     type CommonWebSocket,
     type CommonWebSocketEventMap,

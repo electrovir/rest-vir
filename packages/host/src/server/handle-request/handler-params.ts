@@ -16,7 +16,11 @@ export function buildHandlerParams({
     response: ServerResponse;
     requestData: any;
 }) {
-    const rawParams = (request.params || {}) as Record<string, string | undefined>;
+    /**
+     * Fastify always sets `params` to an object for any registered route (even one without `:name`
+     * or `*` segments — it'll be `{}`).
+     */
+    const rawParams = request.params as Record<string, string | undefined>;
     const wildcard = rawParams['*'];
     /**
      * Merge wildcard into a single `pathParams` object under the `wildcard` key so server-side

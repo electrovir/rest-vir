@@ -5,8 +5,9 @@ import {
     type AnyFunction,
     type MaybePromise,
 } from '@augment-vir/common';
-import {type CreateHostContextOutput, type WebSocketDefinition} from '@rest-vir/api';
 import {parseUrl} from 'url-vir';
+import {type WebSocketDefinition} from '../api/web-socket.js';
+import {type CreateHostContextOutput} from '../implementation/host-context.js';
 import {extractSearchParams} from '../search-params.js';
 import {
     CommonWebSocketState,

@@ -2,11 +2,6 @@ import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {
-    type DefaultErrorResponseType,
-    type DefaultResponseHeadersType,
-    defineEndpoint,
-} from '@rest-vir/api';
-import {
     type downloadEndpoint,
     type itemByIdEndpoint,
     type partnerApiEndpoint,
@@ -15,6 +10,11 @@ import {
     type usersEndpoint,
 } from '@rest-vir/api/src/api/api.mock.js';
 import {defineShape} from 'object-shape-tester';
+import {
+    defineEndpoint,
+    type DefaultErrorResponseType,
+    type DefaultResponseHeadersType,
+} from '../api/endpoint.js';
 import type {
     DefinedEndpointFetchOutputs,
     DefinedEndpointFetchStreamOutputs,

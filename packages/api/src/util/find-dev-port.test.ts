@@ -1,9 +1,9 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {defineEndpoint} from '@rest-vir/api';
 import type {AnyDuration} from 'date-vir';
 import {parseUrl} from 'url-vir';
+import {defineEndpoint} from '../api/endpoint.js';
 import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
 import {
     findDevServerPort,

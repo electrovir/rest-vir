@@ -682,4 +682,16 @@ describe(startApiServer.name, () => {
             0,
         );
     });
+
+    it('passes trustProxy through to Fastify when set', async () => {
+        const {mockApiImplementation} = await import('./examples/mock-api-implementation.mock.js');
+        const {kill} = await startApiServer(mockApiImplementation, {
+            port: 0,
+            workerCount: 1,
+            preventWorkerRespawn: true,
+            externalOrigin: 'http://localhost',
+            trustProxy: true,
+        });
+        await kill();
+    });
 });

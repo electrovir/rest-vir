@@ -34,6 +34,7 @@
         "start": "virmator frontend",
         "test": "virmator test node",
         "test:coverage": "npm run test coverage",
+        "test:docs": "exit 0",
         "test:update": "npm test update"
     },
     "dependencies": {

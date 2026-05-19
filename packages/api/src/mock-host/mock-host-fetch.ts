@@ -1,20 +1,19 @@
 import {assertWrap, check} from '@augment-vir/assert';
 import {ensureErrorAndPrependMessage, extractErrorMessage, HttpStatus} from '@augment-vir/common';
+import {parseUrl} from 'url-vir';
+import {type ApiDefinition} from '../api/api.js';
 import {
-    consolidateHeaders,
     extractEndpointMethodDefinition,
     extractHttpMethod,
-    headersToObject,
-    type ApiDefinition,
     type DefaultResponseHeadersType,
     type EndpointDefinition,
-    type EndpointMethodImplementationOutput,
-} from '@rest-vir/api';
-import {parseUrl} from 'url-vir';
+} from '../api/endpoint.js';
 import {readResponseBodyAsJsonOrText} from '../client.js';
 import {type ClientFetch} from '../endpoint-fetch/endpoint-params.js';
 import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
+import {type EndpointMethodImplementationOutput} from '../implementation/endpoint-implementation.js';
 import {extractSearchParams} from '../search-params.js';
+import {consolidateHeaders, headersToObject} from '../util/header-util.js';
 import {type MockEndpointMethodImplementations} from './mock-endpoint-implementation.js';
 import {type MockCreateHostContext} from './mock-host-context.js';
 import {resolveMockHostContext} from './mock-host-resolve-context.js';
@@ -89,7 +88,7 @@ export function createMockHostFetch<
                 methodDefinition.searchParams,
                 parsedUrl.searchParams,
             );
-            const pathParams = extractPathParamsFromUrl(endpoint, parsedUrl.fullPath);
+            const pathParams = extractPathParamsFromUrl(endpoint, parsedUrl.paths);
             const requestHeaders = headersToObject(requestInit.headers);
             const requestData = await readRequestData(requestInit, requestHeaders);
 
@@ -135,17 +134,16 @@ export function createMockHostFetch<
 }
 
 /**
- * Walk the endpoint's path template (e.g. `/users/:userId/items/*`) alongside the actual URL
- * pathname (e.g. `/users/abc/items/foo/bar`), capturing each `:name` segment as a named path param
- * and any trailing `*` segments under the `wildcard` key. Returns `undefined` for endpoints with no
- * path params (matches the typed shape from `ExtractPathParams`).
+ * Walk the endpoint's path template (e.g. `/users/:userId/items/*`) alongside the actual URL's path
+ * segments (already produced by url-vir's `parseUrl(...).paths`), capturing each `:name` segment as
+ * a named path param and any trailing `*` segments under the `wildcard` key. Returns `undefined`
+ * for endpoints with no path params (matches the typed shape from `ExtractPathParams`).
  */
 function extractPathParamsFromUrl(
     endpoint: Readonly<EndpointDefinition>,
-    pathname: string,
+    urlSegments: ReadonlyArray<string>,
 ): Record<string, string | undefined> | undefined {
-    const templateSegments = endpoint.path.split('/').filter(Boolean);
-    const urlSegments = pathname.split('?')[0]?.split('/').filter(Boolean) || [];
+    const templateSegments = parseUrl(endpoint.path).paths;
     const params: Record<string, string> = {};
     let hasAny = false;
 

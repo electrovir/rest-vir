@@ -1,8 +1,13 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {AnyOrigin, defineApi, defineEndpoint, type OriginRequirement} from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/api';
+import {
+    AnyOrigin,
+    defineApi,
+    defineEndpoint,
+    restVirApiNameHeader,
+    type OriginRequirement,
+} from '@rest-vir/api';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';
 import {type ServerRequest} from '../../implementation/raw-route-data.js';
@@ -426,5 +431,23 @@ describe(handleCors.name, () => {
         const allowHeaders = String(result?.headers?.['Access-Control-Allow-Headers']);
         assert.isTrue(allowHeaders.includes('X-Custom-One'));
         assert.isTrue(allowHeaders.includes('X-Custom-Two'));
+    });
+
+    it('omits the rest-vir-api header from Expose-Headers when disableRestVirApiNameHeader is true', async () => {
+        const {endpointImplementation, apiImplementation} = buildScenario({
+            apiOriginRequirement: {
+                anyOrigin: true,
+            },
+        });
+
+        const result = await handleCors({
+            api: apiImplementation,
+            serverLogger: silentServerLogger,
+            request: buildRequest('http://example.com'),
+            route: endpointImplementation,
+            disableRestVirApiNameHeader: true,
+        });
+
+        assert.strictEquals(result?.headers?.['Access-Control-Expose-Headers'], '');
     });
 });

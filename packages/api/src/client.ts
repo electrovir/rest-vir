@@ -11,25 +11,24 @@ import {
     type MaybePromise,
     type RequiredAndNotNull,
 } from '@augment-vir/common';
-import {
-    extractEndpointMethodDefinition,
-    parseJsonWithUndefined,
-    type ApiDefinition,
-    type DefaultResponseHeadersType,
-    type DefinableHttpMethod,
-    type EndpointDefinition,
-    type ExtractEndpointMethodDefinition,
-    type ExtractPathParams,
-    type NoParam,
-    type ResponseStatusDefinition,
-    type RouteSearchParamsType,
-    type SetNullishPropertiesAsOptional,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {assertValidShape} from 'object-shape-tester';
 import {type Constructor} from 'type-fest';
 import {buildUrl} from 'url-vir';
+import {type ApiDefinition} from './api/api.js';
+import {
+    extractEndpointMethodDefinition,
+    type DefaultResponseHeadersType,
+    type DefinableHttpMethod,
+    type EndpointDefinition,
+    type ExtractEndpointMethodDefinition,
+    type ResponseStatusDefinition,
+} from './api/endpoint.js';
+import {type ExtractPathParams} from './api/path-params.js';
+import {type RouteSearchParamsType} from './api/route.js';
+import {type WebSocketDefinition} from './api/web-socket.js';
+import {parseJsonWithUndefined} from './augments/json.js';
+import {type SetNullishPropertiesAsOptional} from './augments/object.js';
 import {
     type ClientFetch,
     type EndpointFetchParamObject,
@@ -44,6 +43,7 @@ import {
 } from './endpoint-fetch/endpoint-response.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
+import {type NoParam} from './util/no-param.js';
 import {type CommonWebSocket} from './websocket-connect/common-web-socket.js';
 import {
     type OverwriteWebSocketMethods,

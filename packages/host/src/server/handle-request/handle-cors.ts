@@ -3,10 +3,10 @@ import {getObjectTypedKeys, HttpMethod, HttpStatus, type SelectFrom} from '@augm
 import {
     AnyOrigin,
     checkOriginRequirement,
+    restVirApiNameHeader,
     type DefinableHttpMethod,
     type OriginRequirement,
 } from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/api';
 import {convertDuration} from 'date-vir';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {type ApiImplementation} from '../../implementation/implement-api.js';

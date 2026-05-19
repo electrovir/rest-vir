@@ -1,7 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {type BaseSearchParams, defineEndpoint, type GenericPathParams} from '@rest-vir/api';
 import {
     type adminSettingsEndpoint,
     type downloadEndpoint,
@@ -14,6 +13,9 @@ import {
     type usersCreateEndpoint,
 } from '@rest-vir/api/src/api/api.mock.js';
 import {defineShape} from 'object-shape-tester';
+import {defineEndpoint} from '../api/endpoint.js';
+import {type GenericPathParams} from '../api/path-params.js';
+import {type BaseSearchParams} from '../api/route.js';
 import type {
     ClientFetch,
     EndpointFetchParamObject,

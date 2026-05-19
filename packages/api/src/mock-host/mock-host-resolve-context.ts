@@ -1,4 +1,4 @@
-import {type CreateHostContextOutput} from '@rest-vir/api';
+import {type CreateHostContextOutput} from '../implementation/host-context.js';
 import {type MockCreateHostContext} from './mock-host-context.js';
 
 /**

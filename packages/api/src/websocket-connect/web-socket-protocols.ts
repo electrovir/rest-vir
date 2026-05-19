@@ -1,11 +1,11 @@
 import {check} from '@augment-vir/assert';
 import {ensureErrorAndPrependMessage} from '@augment-vir/common';
+import {checkValidShape, isShape} from 'object-shape-tester';
+import {parseSecWebSocketProtocolHeader} from '../api/web-socket-protocol-parse.js';
 import {
-    parseSecWebSocketProtocolHeader,
     type WebSocketConnectProtocolRequirement,
     type WebSocketDefinition,
-} from '@rest-vir/api';
-import {checkValidShape, isShape} from 'object-shape-tester';
+} from '../api/web-socket.js';
 
 /**
  * Returns `true` when the given protocol string satisfies the requirement. The requirement can be a

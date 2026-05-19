@@ -3,8 +3,8 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {defineEndpoint} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
+import {defineEndpoint} from '../api/endpoint.js';
 import {
     createMockEndpointFetch,
     createMockEndpointResponse,

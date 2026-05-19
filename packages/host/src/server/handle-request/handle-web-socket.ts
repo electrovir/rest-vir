@@ -1,7 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {combineErrorMessages, ensureErrorClass, HttpStatus, stringify} from '@augment-vir/common';
-import {parseJsonWithUndefined, type ApiDefinition} from '@rest-vir/api';
-import {overwriteWebSocketMethods, WebSocketLocation} from '@rest-vir/api';
+import {
+    overwriteWebSocketMethods,
+    parseJsonWithUndefined,
+    WebSocketLocation,
+    type ApiDefinition,
+} from '@rest-vir/api';
 import {assertValidShape} from 'object-shape-tester';
 import {type WebSocket as WsWebSocket} from 'ws';
 import {

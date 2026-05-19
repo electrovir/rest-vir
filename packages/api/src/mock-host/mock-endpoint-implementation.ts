@@ -1,9 +1,9 @@
+import {type EndpointDefinition} from '../api/endpoint.js';
 import {
-    type EndpointDefinition,
     type EndpointImplementationBase,
     type EndpointMethodImplementationsBase,
-    type NoParam,
-} from '@rest-vir/api';
+} from '../implementation/endpoint-implementation.js';
+import {type NoParam} from '../util/no-param.js';
 
 /**
  * Extras that mock endpoint implementations receive on top of the shared base params.

@@ -1,13 +1,13 @@
+import {type HasRequiredKeys} from 'type-fest';
+import {type ExtractPathParams} from '../api/path-params.js';
+import {type RouteSearchParamsType} from '../api/route.js';
 import {
     type DefaultWebSocketProtocol,
-    type ExtractPathParams,
-    type NoParam,
-    type RouteSearchParamsType,
-    type SetNullishPropertiesAsOptional,
     type WebSocketConnectProtocolType,
     type WebSocketDefinition,
-} from '@rest-vir/api';
-import {type HasRequiredKeys} from 'type-fest';
+} from '../api/web-socket.js';
+import {type SetNullishPropertiesAsOptional} from '../augments/object.js';
+import {type NoParam} from '../util/no-param.js';
 import {type CommonWebSocket} from './common-web-socket.js';
 import {type ConnectWebSocketListeners} from './overwrite-web-socket-types.js';
 

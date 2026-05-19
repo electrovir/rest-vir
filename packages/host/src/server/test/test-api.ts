@@ -8,20 +8,18 @@ import {
 } from '@augment-vir/common';
 import {describe} from '@augment-vir/test';
 import {
-    type DefinableHttpMethod,
-    type EndpointDefinition,
-    type NoParam,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
-import {
     type ClientWebSocket,
     type CommonWebSocket,
+    type DefinableHttpMethod,
+    type EndpointDefinition,
     type EndpointFetchParams,
     finalizeClientWebSocket,
+    type NoParam,
     restVirApiNameHeader,
     RestVirClient,
     type WebSocketConnectParamObject,
     type WebSocketConnectParams,
+    type WebSocketDefinition,
 } from '@rest-vir/api';
 import fastify, {type FastifyInstance} from 'fastify';
 import {type InjectOptions} from 'light-my-request';

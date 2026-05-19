@@ -1,9 +1,9 @@
+import {type WebSocketDefinition} from '../api/web-socket.js';
 import {
-    type NoParam,
-    type WebSocketDefinition,
     type WebSocketImplementationBase,
     type WebSocketListenerImplementationsBase,
-} from '@rest-vir/api';
+} from '../implementation/web-socket-implementation.js';
+import {type NoParam} from '../util/no-param.js';
 import {type CommonWebSocketState} from '../websocket-connect/common-web-socket.js';
 
 /**

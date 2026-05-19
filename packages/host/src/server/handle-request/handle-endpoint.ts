@@ -1,7 +1,12 @@
 import {assert, assertWrap, check} from '@augment-vir/assert';
-import {ensureErrorAndPrependMessage} from '@augment-vir/common';
-import {type ApiDefinition, definableHttpMethods, HttpMethod, HttpStatus} from '@rest-vir/api';
-import {readHeaderValue} from '@rest-vir/api';
+import {ensureErrorAndPrependMessage, filterMap} from '@augment-vir/common';
+import {
+    type ApiDefinition,
+    definableHttpMethods,
+    HttpMethod,
+    HttpStatus,
+    readHeaderValue,
+} from '@rest-vir/api';
 import {assertValidShape} from 'object-shape-tester';
 import {
     type EndpointImplementation,
@@ -111,10 +116,23 @@ export async function handleEndpointRequest(
          * ordering for numeric-string keys depends on V8, so don't rely on `[0]`. Instead, find the
          * single entry whose key parses to a valid `HttpStatus` and reject ambiguous results.
          */
-        const statusEntries = Object.entries(endpointResult).filter(
+        const statusEntries = filterMap(
+            Object.entries(endpointResult),
             ([
-                key,
-            ]) => check.isEnumValue(Number(key), HttpStatus),
+                rawStatusCode,
+                statusResponse,
+            ]) => {
+                const statusCode = Number(rawStatusCode);
+                if (check.isEnumValue(statusCode, HttpStatus)) {
+                    return {
+                        statusCode,
+                        statusResponse,
+                    };
+                } else {
+                    return undefined;
+                }
+            },
+            check.isTruthy,
         );
 
         if (statusEntries.length !== 1 || !statusEntries[0]) {
@@ -132,25 +150,7 @@ export async function handleEndpointRequest(
             );
         }
 
-        const [
-            rawStatusCode,
-            statusResponse,
-        ] = statusEntries[0];
-        const statusCode = Number(rawStatusCode);
-
-        if (!check.isEnumValue(statusCode, HttpStatus)) {
-            /* node:coverage ignore next: filtered above; defensive */
-            throw new RestVirHandlerError(
-                {
-                    apiName: api.apiName,
-                    isEndpoint: true,
-                    isWebSocket: false,
-                    path: endpoint.path,
-                },
-                `Invalid response status code: '${statusCode}'.`,
-                HttpStatus.InternalServerError,
-            );
-        }
+        const {statusCode, statusResponse} = statusEntries[0];
 
         const statusResponseDefinition =
             endpoint.definition.requests[method]?.responses[statusCode];

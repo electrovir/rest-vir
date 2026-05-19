@@ -13,11 +13,11 @@ to the rewritten replacements:
 
 ## Package mapping
 
-| Old                           | New                | Notes                                                                                            |
-| ----------------------------- | ------------------ | ------------------------------------------------------------------------------------------------ |
-| `@rest-vir/define-service`    | `@rest-vir/api` | Definitions, client fetch, WebSocket connect, and frontend mock helpers all live in one package. |
-| `@rest-vir/implement-service` | `@rest-vir/host`   | Implementations now live in the same package as the server runtime.                              |
-| `@rest-vir/run-service`       | `@rest-vir/host`   | `startService` => `startApiServer`; `attachService` => `attachApi`.                              |
+| Old                           | New              | Notes                                                                                            |
+| ----------------------------- | ---------------- | ------------------------------------------------------------------------------------------------ |
+| `@rest-vir/define-service`    | `@rest-vir/api`  | Definitions, client fetch, WebSocket connect, and frontend mock helpers all live in one package. |
+| `@rest-vir/implement-service` | `@rest-vir/host` | Implementations now live in the same package as the server runtime.                              |
+| `@rest-vir/run-service`       | `@rest-vir/host` | `startService` => `startApiServer`; `attachService` => `attachApi`.                              |
 
 ## Conceptual changes at a glance
 

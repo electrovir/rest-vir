@@ -1,4 +1,5 @@
 import {type MaybePromise} from '@augment-vir/common';
+import {type HasRequiredKeys} from 'type-fest';
 import {
     type DefinableHttpMethod,
     type EndpointDefinition,
@@ -6,12 +7,11 @@ import {
     type EndpointRequestType,
     type ExtractEndpointMethodDefinition,
     type ExtractEndpointMethodDefinitionWithNoParam,
-    type ExtractPathParams,
-    type NoParam,
-    type RouteSearchParamsType,
-    type SetNullishPropertiesAsOptional,
-} from '@rest-vir/api';
-import {type HasRequiredKeys} from 'type-fest';
+} from '../api/endpoint.js';
+import {type ExtractPathParams} from '../api/path-params.js';
+import {type RouteSearchParamsType} from '../api/route.js';
+import {type SetNullishPropertiesAsOptional} from '../augments/object.js';
+import {type NoParam} from '../util/no-param.js';
 
 /**
  * Used to define a function's rest params. The params object is only required if it has any

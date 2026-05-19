@@ -1,14 +1,11 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, stringify, wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
-import {
-    defineApi,
-    defineEndpoint,
-    defineWebSocket,
-    formDataShape,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
 import {defineShape, exactShape, nullableShape} from 'object-shape-tester';
+import {defineApi} from './api/api.js';
+import {defineEndpoint} from './api/endpoint.js';
+import {formDataShape} from './api/form-data-shape.js';
+import {defineWebSocket, type WebSocketDefinition} from './api/web-socket.js';
 import {readResponseBodyAsJsonOrText, RestVirClient} from './client.js';
 import {type HttpStatusByKey} from './endpoint-fetch/endpoint-response.js';
 import {createMockFetch, createMockResponse} from './endpoint-fetch/mock-fetch.js';
