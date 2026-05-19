@@ -275,10 +275,11 @@ describe('ExtractPathParams', () => {
 
     it('handles BaseRoutePath pattern type', () => {
         assert.tsType<ExtractPathParams<`/${string}`>>().equals<
-            Readonly<{
-                wildcard?: string | undefined;
-            }> &
-                Readonly<Record<string, string>>
+            | (Readonly<{
+                  wildcard?: string | undefined;
+              }> &
+                  Readonly<Record<string, string>>)
+            | undefined
         >();
     });
 
