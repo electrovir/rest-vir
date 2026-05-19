@@ -12,5 +12,6 @@ module.exports = {
         'duplexify',
         'middie',
         'slowloris',
+        'whatwg',
     ],
 };

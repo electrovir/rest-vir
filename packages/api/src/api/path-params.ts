@@ -113,15 +113,13 @@ export type ExtractPathParams<Path extends PropertyKey | NoParam = NoParam> =
         ? Path extends `${string}:${string}` | `${string}/*`
             ? ResolveWildcard<HasWildcardParam<Path>> & ResolveNamedParams<NamedPathParams<Path>>
             : /**
-               * The generic-pattern fallback for `Path = `/${string}`` (i.e. the wide
-               * `BaseRoutePath` form, used when the api definition is type-erased into
-               * `EndpointDefinition`). Unions in `undefined` so that narrow forms with no params
-               * (which resolve to bare `undefined`) remain structurally assignable into the wide
-               * form. Without this `| undefined`, every narrow `EndpointImplementation` would
-               * fail the variance check when assigned into a wide
-               * `EndpointImplementation<EndpointDefinition>` slot. Concrete narrow forms keep
-               * their strict object types so consumers reading `pathParams.userId` on a
-               * `/users/:userId` route do not have to null-check.
+               * The generic-pattern fallback for `Path = `/${string}`` (i.e. the wide `BaseRoutePath` form, used
+               * when the api definition is type-erased into `EndpointDefinition`). Unions in `undefined` so that
+               * narrow forms with no params (which resolve to bare `undefined`) remain structurally assignable
+               * into the wide form. Without this `| undefined`, every narrow `EndpointImplementation` would fail
+               * the variance check when assigned into a wide `EndpointImplementation<EndpointDefinition>` slot.
+               * Concrete narrow forms keep their strict object types so consumers reading `pathParams.userId` on
+               * a `/users/:userId` route do not have to null-check.
                */
               IsEqual<`/${string}`, Path> extends true
               ?

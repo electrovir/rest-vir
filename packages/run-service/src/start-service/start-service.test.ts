@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/no-commented-code */
-
 import {assert, waitUntil} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, mergeDeep} from '@augment-vir/common';
 import {runShellCommand} from '@augment-vir/node';

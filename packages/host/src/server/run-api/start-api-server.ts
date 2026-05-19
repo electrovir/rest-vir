@@ -206,7 +206,11 @@ async function startServer(
         connectionTimeout,
         keepAliveTimeout,
         requestTimeout,
-        ...(trustProxy == undefined ? {} : {trustProxy}),
+        ...(trustProxy == undefined
+            ? {}
+            : {
+                  trustProxy,
+              }),
     });
 
     await awaitedForEach(
@@ -250,15 +254,6 @@ async function startServer(
 
 let hasInstalledGracefulShutdown = false;
 
-/**
- * Install one-shot SIGTERM and SIGINT handlers that call the given `kill` function (typically the
- * `kill` returned by {@link startApiServer}). Use this for production processes running under
- * Kubernetes / ECS / systemd / Docker, which signal a graceful shutdown via SIGTERM. Without it,
- * the process is hard-killed and in-flight requests / WebSockets are dropped.
- *
- * Idempotent across multiple `startApiServer` calls. Calling this twice in the same process is
- * safe and will not double-install listeners.
- */
 function installGracefulShutdown(kill: () => Promise<void> | void): void {
     if (hasInstalledGracefulShutdown) {
         return;

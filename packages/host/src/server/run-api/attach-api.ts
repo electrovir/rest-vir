@@ -77,9 +77,21 @@ export type ApiServerOptions = {
     externalOrigin: string;
     /**
      * Maximum size, in bytes, of an inbound WebSocket message frame. See
-     * {@link runApiOptionsShape.webSocketMaxPayload} for details.
+     * `runApiOptionsShape.webSocketMaxPayload` for details.
      */
     webSocketMaxPayload?: number | undefined;
+    /**
+     * When `true`, the `rest-vir-api` response header (which carries `api.definition.apiName`) is
+     * not attached to responses, and it is not exposed via the CORS `Access-Control-Expose-Headers`
+     * value. Useful when the server should not advertise that it is a rest-vir host.
+     *
+     * Note: `findDevServerPort` from `@rest-vir/client` relies on this header to identify which
+     * port is hosting the api during dev. Disabling the header breaks that discovery path; pin the
+     * dev port explicitly in that case.
+     *
+     * @default false
+     */
+    disableRestVirApiNameHeader?: boolean | undefined;
 };
 
 /**
@@ -180,6 +192,7 @@ export async function attachApi(
                     server: extractRunningServerInfo(options, server),
                     attachId,
                     serverLogger,
+                    disableRestVirApiNameHeader: !!options.disableRestVirApiNameHeader,
                 });
 
                 if (preHandlerResult?.statusCode && postHook) {

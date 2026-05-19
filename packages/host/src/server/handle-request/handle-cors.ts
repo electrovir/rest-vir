@@ -39,6 +39,7 @@ export async function handleCors(
         serverLogger,
         route,
         request,
+        disableRestVirApiNameHeader,
     }: Readonly<
         SelectFrom<
             RouteHandlerParams,
@@ -49,6 +50,7 @@ export async function handleCors(
         > & {
             api: ApiImplementation;
             serverLogger: ServerLogger;
+            disableRestVirApiNameHeader?: boolean | undefined;
         }
     >,
 ): Promise<HandledOutput> {
@@ -85,11 +87,16 @@ export async function handleCors(
                 matchedOrigin,
                 allowedMethods,
                 api.implementation.customHeaders,
+                disableRestVirApiNameHeader,
             ),
         };
     } else if (matchedOrigin) {
         return {
-            headers: buildStandardCorsHeaders(matchedOrigin, api.implementation.customHeaders),
+            headers: buildStandardCorsHeaders(
+                matchedOrigin,
+                api.implementation.customHeaders,
+                disableRestVirApiNameHeader,
+            ),
         };
     } else {
         serverLogger.error(
@@ -112,24 +119,23 @@ export async function handleCors(
 function buildStandardCorsHeaders(
     matchedOrigin: NonNullable<MatchedOrigin>,
     customHeaders: ReadonlyArray<string> | undefined,
+    disableRestVirApiNameHeader: boolean | undefined,
 ): OutgoingHttpHeaders {
+    const exposeHeaders = [
+        ...(disableRestVirApiNameHeader ? [] : [restVirApiNameHeader]),
+        ...(customHeaders || []),
+    ].join(',');
     if (matchedOrigin === AnyOrigin) {
         return {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Expose-Headers': [
-                restVirApiNameHeader,
-                ...(customHeaders || []),
-            ].join(','),
+            'Access-Control-Expose-Headers': exposeHeaders,
         };
     } else {
         return {
             'Access-Control-Allow-Origin': matchedOrigin,
             'Access-Control-Allow-Credentials': 'true',
             Vary: 'Origin',
-            'Access-Control-Expose-Headers': [
-                restVirApiNameHeader,
-                ...(customHeaders || []),
-            ].join(','),
+            'Access-Control-Expose-Headers': exposeHeaders,
         };
     }
 }
@@ -157,13 +163,14 @@ function buildOptionsRequestCorsHeaders(
     matchedOrigin: MatchedOrigin,
     allowedMethods: HttpMethod[],
     customHeaders: ReadonlyArray<string> | undefined,
+    disableRestVirApiNameHeader: boolean | undefined,
 ): OutgoingHttpHeaders {
     if (matchedOrigin == undefined) {
         return contentLengthHeaders;
     }
 
     return {
-        ...buildStandardCorsHeaders(matchedOrigin, customHeaders),
+        ...buildStandardCorsHeaders(matchedOrigin, customHeaders, disableRestVirApiNameHeader),
         'Access-Control-Allow-Methods': [
             allowedMethods,
             HttpMethod.Options,

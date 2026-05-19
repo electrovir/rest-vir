@@ -12,9 +12,9 @@ const mockWebSocketRegistry: {lastInstance: MockWebSocket | undefined} = {
 };
 
 /**
- * Returns the most recently constructed {@link MockWebSocket} instance. Throws if none
- * has been constructed yet (typically because the test did not call `client.connectWebSocket(...)`
- * with `webSocketConstructor: MockWebSocket` in its params).
+ * Returns the most recently constructed {@link MockWebSocket} instance. Throws if none has been
+ * constructed yet (typically because the test did not call `client.connectWebSocket(...)` with
+ * `webSocketConstructor: MockWebSocket` in its params).
  *
  * @category Testing
  * @category Package : @rest-vir/client
@@ -40,10 +40,10 @@ export type MockWebSocketOptions = {
 };
 
 /**
- * A mock {@link CommonWebSocket} implementation for unit tests. Drop-in replacement for the
- * global `WebSocket` constructor passed to `RestVirClient.connectWebSocket`'s `webSocketConstructor`
- * param. The test then drives the mock via {@link getLastMockWebSocket} to dispatch
- * synthetic events, inspect captured constructor args, or capture outbound client sends via
+ * A mock {@link CommonWebSocket} implementation for unit tests. Drop-in replacement for the global
+ * `WebSocket` constructor passed to `RestVirClient.connectWebSocket`'s `webSocketConstructor`
+ * param. The test then drives the mock via {@link getLastMockWebSocket} to dispatch synthetic
+ * events, inspect captured constructor args, or capture outbound client sends via
  * {@link MockWebSocket.sendCallback}.
  *
  * @category Testing

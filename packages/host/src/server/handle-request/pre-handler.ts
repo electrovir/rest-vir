@@ -54,6 +54,7 @@ export async function preHandler({
     server,
     attachId,
     serverLogger,
+    disableRestVirApiNameHeader,
 }: {
     request: ServerRequest;
     response: ServerResponse;
@@ -61,6 +62,7 @@ export async function preHandler({
     server: Readonly<RunningServerInfo>;
     attachId: string;
     serverLogger: ServerLogger;
+    disableRestVirApiNameHeader?: boolean | undefined;
 }): Promise<Readonly<HandledOutput>> {
     if (!request.restVirContext) {
         request.restVirContext = {};
@@ -69,7 +71,9 @@ export async function preHandler({
         return {};
     });
 
-    response.header(restVirApiNameHeader, api.definition.apiName);
+    if (!disableRestVirApiNameHeader) {
+        response.header(restVirApiNameHeader, api.definition.apiName);
+    }
 
     const pathMatch = matchUrlToRoute(api.definition, request.originalUrl);
 
@@ -153,6 +157,7 @@ export async function preHandler({
             route: routeImplementation,
             api,
             serverLogger,
+            disableRestVirApiNameHeader,
         }),
         response,
     );

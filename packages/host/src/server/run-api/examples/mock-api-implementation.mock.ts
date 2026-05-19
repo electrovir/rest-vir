@@ -605,8 +605,8 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
         '/with-search-params-ws': implementor.implementWebSocket(searchParamsWebSocket, {
             message({searchParams, webSocket}) {
                 webSocket.send({
-                    param1: searchParams.param1 ?? [''],
-                    param2: searchParams.param2 ?? [],
+                    param1: searchParams.param1,
+                    param2: searchParams.param2,
                 });
             },
         }),
