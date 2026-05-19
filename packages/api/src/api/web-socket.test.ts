@@ -467,7 +467,7 @@ describe('WebSocketConnectProtocolType', () => {
             connectProtocol: ReturnType<typeof defineShape<string>>;
         }>;
 
-        /** Must be assignable to and from an array — never a non-array. */
+        /** Must be assignable to and from an array. Never a non-array. */
         assert.tsType<NonNullable<Result>>().matches<readonly unknown[]>();
     });
 

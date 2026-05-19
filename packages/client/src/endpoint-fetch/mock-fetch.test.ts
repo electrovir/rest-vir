@@ -247,14 +247,24 @@ describe(createMockResponse.name, () => {
         assert.isTrue(response.bodyUsed);
         await assert.throws(() => response.bytes());
     });
-    it('supports Response.text()', async () => {
+    it('supports Response.text() returning a string body unchanged', async () => {
         const response = createMockResponse({
             body: 'hi',
         });
 
-        assert.strictEquals(await response.text(), '"hi"');
+        assert.strictEquals(await response.text(), 'hi');
         assert.isTrue(response.bodyUsed);
         await assert.throws(() => response.text());
+    });
+
+    it('supports Response.text() JSON-stringify a non-string body', async () => {
+        const response = createMockResponse({
+            body: {
+                hi: 'bye',
+            },
+        });
+
+        assert.strictEquals(await response.text(), '{"hi":"bye"}');
     });
     it('supports Response.formData()', async () => {
         const response = createMockResponse({
@@ -325,13 +335,32 @@ describe(createMockResponse.name, () => {
         assert.isFalse(response.ok);
     });
 
-    it('defaults the content-type header to application/json', () => {
+    it('omits the content-type header when there is no body', () => {
         const response = createMockResponse();
+        assert.strictEquals(response.headers.get('content-type'), null);
+    });
+
+    it('defaults the content-type header to text/plain for a string body', () => {
+        const response = createMockResponse({
+            body: 'hi',
+        });
+        assert.strictEquals(response.headers.get('content-type'), 'text/plain');
+    });
+
+    it('defaults the content-type header to application/json for a non-string body', () => {
+        const response = createMockResponse({
+            body: {
+                hi: 'bye',
+            },
+        });
         assert.strictEquals(response.headers.get('content-type'), 'application/json');
     });
 
     it('merges caller-provided headers with the default content-type', () => {
         const response = createMockResponse({
+            body: {
+                hi: 'bye',
+            },
             headers: {
                 'x-custom': 'value',
             },
@@ -342,6 +371,9 @@ describe(createMockResponse.name, () => {
 
     it('appends caller-provided content-type to the default rather than replacing it', () => {
         const response = createMockResponse({
+            body: {
+                hi: 'bye',
+            },
             headers: {
                 'content-type': 'text/plain',
             },

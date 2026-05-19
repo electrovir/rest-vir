@@ -1,137 +1,19 @@
-import {assert, assertWrap} from '@augment-vir/assert';
-import {
-    type AnyObject,
-    getOrSet,
-    HttpMethod,
-    HttpStatus,
-    type MaybePromise,
-    stringify,
-    wait,
-} from '@augment-vir/common';
+import {assert} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus, stringify, wait} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {
     defineApi,
     defineEndpoint,
     defineWebSocket,
     formDataShape,
-    parseJsonWithUndefined,
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {defineShape, exactShape, nullableShape} from 'object-shape-tester';
 import {readResponseBodyAsJsonOrText, RestVirClient} from './client.js';
 import {type HttpStatusByKey} from './endpoint-fetch/endpoint-response.js';
 import {createMockFetch, createMockResponse} from './endpoint-fetch/mock-fetch.js';
-import {
-    type CommonWebSocket,
-    type CommonWebSocketEventMap,
-    CommonWebSocketState,
-} from './websocket-connect/common-web-socket.js';
-
-const mockWebSocketRegistry: {lastInstance: MockWebSocket | undefined} = {
-    lastInstance: undefined,
-};
-
-function getLastMockWebSocket() {
-    return assertWrap.isDefined(mockWebSocketRegistry.lastInstance);
-}
-
-class MockWebSocket implements CommonWebSocket {
-    public listeners: Partial<{
-        [EventName in keyof CommonWebSocketEventMap]: Set<
-            (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>
-        >;
-    }> = {};
-
-    public readyState: CommonWebSocketState = CommonWebSocketState.Connecting;
-
-    public capturedConstructorArgs: {
-        url: string;
-        protocols: string[] | undefined;
-        webSocket: WebSocketDefinition;
-    };
-
-    public sendCallback: ((data: unknown) => void) | undefined;
-
-    constructor(
-        url: string,
-        protocols: string[] | undefined,
-        webSocket: WebSocketDefinition,
-        options: {preventImmediateOpen?: boolean} = {},
-    ) {
-        this.capturedConstructorArgs = {
-            url,
-            protocols,
-            webSocket,
-        };
-        mockWebSocketRegistry.lastInstance = this;
-        if (!options.preventImmediateOpen) {
-            this.open();
-        }
-    }
-
-    public open() {
-        setTimeout(() => {
-            if (this.readyState === CommonWebSocketState.Connecting) {
-                this.readyState = CommonWebSocketState.Open;
-                this.dispatchEvent('open', {});
-            }
-        });
-    }
-
-    public close() {
-        this.dispatchEvent('close', {
-            code: 0,
-            reason: 'closed',
-            wasClean: true,
-        });
-        this.listeners = {};
-        this.readyState = CommonWebSocketState.Closed;
-    }
-
-    public dispatchEvent<const EventName extends keyof CommonWebSocketEventMap>(
-        eventName: EventName,
-        event: Omit<CommonWebSocketEventMap[EventName], 'type' | 'target'>,
-    ) {
-        this.listeners[eventName]?.forEach((listener) => {
-            void listener({
-                ...event,
-                target: this,
-                type: eventName,
-            } as AnyObject as CommonWebSocketEventMap[EventName]);
-        });
-    }
-
-    public addEventListener<const EventName extends keyof CommonWebSocketEventMap>(
-        eventName: EventName,
-        listener: (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>,
-    ): void {
-        getOrSet(this.listeners, eventName, () => new Set<any>()).add(listener as any);
-    }
-
-    public removeEventListener<const EventName extends keyof CommonWebSocketEventMap>(
-        eventName: EventName,
-        listener: (event: CommonWebSocketEventMap[EventName]) => MaybePromise<void>,
-    ): void {
-        this.listeners[eventName]?.delete(listener);
-    }
-
-    public send(data: any): void {
-        if (this.readyState !== CommonWebSocketState.Open) {
-            return;
-        }
-        this.sendCallback?.(parseJsonWithUndefined(String(data)));
-    }
-
-    /** Send a message as if it came from the host. */
-    public sendFromHost(data: unknown) {
-        if (this.readyState !== CommonWebSocketState.Open) {
-            return;
-        }
-        this.dispatchEvent('message', {
-            data: JSON.stringify(data),
-        });
-    }
-}
+import {getLastMockWebSocket, MockWebSocket} from './mock-host/mock-web-socket.js';
+import {CommonWebSocketState} from './websocket-connect/common-web-socket.js';
 
 const noMessagesWebSocket = defineWebSocket({
     path: '/ws/no-messages',
@@ -1873,7 +1755,7 @@ describe('RestVirClient.connectWebSocket', () => {
         /**
          * Connecting against a non-routable origin will fail at the global `WebSocket` level rather
          * than reaching our mock. We just want to confirm `defaultWebSocket` is used as the
-         * fallback — i.e. the call doesn't throw a TypeError before construction. We catch the
+         * fallback. I.e. the call doesn't throw a TypeError before construction. We catch the
          * inevitable connection failure.
          */
         const offlineClient = new RestVirClient(wsApi, 'wss://nonexistent.invalid');

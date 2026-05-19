@@ -9,7 +9,7 @@ const {worker, kill} = await startApiServer(mockApiImplementation, {
 });
 
 if (worker) {
-    setTimeout(() => {
-        kill();
+    setTimeout(async () => {
+        await kill();
     }, 3000);
 }

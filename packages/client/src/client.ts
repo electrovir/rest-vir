@@ -13,18 +13,19 @@ import {
 } from '@augment-vir/common';
 import {
     extractEndpointMethodDefinition,
+    parseJsonWithUndefined,
     type ApiDefinition,
     type DefaultResponseHeadersType,
     type DefinableHttpMethod,
     type EndpointDefinition,
     type ExtractEndpointMethodDefinition,
+    type ExtractPathParams,
     type NoParam,
     type ResponseStatusDefinition,
     type RouteSearchParamsType,
+    type SetNullishPropertiesAsOptional,
     type WebSocketDefinition,
 } from '@rest-vir/api';
-import {parseJsonWithUndefined} from '@rest-vir/api/src/augments/json.js';
-import {type SetNullishPropertiesAsOptional} from '@rest-vir/api/src/augments/object.js';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {assertValidShape} from 'object-shape-tester';
 import {type Constructor} from 'type-fest';
@@ -41,7 +42,6 @@ import {
     type EndpointFetchStreamOutput,
     type UnknownFetchOutput,
 } from './endpoint-fetch/endpoint-response.js';
-import {type ExtractPathParams} from './path-params.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
 import {type CommonWebSocket} from './websocket-connect/common-web-socket.js';

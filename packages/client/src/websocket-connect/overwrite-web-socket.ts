@@ -32,8 +32,8 @@ import {
  * and waits for the WebSocket to be opened.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export async function finalizeClientWebSocket<
     const ThisWebSocket extends Readonly<WebSocketDefinition>,
@@ -91,8 +91,8 @@ function cleanUpWebSocketError(error: unknown) {
  * Waits for a WebSocket to reach to the open state.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export async function waitForOpenWebSocket(
     webSocket: Readonly<
@@ -148,8 +148,8 @@ export async function waitForOpenWebSocket(
  * passing in `WebSocketLocation.OnHost` here will give you `WebSocketLocation.OnClient`.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function getOppositeWebSocketLocation(
     originalWebSocketLocation: WebSocketLocation,
@@ -167,8 +167,8 @@ export function getOppositeWebSocketLocation(
  * WARNING: this mutates the input WebSocket.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function overwriteWebSocketMethods<
     const ThisWebSocket extends WebSocketDefinition,
@@ -363,8 +363,8 @@ export function overwriteWebSocketMethods<
  * source.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function verifyWebSocketMessage<
     const ThisWebSocket extends WebSocketDefinition,

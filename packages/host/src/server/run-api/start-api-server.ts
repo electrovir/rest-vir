@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {awaitedForEach, ensureErrorAndPrependMessage} from '@augment-vir/common';
+import {awaitedForEach, ensureErrorAndPrependMessage, type MaybePromise} from '@augment-vir/common';
 import {ClusterManager, runInCluster, type WorkerRunner} from 'cluster-vir';
 import fastify, {type FastifyInstance, type FastifyPluginCallback} from 'fastify';
 import {getPortPromise} from 'portfinder';
@@ -9,11 +9,18 @@ import {type ApiServerOptions, attachApi} from './attach-api.js';
 import {finalizeOptions, type RunApiOptions, type RunApiUserOptions} from './run-api-options.js';
 
 /**
+ * Tracks whether the process-wide `unhandledRejection` listener has already been installed by
+ * `startApiServer`. Repeated calls in the same process (tests, hot reload, in-process restarts)
+ * would otherwise accumulate listeners and trigger `MaxListenersExceededWarning`.
+ */
+let hasInstalledUnhandledRejectionListener = false;
+
+/**
  * Output of {@link startApiServer}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type StartApiServerOutput = {
     /**
@@ -44,8 +51,13 @@ export type StartApiServerOutput = {
      * threads.
      */
     worker?: WorkerRunner;
-    /** A function that will kill the service even if it's using multiple workers. */
-    kill: () => void;
+    /**
+     * Kill the service even if it's using multiple workers. Returns a promise that resolves once
+     * Fastify (and its registered plugins) finish their `onClose` hooks. Including
+     * `@fastify/websocket`'s teardown. So in-flight requests and WebSocket connections drain
+     * cleanly. Always `await` this in production shutdown paths.
+     */
+    kill: (this: void) => MaybePromise<void>;
 };
 
 /**
@@ -53,8 +65,8 @@ export type StartApiServerOutput = {
  * created by {@link startApiServer}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type FastifyPlugins = [
     plugin: FastifyPluginCallback,
@@ -68,8 +80,8 @@ export type FastifyPlugins = [
  * To attach the service endpoint handlers to an existing Fastify server, use {@link attachApi}.
  *
  * @category Run Service
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function startApiServer(
     api: Readonly<ApiImplementation>,
@@ -78,14 +90,17 @@ export async function startApiServer(
 ): Promise<StartApiServerOutput> {
     const serverLogger = createServerLogger(api.implementation.serverLogger);
 
-    process.on('unhandledRejection', (reason) => {
-        serverLogger.error(
-            ensureErrorAndPrependMessage(
-                reason,
-                `Unhandled async rejection in ${api.definition.apiName}:`,
-            ),
-        );
-    });
+    if (!hasInstalledUnhandledRejectionListener) {
+        hasInstalledUnhandledRejectionListener = true;
+        process.on('unhandledRejection', (reason) => {
+            serverLogger.error(
+                ensureErrorAndPrependMessage(
+                    reason,
+                    `Unhandled async rejection in ${api.definition.apiName}:`,
+                ),
+            );
+        });
+    }
 
     const finalOptions = finalizeOptions(options.externalOrigin, options);
 
@@ -120,7 +135,7 @@ export async function startApiServer(
                 );
 
                 return () => {
-                    kill();
+                    void kill();
                 };
             },
             {
@@ -161,11 +176,38 @@ export async function startApiServer(
 
 async function startServer(
     api: Readonly<ApiImplementation>,
-    {host, port}: Readonly<Pick<RunApiOptions, 'host' | 'port'>>,
+    {
+        host,
+        port,
+        bodyLimit,
+        connectionTimeout,
+        keepAliveTimeout,
+        requestTimeout,
+        trustProxy,
+        webSocketMaxPayload,
+    }: Readonly<
+        Pick<
+            RunApiOptions,
+            | 'host'
+            | 'port'
+            | 'bodyLimit'
+            | 'connectionTimeout'
+            | 'keepAliveTimeout'
+            | 'requestTimeout'
+            | 'trustProxy'
+            | 'webSocketMaxPayload'
+        >
+    >,
     fastifyPlugins: Readonly<FastifyPlugins>,
     serverOrigin: string,
 ): Promise<StartApiServerOutput> {
-    const server = fastify();
+    const server = fastify({
+        bodyLimit,
+        connectionTimeout,
+        keepAliveTimeout,
+        requestTimeout,
+        ...(trustProxy == undefined ? {} : {trustProxy}),
+    });
 
     await awaitedForEach(
         fastifyPlugins,
@@ -180,6 +222,7 @@ async function startServer(
     await attachApi(server, api, {
         externalOrigin: serverOrigin,
         throwErrorsForExternalHandling: false,
+        webSocketMaxPayload,
     });
 
     await server.listen({
@@ -187,12 +230,55 @@ async function startServer(
         host,
     });
 
+    async function kill(this: void) {
+        /**
+         * Use Fastify's `close()` (not the raw `server.server.close()`) so that `onClose` hooks
+         * registered by plugins like `@fastify/websocket` run and drain open connections.
+         */
+        await server.close();
+    }
+
+    installGracefulShutdown(kill);
+
     return {
         host,
         port,
         server,
-        kill() {
-            server.server.close();
-        },
+        kill,
     };
+}
+
+let hasInstalledGracefulShutdown = false;
+
+/**
+ * Install one-shot SIGTERM and SIGINT handlers that call the given `kill` function (typically the
+ * `kill` returned by {@link startApiServer}). Use this for production processes running under
+ * Kubernetes / ECS / systemd / Docker, which signal a graceful shutdown via SIGTERM. Without it,
+ * the process is hard-killed and in-flight requests / WebSockets are dropped.
+ *
+ * Idempotent across multiple `startApiServer` calls. Calling this twice in the same process is
+ * safe and will not double-install listeners.
+ */
+function installGracefulShutdown(kill: () => Promise<void> | void): void {
+    if (hasInstalledGracefulShutdown) {
+        return;
+    }
+    hasInstalledGracefulShutdown = true;
+    const handler = async (signal: string) => {
+        try {
+            await kill();
+        } finally {
+            /**
+             * Restore the default behavior and re-raise the signal so the process actually exits.
+             * This matches the conventional Node.js "graceful shutdown" recipe.
+             */
+            process.kill(process.pid, signal);
+        }
+    };
+    process.once('SIGTERM', async () => {
+        await handler('SIGTERM');
+    });
+    process.once('SIGINT', async () => {
+        await handler('SIGINT');
+    });
 }

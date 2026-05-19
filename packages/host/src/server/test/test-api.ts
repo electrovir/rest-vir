@@ -6,11 +6,11 @@ import {
     type Overwrite,
     type PartialWithUndefined,
 } from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
+import {describe} from '@augment-vir/test';
 import {
     type DefinableHttpMethod,
     type EndpointDefinition,
-    NoParam,
+    type NoParam,
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {
@@ -26,6 +26,7 @@ import {
 import fastify, {type FastifyInstance} from 'fastify';
 import {type InjectOptions} from 'light-my-request';
 import {type OutgoingHttpHeaders} from 'node:http';
+import {after} from 'node:test';
 import {buildUrl, parseUrl} from 'url-vir';
 import type WsSocket from 'ws';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
@@ -434,11 +435,7 @@ export function describeApi<const Api extends Readonly<ApiImplementation>>(
             api,
         });
 
-        /**
-         * The built-in Node.js test runner runs `it` calls sequentially so this will always be
-         * called last.
-         */
-        it('can be killed', async () => {
+        after(async () => {
             const {kill} = await apiPromise;
             await kill();
         });

@@ -25,8 +25,8 @@ import {RestVirHandlerError} from '../util/handler.error.js';
  * shape, if it has any.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function handleSearchParams({
     request,

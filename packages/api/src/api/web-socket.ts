@@ -48,14 +48,36 @@ export type WebSocketDefinition = {
     /** Allowed messages from the WebSocket host. */
     hostMessage?: Shape | undefined;
     /**
-     * Allowed connection protocol for this WebSocket. Since multiple protocols can be used, each
-     * applied protocol is tested against the given shape, if any is provided.
+     * Allowed connection protocols for this WebSocket. Each protocol the client sends is matched
+     * against the requirement; the client must supply at least one matching protocol when the
+     * requirement is set.
+     *
+     * Modeled the same way as `searchParams`:
+     *
+     * - A `Shape` (runtime type usually a `string` or string union): each supplied protocol must
+     *   satisfy the shape.
+     * - A `RegExp`: each supplied protocol must match the regex.
+     * - A `ReadonlyArray<Shape | RegExp>`: each supplied protocol must satisfy at least one entry.
+     *   Order is not significant. The array is treated as a list of alternatives.
      */
-    connectProtocol?: Shape | undefined;
+    connectProtocol?: WebSocketConnectProtocolRequirement | undefined;
 } & CommonRouteDefinition;
 
 /**
- * Extracts a WebSocket's protocol type.
+ * A single protocol-list requirement for a WebSocket. See
+ * {@link WebSocketDefinition.connectProtocol} for the meaning of each form.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type WebSocketConnectProtocolRequirement = Shape | RegExp | ReadonlyArray<Shape | RegExp>;
+
+/**
+ * Extracts a WebSocket's protocol type. The value to pass to the client when connecting. When the
+ * `connectProtocol` is a single `Shape` whose runtime type narrows to a string union, that union is
+ * preserved as the array element type. RegExp requirements and array-of-requirement requirements
+ * widen to the default `string[]` (the exact set of accepted strings is unknown at compile time).
  *
  * @category Internal
  * @category Package : @rest-vir/api
@@ -65,15 +87,18 @@ export type WebSocketConnectProtocolType<
     ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
 > = ThisWebSocket extends NoParam
     ? DefaultWebSocketProtocol
-    : Extract<
-            ThisWebSocket,
-            WebSocketDefinition
-        >['connectProtocol'] extends infer ProtocolShape extends Shape
-      ? IsNever<Extract<ProtocolShape['runtimeType'], string>> extends true
-          ? DefaultWebSocketProtocol
-          : undefined | null extends ProtocolShape['runtimeType']
-            ? Extract<ProtocolShape['runtimeType'], string>[] | undefined
-            : Extract<ProtocolShape['runtimeType'], string>[]
+    : Extract<ThisWebSocket, WebSocketDefinition>['connectProtocol'] extends infer Requirement
+      ? Requirement extends Shape
+          ? IsNever<Extract<Requirement['runtimeType'], string>> extends true
+              ? DefaultWebSocketProtocol
+              : undefined | null extends Requirement['runtimeType']
+                ? Extract<Requirement['runtimeType'], string>[] | undefined
+                : Extract<Requirement['runtimeType'], string>[]
+          : Requirement extends RegExp
+            ? string[]
+            : Requirement extends ReadonlyArray<unknown>
+              ? string[]
+              : DefaultWebSocketProtocol
       : DefaultWebSocketProtocol;
 
 export type DefaultWebSocketProtocol = string[] | undefined;

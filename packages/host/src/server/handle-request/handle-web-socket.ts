@@ -39,8 +39,8 @@ export function rawMessageToString(rawMessage: WsWebSocket.Data): string {
  * Handles a WebSocket request.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function handleWebSocketRequest(
     this: void,
@@ -134,11 +134,6 @@ export async function handleWebSocketRequest(
                     );
                 }
             } catch (error) {
-                const errorMessage = combineErrorMessages(
-                    `Failed to receive WebSocket message '${stringRawMessage}'.`,
-                    error,
-                );
-
                 serverLogger.error(
                     ensureErrorClass(
                         error,
@@ -149,10 +144,20 @@ export async function handleWebSocketRequest(
                             isWebSocket: true,
                             path: webSocketImplementation.path,
                         },
-                        errorMessage,
+                        combineErrorMessages(
+                            `Failed to receive WebSocket message '${stringRawMessage}'.`,
+                            error,
+                        ),
                         HttpStatus.InternalServerError,
                     ),
                 );
+                /**
+                 * Reject the message: do NOT invoke the user's `message` handler with garbage. 1008
+                 * = "policy violation". The canonical close code for "rejected because it violates
+                 * server policy" (such as shape validation).
+                 */
+                wsWebSocket.close(1008, 'invalid message');
+                return;
             }
             try {
                 await webSocketImplementation.implementation.message?.({

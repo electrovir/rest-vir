@@ -18,8 +18,8 @@ import {buildHandlerParams} from './handler-params.js';
  * Handles an endpoint's implementation execution.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function handleEndpointRequest(
     this: void,
@@ -106,13 +106,40 @@ export async function handleEndpointRequest(
             /** If the dev forgets to set a status code. */
         }
 
+        /**
+         * Implementations must return `RequireExactlyOne` of a status-code key. `Object.entries`'
+         * ordering for numeric-string keys depends on V8, so don't rely on `[0]`. Instead, find the
+         * single entry whose key parses to a valid `HttpStatus` and reject ambiguous results.
+         */
+        const statusEntries = Object.entries(endpointResult).filter(
+            ([
+                key,
+            ]) => check.isEnumValue(Number(key), HttpStatus),
+        );
+
+        if (statusEntries.length !== 1 || !statusEntries[0]) {
+            throw new RestVirHandlerError(
+                {
+                    apiName: api.apiName,
+                    isEndpoint: true,
+                    isWebSocket: false,
+                    path: endpoint.path,
+                },
+                statusEntries.length === 0
+                    ? 'Missing status code response.'
+                    : `Expected exactly one status code response key but got ${statusEntries.length}.`,
+                HttpStatus.InternalServerError,
+            );
+        }
+
         const [
             rawStatusCode,
             statusResponse,
-        ] = Object.entries(endpointResult)[0] || [];
+        ] = statusEntries[0];
         const statusCode = Number(rawStatusCode);
 
         if (!check.isEnumValue(statusCode, HttpStatus)) {
+            /* node:coverage ignore next: filtered above; defensive */
             throw new RestVirHandlerError(
                 {
                     apiName: api.apiName,
@@ -121,17 +148,6 @@ export async function handleEndpointRequest(
                     path: endpoint.path,
                 },
                 `Invalid response status code: '${statusCode}'.`,
-                HttpStatus.InternalServerError,
-            );
-        } else if (!statusResponse) {
-            throw new RestVirHandlerError(
-                {
-                    apiName: api.apiName,
-                    isEndpoint: true,
-                    isWebSocket: false,
-                    path: endpoint.path,
-                },
-                'Missing status code response.',
                 HttpStatus.InternalServerError,
             );
         }

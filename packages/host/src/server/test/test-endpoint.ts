@@ -14,10 +14,12 @@ import {testApi} from './test-api.js';
  *
  * ```ts
  * import {testEndpoint} from '@rest-vir/host';
+ * import {HttpMethod} from '@rest-vir/api';
  *
  * const response = await testEndpoint(
  *     myApiImplementation.implementation.endpoints['/my-endpoint'],
  *     HttpMethod.Get,
+ *     () => ({context: undefined}),
  * );
  * ```
  *

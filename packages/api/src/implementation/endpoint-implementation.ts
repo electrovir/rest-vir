@@ -17,10 +17,8 @@ import {
     type EndpointResponseType,
     type ExtractEndpointMethodDefinitionWithNoParam,
 } from '../api/endpoint.js';
-import {
-    type BaseRoutePath,
-    type RouteSearchParamsType,
-} from '../api/route.js';
+import {type ExtractPathParams} from '../api/path-params.js';
+import {type BaseRoutePath, type RouteSearchParamsType} from '../api/route.js';
 import {type SetNullishPropertiesAsOptional} from '../augments/object.js';
 import {type NoParam} from '../util/no-param.js';
 
@@ -49,6 +47,9 @@ export type BaseEndpointMethodImplementationParams<
     searchParams: RouteSearchParamsType<
         ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>
     >;
+    pathParams: Endpoint extends EndpointDefinition
+        ? ExtractPathParams<Endpoint['path']>
+        : ExtractPathParams;
 };
 
 /**
@@ -108,10 +109,28 @@ export type DefaultEndpointMethodStatusOutputs = Partial<
  * - Exactly one declared success/error status (with its response data and optional headers),
  * - Exactly one undeclared error status (string body),
  * - Or `{responseHandled: true}` to indicate the implementation already wrote the response (e.g. SSE
- *   streaming).
+ *   streaming or a hijacked raw response).
  *
  * @category Internal
  * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * // Server-Sent Events: hijack the response, write the stream directly, return
+ * // {responseHandled: true} so rest-vir leaves it alone.
+ * [HttpMethod.Get]({response}) {
+ *     response.hijack();
+ *     response.raw.writeHead(HttpStatus.Ok, {
+ *         'content-type': 'text/event-stream',
+ *         'cache-control': 'no-cache',
+ *         'x-no-compression': 'true',
+ *     });
+ *     response.raw.write(`data: hello\n\n`);
+ *     response.raw.end();
+ *     return {responseHandled: true};
+ * }
+ * ```
+ *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type EndpointMethodImplementationOutput<

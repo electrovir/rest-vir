@@ -10,14 +10,18 @@ const formDataShapeKind = 'FormData' as string;
  * @example
  *
  * ```ts
- * import {defineEndpoint, formDataShape, HttpMethod} from '@rest-vir/api';
+ * import {defineEndpoint, formDataShape, HttpMethod, HttpStatus} from '@rest-vir/api';
  *
  * const uploadEndpoint = defineEndpoint({
  *     path: '/upload',
  *     requests: {
  *         [HttpMethod.Post]: {
- *             requestData: formDataShape,
- *             responses: {},
+ *             requestData: formDataShape(),
+ *             responses: {
+ *                 [HttpStatus.Ok]: {
+ *                     responseData: undefined,
+ *                 },
+ *             },
  *         },
  *     },
  * });

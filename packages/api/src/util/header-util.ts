@@ -9,8 +9,8 @@ import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
  * - {@link headersToObject}
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type AllowedHeaders =
     | HeadersInit
@@ -26,8 +26,8 @@ export type AllowedHeaders =
  * Merges multiple headers containers into a single `Headers` instance.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function mergeHeaders(...headers: AllowedHeaders[]): Headers {
     const finalHeaders = new Headers();
@@ -50,8 +50,8 @@ export function mergeHeaders(...headers: AllowedHeaders[]): Headers {
  * Consolidate the headers input of whatever valid headers container into a `Headers` instance.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function consolidateHeaders(headers: AllowedHeaders): Headers {
     const newHeaders = new Headers();
@@ -91,8 +91,8 @@ export function consolidateHeaders(headers: AllowedHeaders): Headers {
  * values.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function headersToObject(headers: AllowedHeaders | undefined): Record<string, string> {
     if (!headers) {

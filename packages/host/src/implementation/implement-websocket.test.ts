@@ -64,7 +64,7 @@ type CustomContext = {
     db: {kind: 'db'};
 };
 
-/** A defineApi that includes a websocket — exercised by `WebSocketImplementation` consumers. */
+/** A defineApi that includes a websocket. Exercised by `WebSocketImplementation` consumers. */
 const wsApi = defineApi({
     apiName: 'ws-api',
     webSockets: [

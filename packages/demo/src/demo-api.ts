@@ -204,7 +204,7 @@ export const demoTeapotEndpoint = defineEndpoint({
     },
 });
 
-/** WebSocket with both client and host message shapes — round-trip echo. */
+/** WebSocket with both client and host message shapes. Round-trip echo. */
 export const demoEchoWebSocket = defineWebSocket({
     path: '/echo-ws',
     clientMessage: defineShape(''),

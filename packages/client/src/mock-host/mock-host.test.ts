@@ -501,7 +501,7 @@ describe(createMockHost.name, () => {
         assert.strictEquals(closeCount, 1);
     });
 
-    it('exposes readyState/sendFromHost/close on the host-facing webSocket', async () => {
+    it('exposes readyState/send/close on the host-facing webSocket', async () => {
         let observedReadyState: number | undefined;
         let closed = false;
         const client = createMockHost(mockApi, {
@@ -509,7 +509,7 @@ describe(createMockHost.name, () => {
                 '/chat': {
                     message({message, webSocket}) {
                         observedReadyState = webSocket.readyState;
-                        webSocket.sendFromHost(`alias: ${message}`);
+                        webSocket.send(`alias: ${message}`);
                     },
                     close() {
                         closed = true;

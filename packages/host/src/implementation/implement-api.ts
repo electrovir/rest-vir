@@ -54,7 +54,7 @@ export type ApiRouteImplementations<
             : {
                   /**
                    * Per-key mapped type that narrows each slot's `path` field via `Pick` from the
-                   * uniform endpoint definition. Only the `path` field is recomputed per key — the
+                   * uniform endpoint definition. Only the `path` field is recomputed per key. The
                    * rest of the implementation type is computed once and shared, so the per-slot
                    * cost is constant. This rejects an implementation whose `path` doesn't match the
                    * slot it's being assigned to.

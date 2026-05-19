@@ -42,7 +42,7 @@ export type CommonRouteDefinition = {
      *       regex.
      *   - An array of `RegExp` (e.g. `[/^\d+$/, /^[a-z]+$/]`): the URL must carry one or more
      *       occurrences. Each value must match at least one of the supplied regexes (any regex in
-     *       the array may match — the position of the regex in the array is not significant).
+     *       the array may match. The position of the regex in the array is not significant).
      *
      * Whether a key is required is driven by its shape: a non-nullable shape is required, a
      * nullable shape (e.g. `nullableShape(...)`) is optional. RegExp requirements are always

@@ -6,8 +6,8 @@ import {isErrorHttpStatus, type ErrorHttpStatus} from '@augment-vir/common';
  * failed status (rather than an internal server error).
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export class RejectRequestError extends Error {
     public override readonly name = 'RejectRequestError';

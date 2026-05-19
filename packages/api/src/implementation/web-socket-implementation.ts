@@ -37,9 +37,9 @@ export type BaseWebSocketImplementationParams<
     : unknown);
 
 /**
- * Generic listener implementation record for a WebSocket. Both host and client (mock) reuse this
- * by supplying their own `ExtraParams` (the environment-specific parameters layered onto the
- * shared {@link BaseWebSocketImplementationParams}).
+ * Generic listener implementation record for a WebSocket. Both host and client (mock) reuse this by
+ * supplying their own `ExtraParams` (the environment-specific parameters layered onto the shared
+ * {@link BaseWebSocketImplementationParams}).
  *
  * @category Internal
  * @category Package : @rest-vir/api

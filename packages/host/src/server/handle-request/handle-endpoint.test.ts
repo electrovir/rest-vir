@@ -35,7 +35,7 @@ describe(handleEndpointRequest.name, () => {
         /**
          * Forge an implementation that has POST but the definition only declares GET. The api type
          * system pairs methods between implementation and definition, so this case can only happen
-         * when something bypasses those types — verifying the runtime guard fires anyway.
+         * when something bypasses those types. Verifying the runtime guard fires anyway.
          */
         const forgedImplementation: EndpointImplementation = {
             path: endpointDefinition.path,

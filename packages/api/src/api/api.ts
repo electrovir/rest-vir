@@ -30,7 +30,7 @@ import {type WebSocketDefinition} from './web-socket.js';
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export class DefineApiError extends Error {
-    public override readonly name = 'ApiDefinitionError';
+    public override readonly name = 'DefineApiError';
 }
 
 /**
@@ -43,14 +43,18 @@ export class DefineApiError extends Error {
  * @example
  *
  * ```ts
- * import {defineEndpoint, defineApi, HttpMethod} from '@rest-vir/api';
+ * import {defineEndpoint, defineApi, HttpMethod, HttpStatus} from '@rest-vir/api';
+ * import {defineShape} from 'object-shape-tester';
  *
  * const usersEndpoint = defineEndpoint({
  *     path: '/users',
  *     requests: {
  *         [HttpMethod.Get]: {
- *             clientOrigin: '',
- *             responses: {},
+ *             responses: {
+ *                 [HttpStatus.Ok]: {
+ *                     responseData: defineShape({users: ['']}),
+ *                 },
+ *             },
  *         },
  *     },
  * });
@@ -58,17 +62,22 @@ export class DefineApiError extends Error {
  *     path: '/items',
  *     requests: {
  *         [HttpMethod.Get]: {
- *             clientOrigin: '',
- *             responses: {},
+ *             responses: {
+ *                 [HttpStatus.Ok]: {
+ *                     responseData: defineShape({items: ['']}),
+ *                 },
+ *             },
  *         },
  *     },
  * });
  *
  * const result = defineApi({
+ *     apiName: 'my-api',
  *     endpoints: [
  *         usersEndpoint,
  *         itemsEndpoint,
  *     ],
+ *     webSockets: [],
  * });
  * ```
  *

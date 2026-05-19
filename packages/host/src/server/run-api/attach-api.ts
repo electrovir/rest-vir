@@ -1,4 +1,4 @@
-import {assert, check} from '@augment-vir/assert';
+import {check} from '@augment-vir/assert';
 import {
     combineErrorMessages,
     ensureError,
@@ -12,8 +12,9 @@ import {
     type SelectFrom,
 } from '@augment-vir/common';
 import compressPlugin from '@fastify/compress';
+import multipartPlugin from '@fastify/multipart';
 import fastifyWs from '@fastify/websocket';
-import {type BaseSearchParams} from '@rest-vir/api';
+import {isFormDataShape, type BaseSearchParams} from '@rest-vir/api';
 import {type FastifyInstance} from 'fastify';
 import {buildUrl, parseUrl} from 'url-vir';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
@@ -30,8 +31,8 @@ import {RestVirHandlerError} from '../util/handler.error.js';
  * Context attached to each fastify request object.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type RestVirRequestContext = {
     context: unknown;
@@ -74,26 +75,34 @@ export type ApiServerOptions = {
      * @see https://developer.mozilla.org/en-US/docs/Web/API/Location for help on which part of the URL is the origin (if necessary).
      */
     externalOrigin: string;
+    /**
+     * Maximum size, in bytes, of an inbound WebSocket message frame. See
+     * {@link runApiOptionsShape.webSocketMaxPayload} for details.
+     */
+    webSocketMaxPayload?: number | undefined;
 };
 
 /**
- * Attach all handlers for a {@link ApiImplementation} to any existing Fastify server.
+ * Attach all handlers for an {@link ApiImplementation} to any existing Fastify server.
  *
- * @category Run Service
- * @category Package : @rest-vir/run-service
+ * @category Run Api
+ * @category Package : @rest-vir/host
  * @example
  *
  * ```ts
  * import fastify from 'fastify';
+ * import {attachApi} from '@rest-vir/host';
  *
  * const server = fastify();
  *
- * attachService(service, myServiceImplementation);
+ * await attachApi(server, myApiImplementation, {
+ *     externalOrigin: 'http://localhost:3000',
+ * });
  *
  * await server.listen({port: 3000});
  * ```
  *
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function attachApi(
     server: Readonly<FastifyInstance>,
@@ -115,7 +124,22 @@ export async function attachApi(
                 'gzip',
                 'deflate',
             ],
+            /**
+             * Skip compression for small responses where the gzip/br overhead costs more CPU than
+             * the bandwidth saving. 1 KiB matches Fastify's documented "good default."
+             */
+            threshold: 1024,
         });
+
+        /**
+         * Auto-register `@fastify/multipart` when any endpoint declares `formDataShape`. Without
+         * it, Fastify has no parser for `multipart/form-data` requests and the endpoint would fail
+         * before reaching the user's handler. Skip when no formData endpoints exist (avoids the
+         * plugin overhead) or when the consumer already registered it (e.g. with custom limits).
+         */
+        if (apiHasFormDataEndpoint(api) && !server.hasRequestDecorator('file')) {
+            await server.register(multipartPlugin);
+        }
 
         if (!server.hasRequestDecorator('ws')) {
             await server.register(fastifyWs, {
@@ -135,6 +159,13 @@ export async function attachApi(
                     );
                     webSocket.terminate();
                 },
+                ...(options.webSocketMaxPayload == undefined
+                    ? {}
+                    : {
+                          options: {
+                              maxPayload: options.webSocketMaxPayload,
+                          },
+                      }),
             });
         }
 
@@ -201,11 +232,14 @@ export async function attachApi(
                 );
                 if (options.throwErrorsForExternalHandling) {
                     throw error;
-                    /* node:coverage ignore next 5 */
+                    /* node:coverage ignore next 9 */
                 } else if (response.sent) {
-                    assert.never(
-                        "Error encountered but response was already sent so there's nothing we can do about it.",
-                    );
+                    /**
+                     * Cannot send another response. Bail out quietly. The error was already logged
+                     * above; throwing here would trigger the process-wide `unhandledRejection`
+                     * listener for nothing.
+                     */
+                    return;
                 } else {
                     response.statusCode = HttpStatus.InternalServerError;
                     return response.send();
@@ -325,6 +359,24 @@ export async function attachApi(
         serverLogger.error(ensureError(error));
         throw error;
     }
+}
+
+/**
+ * Returns `true` if any endpoint method in the api uses `formDataShape()` as its `requestData`,
+ * which means we need a multipart body parser registered. Used to decide whether to auto-register
+ * `@fastify/multipart` in {@link attachApi}.
+ *
+ * @category Internal
+ */
+function apiHasFormDataEndpoint(api: Readonly<ApiImplementation>): boolean {
+    for (const endpoint of Object.values(api.definition.endpoints)) {
+        for (const method of Object.values(endpoint.requests)) {
+            if (isFormDataShape(method.requestData)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /**

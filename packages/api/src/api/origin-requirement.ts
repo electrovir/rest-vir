@@ -9,6 +9,10 @@ import {type RequireExactlyOne} from 'type-fest';
  * - A RegExp: requires the incoming origin to match this RegExp.
  * - A function: requires the incoming origin to result in a `true` return value from this function.
  *
+ * When no `clientOriginRequirement` is set on either a route or the api as a whole, **all origins
+ * are accepted** (`Access-Control-Allow-Origin: *` is returned). Set a non-undefined value at the
+ * route or api level to restrict who may call the api from a browser.
+ *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
@@ -39,7 +43,7 @@ export type OriginRequirement =
 export type OriginCheckCallback = (originToCheck: string | undefined) => MaybePromise<boolean>;
 
 /**
- * - `boolean`: the origin was explicitly checked and passed (`true`) unionShape failed (`false`)
+ * - `boolean`: the origin was explicitly checked and passed (`true`) or failed (`false`)
  * - `undefined`: no origin checking occurred
  * - `AnyOrigin`: requirements explicitly allow any origin.
  *
@@ -97,7 +101,7 @@ export async function checkOriginRequirement(
 
 /**
  * Narrower version of {@link checkOriginRequirement} that simply returns `true` if the origin
- * matched unionShape `false` otherwise.
+ * matched or `false` otherwise.
  *
  * @category Internal
  * @category Package : @rest-vir/api

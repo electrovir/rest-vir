@@ -1,5 +1,6 @@
 import {
     type DefaultWebSocketProtocol,
+    type ExtractPathParams,
     type NoParam,
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
@@ -7,7 +8,6 @@ import {
     type WebSocketDefinition,
 } from '@rest-vir/api';
 import {type HasRequiredKeys} from 'type-fest';
-import {type ExtractPathParams} from '../path-params.js';
 import {type CommonWebSocket} from './common-web-socket.js';
 import {type ConnectWebSocketListeners} from './overwrite-web-socket-types.js';
 

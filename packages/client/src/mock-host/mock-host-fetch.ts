@@ -7,6 +7,7 @@ import {
     headersToObject,
     type ApiDefinition,
     type DefaultResponseHeadersType,
+    type EndpointDefinition,
     type EndpointMethodImplementationOutput,
 } from '@rest-vir/api';
 import {parseUrl} from 'url-vir';
@@ -83,10 +84,12 @@ export function createMockHostFetch<
                 });
             }
 
+            const parsedUrl = parseUrl(url);
             const searchParams = extractSearchParams(
                 methodDefinition.searchParams,
-                parseUrl(url).searchParams,
+                parsedUrl.searchParams,
             );
+            const pathParams = extractPathParamsFromUrl(endpoint, parsedUrl.fullPath);
             const requestHeaders = headersToObject(requestInit.headers);
             const requestData = await readRequestData(requestInit, requestHeaders);
 
@@ -115,6 +118,7 @@ export function createMockHostFetch<
                 requestHeaders,
                 requestData,
                 searchParams,
+                pathParams,
                 url,
             });
 
@@ -128,6 +132,45 @@ export function createMockHostFetch<
             });
         }
     };
+}
+
+/**
+ * Walk the endpoint's path template (e.g. `/users/:userId/items/*`) alongside the actual URL
+ * pathname (e.g. `/users/abc/items/foo/bar`), capturing each `:name` segment as a named path param
+ * and any trailing `*` segments under the `wildcard` key. Returns `undefined` for endpoints with no
+ * path params (matches the typed shape from `ExtractPathParams`).
+ */
+function extractPathParamsFromUrl(
+    endpoint: Readonly<EndpointDefinition>,
+    pathname: string,
+): Record<string, string | undefined> | undefined {
+    const templateSegments = endpoint.path.split('/').filter(Boolean);
+    const urlSegments = pathname.split('?')[0]?.split('/').filter(Boolean) || [];
+    const params: Record<string, string> = {};
+    let hasAny = false;
+
+    for (const [
+        index,
+        templateSegment,
+    ] of templateSegments.entries()) {
+        if (templateSegment === '*') {
+            const wildcardValue = urlSegments.slice(index).join('/');
+            if (wildcardValue) {
+                params.wildcard = decodeURIComponent(wildcardValue);
+                hasAny = true;
+            }
+            break;
+        }
+        if (templateSegment.startsWith(':')) {
+            const value = urlSegments[index];
+            if (value !== undefined) {
+                params[templateSegment.slice(1)] = decodeURIComponent(value);
+                hasAny = true;
+            }
+        }
+    }
+
+    return hasAny ? params : undefined;
 }
 
 async function readRequestData(
@@ -149,29 +192,39 @@ function buildMockResponseFromResult(
     /** Do not use `getObjectTypedEntries` here as it will actually return the incorrect types. */
     const entries = Object.entries(result);
 
-    if (!check.isLengthAtLeast(entries, 1)) {
-        return createMockResponse({
-            status: HttpStatus.InternalServerError,
-            body: `Mock endpoint implementation must return exactly one status entry; got ${entries.length}.`,
-        });
-    }
-    const [
-        status,
-        statusValue,
-    ] = entries[0];
-
-    if (status === 'responseHandled' || statusValue === true) {
+    if ('responseHandled' in result) {
         return createMockResponse({
             status: HttpStatus.NoContent,
         });
     }
-    const numericStatus = Number(status);
-    if (!check.isEnumValue(numericStatus, HttpStatus)) {
-        throw new Error(`Invalid status returned by mock implementation: ${status}`);
+
+    /**
+     * Find the single entry whose key parses to a valid `HttpStatus`. Don't rely on
+     * `Object.entries[0]` ordering for numeric-string keys (it varies by V8 internals).
+     */
+    const statusEntries = entries.filter(
+        ([
+            key,
+        ]) => check.isEnumValue(Number(key), HttpStatus),
+    );
+
+    if (statusEntries.length !== 1 || !statusEntries[0]) {
+        return createMockResponse({
+            status: HttpStatus.InternalServerError,
+            body:
+                statusEntries.length === 0
+                    ? 'Mock endpoint implementation must return exactly one status entry.'
+                    : `Expected exactly one status code response key but got ${statusEntries.length}.`,
+        });
     }
 
+    const [
+        status,
+        statusValue,
+    ] = statusEntries[0];
+
     return createMockResponse({
-        status: numericStatus,
+        status: Number(status),
         body: statusValue.responseData,
         headers: statusValue.headers,
     });

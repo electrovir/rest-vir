@@ -29,8 +29,8 @@ import {type HandledOutput, type RouteHandlerParams} from './endpoint-handler.js
  *   sent (so further handlers can process it).
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function handleCors(
     this: void,
@@ -62,8 +62,8 @@ export async function handleCors(
     /**
      * On a CORS preflight, the request's own method is OPTIONS, but the question being asked is
      * about the method the browser plans to use next. That target method is announced via the
-     * `Access-Control-Request-Method` header, so we look up the per-method origin requirement
-     * using that header rather than OPTIONS itself.
+     * `Access-Control-Request-Method` header, so we look up the per-method origin requirement using
+     * that header rather than OPTIONS itself.
      */
     const accessControlRequestMethod = request.headers['access-control-request-method'];
     const methodForOriginCheck =

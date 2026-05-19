@@ -304,8 +304,8 @@ function parse(stringToParse: string): TokenData {
  * This is from the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) package.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type ParamData = Partial<Record<string, string | string[]>>;
 
@@ -315,8 +315,8 @@ export type ParamData = Partial<Record<string, string | string[]>>;
  * This is from the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) package.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type MatchResult = {
     path: string;
@@ -329,8 +329,8 @@ export type MatchResult = {
  * This is from the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) package.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type Match = false | MatchResult;
 
@@ -341,21 +341,40 @@ export type Match = false | MatchResult;
  * This is from the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) package.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type MatchFunction = (path: string) => Match;
 
 /**
- * Transform a path into a match function.
+ * Cache of compiled match functions keyed by route path. Routes are developer-controlled and
+ * registered up-front at attach time, so this map's size is bounded by the api's route count and
+ * never grows from request input.
+ */
+const matchCache = new Map<string, MatchFunction>();
+
+/**
+ * Transform a path into a match function. Memoized: each unique route path compiles its regex once
+ * and reuses it across every request. Hot paths in the request lifecycle (`matchUrlToRoute`) used
+ * to recompile on every call, which dominated CPU on apis with many routes.
  *
  * This is from the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) package.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function match(path: string): MatchFunction {
+    const cached = matchCache.get(path);
+    if (cached) {
+        return cached;
+    }
+    const compiled = compileMatch(path);
+    matchCache.set(path, compiled);
+    return compiled;
+}
+
+function compileMatch(path: string): MatchFunction {
     const {regexp, keys} = pathToRegexp(path);
 
     const decoders = keys.map((key) => {

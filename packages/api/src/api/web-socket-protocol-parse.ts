@@ -61,8 +61,8 @@ const tokenChars = [
  * set of protocols is valid.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function parseSecWebSocketProtocolHeader(header: string): Set<string> {
     const protocols = new Set<string>();

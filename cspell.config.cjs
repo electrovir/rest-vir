@@ -7,9 +7,10 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
-        'duplexify',
-        'middie',
         'bivariant',
         'bivariantly',
+        'duplexify',
+        'middie',
+        'slowloris',
     ],
 };

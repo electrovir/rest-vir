@@ -110,9 +110,6 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
                 send: (message: unknown) => {
                     this.sendFromHost(message);
                 },
-                sendFromHost: (message: unknown) => {
-                    this.sendFromHost(message);
-                },
                 close: () => {
                     this.close();
                 },
@@ -199,8 +196,8 @@ export function createMockHostWebSocketConstructor<const Context = unknown>({
                 });
             } catch {
                 /**
-                 * Surface handler failures as an `error` event on the WebSocket — matching how a
-                 * real WebSocket signals trouble — instead of leaking an unhandled rejection.
+                 * Surface handler failures as an `error` event on the WebSocket. Matching how a
+                 * real WebSocket signals trouble. Instead of leaking an unhandled rejection.
                  */
                 this.dispatchEvent('error', {
                     target: this,

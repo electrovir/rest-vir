@@ -1,6 +1,36 @@
+import {check} from '@augment-vir/assert';
 import {ensureErrorAndPrependMessage} from '@augment-vir/common';
-import {parseSecWebSocketProtocolHeader, type WebSocketDefinition} from '@rest-vir/api';
-import {assertValidShape} from 'object-shape-tester';
+import {
+    parseSecWebSocketProtocolHeader,
+    type WebSocketConnectProtocolRequirement,
+    type WebSocketDefinition,
+} from '@rest-vir/api';
+import {checkValidShape, isShape} from 'object-shape-tester';
+
+/**
+ * Returns `true` when the given protocol string satisfies the requirement. The requirement can be a
+ * single `Shape`, a `RegExp`, or a `ReadonlyArray` of either (any entry in the array may match).
+ * See `WebSocketDefinition.connectProtocol`.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ */
+export function matchesWebSocketProtocolRequirement(
+    protocol: string,
+    requirement: WebSocketConnectProtocolRequirement,
+): boolean {
+    if (check.isArray(requirement)) {
+        return requirement.some((entry) => matchesWebSocketProtocolRequirement(protocol, entry));
+    } else if (requirement instanceof RegExp) {
+        return requirement.test(protocol);
+    } else if (isShape(requirement)) {
+        return checkValidShape(protocol, requirement, {
+            allowExtraKeys: true,
+        });
+    }
+    return false;
+}
 
 /**
  * Verifies that no WebSocket protocols in the given list are invalid. This doesn't have anything to
@@ -23,14 +53,11 @@ export function assertValidWebSocketProtocols(
 
     if (protocolRequirement) {
         protocols.forEach((protocol) => {
-            assertValidShape(
-                protocol,
-                protocolRequirement,
-                {
-                    allowExtraKeys: true,
-                },
-                `WebSocket protocol '${protocol}' failed protocol requirement in WebSocket '${webSocket.path}'.`,
-            );
+            if (!matchesWebSocketProtocolRequirement(protocol, protocolRequirement)) {
+                throw new Error(
+                    `WebSocket protocol '${protocol}' failed protocol requirement in WebSocket '${webSocket.path}'.`,
+                );
+            }
         });
     }
 

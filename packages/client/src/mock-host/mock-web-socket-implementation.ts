@@ -57,8 +57,6 @@ export type MockHostWebSocket = {
      * `webSocket.send(...)` on the host side.
      */
     send: (message: unknown) => void;
-    /** Alias for {@link MockHostWebSocket.send} — provided for parity with `MockClientWebSocket`. */
-    sendFromHost: (message: unknown) => void;
     /** Close the WebSocket connection. */
     close: () => void;
 };

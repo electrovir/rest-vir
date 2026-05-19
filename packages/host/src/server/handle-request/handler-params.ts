@@ -16,11 +16,27 @@ export function buildHandlerParams({
     response: ServerResponse;
     requestData: any;
 }) {
+    const rawParams = (request.params || {}) as Record<string, string | undefined>;
+    const wildcard = rawParams['*'];
+    /**
+     * Merge wildcard into a single `pathParams` object under the `wildcard` key so server-side
+     * implementations consume path params the same way the client builds them. Drop the raw `*` key
+     * . Consumers should read `pathParams.wildcard`.
+     */
+    const namedParams = filterObject(rawParams, (key) => !String(key).startsWith('*')) as Record<
+        string,
+        string
+    >;
+    const pathParams: Record<string, string | undefined> = {
+        ...namedParams,
+        ...(wildcard == undefined
+            ? {}
+            : {
+                  wildcard,
+              }),
+    };
     return {
-        pathParams: filterObject(request.params as Record<string, string>, (key) => {
-            return !String(key).startsWith('*');
-        }) as Record<string, string>,
-        wildcard: (request.params as Record<string, string>)['*'],
+        pathParams,
         request,
         requestData,
         requestHeaders: request.headers,

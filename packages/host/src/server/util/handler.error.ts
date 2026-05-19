@@ -8,8 +8,8 @@ import {combineErrorMessages, type HttpStatus} from '@augment-vir/common';
  * (so logs are easier to read).
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export class RestVirHandlerError extends Error {
     public override readonly name = 'RestVirHandlerError';
@@ -27,8 +27,8 @@ export class RestVirHandlerError extends Error {
  * Creates the handler error string used by {@link RestVirHandlerError}.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function createRestVirHandlerErrorPrefix(
     params: Readonly<{

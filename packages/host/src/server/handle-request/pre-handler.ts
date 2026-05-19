@@ -15,19 +15,23 @@ import {
     type EndpointDefinition,
     type WebSocketDefinition,
 } from '@rest-vir/api';
-import {buildMethodNotAllowedMessage, restVirApiNameHeader} from '@rest-vir/client';
+import {
+    buildMethodNotAllowedMessage,
+    matchesWebSocketProtocolRequirement,
+    restVirApiNameHeader,
+} from '@rest-vir/client';
 import {type IncomingHttpHeaders} from 'node:http';
-import {assertValidShape, checkValidShape, type Shape} from 'object-shape-tester';
+import {checkValidShape, type Shape} from 'object-shape-tester';
 import {type CreateHostContextParams} from '../../implementation/host-context.js';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
-import {RejectRequestError} from '../../implementation/reject-request.error.js';
 import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';
 import {
     type RunningServerInfo,
     type ServerRequest,
     type ServerResponse,
 } from '../../implementation/raw-route-data.js';
+import {RejectRequestError} from '../../implementation/reject-request.error.js';
 import {type ServerLogger} from '../../implementation/server-logger.js';
 import {RestVirHandlerError} from '../util/handler.error.js';
 import {matchUrlToRoute} from '../util/match-url.js';
@@ -40,8 +44,8 @@ import {buildHandlerParams} from './handler-params.js';
  * Handles a request before it gets to the actual route handlers.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function preHandler({
     request,
@@ -108,9 +112,11 @@ export async function preHandler({
     const protocolShapeError = connectProtocol
         ? wrapInTry(() => {
               protocols.forEach((protocol) => {
-                  assertValidShape(protocol, connectProtocol, {
-                      allowExtraKeys: true,
-                  });
+                  if (!matchesWebSocketProtocolRequirement(protocol, connectProtocol)) {
+                      throw new Error(
+                          `WebSocket protocol '${protocol}' failed protocol requirement.`,
+                      );
+                  }
               });
           })
         : undefined;

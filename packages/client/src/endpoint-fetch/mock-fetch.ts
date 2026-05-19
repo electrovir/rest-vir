@@ -21,8 +21,8 @@ import {type Shape} from 'object-shape-tester';
  * Options for {@link createMockEndpointResponse} and {@link createMockEndpointFetch}.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export type MockEndpointResponseOptions<
     Endpoint extends EndpointDefinition,
@@ -54,8 +54,8 @@ export type MockEndpointResponseOptions<
  * more generic response mocking, see {@link createMockResponse}.
  *
  * @category Testing : Client (Frontend)
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function createMockEndpointResponse<
     const Endpoint extends EndpointDefinition,
@@ -90,8 +90,8 @@ export function createMockEndpointResponse<
  * Parameters for {@link createMockResponse}.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export type MockResponseParams = Overwrite<
     Partial<Pick<Response, 'redirected' | 'statusText' | 'type'>>,
@@ -108,8 +108,8 @@ export type MockResponseParams = Overwrite<
  * property.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export class MockResponseBodyStream extends ReadableStream<Uint8Array<ArrayBuffer>> {
     constructor(
@@ -142,8 +142,8 @@ export class MockResponseBodyStream extends ReadableStream<Uint8Array<ArrayBuffe
  * endpoints.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @category Package : @rest-vir/client
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function createMockResponse(params: Readonly<MockResponseParams> = {}): Response {
     const {
@@ -166,10 +166,17 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
     let bodyUsed = false;
 
     return {
+        /**
+         * Default `content-type` to `text/plain` for string bodies and `application/json` for any
+         * other non-empty body. Passing `headers` explicitly always wins (mergeHeaders preserves
+         * later entries on duplicate names).
+         */
         headers: mergeHeaders(
-            {
-                'content-type': 'application/json',
-            },
+            body == undefined
+                ? {}
+                : {
+                      'content-type': typeof body === 'string' ? 'text/plain' : 'application/json',
+                  },
             headers,
         ),
         ok: !isErrorHttpStatus(status),
@@ -236,7 +243,12 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
                 throw new TypeError('Body is disturbed or locked.');
             }
             bodyUsed = true;
-            return Promise.resolve(JSON.stringify(body));
+            /**
+             * Match the real `Response.text()` semantics: a string body is returned as-is, not
+             * JSON-stringified. Non-string bodies are serialized to JSON so callers reading text
+             * still see a faithful representation.
+             */
+            return Promise.resolve(check.isString(body) ? body : JSON.stringify(body));
         },
         json() {
             if (bodyUsed) {
@@ -261,11 +273,11 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
  * {@link createMockFetch}.
  *
  * @category Testing : Client (Frontend)
- * @category Package : @rest-vir/define-service
+ * @category Package : @rest-vir/client
  * @example
  *
  * ```ts
- * import {createMockEndpointFetch, fetchEndpoint} from '@rest-vir/define-service';
+ * import {createMockEndpointFetch, fetchEndpoint} from '@rest-vir/client';
  *
  * fetchEndpoint(myService.endpoints['/my-path'], {
  *     fetch: createMockEndpointFetch(myService.endpoints['/my-path'], {
@@ -275,7 +287,7 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
  * });
  * ```
  *
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function createMockEndpointFetch<
     const Endpoint extends EndpointDefinition,
@@ -316,11 +328,11 @@ export function createMockEndpointFetch<
  * endpoints.
  *
  * @category Internal
- * @category Package : @rest-vir/define-service
+ * @category Package : @rest-vir/client
  * @example
  *
  * ```ts
- * import {createMockFetch, fetchEndpoint} from '@rest-vir/define-service';
+ * import {createMockFetch, fetchEndpoint} from '@rest-vir/client';
  *
  * fetchEndpoint(myService.endpoints['/my-path'], {
  *     fetch: createMockFetch({
@@ -330,7 +342,7 @@ export function createMockEndpointFetch<
  * });
  * ```
  *
- * @package [`@rest-vir/define-service`](https://www.npmjs.com/package/@rest-vir/define-service)
+ * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
  */
 export function createMockFetch(
     params: Readonly<Omit<MockResponseParams, 'url'>> = {},

@@ -1,8 +1,4 @@
-import {
-    type ApiDefinition,
-    type EndpointDefinition,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
+import {type ApiDefinition, type EndpointDefinition, type WebSocketDefinition} from '@rest-vir/api';
 import {type MockEndpointMethodImplementations} from './mock-endpoint-implementation.js';
 import {type MockWebSocketListenerImplementations} from './mock-web-socket-implementation.js';
 

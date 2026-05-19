@@ -1,5 +1,14 @@
 import {describe, itCases} from '@augment-vir/test';
-import {finalizeOptions} from './run-api-options.js';
+import {finalizeOptions, runApiOptionsShape} from './run-api-options.js';
+
+const operationalDefaults = {
+    bodyLimit: runApiOptionsShape.default.bodyLimit,
+    connectionTimeout: runApiOptionsShape.default.connectionTimeout,
+    keepAliveTimeout: runApiOptionsShape.default.keepAliveTimeout,
+    requestTimeout: runApiOptionsShape.default.requestTimeout,
+    webSocketMaxPayload: runApiOptionsShape.default.webSocketMaxPayload,
+    trustProxy: undefined,
+};
 
 describe(finalizeOptions.name, () => {
     itCases(finalizeOptions, [
@@ -17,6 +26,7 @@ describe(finalizeOptions.name, () => {
                 lockPort: false,
                 preventWorkerRespawn: false,
                 workerCount: 1,
+                ...operationalDefaults,
             },
         },
         {
@@ -33,6 +43,7 @@ describe(finalizeOptions.name, () => {
                 lockPort: false,
                 preventWorkerRespawn: false,
                 workerCount: 1,
+                ...operationalDefaults,
             },
         },
         {
@@ -49,6 +60,7 @@ describe(finalizeOptions.name, () => {
                 lockPort: false,
                 preventWorkerRespawn: false,
                 workerCount: 1,
+                ...operationalDefaults,
             },
         },
     ]);

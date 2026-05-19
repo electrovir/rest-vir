@@ -8,10 +8,10 @@ import {type BaseRoutePath} from './route.js';
 import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
 
 describe(DefineApiError.name, () => {
-    it('is an Error subclass with the ApiDefinitionError name', () => {
+    it('is an Error subclass with the DefineApiError name', () => {
         const error = new DefineApiError('something broke');
         assert.instanceOf(error, Error);
-        assert.strictEquals(error.name, 'ApiDefinitionError');
+        assert.strictEquals(error.name, 'DefineApiError');
         assert.strictEquals(error.message, 'something broke');
     });
 });
@@ -306,7 +306,7 @@ describe(defineApi.name, () => {
         assert.isLengthExactly(result.webSockets, 1);
     });
 
-    it('throws ApiDefinitionError on duplicate endpoint paths', () => {
+    it('throws DefineApiError on duplicate endpoint paths', () => {
         const firstEndpoint = defineEndpoint({
             path: '/users',
             requests: {
@@ -350,7 +350,7 @@ describe(defineApi.name, () => {
         );
     });
 
-    it('throws ApiDefinitionError on duplicate web socket paths', () => {
+    it('throws DefineApiError on duplicate web socket paths', () => {
         const firstSocket = defineWebSocket({
             path: '/chat',
             clientMessage: defineShape(''),
@@ -515,7 +515,7 @@ describe(defineApi.name, () => {
         }
     });
 
-    it('names thrown errors ApiDefinitionError', () => {
+    it('names thrown errors DefineApiError', () => {
         const first = defineWebSocket({
             path: '/same',
         });
@@ -534,7 +534,7 @@ describe(defineApi.name, () => {
             assert.fail('expected defineApi to throw');
         } catch (error) {
             assert.instanceOf(error, DefineApiError);
-            assert.strictEquals(error.name, 'ApiDefinitionError');
+            assert.strictEquals(error.name, 'DefineApiError');
         }
     });
 

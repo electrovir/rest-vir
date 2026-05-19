@@ -27,8 +27,8 @@ import {runPostRouteHook} from './run-post-route-hook.js';
  * Handles a WebSocket or Endpoint request.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export async function handleRoute({
     webSocket,
@@ -59,11 +59,16 @@ export async function handleRoute({
         const workerPid = cluster.isPrimary ? '' : process.pid;
         const webSocketMarker = route.isWebSocket ? '(ws)' : '';
 
+        /**
+         * Use the matched route path (definition-supplied) rather than `request.originalUrl` so
+         * query strings (which may carry tokens, auth params, or signed-URL signatures) never hit
+         * the default access log. Also drops any CR/LF an attacker might smuggle into the URL.
+         */
         const logParts = [
             workerPid,
             request.method,
             webSocketMarker,
-            request.originalUrl,
+            route.path,
         ].filter(check.isTruthy);
         serverLogger.info(logParts.join('\t'));
 

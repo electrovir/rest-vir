@@ -7,8 +7,8 @@ import {type ServerResponse} from '../../implementation/raw-route-data.js';
  * it.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function setResponseHeaders(
     response: /**
@@ -40,8 +40,8 @@ export function setResponseHeaders(
  * `writeHead()` headers taking precedence.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function setRawResponseHeaders(
     rawResponse: Readonly<Pick<NodeServerResponse, 'setHeader' | 'removeHeader'>>,

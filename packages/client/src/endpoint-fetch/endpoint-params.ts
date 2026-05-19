@@ -6,12 +6,12 @@ import {
     type EndpointRequestType,
     type ExtractEndpointMethodDefinition,
     type ExtractEndpointMethodDefinitionWithNoParam,
+    type ExtractPathParams,
     type NoParam,
     type RouteSearchParamsType,
     type SetNullishPropertiesAsOptional,
 } from '@rest-vir/api';
 import {type HasRequiredKeys} from 'type-fest';
-import {type ExtractPathParams} from '../path-params.js';
 
 /**
  * Used to define a function's rest params. The params object is only required if it has any

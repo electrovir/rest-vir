@@ -5,8 +5,8 @@ import {log, mapObjectValues, type PartialWithUndefined} from '@augment-vir/comm
  * also given the service's logger to use if they wish.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type ServerLogger = {
     /** The error log is always guaranteed to be passed exactly a single error. */
@@ -23,8 +23,8 @@ export type ServerLogger = {
  * User-definable service logger. Loggers may be set as `undefined` here to silence them.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type UserServerLogger = PartialWithUndefined<ServerLogger>;
 
@@ -32,8 +32,8 @@ export type UserServerLogger = PartialWithUndefined<ServerLogger>;
  * The default service logger.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export const defaultServerLogger: ServerLogger = {
     error(error) {
@@ -47,8 +47,8 @@ export const defaultServerLogger: ServerLogger = {
  * set to `undefined` by the user.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function createServerLogger(option: UserServerLogger = {}): ServerLogger {
     return mapObjectValues(defaultServerLogger, (logKey, defaultLogFunction) => {
@@ -64,8 +64,8 @@ export function createServerLogger(option: UserServerLogger = {}): ServerLogger 
  * A silent service logger. All logs simply do not get logged or do anything at all.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export const silentServerLogger: ServerLogger = {
     error: () => {},

@@ -291,7 +291,7 @@ describe('HostContext mismatch', () => {
      * with thousands of endpoints (`large-api-mock` defines 1600). The `any` parameter causes
      * `EndpointMethodImplementations` to take its `NoParam` fallback branch, which uses
      * `MakeBivariantFunction` and erases the contravariance check on the method's `context`
-     * parameter — so a HostContext mismatch on an _endpoint_ implementation is not caught.
+     * parameter. So a HostContext mismatch on an _endpoint_ implementation is not caught.
      *
      * Tightening this (either by using `EndpointDefinition` for the slot's Endpoint param, or by
      * adding a phantom `__hostContextMarker` field to `EndpointImplementation`) triggers a

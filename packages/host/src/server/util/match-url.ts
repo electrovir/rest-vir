@@ -9,8 +9,8 @@ import {match} from './path-to-regexp.js';
  * service. If no match is found, this returns `undefined`.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function matchUrlToRoute(
     this: void,
@@ -27,25 +27,35 @@ export function matchUrlToRoute(
         return match(webSocketPath)(pathname);
     });
 
-    if (endpointPath) {
-        return {
-            endpointPath,
-        };
-    } else if (webSocketPath) {
-        return {
-            webSocketPath,
-        };
-    } else {
+    if (!endpointPath && !webSocketPath) {
         return undefined;
     }
+    /**
+     * Both endpoint and websocket can be registered at the same path (e.g. `/chat` with a GET
+     * endpoint and a websocket upgrade on the same URL). Return whichever side matched so callers
+     * can decide based on `request.ws` whether to dispatch the websocket implementation or the
+     * endpoint implementation.
+     */
+    return {
+        ...(endpointPath
+            ? {
+                  endpointPath,
+              }
+            : {}),
+        ...(webSocketPath
+            ? {
+                  webSocketPath,
+              }
+            : {}),
+    };
 }
 
 /**
  * Output for {@link matchUrlToRoute}.
  *
  * @category Internal
- * @category Package : @rest-vir/implement-service
- * @package [`@rest-vir/implement-service`](https://www.npmjs.com/package/@rest-vir/implement-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type MatchedServicePath = RequireAtLeastOne<{
     webSocketPath: BaseRoutePath;

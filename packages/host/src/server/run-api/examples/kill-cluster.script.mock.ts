@@ -9,7 +9,7 @@ const {cluster, kill} = await startApiServer(mockApiImplementation, {
 });
 
 if (cluster) {
-    setTimeout(() => {
-        kill();
+    setTimeout(async () => {
+        await kill();
     }, 3000);
 }

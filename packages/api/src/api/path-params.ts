@@ -1,6 +1,7 @@
 import {type PartialWithUndefined} from '@augment-vir/common';
-import {type BaseRoutePath, type NoParam} from '@rest-vir/api';
 import {type IsEqual, type IsNever} from 'type-fest';
+import {type NoParam} from '../util/no-param.js';
+import {type BaseRoutePath} from './route.js';
 
 /**
  * Extracts all named path parameters from an endpoint path.

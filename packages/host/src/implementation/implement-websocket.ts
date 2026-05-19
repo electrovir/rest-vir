@@ -1,6 +1,7 @@
-import {type NoParam, type WebSocketDefinition} from '@rest-vir/api';
 import {
     type BaseWebSocketImplementationParams,
+    type NoParam,
+    type WebSocketDefinition,
     type WebSocketImplementationBase,
     type WebSocketListenerImplementationsBase,
 } from '@rest-vir/api';

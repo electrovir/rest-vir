@@ -12,8 +12,8 @@ import {setRawResponseHeaders, setResponseHeaders} from '../util/headers.js';
  * Options for `handleRoute`.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type HandleRouteOptions = PartialWithUndefined<{
     /**
@@ -32,8 +32,8 @@ export type HandleRouteOptions = PartialWithUndefined<{
  * Output from {@link RouteHandler}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type HandledOutput =
     | {
@@ -59,8 +59,8 @@ export type HandledOutput =
  * Params for {@link RouteHandler}.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type RouteHandlerParams = {
     request: ServerRequest;
@@ -72,8 +72,8 @@ export type RouteHandlerParams = {
  * An individual endpoint handler. The complete endpoint handler is made up of multiple of these.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export type RouteHandler = (params: Readonly<RouteHandlerParams>) => MaybePromise<HandledOutput>;
 
@@ -82,8 +82,8 @@ export type RouteHandler = (params: Readonly<RouteHandlerParams>) => MaybePromis
  * {@link handleHandlerOutput} but this one does not send the response.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function handleHandlerOutputWithoutSending(
     result: Readonly<HandledOutput>,
@@ -114,8 +114,8 @@ export function handleHandlerOutputWithoutSending(
  * Handle the output of a handler. Setting headers, sending the response, etc.
  *
  * @category Internal
- * @category Package : @rest-vir/run-service
- * @package [`@rest-vir/run-service`](https://www.npmjs.com/package/@rest-vir/run-service)
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export function handleHandlerOutput(
     result: Readonly<HandledOutput>,

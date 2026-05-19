@@ -140,7 +140,7 @@ function validateShape(
             },
             `Search param '${key}' value does not match shape requirement: '${stringify(rawValue)}'`,
         );
-        /* node:coverage ignore next 2: unreachable — assertValidShape always throws on a failed shape */
+        /* node:coverage ignore next 2: unreachable. AssertValidShape always throws on a failed shape */
         return undefined;
     }
 }
