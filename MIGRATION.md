@@ -1,4 +1,4 @@
-# Migration guide: `define-service` / `implement-service` / `run-service` → `api` / `client` / `host`
+# Migration guide: `define-service` / `implement-service` / `run-service` => `api` / `client` / `host`
 
 This guide walks through migrating from the previously-published rest-vir packages:
 
@@ -12,8 +12,6 @@ to the rewritten replacements:
 -   `@rest-vir/client`
 -   `@rest-vir/host`
 
-The rewrite is a substantial breaking change. Plan on a mechanical but time-consuming refactor (rough estimate: **4 to 6 engineer-weeks** for a codebase with ~100 endpoints and a frontend that calls them).
-
 ## Package mapping
 
 | Old                                                                                         | New                | Notes                                                               |
@@ -21,26 +19,25 @@ The rewrite is a substantial breaking change. Plan on a mechanical but time-cons
 | `@rest-vir/define-service`                                                                  | `@rest-vir/api`    | Pure definitions. No runtime code.                                  |
 | `@rest-vir/define-service` (client-side bits: `generateApi`, `fetchEndpoint`, mock helpers) | `@rest-vir/client` | The frontend-facing surface moved into a dedicated package.         |
 | `@rest-vir/implement-service`                                                               | `@rest-vir/host`   | Implementations now live in the same package as the server runtime. |
-| `@rest-vir/run-service`                                                                     | `@rest-vir/host`   | `startService` → `startApiServer`; `attachService` → `attachApi`.   |
+| `@rest-vir/run-service`                                                                     | `@rest-vir/host`   | `startService` => `startApiServer`; `attachService` => `attachApi`. |
 
 ## Conceptual changes at a glance
 
-1. **`defineService` → `defineApi`.** Endpoint and WebSocket lists are arrays, not records keyed by path.
+1. **`defineService` => `defineApi`.** Endpoint and WebSocket lists are arrays, not records keyed by path.
 2. **Per-endpoint method definitions are nested under `requests`.** `methods: {POST: true}` plus a flat `requestDataShape`/`responseDataShape` becomes `requests: {POST: {requestData, responses: {[status]: {responseData}}}}`.
 3. **Responses are declared per status code.** Every status the implementation may return must appear in the definition. There is no more flat `{statusCode, responseErrorMessage}` envelope.
 4. **`serviceOrigin` is gone from the definition.** The client takes a `baseUrl` when constructed; the host reads `externalOrigin` from its options.
-5. **CORS settings moved.** `requiredClientOrigin` at the service level → `clientOriginRequirement` on the api implementation (or per-method definition). `AnyOrigin` still exists.
-6. **`ServiceLogger` → `ServerLogger`**, `defaultServiceLogger` → `defaultServerLogger`, etc.
-7. **Frontend usage flipped.** `apiClient.endpoints['/x'].fetch({...})` → `client.fetch(endpoint).METHOD({...})`. The frontend imports the endpoint definitions directly.
-8. **Path params are now typed.** Reading `pathParams.userId` returns `string` directly with no null check.
-9. **`condenseResponse`, `testEndpoint`, `testWebSocket`, `describeApi`** still exist, but signatures changed.
-10. **`MockWebSocket`** is now a first-class export on `@rest-vir/client` instead of being a copy-paste test helper.
+5. **CORS settings moved.** `requiredClientOrigin` at the service level => `clientOriginRequirement` on the api implementation (or per-method definition). `AnyOrigin` still exists.
+6. **`ServiceLogger` => `ServerLogger`**, `defaultServiceLogger` => `defaultServerLogger`, etc.
+7. **Frontend usage flipped.** `apiClient.endpoints['/x'].fetch({...})` => `client.fetch(endpoint).METHOD({...})`. The frontend imports the endpoint definitions directly.
+8. **`condenseResponse`, `testEndpoint`, `testWebSocket`, `describeApi`** still exist, but signatures changed.
+9. **`MockWebSocket`** is now a first-class export on `@rest-vir/client` instead of being a copy-paste test helper.
 
 ## Phased migration plan
 
 Treat the migration as **five sequential phases**. Each phase must compile and tests should stay green before moving on. The frontend and tests can lag the backend if you stub the new packages behind an adapter, but the simpler path is to migrate the whole stack in one branch and ship it together.
 
-### Phase 0: spike (≈1 day)
+### Phase 0: spike
 
 Pick a small representative endpoint, ideally a `GET /health` plus one `POST` with a body shape. In a feature branch:
 
@@ -49,11 +46,10 @@ Pick a small representative endpoint, ideally a `GET /health` plus one `POST` wi
     npm i @rest-vir/api @rest-vir/client @rest-vir/host
     ```
 2. Rewrite that single endpoint's definition, implementation, frontend caller, and tests using the new packages.
-3. Verify the request roundtrips end to end.
 
-Treat this as a feasibility check. If it works, proceed. If anything fundamental is missing for your use case (see "Removed features" below), stop and design a workaround before phase 1.
+If anything fundamental is missing for your use case (see "Removed features" below), stop and design a workaround before phase 1.
 
-### Phase 1: definitions (high effort)
+### Phase 1: definitions
 
 Rewrite every `defineService` call into `defineApi` + `defineEndpoint` + `defineWebSocket`.
 
@@ -127,17 +123,17 @@ export const myApi = defineApi({
 Things to do mechanically:
 
 -   Every endpoint becomes a top-level `export const xxxEndpoint = defineEndpoint(...)`. Same for websockets.
--   `methods: {[HttpMethod.X]: true}` → `requests: {[HttpMethod.X]: {...}}`.
--   `requestDataShape: shape` → `requests[Method].requestData: shape`.
--   `responseDataShape: shape` → `requests[Method].responses[HttpStatus.Ok].responseData: shape`. **You must explicitly enumerate every status the implementation will return.** A success path means declaring `HttpStatus.Ok` (or whatever); a `NotFound` error path means declaring `HttpStatus.NotFound`.
--   `searchParamsShape: {...}` → `requests[Method].searchParams: {...}`. Same shape rules.
--   `messageFromClientShape` / `messageFromHostShape` → `clientMessage` / `hostMessage`.
--   `protocolsShape` → `connectProtocol` (semantics changed; see "Behavioral diffs" below).
+-   `methods: {[HttpMethod.X]: true}` => `requests: {[HttpMethod.X]: {...}}`.
+-   `requestDataShape: shape` => `requests[Method].requestData: shape`.
+-   `responseDataShape: shape` => `requests[Method].responses[HttpStatus.Ok].responseData: shape`. **You must explicitly enumerate every status the implementation will return.** A success path means declaring `HttpStatus.Ok` (or whatever); a `NotFound` error path means declaring `HttpStatus.NotFound`.
+-   `searchParamsShape: {...}` => `requests[Method].searchParams: {...}`. Same shape rules.
+-   `messageFromClientShape` / `messageFromHostShape` => `clientMessage` / `hostMessage`.
+-   `protocolsShape` => `connectProtocol` (semantics changed; see "Behavioral diffs" below).
 -   `serviceOrigin` is **dropped**. Plumb origins via the client's `baseUrl` and the host's `externalOrigin` option.
 -   `requiredClientOrigin` is **dropped from the definition**. Move it to the api implementation (`clientOriginRequirement`) or to each route's `requests[Method].clientOriginRequirement`.
--   `customProps` survives but moves under each method definition. If you previously used `customProps.requiredAuth` at the endpoint level, you now have to repeat it on each method — write a wrapper helper if this is common (e.g. `defineFlaxEndpoint`).
+-   `customProps` survives but moves under each method definition.
 
-### Phase 2: backend implementations (high effort)
+### Phase 2: backend implementations
 
 Every endpoint handler must be rewritten to return the new status-keyed envelope and live inside an `implementApi(...)` block.
 
@@ -217,17 +213,17 @@ export const myApiImplementation = implementApi<BackendContext>()(myApi, {
 
 Things to do mechanically:
 
--   `{statusCode, responseData}` → `{[HttpStatus.X]: {responseData}}`.
--   `{statusCode, responseErrorMessage: 'msg'}` → enumerate the error status in the definition's `responses`, then return `{[HttpStatus.NotFound]: {responseData: 'msg'}}` (the response shape can be a string).
--   `{statusCode, headers}` → `{[HttpStatus.X]: {responseData, headers}}`.
+-   `{statusCode, responseData}` => `{[HttpStatus.X]: {responseData}}`.
+-   `{statusCode, responseErrorMessage: 'msg'}` => enumerate the error status in the definition's `responses`, then return `{[HttpStatus.NotFound]: {responseData: 'msg'}}` (the response shape can be a string).
+-   `{statusCode, headers}` => `{[HttpStatus.X]: {responseData, headers}}`.
 -   `responseHandled: true` (for SSE / `response.hijack()`) is unchanged.
 -   `customHeaders` moves from `implementService` options to `implementApi(...)` options.
--   `postHook` → `postRouteHook` (same shape).
--   `createContext` → `createHostContext`. Return shape: `{context}` for success, `{reject: {statusCode, responseData?, headers?}}` to short-circuit.
+-   `postHook` => `postRouteHook` (same shape).
+-   `createContext` => `createHostContext`. Return shape: `{context}` for success, `{reject: {statusCode, responseData?, headers?}}` to short-circuit.
 -   `pathParams` is now typed against the path string. `pathParams.userId` is `string`, no `as` cast needed.
 -   `wildcard` for `/*` paths is now `pathParams.wildcard` (string), not a separate `wildcard` property on the params object.
 
-### Phase 3: server startup (low effort)
+### Phase 3: server startup
 
 Trivial rename in most cases.
 
@@ -242,27 +238,25 @@ await startService(myServiceImplementation, {port: 3000});
 **New**
 
 ```ts
-import {startApiServer, installGracefulShutdown} from '@rest-vir/host';
+import {startApiServer} from '@rest-vir/host';
 
 const {kill} = await startApiServer(myApiImplementation, {
     port: 3000,
     externalOrigin: 'http://localhost:3000',
 });
-
-installGracefulShutdown(kill);
 ```
 
 Things to do:
 
 -   Add `externalOrigin` to the options object. This used to come from `serviceOrigin` on the definition; now it lives on the server's runtime config.
--   `attachService(server, impl, options)` → `attachApi(server, impl, {externalOrigin})`.
+-   `attachService(server, impl, options)` => `attachApi(server, impl, {externalOrigin})`.
 -   `kill()` is now `async` and runs Fastify's `onClose` hooks (drains websockets, etc.). Always `await` it.
--   Consider opting into `installGracefulShutdown(kill)` for production processes under k8s / ECS / systemd.
--   New options surfaced for production hardening: `bodyLimit`, `connectionTimeout`, `keepAliveTimeout`, `requestTimeout`, `webSocketMaxPayload`, `trustProxy`. Set the timeouts behind a public endpoint to defend against slow-loris-style DoS.
+-   SIGTERM / SIGINT graceful shutdown (Fastify `onClose` hook draining) is wired automatically by `startApiServer`; you do not need to install your own signal handler.
+-   New options surfaced for production hardening: `bodyLimit`, `connectionTimeout`, `keepAliveTimeout`, `requestTimeout`, `webSocketMaxPayload`, `trustProxy`. Set the timeouts to non-zero values on any internet-facing deployment to defend against slowloris-style DoS attacks (where an attacker holds connections open by trickling bytes very slowly).
 
-### Phase 4: frontend client (medium to high effort)
+### Phase 4: frontend client
 
-The biggest user-facing rewrite. Every call site that used `apiClient.endpoints['/x'].fetch({...})` becomes `client.fetch(endpoint).METHOD({...})` — and the frontend now imports the endpoint definitions directly.
+The biggest user-facing rewrite. Every call site that used `apiClient.endpoints['/x'].fetch({...})` becomes `client.fetch(endpoint).METHOD({...})` and the frontend now imports the endpoint definitions directly.
 
 **Old**
 
@@ -307,11 +301,11 @@ if (result.Ok) {
 Things to do:
 
 -   Replace `generateApi(...)` with `new RestVirClient(api, baseUrl, fetchOverride?, webSocketConstructor?)`.
--   Every call site: `apiClient.endpoints[path].fetch({...})` → `client.fetch(endpoint).METHOD({...})`.
--   Streaming: `apiClient.endpoints[path].fetchStream({...})` → `client.fetchStream(endpoint, method, params)`.
--   WebSockets: `apiClient.webSockets[path].connect(...)` → `client.connectWebSocket(websocketDefinition, ...)`.
+-   Every call site: `apiClient.endpoints[path].fetch({...})` => `client.fetch(endpoint).METHOD({...})`.
+-   Streaming: `apiClient.endpoints[path].fetchStream({...})` => `client.fetchStream(endpoint, method, params)`.
+-   WebSockets: `apiClient.webSockets[path].connect(...)` => `client.connectWebSocket(websocketDefinition, ...)`.
 -   Response handling: the return value is `RequireExactlyOne<{Ok: {...}, NotFound: {...}, ..., unexpectedError: {...}}>`. Branch on which key is present; you cannot `switch (result.status)`.
--   The custom `fetch` override still receives `(url, requestInit, endpoint)` — same as before. Use `endpoint.requests[method].customProps` to read per-method metadata (note: `customProps` is now per-method, not per-endpoint).
+-   The custom `fetch` override still receives `(url, requestInit, endpoint)`, same as before. Use `endpoint.requests[method].customProps` to read per-method metadata (note: `customProps` is now per-method, not per-endpoint).
 
 ### Phase 5: tests (medium effort)
 
@@ -339,7 +333,7 @@ const response = await testEndpoint(healthImplementation, HttpMethod.Get, () => 
 Things to do:
 
 -   `testEndpoint(endpoint, ...)` becomes `testEndpoint(impl, method, createHostContext, ...params)`.
--   Frontend tests that previously used `makeMockApi` / `createMockResponse` switch to `createMockHost(api, {endpoints: {...}, webSockets: {...}})`. The returned object is a fully wired `RestVirClient` with no real network. Endpoint implementations can be partial — omitted methods return HTTP 501.
+-   Frontend tests that previously used `makeMockApi` / `createMockResponse` switch to `createMockHost(api, {endpoints: {...}, webSockets: {...}})`. The returned object is a fully wired `RestVirClient` with no real network. Endpoint implementations can be partial, omitted methods return HTTP 501.
 -   For client-side WebSocket unit tests that need to script "the host sent message X right now", use the newly-exported `MockWebSocket` and `getLastMockWebSocket()` from `@rest-vir/client`. Plug it in via `client.connectWebSocket(ws, {webSocketConstructor: MockWebSocket})`.
 -   `condenseResponse(response, options?)` still exists on `@rest-vir/host`.
 -   `describeApi(api, options, callback)` is still the wrapper for running a real test server inside a `describe` block.
@@ -354,7 +348,7 @@ If neither the api nor a route declares a `clientOriginRequirement`, the new fra
 
 ### WebSocket protocol shape
 
-`protocolsShape: defineShape([''])` (applied to the whole array) → `connectProtocol: defineShape('')` (applied to each protocol entry). The new shape also accepts `RegExp` and `ReadonlyArray<Shape | RegExp>` for any-of matching, similar to search-params.
+`protocolsShape: defineShape([''])` (applied to the whole array) => `connectProtocol: defineShape('')` (applied to each protocol entry). The new shape also accepts `RegExp` and `ReadonlyArray<Shape | RegExp>` for any-of matching, similar to search-params.
 
 ### `headersToObject`
 
@@ -382,19 +376,9 @@ Single-thread `kill()` now returns a promise that resolves once Fastify's `onClo
 -   **`AllOrigins`** constant. Use `AnyOrigin` (still a string `'*'`) or `{anyOrigin: true}` / `{anyOriginWithCredentials: true}` object literals.
 -   **`MockClientWebSocket`** (scripted "host pushes message X" mock). Reimplement using the new `MockWebSocket` from `@rest-vir/client` or `createMockHost`.
 -   **`mapServiceDevPort`**. The new client doesn't auto-rewrite the api definition with the discovered dev port. `findDevServerPort` / `findLivePort` still exist; wire them into your own `baseUrl` plumbing.
--   **`generateApi`, `makeMockApi`, `createMockResponse`** (frontend test helpers). Use `createMockHost` for the high-level case, `MockWebSocket` for scripted client-side tests, and `createMockResponse` (which actually still exists on `@rest-vir/client`'s `mock-fetch` module) for raw `Response`-level mocks.
--   **`minimal-service` / `service-definition.error`** exports. Internal-only; safe to drop.
+-   **`generateApi`, `makeMockApi`, `createMockResponse`** (frontend test helpers). Use `createMockHost` for the high-level case, `MockWebSocket` for scripted client-side tests, and `createMockResponse` for raw `Response` mocks.
 
-## Recommended migration order
-
-1. Phase 0 spike on one endpoint.
-2. Phase 1 — rewrite all definitions in one PR. Confirm the api package compiles; no implementation yet.
-3. Phase 2 — rewrite backend implementations in one or two PRs (split by feature area if the codebase is large). Confirm the host package compiles.
-4. Phase 3 — switch the server startup script. Confirm the server boots and serves `/health`.
-5. Phase 4 — rewrite the frontend client setup, then sweep call sites. This is the longest single phase; consider scripting common rewrites.
-6. Phase 5 — fix the test suite. Tests usually have the most idioms entangled with the old SDK, so plan for surprises.
-
-After all phases land, remove the old `@rest-vir/define-service`, `@rest-vir/implement-service`, and `@rest-vir/run-service` from `package.json` and `npm i` to clean lockfiles.
+After all phases land, remove the old `@rest-vir/define-service`, `@rest-vir/implement-service`, and `@rest-vir/run-service` from `package.json` and `npm i`.
 
 ## Quick verification checklist
 
@@ -404,7 +388,6 @@ Before merging the migration branch:
 -   [ ] Every endpoint implementation returns `{[status]: {...}}` (or `{responseHandled: true}`).
 -   [ ] `clientOriginRequirement` is set somewhere (api-level or per-route) for every production environment.
 -   [ ] `kill()` calls are awaited.
--   [ ] `installGracefulShutdown(kill)` is wired up if the process runs under an orchestrator that sends SIGTERM.
 -   [ ] `bodyLimit`, `webSocketMaxPayload`, and `connectionTimeout` are set explicitly for any internet-facing deployment.
 -   [ ] Frontend call sites no longer reference `apiClient.endpoints['/...']`.
 -   [ ] All tests pass.
