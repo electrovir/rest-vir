@@ -6,8 +6,8 @@ import {type MockWebSocketListenerImplementations} from './mock-web-socket-imple
  * Map of endpoint path → mock implementations. Each key must exist in the api's `endpoints` record.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostEndpointMap<Api extends Readonly<ApiDefinition>, Context> = {
     [Path in keyof Api['endpoints']]?: MockEndpointMethodImplementations<
@@ -21,8 +21,8 @@ export type MockHostEndpointMap<Api extends Readonly<ApiDefinition>, Context> = 
  * `webSockets` record.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostWebSocketMap<Api extends Readonly<ApiDefinition>, Context> = {
     [Path in keyof Api['webSockets']]?: MockWebSocketListenerImplementations<

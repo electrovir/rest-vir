@@ -7,7 +7,7 @@ import {
     log,
     safeJsonStringify,
 } from '@augment-vir/common';
-import {findDevServerPort, RestVirClient} from '@rest-vir/client';
+import {findDevServerPort, RestVirClient} from '@rest-vir/api';
 import {
     asyncProp,
     css,

@@ -1,5 +1,5 @@
 import {defineApi, type DefinableHttpMethod, type EndpointDefinition} from '@rest-vir/api';
-import {type EndpointFetchParams} from '@rest-vir/client';
+import {type EndpointFetchParams} from '@rest-vir/api';
 import {type CreateHostContext} from '../../implementation/host-context.js';
 import {implementApi} from '../../implementation/implement-api.js';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';

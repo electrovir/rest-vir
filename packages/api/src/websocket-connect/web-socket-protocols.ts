@@ -13,8 +13,8 @@ import {checkValidShape, isShape} from 'object-shape-tester';
  * See `WebSocketDefinition.connectProtocol`.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function matchesWebSocketProtocolRequirement(
     protocol: string,
@@ -38,8 +38,8 @@ export function matchesWebSocketProtocolRequirement(
  * sent.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function assertValidWebSocketProtocols(
     protocols: ReadonlyArray<string> | undefined,

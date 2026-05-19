@@ -2,7 +2,7 @@ import {assert, waitUntil} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {runShellCommand} from '@augment-vir/node';
 import {describe, it} from '@augment-vir/test';
-import {findDevServerPort, restVirApiNameHeader, RestVirClient} from '@rest-vir/client';
+import {findDevServerPort, restVirApiNameHeader, RestVirClient} from '@rest-vir/api';
 import {buildUrl} from 'url-vir';
 import {condenseResponse} from '../test/test-api.js';
 import {

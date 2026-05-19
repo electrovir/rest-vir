@@ -7,8 +7,8 @@ import {type BaseRoutePath} from './route.js';
  * Extracts all named path parameters from an endpoint path.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type NamedPathParams<EndpointPath extends string> = string extends EndpointPath
     ? string
@@ -24,8 +24,8 @@ export type NamedPathParams<EndpointPath extends string> = string extends Endpoi
  * Determines if the given endpoint path has a trailing wildcard.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type HasWildcardParam<EndpointPath extends string> = string extends EndpointPath
     ? boolean
@@ -39,8 +39,8 @@ export type HasWildcardParam<EndpointPath extends string> = string extends Endpo
  * Extracts named and wildcard path params.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type PathParams<EndpointPath extends string> = {
     namedParams: NamedPathParams<EndpointPath>;
@@ -52,8 +52,8 @@ export type PathParams<EndpointPath extends string> = {
  * multiple times inside {@link ExtractPathParams}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ResolveWildcard<HasWildcard extends boolean> = [HasWildcard] extends [true]
     ? Readonly<{
@@ -77,8 +77,8 @@ export type ResolveWildcard<HasWildcard extends boolean> = [HasWildcard] extends
  * string> | Record<'b', string>`.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ResolveNamedParams<Named extends string> =
     IsNever<Named> extends true
@@ -105,8 +105,8 @@ export type GenericPathParams =
  * Fast-paths simple paths (no `:` or `/*`) to avoid recursive template literal parsing.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ExtractPathParams<Path extends PropertyKey | NoParam = NoParam> =
     Path extends BaseRoutePath

@@ -9,7 +9,7 @@ import {
 } from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineApi, defineEndpoint, defineWebSocket, formDataShape} from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/client';
+import {restVirApiNameHeader} from '@rest-vir/api';
 import fastify from 'fastify';
 import {defineShape, exactShape} from 'object-shape-tester';
 import {implementApi} from '../../implementation/implement-api.js';

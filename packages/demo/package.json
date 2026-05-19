@@ -30,7 +30,6 @@
         "@augment-vir/common": "^31.70.0",
         "@fastify/multipart": "^10.0.0",
         "@rest-vir/api": "*",
-        "@rest-vir/client": "*",
         "@rest-vir/host": "*",
         "element-vir": "^26.16.0",
         "object-shape-tester": "^6.12.1",

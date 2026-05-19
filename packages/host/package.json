@@ -45,7 +45,6 @@
         "@fastify/multipart": "^10.0.0",
         "@fastify/websocket": "^11.2.0",
         "@rest-vir/api": "^1.7.2",
-        "@rest-vir/client": "^1.7.2",
         "@types/ws": "^8.18.1",
         "cluster-vir": "^1.0.1",
         "date-vir": "^8.3.2",

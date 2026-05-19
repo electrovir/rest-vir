@@ -1,7 +1,7 @@
 {
     "name": "@rest-vir/api",
     "version": "1.7.2",
-    "description": "Define a declarative and type safe REST API.",
+    "description": "Define a declarative and type safe REST API and connect to it from a client.",
     "keywords": [
         "rest",
         "api",
@@ -39,10 +39,13 @@
     "dependencies": {
         "@augment-vir/assert": "^31.70.0",
         "@augment-vir/common": "^31.70.0",
-        "type-fest": "^5.6.0"
+        "date-vir": "^8.3.2",
+        "type-fest": "^5.6.0",
+        "url-vir": "^2.1.9"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.70.0",
+        "@types/ws": "^8.18.1",
         "@web/dev-server-esbuild": "^1.0.5",
         "@web/test-runner": "^0.20.2",
         "@web/test-runner-playwright": "^0.11.1",

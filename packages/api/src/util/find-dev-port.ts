@@ -15,8 +15,8 @@ import {type EndpointFetchParamObject} from '../endpoint-fetch/endpoint-params.j
  * This header is set on all responses handled by rest-vir so we know what api a response came from.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const restVirApiNameHeader = 'rest-vir-api';
 
@@ -24,8 +24,8 @@ export const restVirApiNameHeader = 'rest-vir-api';
  * Options for {@link findDevServerPort} and {@link findLivePort}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type FindPortOptions = {
     /**
@@ -68,12 +68,12 @@ export type FindPortOptions = {
  * Note that the api given must have at least one endpoint defined for this function to work.
  *
  * @category Internal
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @example
  *
  * ```ts
  * import {HttpMethod, HttpStatus, defineApi, defineEndpoint} from '@rest-vir/api';
- * import {findDevServerPort} from '@rest-vir/client';
+ * import {findDevServerPort} from '@rest-vir/api';
  *
  * const myApi = defineApi({
  *     apiName: 'my-api',
@@ -101,7 +101,7 @@ export type FindPortOptions = {
  *
  * @returns `undefined` if `startOrigin` has no port to start scanning from.
  * @throws Error If the max scan distance or timeout is reached without finding a valid port.
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export async function findDevServerPort(
     api: Readonly<ApiDefinition>,
@@ -160,10 +160,10 @@ export async function findDevServerPort(
  * alive and matches, if provided, `isValidResponse`.
  *
  * @category Internal
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @returns `undefined` if the given origin has no port number to start with.
  * @throws Error if the max scan distance or timeout is reached without finding a valid port.
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export async function findLivePort(
     originWithStartingPort: string,

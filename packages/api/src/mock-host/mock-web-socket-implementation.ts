@@ -10,8 +10,8 @@ import {type CommonWebSocketState} from '../websocket-connect/common-web-socket.
  * Extras that mock WebSocket implementations receive on top of the shared base params.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockWebSocketParamsExtras = {
     /** The WebSocket the client is connected to, with `send`/`close`/event subscription. */
@@ -22,8 +22,8 @@ export type MockWebSocketParamsExtras = {
  * Listener record for a WebSocket on the client (mock) side.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockWebSocketListenerImplementations<
     ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
@@ -34,8 +34,8 @@ export type MockWebSocketListenerImplementations<
  * Implementation envelope for a single WebSocket on the client (mock) side.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockWebSocketImplementation<
     ThisWebSocket extends Readonly<WebSocketDefinition> = WebSocketDefinition,
@@ -47,8 +47,8 @@ export type MockWebSocketImplementation<
  * messages back to the connected client or close the connection.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostWebSocket = {
     readyState: CommonWebSocketState;

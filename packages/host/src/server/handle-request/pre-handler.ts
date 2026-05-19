@@ -19,7 +19,7 @@ import {
     buildMethodNotAllowedMessage,
     matchesWebSocketProtocolRequirement,
     restVirApiNameHeader,
-} from '@rest-vir/client';
+} from '@rest-vir/api';
 import {type IncomingHttpHeaders} from 'node:http';
 import {checkValidShape, type Shape} from 'object-shape-tester';
 import {type CreateHostContextParams} from '../../implementation/host-context.js';

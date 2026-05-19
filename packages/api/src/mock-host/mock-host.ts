@@ -10,8 +10,8 @@ import {createMockHostWebSocketConstructor} from './mock-host-web-socket-constru
  * Options for {@link createMockHost}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostParams<Api extends Readonly<ApiDefinition>, Context> = PartialWithUndefined<{
     createHostContext: MockCreateHostContext<Context>;
@@ -26,11 +26,11 @@ export type MockHostParams<Api extends Readonly<ApiDefinition>, Context> = Parti
  * implementations in-process.
  *
  * @category Testing
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @example
  *
  * ```ts
- * import {createMockHost} from '@rest-vir/client';
+ * import {createMockHost} from '@rest-vir/api';
  *
  * const mockClient = createMockHost(myApi, {
  *     endpoints: {
@@ -51,7 +51,7 @@ export type MockHostParams<Api extends Readonly<ApiDefinition>, Context> = Parti
  * const chat = await mockClient.connectWebSocket(myApi.webSockets['/chat']);
  * ```
  *
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockHost<const Api extends Readonly<ApiDefinition>, const Context = unknown>(
     api: Readonly<Api>,

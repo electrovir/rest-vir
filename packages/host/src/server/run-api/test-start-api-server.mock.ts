@@ -12,7 +12,7 @@ import {
     overwriteWebSocketMethods,
     waitForOpenWebSocket,
     WebSocketLocation,
-} from '@rest-vir/client';
+} from '@rest-vir/api';
 import {join} from 'node:path';
 import {unknownShape} from 'object-shape-tester';
 import {buildUrl} from 'url-vir';

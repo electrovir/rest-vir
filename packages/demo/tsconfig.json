@@ -19,9 +19,6 @@
             "path": "../api"
         },
         {
-            "path": "../client"
-        },
-        {
             "path": "../host"
         }
     ]

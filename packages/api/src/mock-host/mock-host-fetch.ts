@@ -24,8 +24,8 @@ import {type MockHostEndpointMap} from './mock-host-route-map.js';
  * Options for {@link createMockHostFetch}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostFetchOptions<Api extends Readonly<ApiDefinition>, Context> = {
     endpointImplementations: Readonly<MockHostEndpointMap<Api, Context>>;
@@ -42,8 +42,8 @@ export type MockHostFetchOptions<Api extends Readonly<ApiDefinition>, Context> =
  * implementation, and packages the result into a real `Response`.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockHostFetch<
     const Api extends Readonly<ApiDefinition>,

@@ -1,5 +1,5 @@
 import {type NoParam, type WebSocketDefinition} from '@rest-vir/api';
-import {type OverwriteWebSocketMethods, type WebSocketLocation} from '@rest-vir/client';
+import {type OverwriteWebSocketMethods, type WebSocketLocation} from '@rest-vir/api';
 import {type FastifyReply, type FastifyRequest} from 'fastify';
 import {type WebSocket as WsWebSocket} from 'ws';
 

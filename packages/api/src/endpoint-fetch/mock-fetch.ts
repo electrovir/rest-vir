@@ -21,8 +21,8 @@ import {type Shape} from 'object-shape-tester';
  * Options for {@link createMockEndpointResponse} and {@link createMockEndpointFetch}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockEndpointResponseOptions<
     Endpoint extends EndpointDefinition,
@@ -54,8 +54,8 @@ export type MockEndpointResponseOptions<
  * more generic response mocking, see {@link createMockResponse}.
  *
  * @category Testing : Client (Frontend)
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockEndpointResponse<
     const Endpoint extends EndpointDefinition,
@@ -90,8 +90,8 @@ export function createMockEndpointResponse<
  * Parameters for {@link createMockResponse}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockResponseParams = Overwrite<
     Partial<Pick<Response, 'redirected' | 'statusText' | 'type'>>,
@@ -108,8 +108,8 @@ export type MockResponseParams = Overwrite<
  * property.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export class MockResponseBodyStream extends ReadableStream<Uint8Array<ArrayBuffer>> {
     constructor(
@@ -142,8 +142,8 @@ export class MockResponseBodyStream extends ReadableStream<Uint8Array<ArrayBuffe
  * endpoints.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockResponse(params: Readonly<MockResponseParams> = {}): Response {
     const {
@@ -273,11 +273,11 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
  * {@link createMockFetch}.
  *
  * @category Testing : Client (Frontend)
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @example
  *
  * ```ts
- * import {createMockEndpointFetch, fetchEndpoint} from '@rest-vir/client';
+ * import {createMockEndpointFetch, fetchEndpoint} from '@rest-vir/api';
  *
  * fetchEndpoint(myService.endpoints['/my-path'], {
  *     fetch: createMockEndpointFetch(myService.endpoints['/my-path'], {
@@ -287,7 +287,7 @@ export function createMockResponse(params: Readonly<MockResponseParams> = {}): R
  * });
  * ```
  *
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockEndpointFetch<
     const Endpoint extends EndpointDefinition,
@@ -328,11 +328,11 @@ export function createMockEndpointFetch<
  * endpoints.
  *
  * @category Internal
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @example
  *
  * ```ts
- * import {createMockFetch, fetchEndpoint} from '@rest-vir/client';
+ * import {createMockFetch, fetchEndpoint} from '@rest-vir/api';
  *
  * fetchEndpoint(myService.endpoints['/my-path'], {
  *     fetch: createMockFetch({
@@ -342,7 +342,7 @@ export function createMockEndpointFetch<
  * });
  * ```
  *
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockFetch(
     params: Readonly<Omit<MockResponseParams, 'url'>> = {},

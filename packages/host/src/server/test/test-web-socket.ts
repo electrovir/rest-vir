@@ -4,7 +4,7 @@ import {
     type ClientWebSocket,
     type CommonWebSocket,
     type WebSocketConnectParamObject,
-} from '@rest-vir/client';
+} from '@rest-vir/api';
 import {type CreateHostContext} from '../../implementation/host-context.js';
 import {implementApi} from '../../implementation/implement-api.js';
 import {type WebSocketImplementation} from '../../implementation/implement-websocket.js';

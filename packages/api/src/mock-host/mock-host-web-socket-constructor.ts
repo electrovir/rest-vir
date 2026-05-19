@@ -28,8 +28,8 @@ import {
  * Options for {@link createMockHostWebSocketConstructor}.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockHostWebSocketConstructorOptions<Context> = {
     webSocketImplementations: Readonly<
@@ -54,8 +54,8 @@ export type MockHostWebSocketConstructorOptions<Context> = {
  * resolver are explicit factory inputs rather than implicit captures.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function createMockHostWebSocketConstructor<const Context = unknown>({
     webSocketImplementations,

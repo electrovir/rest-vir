@@ -1,41 +1,48 @@
 # @rest-vir/api
 
-Define a declarative, type-safe REST + WebSocket API once. Pair with [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host) to serve it and [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client) to call it.
+Typed HTTP + WebSocket client for an API defined with [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api). Use it from the browser or Node. Also ships an in-memory mock host for tests.
 
 See the full docs at https://electrovir.github.io/rest-vir
 
 ## Installation
 
 ```sh
-npm i @rest-vir/api object-shape-tester
+npm i @rest-vir/api @rest-vir/api object-shape-tester
 ```
 
 ## Usage
 
-<!-- example-link: src/examples/define-api.example.ts -->
+<!-- example-link: src/examples/fetch-endpoint.example.ts -->
 
 ```TypeScript
-import {defineApi, defineEndpoint, HttpMethod, HttpStatus} from '@rest-vir/api';
-import {defineShape} from 'object-shape-tester';
+import {RestVirClient} from '@rest-vir/api';
+import {myApi, healthEndpoint} from './my-api.js';
 
-export const healthEndpoint = defineEndpoint({
-    path: '/health',
-    requests: {
-        [HttpMethod.Get]: {
-            responses: {
-                [HttpStatus.Ok]: {
-                    responseData: defineShape({status: ''}),
-                },
-            },
+const client = new RestVirClient(myApi, 'https://api.example.com');
+
+const result = await client.fetch(healthEndpoint).GET();
+
+if (result.Ok) {
+    console.info(result.Ok.responseData);
+}
+```
+
+### Mocking a host in tests
+
+<!-- example-link: src/examples/mock-host.example.ts -->
+
+```TypeScript
+import {createMockHost} from '@rest-vir/api';
+import {HttpMethod, HttpStatus} from '@rest-vir/api';
+import {myApi, healthEndpoint} from './my-api.js';
+
+const client = createMockHost(myApi, {
+    endpoints: {
+        '/health': {
+            [HttpMethod.Get]: () => ({
+                [HttpStatus.Ok]: {responseData: {status: 'ok'}},
+            }),
         },
     },
 });
-
-export const myApi = defineApi({
-    apiName: 'my-api',
-    endpoints: [healthEndpoint],
-    webSockets: [],
-});
 ```
-
-The same `myApi` value is consumed by both server (`@rest-vir/host`) and client (`@rest-vir/client`).

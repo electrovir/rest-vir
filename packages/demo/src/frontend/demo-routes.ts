@@ -6,7 +6,7 @@ import {
     type JsonCompatibleValue,
     type MaybePromise,
 } from '@augment-vir/common';
-import {CommonWebSocketState, type RestVirClient} from '@rest-vir/client';
+import {CommonWebSocketState, type RestVirClient} from '@rest-vir/api';
 import {
     demoClockWebSocket,
     demoEchoEndpoint,

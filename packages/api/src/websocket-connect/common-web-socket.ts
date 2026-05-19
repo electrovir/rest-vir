@@ -6,8 +6,8 @@ import {type AnyFunction} from '@augment-vir/common';
  * WebSockets](https://github.com/websockets/ws/blob/HEAD/doc/ws.md#class-websocket).
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export abstract class CommonWebSocket {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,8 +60,8 @@ export abstract class CommonWebSocket {
  * (https://github.com/websockets/ws/blob/HEAD/doc/ws.md#websocketaddeventlistenertype-listener-options)
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type CommonWebSocketListenerOptions = {
     once?: boolean;
@@ -72,8 +72,8 @@ export type CommonWebSocketListenerOptions = {
  * [WebSocket.readyState](https://developer.mozilla.org/docs/Web/API/WebSocket/readyState).
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export enum CommonWebSocketState {
     Connecting = 0,
@@ -88,8 +88,8 @@ export enum CommonWebSocketState {
  * WebSockets](https://github.com/websockets/ws/blob/HEAD/doc/ws.md#class-websocket).
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type CommonWebSocketEventMap = {
     open: {

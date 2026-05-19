@@ -1,4 +1,4 @@
-# Migration guide: `define-service` / `implement-service` / `run-service` => `api` / `client` / `host`
+# Migration guide: `define-service` / `implement-service` / `run-service` => `client` / `host`
 
 This guide walks through migrating from the previously-published rest-vir packages:
 
@@ -9,17 +9,15 @@ This guide walks through migrating from the previously-published rest-vir packag
 to the rewritten replacements:
 
 -   `@rest-vir/api`
--   `@rest-vir/client`
 -   `@rest-vir/host`
 
 ## Package mapping
 
-| Old                                                                                         | New                | Notes                                                               |
-| ------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------- |
-| `@rest-vir/define-service`                                                                  | `@rest-vir/api`    | Pure definitions. No runtime code.                                  |
-| `@rest-vir/define-service` (client-side bits: `generateApi`, `fetchEndpoint`, mock helpers) | `@rest-vir/client` | The frontend-facing surface moved into a dedicated package.         |
-| `@rest-vir/implement-service`                                                               | `@rest-vir/host`   | Implementations now live in the same package as the server runtime. |
-| `@rest-vir/run-service`                                                                     | `@rest-vir/host`   | `startService` => `startApiServer`; `attachService` => `attachApi`. |
+| Old                           | New                | Notes                                                                                            |
+| ----------------------------- | ------------------ | ------------------------------------------------------------------------------------------------ |
+| `@rest-vir/define-service`    | `@rest-vir/api` | Definitions, client fetch, WebSocket connect, and frontend mock helpers all live in one package. |
+| `@rest-vir/implement-service` | `@rest-vir/host`   | Implementations now live in the same package as the server runtime.                              |
+| `@rest-vir/run-service`       | `@rest-vir/host`   | `startService` => `startApiServer`; `attachService` => `attachApi`.                              |
 
 ## Conceptual changes at a glance
 
@@ -31,7 +29,7 @@ to the rewritten replacements:
 6. **`ServiceLogger` => `ServerLogger`**, `defaultServiceLogger` => `defaultServerLogger`, etc.
 7. **Frontend usage flipped.** `apiClient.endpoints['/x'].fetch({...})` => `client.fetch(endpoint).METHOD({...})`. The frontend imports the endpoint definitions directly.
 8. **`condenseResponse`, `testEndpoint`, `testWebSocket`, `describeApi`** still exist, but signatures changed.
-9. **`MockWebSocket`** is now a first-class export on `@rest-vir/client` instead of being a copy-paste test helper.
+9. **`MockWebSocket`** is now a first-class export on `@rest-vir/api` instead of being a copy-paste test helper.
 
 ## Phased migration plan
 
@@ -43,7 +41,7 @@ Pick a small representative endpoint, ideally a `GET /health` plus one `POST` wi
 
 1. Install the new packages alongside the old ones.
     ```sh
-    npm i @rest-vir/api @rest-vir/client @rest-vir/host
+    npm i @rest-vir/api @rest-vir/host
     ```
 2. Rewrite that single endpoint's definition, implementation, frontend caller, and tests using the new packages.
 
@@ -280,7 +278,7 @@ const result = await apiClient.endpoints['/users/:userId'].fetch({
 **New**
 
 ```ts
-import {RestVirClient} from '@rest-vir/client';
+import {RestVirClient} from '@rest-vir/api';
 import {myApi, userEndpoint} from 'common';
 
 export const client = new RestVirClient(myApi, 'https://api.example.com', augmentedFetch);
@@ -334,7 +332,7 @@ Things to do:
 
 -   `testEndpoint(endpoint, ...)` becomes `testEndpoint(impl, method, createHostContext, ...params)`.
 -   Frontend tests that previously used `makeMockApi` / `createMockResponse` switch to `createMockHost(api, {endpoints: {...}, webSockets: {...}})`. The returned object is a fully wired `RestVirClient` with no real network. Endpoint implementations can be partial, omitted methods return HTTP 501.
--   For client-side WebSocket unit tests that need to script "the host sent message X right now", use the newly-exported `MockWebSocket` and `getLastMockWebSocket()` from `@rest-vir/client`. Plug it in via `client.connectWebSocket(ws, {webSocketConstructor: MockWebSocket})`.
+-   For client-side WebSocket unit tests that need to script "the host sent message X right now", use the newly-exported `MockWebSocket` and `getLastMockWebSocket()` from `@rest-vir/api`. Plug it in via `client.connectWebSocket(ws, {webSocketConstructor: MockWebSocket})`.
 -   `condenseResponse(response, options?)` still exists on `@rest-vir/host`.
 -   `describeApi(api, options, callback)` is still the wrapper for running a real test server inside a `describe` block.
 
@@ -374,7 +372,7 @@ Single-thread `kill()` now returns a promise that resolves once Fastify's `onClo
 
 -   **`bypassResponseValidation`** flag. Response shapes are always validated.
 -   **`AllOrigins`** constant. Use `AnyOrigin` (still a string `'*'`) or `{anyOrigin: true}` / `{anyOriginWithCredentials: true}` object literals.
--   **`MockClientWebSocket`** (scripted "host pushes message X" mock). Reimplement using the new `MockWebSocket` from `@rest-vir/client` or `createMockHost`.
+-   **`MockClientWebSocket`** (scripted "host pushes message X" mock). Reimplement using the new `MockWebSocket` from `@rest-vir/api` or `createMockHost`.
 -   **`mapServiceDevPort`**. The new client doesn't auto-rewrite the api definition with the discovered dev port. `findDevServerPort` / `findLivePort` still exist; wire them into your own `baseUrl` plumbing.
 -   **`generateApi`, `makeMockApi`, `createMockResponse`** (frontend test helpers). Use `createMockHost` for the high-level case, `MockWebSocket` for scripted client-side tests, and `createMockResponse` for raw `Response` mocks.
 

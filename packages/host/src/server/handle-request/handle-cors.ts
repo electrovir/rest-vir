@@ -6,7 +6,7 @@ import {
     type DefinableHttpMethod,
     type OriginRequirement,
 } from '@rest-vir/api';
-import {restVirApiNameHeader} from '@rest-vir/client';
+import {restVirApiNameHeader} from '@rest-vir/api';
 import {convertDuration} from 'date-vir';
 import {type OutgoingHttpHeaders} from 'node:http';
 import {type ApiImplementation} from '../../implementation/implement-api.js';

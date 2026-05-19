@@ -22,7 +22,7 @@ import {
     RestVirClient,
     type WebSocketConnectParamObject,
     type WebSocketConnectParams,
-} from '@rest-vir/client';
+} from '@rest-vir/api';
 import fastify, {type FastifyInstance} from 'fastify';
 import {type InjectOptions} from 'light-my-request';
 import {type OutgoingHttpHeaders} from 'node:http';

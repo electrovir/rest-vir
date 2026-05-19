@@ -5,8 +5,8 @@ import {type BaseCreateHostContextParams, type CreateHostContextBase} from '@res
  * for its `createHostContext` callback.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockCreateHostContextParamsExtras = {
     /** The URL the client requested, exactly as it was passed to the mocked `fetch` function. */
@@ -19,8 +19,8 @@ export type MockCreateHostContextParamsExtras = {
  * same implementation can be reused on both sides.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockCreateHostContext<HostContext> = CreateHostContextBase<
     HostContext,

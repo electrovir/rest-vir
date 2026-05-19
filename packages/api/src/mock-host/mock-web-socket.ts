@@ -17,8 +17,8 @@ const mockWebSocketRegistry: {lastInstance: MockWebSocket | undefined} = {
  * `webSocketConstructor: MockWebSocket` in its params).
  *
  * @category Testing
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function getLastMockWebSocket() {
     return assertWrap.isDefined(mockWebSocketRegistry.lastInstance);
@@ -28,8 +28,8 @@ export function getLastMockWebSocket() {
  * Options accepted by the {@link MockWebSocket} constructor's fourth argument.
  *
  * @category Testing
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockWebSocketOptions = {
     /**
@@ -47,7 +47,7 @@ export type MockWebSocketOptions = {
  * {@link MockWebSocket.sendCallback}.
  *
  * @category Testing
- * @category Package : @rest-vir/client
+ * @category Package : @rest-vir/api
  * @example
  *
  * ```ts
@@ -58,7 +58,7 @@ export type MockWebSocketOptions = {
  * getLastMockWebSocket().sendFromHost({event: 'hello'});
  * ```
  *
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export class MockWebSocket implements CommonWebSocket {
     public listeners: Partial<{

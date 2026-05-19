@@ -85,7 +85,7 @@ export type ApiServerOptions = {
      * not attached to responses, and it is not exposed via the CORS `Access-Control-Expose-Headers`
      * value. Useful when the server should not advertise that it is a rest-vir host.
      *
-     * Note: `findDevServerPort` from `@rest-vir/client` relies on this header to identify which
+     * Note: `findDevServerPort` from `@rest-vir/api` relies on this header to identify which
      * port is hosting the api during dev. Disabling the header breaks that discovery path; pin the
      * dev port explicitly in that case.
      *

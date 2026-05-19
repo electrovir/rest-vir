@@ -9,8 +9,8 @@ import {
  * Extras that mock endpoint implementations receive on top of the shared base params.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockEndpointParamsExtras = {
     /** The URL the client requested, exactly as it was passed to the mocked `fetch` function. */
@@ -23,8 +23,8 @@ export type MockEndpointParamsExtras = {
  * unimplemented method return HTTP 501 Not Implemented.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockEndpointMethodImplementations<
     Endpoint extends EndpointDefinition | NoParam = NoParam,
@@ -35,8 +35,8 @@ export type MockEndpointMethodImplementations<
  * Implementation envelope for a single endpoint on the client (mock) side.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type MockEndpointImplementation<
     Endpoint extends Readonly<EndpointDefinition> | NoParam = NoParam,

@@ -1,7 +1,7 @@
 import {assert, assertWrap, check} from '@augment-vir/assert';
 import {ensureErrorAndPrependMessage} from '@augment-vir/common';
 import {type ApiDefinition, definableHttpMethods, HttpMethod, HttpStatus} from '@rest-vir/api';
-import {readHeaderValue} from '@rest-vir/client';
+import {readHeaderValue} from '@rest-vir/api';
 import {assertValidShape} from 'object-shape-tester';
 import {
     type EndpointImplementation,

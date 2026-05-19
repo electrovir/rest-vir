@@ -16,8 +16,8 @@ import {type CommonWebSocket, type CommonWebSocketEventMap} from './common-web-s
  * that's accepting WebSocket connections.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export enum WebSocketLocation {
     /** On the host, accepting WebSocket client connections. */
@@ -31,8 +31,8 @@ export enum WebSocketLocation {
  * connection
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ConnectWebSocketListeners<
     ThisWebSocket extends WebSocketDefinition | NoParam,
@@ -57,8 +57,8 @@ export type ConnectWebSocketListeners<
  * A type-safe WebSocket listener callback.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type WebSocketListener<
     EventName extends keyof CommonWebSocketEventMap,
@@ -73,8 +73,8 @@ export type WebSocketListener<
  * A WebSocket instance used only in clients to connect to a host.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type ClientWebSocket<
     ThisWebSocket extends WebSocketDefinition | NoParam = NoParam,
@@ -122,8 +122,8 @@ export type WebSocketListenerParams<
  * passing in `WebSocketLocation.OnHost` here will give you `WebSocketLocation.OnClient`.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type FlipWebSocketLocation<Location extends WebSocketLocation> =
     Location extends WebSocketLocation.OnHost
@@ -135,8 +135,8 @@ export type FlipWebSocketLocation<Location extends WebSocketLocation> =
  * existing WebSocket methods type safe.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type OverwriteWebSocketMethods<
     WebSocketClass extends CommonWebSocket,
@@ -200,8 +200,8 @@ export type WebSocketSendMessageParams<
  * method that only _requires_ an object parameter if the parameters object has any required keys.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type WebSocketSendAndWaitForReplyParams<
     Location extends WebSocketLocation,
@@ -215,8 +215,8 @@ export type WebSocketSendAndWaitForReplyParams<
  * Determines a message's type based on the WebSocketLocation of where that message came from.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type WebSocketLocationMessageType<
     MessageFromSource extends WebSocketLocation,
@@ -231,8 +231,8 @@ export type WebSocketLocationMessageType<
  * Parameters for the `sendAndWaitForReply` method that gets attached to WebSockets.
  *
  * @category Internal
- * @category Package : @rest-vir/client
- * @package [`@rest-vir/client`](https://www.npmjs.com/package/@rest-vir/client)
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type SendAndWaitForReplyParamObject<
     Location extends WebSocketLocation,
