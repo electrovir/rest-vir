@@ -19,11 +19,17 @@ export type BaseRoutePath = `/${string}` | '/';
 /**
  * Properties shared between all route definitions (Endpoints and WebSockets).
  *
+ * The optional `CustomProps` generic narrows the type of `customProps` so wrappers (e.g. a
+ * project-specific `defineEndpoint`) can require a particular shape for `customProps` without
+ * forking the definition. `customProps` itself remains an optional field at the type level; if a
+ * wrapper also wants to require presence it can intersect with `{customProps: CustomProps}` at the
+ * wrapper signature.
+ *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type CommonRouteDefinition = {
+export type CommonRouteDefinition<CustomProps extends UnknownObject = UnknownObject> = {
     /**
      * Search params that this route supports.
      *
@@ -50,7 +56,7 @@ export type CommonRouteDefinition = {
      */
     searchParams?: Readonly<Record<string, SearchParamRequirement>> | undefined;
     /** Custom props that can be attached to this route. */
-    customProps?: UnknownObject | undefined;
+    customProps?: CustomProps | undefined;
     /**
      * The client origin requirement for this route. If this is `undefined` or omitted, the api's
      * overall client origin requirement is fallen back to.

@@ -5,6 +5,7 @@ import {
     type ArrayElement,
     type ErrorHttpStatus,
     type HttpStatus,
+    type UnknownObject,
 } from '@augment-vir/common';
 import {type Shape} from 'object-shape-tester';
 import {type IsNever, type RequireAtLeastOne} from 'type-fest';
@@ -49,14 +50,18 @@ export function defineEndpoint<const Endpoint extends EndpointDefinition>(
 /**
  * An individual Endpoint definition.
  *
+ * Optional `CustomProps` generic narrows the `customProps` shape on every method definition so
+ * wrappers like `defineMyEndpoint<E extends EndpointDefinition<MyCustomProps>>(...)` can constrain
+ * the `customProps` type without touching the rest of the definition.
+ *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointDefinition = {
+export type EndpointDefinition<CustomProps extends UnknownObject = UnknownObject> = {
     path: BaseRoutePath;
     requests: RequireAtLeastOne<{
-        [Method in DefinableHttpMethod]: EndpointMethodDefinition<Method>;
+        [Method in DefinableHttpMethod]: EndpointMethodDefinition<Method, CustomProps>;
     }>;
 };
 
@@ -178,7 +183,10 @@ export type HttpMethodsWithBodies = ArrayElement<typeof httpMethodsWithBodies>;
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointMethodDefinition<Method extends DefinableHttpMethod = DefinableHttpMethod> = {
+export type EndpointMethodDefinition<
+    Method extends DefinableHttpMethod = DefinableHttpMethod,
+    CustomProps extends UnknownObject = UnknownObject,
+> = {
     /**
      * - Omit to disable checking entirely.
      * - Set to `undefined` to require no request data.
@@ -202,7 +210,7 @@ export type EndpointMethodDefinition<Method extends DefinableHttpMethod = Defina
      * Note that header values are always converted to strings.
      */
     requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
-} & CommonRouteDefinition;
+} & CommonRouteDefinition<CustomProps>;
 
 /**
  * Optionally provide explicit response body data for specific response status. Any HttpStatus
