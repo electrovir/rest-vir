@@ -36,9 +36,7 @@ export async function testWebSocket<
 
     const apiImplementation = implementApi<HostContext>()(apiDefinition, {
         createHostContext,
-        webSockets: {
-            [webSocket.path]: webSocket,
-        },
+        webSockets: [webSocket],
     });
 
     const {connectWebSocket, kill} = await testApi(apiImplementation);

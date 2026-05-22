@@ -68,9 +68,9 @@ function buildScenario({
                   clientOriginRequirement: apiOriginRequirement,
               }
             : {}),
-        endpoints: {
-            '/example-path': endpointImplementation,
-        },
+        endpoints: [
+            endpointImplementation,
+        ],
     });
 
     return {
@@ -349,9 +349,9 @@ describe(handleCors.name, () => {
                     context: undefined,
                 };
             },
-            endpoints: {
-                '/example-path': endpointImplementation,
-            },
+            endpoints: [
+                endpointImplementation,
+            ],
         });
 
         const getPreflight = await handleCors({
@@ -416,9 +416,9 @@ describe(handleCors.name, () => {
             clientOriginRequirement: {
                 anyOrigin: true,
             },
-            endpoints: {
-                '/example-path': endpointImplementation,
-            },
+            endpoints: [
+                endpointImplementation,
+            ],
         });
 
         const result = await handleCors({

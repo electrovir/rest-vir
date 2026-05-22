@@ -48,9 +48,7 @@ export async function testEndpoint<
     });
     const apiImplementation = implementApi<HostContext>()(apiDefinition, {
         createHostContext,
-        endpoints: {
-            [endpoint.path]: endpoint,
-        },
+        endpoints: [endpoint],
     });
 
     const {fetchEndpoint, kill} = await testApi(apiImplementation);

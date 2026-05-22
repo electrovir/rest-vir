@@ -73,11 +73,11 @@ implementApi<undefined>()(api, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    webSockets: {
-        '/socket': basicImplementation,
-        '/no-client-data': noClientDataImplementation,
-        '/required-protocols': requiredProtocolsImplementation,
-    },
+    webSockets: [
+        basicImplementation,
+        noClientDataImplementation,
+        requiredProtocolsImplementation,
+    ],
 });
 
 describe(testWebSocket.name, () => {

@@ -143,12 +143,12 @@ implementApi<undefined>()(api, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/empty': emptyImplementation,
-        '/echo': echoImplementation,
-        '/throws-error': throwsErrorImplementation,
-        '/with/:param1/:param2/*': pathParamsImplementation,
-    },
+    endpoints: [
+        emptyImplementation,
+        echoImplementation,
+        throwsErrorImplementation,
+        pathParamsImplementation,
+    ],
 });
 
 describe(testEndpoint.name, () => {

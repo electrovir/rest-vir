@@ -116,8 +116,8 @@ const plainImplementation = implementApi<undefined>()(plainApi, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/health': plainImplementor.implementEndpoint(healthEndpoint, {
+    endpoints: [
+        plainImplementor.implementEndpoint(healthEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -126,17 +126,17 @@ const plainImplementation = implementApi<undefined>()(plainApi, {
                 };
             },
         }),
-        '/internal-error': plainImplementor.implementEndpoint(internalErrorEndpoint, {
+        plainImplementor.implementEndpoint(internalErrorEndpoint, {
             [HttpMethod.Get]() {
                 throw new Error('Intentional error.');
             },
         }),
-        '/rejects-with-error': plainImplementor.implementEndpoint(rejectsWithErrorEndpoint, {
+        plainImplementor.implementEndpoint(rejectsWithErrorEndpoint, {
             [HttpMethod.Get]() {
                 throw new RejectRequestError(HttpStatus.BadGateway);
             },
         }),
-        '/echo': plainImplementor.implementEndpoint(echoEndpoint, {
+        plainImplementor.implementEndpoint(echoEndpoint, {
             [HttpMethod.Post]({requestData}) {
                 assert.strictEquals(requestData, 'echo request');
                 return {
@@ -146,15 +146,15 @@ const plainImplementation = implementApi<undefined>()(plainApi, {
                 };
             },
         }),
-    },
-    webSockets: {
-        '/socket': plainImplementor.implementWebSocket(chatWebSocket, {
+    ],
+    webSockets: [
+        plainImplementor.implementWebSocket(chatWebSocket, {
             message({message, webSocket}) {
                 assert.strictEquals(message, 'from client');
                 webSocket.send('from server');
             },
         }),
-    },
+    ],
 });
 
 describeApi(
@@ -346,8 +346,8 @@ const sseImplementation = implementApi<undefined>()(sseApi, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/sse-stream': sseImplementor.implementEndpoint(sseEndpoint, {
+    endpoints: [
+        sseImplementor.implementEndpoint(sseEndpoint, {
             [HttpMethod.Get]({response}) {
                 response.hijack();
                 const raw = response.raw;
@@ -367,7 +367,7 @@ const sseImplementation = implementApi<undefined>()(sseApi, {
                 };
             },
         }),
-    },
+    ],
 });
 
 describe('responseHandled (SSE)', () => {
@@ -754,8 +754,8 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
         }
         return undefined;
     },
-    endpoints: {
-        '/echo': gapsImplementor.implementEndpoint(gapsEchoEndpoint, {
+    endpoints: [
+        gapsImplementor.implementEndpoint(gapsEchoEndpoint, {
             [HttpMethod.Post]({requestData}) {
                 return {
                     [HttpStatus.Ok]: {
@@ -766,7 +766,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/no-body': gapsImplementor.implementEndpoint(noBodyEndpoint, {
+        gapsImplementor.implementEndpoint(noBodyEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -775,7 +775,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/search': gapsImplementor.implementEndpoint(searchEndpoint, {
+        gapsImplementor.implementEndpoint(searchEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -784,7 +784,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/bad-status-code': gapsImplementor.implementEndpoint(badStatusCodeEndpoint, {
+        gapsImplementor.implementEndpoint(badStatusCodeEndpoint, {
             // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
                 return {
@@ -794,7 +794,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/missing-status': gapsImplementor.implementEndpoint(missingStatusEndpoint, {
+        gapsImplementor.implementEndpoint(missingStatusEndpoint, {
             // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
                 return {
@@ -802,7 +802,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/unexpected-data': gapsImplementor.implementEndpoint(unexpectedDataEndpoint, {
+        gapsImplementor.implementEndpoint(unexpectedDataEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -812,7 +812,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/shared-path': gapsImplementor.implementEndpoint(sharedPathEndpoint, {
+        gapsImplementor.implementEndpoint(sharedPathEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -828,7 +828,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/multi-method': gapsImplementor.implementEndpoint(
+        gapsImplementor.implementEndpoint(
             multiMethodEndpoint,
 
             // @ts-expect-error: intentionally wrong
@@ -844,7 +844,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 // make the request still reach handleEndpointRequest.
             },
         ),
-        '/no-request-data': gapsImplementor.implementEndpoint(noRequestDataEndpoint, {
+        gapsImplementor.implementEndpoint(noRequestDataEndpoint, {
             [HttpMethod.Post]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -853,7 +853,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/form-upload': gapsImplementor.implementEndpoint(formDataEndpoint, {
+        gapsImplementor.implementEndpoint(formDataEndpoint, {
             [HttpMethod.Post]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -862,7 +862,7 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-        '/rejecting-context': gapsImplementor.implementEndpoint(rejectingContextEndpoint, {
+        gapsImplementor.implementEndpoint(rejectingContextEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -871,36 +871,36 @@ const gapsImplementation = implementApi<undefined>()(gapsApi, {
                 };
             },
         }),
-    },
-    webSockets: {
-        '/echo-ws': gapsImplementor.implementWebSocket(echoWebSocket, {
+    ],
+    webSockets: [
+        gapsImplementor.implementWebSocket(echoWebSocket, {
             message({message, webSocket}) {
                 webSocket.send(message.value);
             },
         }),
-        '/no-client-message': gapsImplementor.implementWebSocket(noClientMessageWebSocket, {
+        gapsImplementor.implementWebSocket(noClientMessageWebSocket, {
             message() {
                 // No client messages are expected, but we still want a handler so we
                 // exercise the code path in handle-web-socket.ts that errors when a
                 // message arrives despite no clientMessage shape.
             },
         }),
-        '/throwing-ws': gapsImplementor.implementWebSocket(throwingWebSocket, {
+        gapsImplementor.implementWebSocket(throwingWebSocket, {
             message() {
                 throw new Error('intentional message handler failure');
             },
         }),
-        '/protocol-ws': gapsImplementor.implementWebSocket(protocolWebSocket, {
+        gapsImplementor.implementWebSocket(protocolWebSocket, {
             message({message, webSocket}) {
                 webSocket.send(message);
             },
         }),
-        '/shared-path': gapsImplementor.implementWebSocket(sharedPathWebSocket, {
+        gapsImplementor.implementWebSocket(sharedPathWebSocket, {
             message({message, webSocket}) {
                 webSocket.send(message);
             },
         }),
-    },
+    ],
 });
 
 describe('coverage-gaps integration', () => {

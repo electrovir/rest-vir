@@ -35,8 +35,8 @@ const myApiImplementation = implementApi()(myApi, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/health': implementor.implementEndpoint(healthEndpoint, {
+    endpoints: [
+        implementor.implementEndpoint(healthEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -45,7 +45,7 @@ const myApiImplementation = implementApi()(myApi, {
                 };
             },
         }),
-    },
+    ],
 });
 
 const server = fastify();

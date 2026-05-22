@@ -261,13 +261,13 @@ export async function attachApi(
         });
 
         const allPaths = new Set([
-            ...getObjectTypedKeys(api.implementation.webSockets || {}),
-            ...getObjectTypedKeys(api.implementation.endpoints || {}),
+            ...getObjectTypedKeys(api.implementation.webSockets),
+            ...getObjectTypedKeys(api.implementation.endpoints),
         ]);
 
         allPaths.forEach((path) => {
-            const webSocketImplementation = api.implementation.webSockets?.[path];
-            const endpointImplementation = api.implementation.endpoints?.[path];
+            const webSocketImplementation = api.implementation.webSockets[path];
+            const endpointImplementation = api.implementation.endpoints[path];
 
             if (endpointImplementation && webSocketImplementation) {
                 server.route({

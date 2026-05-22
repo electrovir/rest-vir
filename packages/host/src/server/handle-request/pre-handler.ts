@@ -88,11 +88,11 @@ export async function preHandler({
             ? api.definition.webSockets[pathMatch.webSocketPath]
             : undefined;
     const endpointImplementation = pathMatch.endpointPath
-        ? api.implementation.endpoints?.[pathMatch.endpointPath]
+        ? api.implementation.endpoints[pathMatch.endpointPath]
         : undefined;
     const webSocketImplementation =
         request.ws && pathMatch.webSocketPath
-            ? api.implementation.webSockets?.[pathMatch.webSocketPath]
+            ? api.implementation.webSockets[pathMatch.webSocketPath]
             : undefined;
 
     const routeDefinition: Readonly<EndpointDefinition | WebSocketDefinition> | undefined =

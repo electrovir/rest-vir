@@ -1,18 +1,9 @@
 import {assert} from '@augment-vir/assert';
+import {wrapInTry} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {
-    defineApi,
-    defineEndpoint,
-    defineWebSocket,
-    type EndpointDefinition,
-    HttpMethod,
-    HttpStatus,
-    type WebSocketDefinition,
-} from '@rest-vir/api';
+import {defineApi, defineEndpoint, defineWebSocket, HttpMethod, HttpStatus} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
-import {type ApiRouteImplementations, implementApi} from './implement-api.js';
-import {type EndpointImplementation} from './implement-endpoint.js';
-import {type WebSocketImplementation} from './implement-websocket.js';
+import {type ApiRouteImplementations, implementApi, ImplementApiError} from './implement-api.js';
 import {createApiImplementor} from './implementor.js';
 
 const pingEndpoint = defineEndpoint({
@@ -83,272 +74,237 @@ const smallApi = defineApi({
 
 const smallImplementor = createApiImplementor<unknown>()(smallApi);
 
+const pingImplementation = smallImplementor.implementEndpoint(pingEndpoint, {
+    [HttpMethod.Get]: () => {
+        return {
+            [HttpStatus.Ok]: {
+                responseData: {
+                    pong: true,
+                },
+            },
+        };
+    },
+});
+
+const usersCreateImplementation = smallImplementor.implementEndpoint(usersCreateEndpoint, {
+    [HttpMethod.Post]: () => {
+        return {
+            [HttpStatus.Created]: {
+                responseData: {
+                    id: 'new-id',
+                },
+            },
+        };
+    },
+});
+
+const chatImplementation = smallImplementor.implementWebSocket(chatWebSocket, {
+    message() {},
+});
+
+const presenceImplementation = smallImplementor.implementWebSocket(presenceWebSocket, {
+    open() {},
+    close() {},
+});
+
 describe(implementApi.name, () => {
-    it('returns the implementations object as-is', () => {
-        const implementations: ApiRouteImplementations<typeof smallApi> = {
+    it("keys endpoints and webSockets by each implementation's path field", () => {
+        const result = implementApi()(smallApi, {
             createHostContext() {
                 return {
                     context: undefined,
                 };
             },
-            endpoints: {
-                '/ping': {} as EndpointImplementation<typeof pingEndpoint>,
-                '/users/create': {} as EndpointImplementation<typeof usersCreateEndpoint>,
-            },
-            webSockets: {
-                '/ws/chat': {} as WebSocketImplementation<typeof chatWebSocket>,
-                '/ws/presence': {} as WebSocketImplementation<typeof presenceWebSocket>,
-            },
-        };
+            endpoints: [
+                pingImplementation,
+                usersCreateImplementation,
+            ],
+            webSockets: [
+                chatImplementation,
+                presenceImplementation,
+            ],
+        });
 
-        const result = implementApi()(smallApi, implementations);
-
-        assert.strictEquals(result.implementation, implementations);
+        assert.deepEquals(
+            new Set(Object.keys(result.implementation.endpoints)),
+            new Set([
+                '/ping',
+                '/users/create',
+            ]),
+        );
+        assert.deepEquals(
+            new Set(Object.keys(result.implementation.webSockets)),
+            new Set([
+                '/ws/chat',
+                '/ws/presence',
+            ]),
+        );
+        assert.strictEquals(result.implementation.endpoints['/ping'], pingImplementation);
+        assert.strictEquals(
+            result.implementation.webSockets['/ws/presence'],
+            presenceImplementation,
+        );
         assert.strictEquals(result.definition, smallApi);
     });
 
-    it('accepts implementations built with implementEndpoint and implementWebSocket', () => {
-        const ping = smallImplementor.implementEndpoint(pingEndpoint, {
-            [HttpMethod.Get]: () => {
-                return {
-                    [HttpStatus.Ok]: {
-                        responseData: {
-                            pong: true,
-                        },
+    it('throws when endpoints field is undefined but the api declares endpoints', () => {
+        assert.throws(
+            () =>
+                implementApi()(smallApi, {
+                    createHostContext() {
+                        return {
+                            context: undefined,
+                        };
                     },
-                };
+                    webSockets: [
+                        chatImplementation,
+                        presenceImplementation,
+                    ],
+                }),
+            {
+                matchConstructor: ImplementApiError,
+                matchMessage: '/ping',
             },
-        });
-        const usersCreate = smallImplementor.implementEndpoint(usersCreateEndpoint, {
-            [HttpMethod.Post]: () => {
-                return {
-                    [HttpStatus.Created]: {
-                        responseData: {
-                            id: 'new-id',
-                        },
+        );
+    });
+
+    it('throws when an api endpoint path is missing an implementation', () => {
+        assert.throws(
+            () =>
+                implementApi()(smallApi, {
+                    createHostContext() {
+                        return {
+                            context: undefined,
+                        };
                     },
-                };
+                    endpoints: [pingImplementation],
+                    webSockets: [
+                        chatImplementation,
+                        presenceImplementation,
+                    ],
+                }),
+            {
+                matchConstructor: ImplementApiError,
+                matchMessage: '/users/create',
             },
-        });
-        const chat = smallImplementor.implementWebSocket(chatWebSocket, {
-            message() {},
-        });
-        const presence = smallImplementor.implementWebSocket(presenceWebSocket, {
-            open() {},
-            close() {},
+        );
+    });
+
+    it('throws when an api webSocket path is missing an implementation', () => {
+        assert.throws(
+            () =>
+                implementApi()(smallApi, {
+                    createHostContext() {
+                        return {
+                            context: undefined,
+                        };
+                    },
+                    endpoints: [
+                        pingImplementation,
+                        usersCreateImplementation,
+                    ],
+                    webSockets: [chatImplementation],
+                }),
+            {
+                matchConstructor: ImplementApiError,
+                matchMessage: '/ws/presence',
+            },
+        );
+    });
+
+    it('lists every missing path in the error message', () => {
+        const caught = wrapInTry(() =>
+            implementApi()(smallApi, {
+                createHostContext() {
+                    return {
+                        context: undefined,
+                    };
+                },
+            }),
+        );
+
+        assert.instanceOf(caught, ImplementApiError);
+        assert.isTrue(caught.message.includes('/ping'));
+        assert.isTrue(caught.message.includes('/users/create'));
+        assert.isTrue(caught.message.includes('/ws/chat'));
+        assert.isTrue(caught.message.includes('/ws/presence'));
+    });
+
+    it('throws on duplicate endpoint paths', () => {
+        assert.throws(
+            () =>
+                implementApi()(smallApi, {
+                    createHostContext() {
+                        return {
+                            context: undefined,
+                        };
+                    },
+                    endpoints: [
+                        pingImplementation,
+                        pingImplementation,
+                    ],
+                    webSockets: [
+                        chatImplementation,
+                        presenceImplementation,
+                    ],
+                }),
+            {
+                matchConstructor: ImplementApiError,
+                matchMessage: 'duplicate',
+            },
+        );
+    });
+
+    it('throws on duplicate webSocket paths', () => {
+        assert.throws(
+            () =>
+                implementApi()(smallApi, {
+                    createHostContext() {
+                        return {
+                            context: undefined,
+                        };
+                    },
+                    endpoints: [
+                        pingImplementation,
+                        usersCreateImplementation,
+                    ],
+                    webSockets: [
+                        chatImplementation,
+                        chatImplementation,
+                    ],
+                }),
+            {
+                matchConstructor: ImplementApiError,
+                matchMessage: 'duplicate',
+            },
+        );
+    });
+
+    it('does not throw when the api has zero endpoints and zero webSockets', () => {
+        const emptyApi = defineApi({
+            apiName: 'empty',
         });
 
-        const implementations = implementApi()(smallApi, {
+        const result = implementApi()(emptyApi, {
             createHostContext() {
                 return {
                     context: undefined,
                 };
             },
-            endpoints: {
-                '/ping': ping,
-                '/users/create': usersCreate,
-            },
-            webSockets: {
-                '/ws/chat': chat,
-                '/ws/presence': presence,
-            },
         });
 
-        assert
-            .tsType<keyof (typeof implementations.implementation)['endpoints']>()
-            .equals<'/ping' | '/users/create'>();
-        assert
-            .tsType<keyof (typeof implementations.implementation)['webSockets']>()
-            .equals<'/ws/chat' | '/ws/presence'>();
+        assert.deepEquals(result.implementation.endpoints, {});
+        assert.deepEquals(result.implementation.webSockets, {});
     });
 });
 
-describe('ApiImplementation', () => {
-    it('keys endpoints by the api endpoint paths', () => {
-        type Implementation = ApiRouteImplementations<typeof smallApi>;
-
-        assert.tsType<keyof Implementation['endpoints']>().equals<'/ping' | '/users/create'>();
-    });
-
-    it('keys webSockets by the api web socket paths', () => {
-        type Implementation = ApiRouteImplementations<typeof smallApi>;
-
-        assert.tsType<keyof Implementation['webSockets']>().equals<'/ws/chat' | '/ws/presence'>();
-    });
-
-    it('rejects an extra endpoint key not declared on the api', () => {
-        const implementations: ApiRouteImplementations<typeof smallApi> = {
-            endpoints: {
-                '/ping': {} as EndpointImplementation<typeof pingEndpoint>,
-                '/users/create': {} as EndpointImplementation<typeof usersCreateEndpoint>,
-                // @ts-expect-error: '/unknown' is not a registered endpoint path.
-                '/unknown': {} as EndpointImplementation,
-            },
-            webSockets: {
-                '/ws/chat': {} as WebSocketImplementation<typeof chatWebSocket>,
-                '/ws/presence': {} as WebSocketImplementation<typeof presenceWebSocket>,
-            },
+describe('ApiRouteImplementations', () => {
+    it('takes path tuples and a HostContext type parameter', () => {
+        type HostContext = {
+            userId: string;
         };
 
-        assert.isDefined(implementations);
-    });
-
-    it('rejects a missing endpoint key', () => {
-        const incomplete = {
-            endpoints: {
-                '/ping': {} as EndpointImplementation,
-            },
-            webSockets: {
-                '/ws/chat': {} as WebSocketImplementation,
-                '/ws/presence': {} as WebSocketImplementation,
-            },
-        };
-
-        // @ts-expect-error: '/users/create' implementation is missing.
-        const implementations: ApiRouteImplementations<typeof smallApi> = incomplete;
-
-        assert.isDefined(implementations);
-    });
-
-    it('rejects a missing webSocket key', () => {
-        const incomplete = {
-            endpoints: {
-                '/ping': {} as EndpointImplementation,
-                '/users/create': {} as EndpointImplementation,
-            },
-            webSockets: {
-                '/ws/chat': {} as WebSocketImplementation,
-            },
-        };
-
-        // @ts-expect-error: '/ws/presence' implementation is missing.
-        const implementations: ApiRouteImplementations<typeof smallApi> = incomplete;
-
-        assert.isDefined(implementations);
-    });
-
-    it('requires both endpoints and webSockets fields on the implementation object', () => {
-        const onlyEndpoints = {
-            endpoints: {
-                '/ping': {} as EndpointImplementation,
-                '/users/create': {} as EndpointImplementation,
-            },
-        };
-
-        // @ts-expect-error: webSockets field is missing.
-        const implementations: ApiRouteImplementations<typeof smallApi> = onlyEndpoints;
-
-        assert.isDefined(implementations);
-    });
-});
-
-describe('HostContext mismatch', () => {
-    type HostContextA = {
-        userId: string;
-    };
-    type HostContextB = {
-        sessionId: number;
-    };
-
-    /**
-     * Typed to match the slot signature exactly so that the only type difference between these
-     * values and the slot is the `HostContext` parameter. This ensures the `@ts-expect-error`
-     * assertions below catch HostContext mismatches specifically, not unrelated variance issues in
-     * the endpoint or websocket shape parameters.
-     */
-    const pingForA = {} as EndpointImplementation<
-        EndpointDefinition & {path: '/ping'},
-        HostContextA
-    >;
-    const usersCreateForB = {} as EndpointImplementation<
-        EndpointDefinition & {path: '/users/create'},
-        HostContextB
-    >;
-    const usersCreateForA = {} as EndpointImplementation<
-        EndpointDefinition & {path: '/users/create'},
-        HostContextA
-    >;
-    const chatForA = {} as WebSocketImplementation<
-        WebSocketDefinition & {path: '/ws/chat'},
-        HostContextA
-    >;
-    const chatForB = {} as WebSocketImplementation<
-        WebSocketDefinition & {path: '/ws/chat'},
-        HostContextB
-    >;
-    const presenceForA = {} as WebSocketImplementation<
-        WebSocketDefinition & {path: '/ws/presence'},
-        HostContextA
-    >;
-    const presenceForB = {} as WebSocketImplementation<
-        WebSocketDefinition & {path: '/ws/presence'},
-        HostContextB
-    >;
-
-    /**
-     * Known limitation: the endpoint slot value type in `ApiRouteImplementations` uses
-     * `EndpointImplementation<any, NoInfer<HostContext>>` so the type stays cheap enough for APIs
-     * with thousands of endpoints (`large-api-mock` defines 1600). The `any` parameter causes
-     * `EndpointMethodImplementations` to take its `NoParam` fallback branch, which uses
-     * `MakeBivariantFunction` and erases the contravariance check on the method's `context`
-     * parameter. So a HostContext mismatch on an _endpoint_ implementation is not caught.
-     *
-     * Tightening this (either by using `EndpointDefinition` for the slot's Endpoint param, or by
-     * adding a phantom `__hostContextMarker` field to `EndpointImplementation`) triggers a
-     * TypeScript internal compiler error (`Debug Failure: parameter should have errors when
-     * reporting errors`) at the 1,600-endpoint scale.
-     *
-     * The websocket equivalent below still catches the mismatch because `WebSocketImplementation`
-     * doesn't have a bivariant fallback path. If you need this check on endpoints, narrow the slot
-     * value type at the call site by writing `as EndpointImplementation<typeof yourEndpoint,
-     * YourHostContext>` when assigning.
-     */
-    it('does not catch HostContext mismatch on endpoint implementations', () => {
-        implementApi<HostContextB>()(smallApi, {
-            createHostContext() {
-                return {
-                    context: {
-                        sessionId: 1,
-                    },
-                };
-            },
-            endpoints: {
-                '/ping': pingForA,
-                '/users/create': usersCreateForB,
-            },
-            webSockets: {
-                '/ws/chat': chatForB,
-                '/ws/presence': presenceForB,
-            },
-        });
-    });
-
-    it('rejects a websocket implementation built for a different HostContext', () => {
-        implementApi<HostContextB>()(smallApi, {
-            createHostContext() {
-                return {
-                    context: {
-                        sessionId: 1,
-                    },
-                };
-            },
-            endpoints: {
-                '/ping': {} as EndpointImplementation<
-                    EndpointDefinition & {path: '/ping'},
-                    HostContextB
-                >,
-                '/users/create': usersCreateForB,
-            },
-            webSockets: {
-                // @ts-expect-error: webSocket was built with HostContextA, not HostContextB.
-                '/ws/chat': chatForA,
-                '/ws/presence': presenceForB,
-            },
-        });
-    });
-
-    it('accepts implementations built for the matching HostContext', () => {
-        implementApi<HostContextA>()(smallApi, {
+        const implementations: ApiRouteImplementations<[], [], HostContext> = {
             createHostContext() {
                 return {
                     context: {
@@ -356,62 +312,9 @@ describe('HostContext mismatch', () => {
                     },
                 };
             },
-            endpoints: {
-                '/ping': pingForA,
-                '/users/create': usersCreateForA,
-            },
-            webSockets: {
-                '/ws/chat': chatForA,
-                '/ws/presence': presenceForA,
-            },
-        });
-    });
-});
+        };
 
-describe('path slot narrowing', () => {
-    it('rejects an endpoint implementation whose path does not match the slot', () => {
-        const pingImpl = {} as EndpointImplementation<EndpointDefinition & {path: '/ping'}>;
-        const usersCreateImpl = {} as EndpointImplementation<
-            EndpointDefinition & {path: '/users/create'}
-        >;
-        const chatImpl = {} as WebSocketImplementation<WebSocketDefinition & {path: '/ws/chat'}>;
-        const presenceImpl = {} as WebSocketImplementation<
-            WebSocketDefinition & {path: '/ws/presence'}
-        >;
-
-        implementApi()(smallApi, {
-            createHostContext() {
-                return {
-                    context: undefined,
-                };
-            },
-            endpoints: {
-                // @ts-expect-error: usersCreateImpl has path '/users/create', not '/ping'.
-                '/ping': usersCreateImpl,
-                '/users/create': usersCreateImpl,
-            },
-            webSockets: {
-                '/ws/chat': chatImpl,
-                '/ws/presence': presenceImpl,
-            },
-        });
-
-        implementApi()(smallApi, {
-            createHostContext() {
-                return {
-                    context: undefined,
-                };
-            },
-            endpoints: {
-                '/ping': pingImpl,
-                '/users/create': usersCreateImpl,
-            },
-            webSockets: {
-                // @ts-expect-error: presenceImpl has path '/ws/presence', not '/ws/chat'.
-                '/ws/chat': presenceImpl,
-                '/ws/presence': presenceImpl,
-            },
-        });
+        assert.isDefined(implementations);
     });
 });
 
@@ -419,5 +322,5 @@ describe('path slot narrowing', () => {
  * NOTE: validation of `largeApiImplementation` lives in `@rest-vir/large-api-mock`'s
  * `implement-large-api.mock.ts` as documentation-only `describe/it` blocks, mirroring the pattern
  * used by `large-api.mock.ts` in the same package. Importing those mocks from a `.test.ts` file
- * pulls the 40,000-line definition into the browser bundle and exceeds the test runner's timeouts.
+ * pulls the large definition into the browser bundle and exceeds the test runner's timeouts.
  */

@@ -52,9 +52,7 @@ const myApiImplementation = implementApi<MyContext>()(myApi, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/health': healthEndpointImplementation,
-    },
+    endpoints: [healthEndpointImplementation],
 });
 
 await startApiServer(myApiImplementation, {

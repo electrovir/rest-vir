@@ -43,9 +43,7 @@ const apiImplementation = implementApi<undefined>()(myApi, {
     createHostContext: () => ({
         context: undefined,
     }),
-    endpoints: {
-        '/health': healthImplementation,
-    },
+    endpoints: [healthImplementation],
 });
 
 const {kill} = await startApiServer(apiImplementation, {

@@ -37,8 +37,8 @@ const apiImplementation = implementApi<undefined>()(api, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/health': implementor.implementEndpoint(healthEndpoint, {
+    endpoints: [
+        implementor.implementEndpoint(healthEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -47,7 +47,7 @@ const apiImplementation = implementApi<undefined>()(api, {
                 };
             },
         }),
-    },
+    ],
 });
 
 describe(preHandler.name, () => {

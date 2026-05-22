@@ -375,8 +375,8 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
     clientOriginRequirement: {
         anyOrigin: true,
     },
-    endpoints: {
-        '/health': implementor.implementEndpoint(healthEndpoint, {
+    endpoints: [
+        implementor.implementEndpoint(healthEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -385,7 +385,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/empty': implementor.implementEndpoint(emptyEndpoint, {
+        implementor.implementEndpoint(emptyEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Accepted]: {
@@ -394,7 +394,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/plain': implementor.implementEndpoint(plainEndpoint, {
+        implementor.implementEndpoint(plainEndpoint, {
             async [HttpMethod.Get]() {
                 await wait({
                     milliseconds: 1,
@@ -417,7 +417,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/test': implementor.implementEndpoint(testEndpoint, {
+        implementor.implementEndpoint(testEndpoint, {
             [HttpMethod.Post]({requestData}) {
                 return {
                     [HttpStatus.Accepted]: {
@@ -429,7 +429,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/form-data': implementor.implementEndpoint(formDataEndpoint, {
+        implementor.implementEndpoint(formDataEndpoint, {
             [HttpMethod.Post]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -438,7 +438,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/requires-origin': implementor.implementEndpoint(requiresOriginEndpoint, {
+        implementor.implementEndpoint(requiresOriginEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -447,7 +447,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/with-search-params': implementor.implementEndpoint(withSearchParamsEndpoint, {
+        implementor.implementEndpoint(withSearchParamsEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -463,7 +463,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/long-running': implementor.implementEndpoint(longRunningEndpoint, {
+        implementor.implementEndpoint(longRunningEndpoint, {
             async [HttpMethod.Get]() {
                 const count = await runLongLoop(5_000_000_000);
                 return {
@@ -485,7 +485,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/function-origin': implementor.implementEndpoint(functionOriginEndpoint, {
+        implementor.implementEndpoint(functionOriginEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -494,7 +494,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/array-origin': implementor.implementEndpoint(arrayOriginEndpoint, {
+        implementor.implementEndpoint(arrayOriginEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -503,7 +503,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/returns-response-error': implementor.implementEndpoint(returnsResponseErrorEndpoint, {
+        implementor.implementEndpoint(returnsResponseErrorEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.NotAcceptable]: {
@@ -512,7 +512,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/async-rejection': implementor.implementEndpoint(asyncRejectionEndpoint, {
+        implementor.implementEndpoint(asyncRejectionEndpoint, {
             [HttpMethod.Get]() {
                 async function delayedCrash() {
                     await wait({
@@ -528,26 +528,23 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/incorrectly-has-response-data': implementor.implementEndpoint(
-            incorrectlyHasResponseDataEndpoint,
-            {
-                [HttpMethod.Get]() {
-                    return {
-                        [HttpStatus.Ok]: {
-                            // sending data when the definition forbids it
-                            responseData: 'should not be here',
-                        },
-                    };
-                },
+        implementor.implementEndpoint(incorrectlyHasResponseDataEndpoint, {
+            [HttpMethod.Get]() {
+                return {
+                    [HttpStatus.Ok]: {
+                        // sending data when the definition forbids it
+                        responseData: 'should not be here',
+                    },
+                };
             },
-        ),
-        '/missing-status-code': implementor.implementEndpoint(missingStatusCodeEndpoint, {
+        }),
+        implementor.implementEndpoint(missingStatusCodeEndpoint, {
             // @ts-expect-error: intentionally wrong
             [HttpMethod.Get]() {
                 return {};
             },
         }),
-        '/empty-string-response': implementor.implementEndpoint(emptyStringResponseEndpoint, {
+        implementor.implementEndpoint(emptyStringResponseEndpoint, {
             [HttpMethod.Get]() {
                 return {
                     [HttpStatus.Ok]: {
@@ -556,7 +553,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-        '/with/:param1/:param2': implementor.implementEndpoint(pathParamsEndpoint, {
+        implementor.implementEndpoint(pathParamsEndpoint, {
             [HttpMethod.Get]({request}) {
                 const url = new URL(request.url, 'http://localhost');
                 const segments = url.pathname.split('/').filter(Boolean);
@@ -570,9 +567,9 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 };
             },
         }),
-    },
-    webSockets: {
-        '/no-client-data': implementor.implementWebSocket(noClientDataWebSocket, {
+    ],
+    webSockets: [
+        implementor.implementWebSocket(noClientDataWebSocket, {
             open({webSocket}) {
                 webSocket.send('ok');
             },
@@ -581,7 +578,7 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
             },
             close() {},
         }),
-        '/with-all-listeners': implementor.implementWebSocket(withAllListenersWebSocket, {
+        implementor.implementWebSocket(withAllListenersWebSocket, {
             open() {
                 log.faint('open called');
             },
@@ -592,17 +589,17 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 log.faint('close called');
             },
         }),
-        '/required-protocols': implementor.implementWebSocket(requiredProtocolsWebSocket, {
+        implementor.implementWebSocket(requiredProtocolsWebSocket, {
             message({webSocket}) {
                 webSocket.send('ok');
             },
         }),
-        '/sends-protocol': implementor.implementWebSocket(sendsProtocolWebSocket, {
+        implementor.implementWebSocket(sendsProtocolWebSocket, {
             message({protocols, webSocket}) {
                 webSocket.send(protocols ?? []);
             },
         }),
-        '/with-search-params-ws': implementor.implementWebSocket(searchParamsWebSocket, {
+        implementor.implementWebSocket(searchParamsWebSocket, {
             message({searchParams, webSocket}) {
                 webSocket.send({
                     param1: searchParams.param1,
@@ -610,5 +607,5 @@ export const mockApiImplementation = implementApi<undefined>()(mockApi, {
                 });
             },
         }),
-    },
+    ],
 });

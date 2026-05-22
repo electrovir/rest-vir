@@ -226,20 +226,20 @@ export const demoApiImplementation = implementApi<ServerContext>()(demoApi, {
             context: serverContext,
         };
     },
-    endpoints: {
-        '/health': healthImplementation,
-        '/echo': echoImplementation,
-        '/users/:userId': userImplementation,
-        '/search': searchImplementation,
-        '/files/*': filesImplementation,
-        '/upload': uploadImplementation,
-        '/secret': secretImplementation,
-        '/items/:itemId': itemsImplementation,
-        '/teapot': teapotImplementation,
-    },
-    webSockets: {
-        '/echo-ws': echoWebSocketImplementation,
-        '/clock-ws': clockWebSocketImplementation,
-        '/rooms/:roomId': roomWebSocketImplementation,
-    },
+    endpoints: [
+        healthImplementation,
+        echoImplementation,
+        userImplementation,
+        searchImplementation,
+        filesImplementation,
+        uploadImplementation,
+        secretImplementation,
+        itemsImplementation,
+        teapotImplementation,
+    ],
+    webSockets: [
+        echoWebSocketImplementation,
+        clockWebSocketImplementation,
+        roomWebSocketImplementation,
+    ],
 });
