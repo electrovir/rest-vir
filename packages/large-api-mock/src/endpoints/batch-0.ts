@@ -1,10 +1,9 @@
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {defineEndpoint} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {structuredRenderDataShape} from 'structured-render';
-import {customProps} from '../define-mock-endpoint.js';
+import {customProps, defineMockEndpoint} from '../define-mock-endpoint.js';
 
-export const endpoint0 = defineEndpoint({
+export const endpoint0 = defineMockEndpoint({
     path: '/reports/item-0',
     requests: {
         [HttpMethod.Post]: {
@@ -25,7 +24,7 @@ export const endpoint0 = defineEndpoint({
     },
 });
 
-export const endpoint1 = defineEndpoint({
+export const endpoint1 = defineMockEndpoint({
     path: '/reports/item-1',
     requests: {
         [HttpMethod.Post]: {
@@ -46,7 +45,7 @@ export const endpoint1 = defineEndpoint({
     },
 });
 
-export const endpoint2 = defineEndpoint({
+export const endpoint2 = defineMockEndpoint({
     path: '/reports/item-2',
     requests: {
         [HttpMethod.Post]: {
@@ -67,7 +66,7 @@ export const endpoint2 = defineEndpoint({
     },
 });
 
-export const endpoint3 = defineEndpoint({
+export const endpoint3 = defineMockEndpoint({
     path: '/reports/item-3',
     requests: {
         [HttpMethod.Post]: {
@@ -88,7 +87,7 @@ export const endpoint3 = defineEndpoint({
     },
 });
 
-export const endpoint4 = defineEndpoint({
+export const endpoint4 = defineMockEndpoint({
     path: '/reports/item-4',
     requests: {
         [HttpMethod.Post]: {
@@ -109,7 +108,7 @@ export const endpoint4 = defineEndpoint({
     },
 });
 
-export const endpoint5 = defineEndpoint({
+export const endpoint5 = defineMockEndpoint({
     path: '/reports/item-5',
     requests: {
         [HttpMethod.Post]: {
@@ -130,7 +129,7 @@ export const endpoint5 = defineEndpoint({
     },
 });
 
-export const endpoint6 = defineEndpoint({
+export const endpoint6 = defineMockEndpoint({
     path: '/reports/item-6',
     requests: {
         [HttpMethod.Post]: {
@@ -151,7 +150,7 @@ export const endpoint6 = defineEndpoint({
     },
 });
 
-export const endpoint7 = defineEndpoint({
+export const endpoint7 = defineMockEndpoint({
     path: '/reports/item-7',
     requests: {
         [HttpMethod.Post]: {
@@ -172,7 +171,7 @@ export const endpoint7 = defineEndpoint({
     },
 });
 
-export const endpoint8 = defineEndpoint({
+export const endpoint8 = defineMockEndpoint({
     path: '/reports/item-8',
     requests: {
         [HttpMethod.Post]: {
@@ -193,7 +192,7 @@ export const endpoint8 = defineEndpoint({
     },
 });
 
-export const endpoint9 = defineEndpoint({
+export const endpoint9 = defineMockEndpoint({
     path: '/reports/item-9',
     requests: {
         [HttpMethod.Post]: {
@@ -214,7 +213,7 @@ export const endpoint9 = defineEndpoint({
     },
 });
 
-export const endpoint10 = defineEndpoint({
+export const endpoint10 = defineMockEndpoint({
     path: '/reports/item-10',
     requests: {
         [HttpMethod.Post]: {
@@ -235,7 +234,7 @@ export const endpoint10 = defineEndpoint({
     },
 });
 
-export const endpoint11 = defineEndpoint({
+export const endpoint11 = defineMockEndpoint({
     path: '/reports/item-11',
     requests: {
         [HttpMethod.Post]: {
@@ -256,7 +255,7 @@ export const endpoint11 = defineEndpoint({
     },
 });
 
-export const endpoint12 = defineEndpoint({
+export const endpoint12 = defineMockEndpoint({
     path: '/reports/item-12',
     requests: {
         [HttpMethod.Post]: {
@@ -277,7 +276,7 @@ export const endpoint12 = defineEndpoint({
     },
 });
 
-export const endpoint13 = defineEndpoint({
+export const endpoint13 = defineMockEndpoint({
     path: '/reports/item-13',
     requests: {
         [HttpMethod.Post]: {
@@ -298,7 +297,7 @@ export const endpoint13 = defineEndpoint({
     },
 });
 
-export const endpoint14 = defineEndpoint({
+export const endpoint14 = defineMockEndpoint({
     path: '/reports/item-14',
     requests: {
         [HttpMethod.Post]: {
@@ -319,7 +318,7 @@ export const endpoint14 = defineEndpoint({
     },
 });
 
-export const endpoint15 = defineEndpoint({
+export const endpoint15 = defineMockEndpoint({
     path: '/reports/item-15',
     requests: {
         [HttpMethod.Post]: {
@@ -340,7 +339,7 @@ export const endpoint15 = defineEndpoint({
     },
 });
 
-export const endpoint16 = defineEndpoint({
+export const endpoint16 = defineMockEndpoint({
     path: '/reports/item-16',
     requests: {
         [HttpMethod.Post]: {
@@ -361,7 +360,7 @@ export const endpoint16 = defineEndpoint({
     },
 });
 
-export const endpoint17 = defineEndpoint({
+export const endpoint17 = defineMockEndpoint({
     path: '/reports/item-17',
     requests: {
         [HttpMethod.Post]: {
@@ -382,7 +381,7 @@ export const endpoint17 = defineEndpoint({
     },
 });
 
-export const endpoint18 = defineEndpoint({
+export const endpoint18 = defineMockEndpoint({
     path: '/reports/item-18',
     requests: {
         [HttpMethod.Post]: {
@@ -403,7 +402,7 @@ export const endpoint18 = defineEndpoint({
     },
 });
 
-export const endpoint19 = defineEndpoint({
+export const endpoint19 = defineMockEndpoint({
     path: '/reports/item-19',
     requests: {
         [HttpMethod.Post]: {
@@ -424,7 +423,7 @@ export const endpoint19 = defineEndpoint({
     },
 });
 
-export const endpoint20 = defineEndpoint({
+export const endpoint20 = defineMockEndpoint({
     path: '/reports/item-20',
     requests: {
         [HttpMethod.Post]: {
@@ -445,7 +444,7 @@ export const endpoint20 = defineEndpoint({
     },
 });
 
-export const endpoint21 = defineEndpoint({
+export const endpoint21 = defineMockEndpoint({
     path: '/reports/item-21',
     requests: {
         [HttpMethod.Post]: {
@@ -466,7 +465,7 @@ export const endpoint21 = defineEndpoint({
     },
 });
 
-export const endpoint22 = defineEndpoint({
+export const endpoint22 = defineMockEndpoint({
     path: '/reports/item-22',
     requests: {
         [HttpMethod.Post]: {
@@ -487,7 +486,7 @@ export const endpoint22 = defineEndpoint({
     },
 });
 
-export const endpoint23 = defineEndpoint({
+export const endpoint23 = defineMockEndpoint({
     path: '/reports/item-23',
     requests: {
         [HttpMethod.Post]: {
@@ -508,7 +507,7 @@ export const endpoint23 = defineEndpoint({
     },
 });
 
-export const endpoint24 = defineEndpoint({
+export const endpoint24 = defineMockEndpoint({
     path: '/reports/item-24',
     requests: {
         [HttpMethod.Post]: {
@@ -529,7 +528,7 @@ export const endpoint24 = defineEndpoint({
     },
 });
 
-export const endpoint25 = defineEndpoint({
+export const endpoint25 = defineMockEndpoint({
     path: '/reports/item-25',
     requests: {
         [HttpMethod.Post]: {
@@ -550,7 +549,7 @@ export const endpoint25 = defineEndpoint({
     },
 });
 
-export const endpoint26 = defineEndpoint({
+export const endpoint26 = defineMockEndpoint({
     path: '/reports/item-26',
     requests: {
         [HttpMethod.Post]: {
@@ -571,7 +570,7 @@ export const endpoint26 = defineEndpoint({
     },
 });
 
-export const endpoint27 = defineEndpoint({
+export const endpoint27 = defineMockEndpoint({
     path: '/reports/item-27',
     requests: {
         [HttpMethod.Post]: {
@@ -592,7 +591,7 @@ export const endpoint27 = defineEndpoint({
     },
 });
 
-export const endpoint28 = defineEndpoint({
+export const endpoint28 = defineMockEndpoint({
     path: '/reports/item-28',
     requests: {
         [HttpMethod.Post]: {
@@ -613,7 +612,7 @@ export const endpoint28 = defineEndpoint({
     },
 });
 
-export const endpoint29 = defineEndpoint({
+export const endpoint29 = defineMockEndpoint({
     path: '/reports/item-29',
     requests: {
         [HttpMethod.Post]: {
@@ -634,7 +633,7 @@ export const endpoint29 = defineEndpoint({
     },
 });
 
-export const endpoint30 = defineEndpoint({
+export const endpoint30 = defineMockEndpoint({
     path: '/reports/item-30',
     requests: {
         [HttpMethod.Post]: {
@@ -655,7 +654,7 @@ export const endpoint30 = defineEndpoint({
     },
 });
 
-export const endpoint31 = defineEndpoint({
+export const endpoint31 = defineMockEndpoint({
     path: '/reports/item-31',
     requests: {
         [HttpMethod.Post]: {
@@ -676,7 +675,7 @@ export const endpoint31 = defineEndpoint({
     },
 });
 
-export const endpoint32 = defineEndpoint({
+export const endpoint32 = defineMockEndpoint({
     path: '/reports/item-32',
     requests: {
         [HttpMethod.Post]: {
@@ -697,7 +696,7 @@ export const endpoint32 = defineEndpoint({
     },
 });
 
-export const endpoint33 = defineEndpoint({
+export const endpoint33 = defineMockEndpoint({
     path: '/reports/item-33',
     requests: {
         [HttpMethod.Post]: {
@@ -718,7 +717,7 @@ export const endpoint33 = defineEndpoint({
     },
 });
 
-export const endpoint34 = defineEndpoint({
+export const endpoint34 = defineMockEndpoint({
     path: '/reports/item-34',
     requests: {
         [HttpMethod.Post]: {
@@ -739,7 +738,7 @@ export const endpoint34 = defineEndpoint({
     },
 });
 
-export const endpoint35 = defineEndpoint({
+export const endpoint35 = defineMockEndpoint({
     path: '/reports/item-35',
     requests: {
         [HttpMethod.Post]: {
@@ -760,7 +759,7 @@ export const endpoint35 = defineEndpoint({
     },
 });
 
-export const endpoint36 = defineEndpoint({
+export const endpoint36 = defineMockEndpoint({
     path: '/reports/item-36',
     requests: {
         [HttpMethod.Post]: {
@@ -781,7 +780,7 @@ export const endpoint36 = defineEndpoint({
     },
 });
 
-export const endpoint37 = defineEndpoint({
+export const endpoint37 = defineMockEndpoint({
     path: '/reports/item-37',
     requests: {
         [HttpMethod.Post]: {
@@ -802,7 +801,7 @@ export const endpoint37 = defineEndpoint({
     },
 });
 
-export const endpoint38 = defineEndpoint({
+export const endpoint38 = defineMockEndpoint({
     path: '/reports/item-38',
     requests: {
         [HttpMethod.Post]: {
@@ -823,7 +822,7 @@ export const endpoint38 = defineEndpoint({
     },
 });
 
-export const endpoint39 = defineEndpoint({
+export const endpoint39 = defineMockEndpoint({
     path: '/reports/item-39',
     requests: {
         [HttpMethod.Post]: {
@@ -844,7 +843,7 @@ export const endpoint39 = defineEndpoint({
     },
 });
 
-export const endpoint40 = defineEndpoint({
+export const endpoint40 = defineMockEndpoint({
     path: '/reports/item-40',
     requests: {
         [HttpMethod.Post]: {
@@ -865,7 +864,7 @@ export const endpoint40 = defineEndpoint({
     },
 });
 
-export const endpoint41 = defineEndpoint({
+export const endpoint41 = defineMockEndpoint({
     path: '/reports/item-41',
     requests: {
         [HttpMethod.Post]: {
@@ -886,7 +885,7 @@ export const endpoint41 = defineEndpoint({
     },
 });
 
-export const endpoint42 = defineEndpoint({
+export const endpoint42 = defineMockEndpoint({
     path: '/reports/item-42',
     requests: {
         [HttpMethod.Post]: {
@@ -907,7 +906,7 @@ export const endpoint42 = defineEndpoint({
     },
 });
 
-export const endpoint43 = defineEndpoint({
+export const endpoint43 = defineMockEndpoint({
     path: '/reports/item-43',
     requests: {
         [HttpMethod.Post]: {
@@ -928,7 +927,7 @@ export const endpoint43 = defineEndpoint({
     },
 });
 
-export const endpoint44 = defineEndpoint({
+export const endpoint44 = defineMockEndpoint({
     path: '/reports/item-44',
     requests: {
         [HttpMethod.Post]: {
@@ -949,7 +948,7 @@ export const endpoint44 = defineEndpoint({
     },
 });
 
-export const endpoint45 = defineEndpoint({
+export const endpoint45 = defineMockEndpoint({
     path: '/reports/item-45',
     requests: {
         [HttpMethod.Post]: {
@@ -970,7 +969,7 @@ export const endpoint45 = defineEndpoint({
     },
 });
 
-export const endpoint46 = defineEndpoint({
+export const endpoint46 = defineMockEndpoint({
     path: '/reports/item-46',
     requests: {
         [HttpMethod.Post]: {
@@ -991,7 +990,7 @@ export const endpoint46 = defineEndpoint({
     },
 });
 
-export const endpoint47 = defineEndpoint({
+export const endpoint47 = defineMockEndpoint({
     path: '/reports/item-47',
     requests: {
         [HttpMethod.Post]: {
@@ -1012,7 +1011,7 @@ export const endpoint47 = defineEndpoint({
     },
 });
 
-export const endpoint48 = defineEndpoint({
+export const endpoint48 = defineMockEndpoint({
     path: '/reports/item-48',
     requests: {
         [HttpMethod.Post]: {
@@ -1033,7 +1032,7 @@ export const endpoint48 = defineEndpoint({
     },
 });
 
-export const endpoint49 = defineEndpoint({
+export const endpoint49 = defineMockEndpoint({
     path: '/reports/item-49',
     requests: {
         [HttpMethod.Post]: {
@@ -1054,7 +1053,7 @@ export const endpoint49 = defineEndpoint({
     },
 });
 
-export const endpoint50 = defineEndpoint({
+export const endpoint50 = defineMockEndpoint({
     path: '/reports/item-50',
     requests: {
         [HttpMethod.Post]: {
@@ -1075,7 +1074,7 @@ export const endpoint50 = defineEndpoint({
     },
 });
 
-export const endpoint51 = defineEndpoint({
+export const endpoint51 = defineMockEndpoint({
     path: '/reports/item-51',
     requests: {
         [HttpMethod.Post]: {
@@ -1096,7 +1095,7 @@ export const endpoint51 = defineEndpoint({
     },
 });
 
-export const endpoint52 = defineEndpoint({
+export const endpoint52 = defineMockEndpoint({
     path: '/reports/item-52',
     requests: {
         [HttpMethod.Post]: {
@@ -1117,7 +1116,7 @@ export const endpoint52 = defineEndpoint({
     },
 });
 
-export const endpoint53 = defineEndpoint({
+export const endpoint53 = defineMockEndpoint({
     path: '/reports/item-53',
     requests: {
         [HttpMethod.Post]: {
@@ -1138,7 +1137,7 @@ export const endpoint53 = defineEndpoint({
     },
 });
 
-export const endpoint54 = defineEndpoint({
+export const endpoint54 = defineMockEndpoint({
     path: '/reports/item-54',
     requests: {
         [HttpMethod.Post]: {
@@ -1159,7 +1158,7 @@ export const endpoint54 = defineEndpoint({
     },
 });
 
-export const endpoint55 = defineEndpoint({
+export const endpoint55 = defineMockEndpoint({
     path: '/reports/item-55',
     requests: {
         [HttpMethod.Post]: {
@@ -1180,7 +1179,7 @@ export const endpoint55 = defineEndpoint({
     },
 });
 
-export const endpoint56 = defineEndpoint({
+export const endpoint56 = defineMockEndpoint({
     path: '/reports/item-56',
     requests: {
         [HttpMethod.Post]: {
@@ -1201,7 +1200,7 @@ export const endpoint56 = defineEndpoint({
     },
 });
 
-export const endpoint57 = defineEndpoint({
+export const endpoint57 = defineMockEndpoint({
     path: '/reports/item-57',
     requests: {
         [HttpMethod.Post]: {
@@ -1222,7 +1221,7 @@ export const endpoint57 = defineEndpoint({
     },
 });
 
-export const endpoint58 = defineEndpoint({
+export const endpoint58 = defineMockEndpoint({
     path: '/reports/item-58',
     requests: {
         [HttpMethod.Post]: {
@@ -1243,7 +1242,7 @@ export const endpoint58 = defineEndpoint({
     },
 });
 
-export const endpoint59 = defineEndpoint({
+export const endpoint59 = defineMockEndpoint({
     path: '/reports/item-59',
     requests: {
         [HttpMethod.Post]: {
@@ -1264,7 +1263,7 @@ export const endpoint59 = defineEndpoint({
     },
 });
 
-export const endpoint60 = defineEndpoint({
+export const endpoint60 = defineMockEndpoint({
     path: '/reports/item-60',
     requests: {
         [HttpMethod.Post]: {
@@ -1285,7 +1284,7 @@ export const endpoint60 = defineEndpoint({
     },
 });
 
-export const endpoint61 = defineEndpoint({
+export const endpoint61 = defineMockEndpoint({
     path: '/reports/item-61',
     requests: {
         [HttpMethod.Post]: {
@@ -1306,7 +1305,7 @@ export const endpoint61 = defineEndpoint({
     },
 });
 
-export const endpoint62 = defineEndpoint({
+export const endpoint62 = defineMockEndpoint({
     path: '/reports/item-62',
     requests: {
         [HttpMethod.Post]: {
@@ -1327,7 +1326,7 @@ export const endpoint62 = defineEndpoint({
     },
 });
 
-export const endpoint63 = defineEndpoint({
+export const endpoint63 = defineMockEndpoint({
     path: '/reports/item-63',
     requests: {
         [HttpMethod.Post]: {
@@ -1348,7 +1347,7 @@ export const endpoint63 = defineEndpoint({
     },
 });
 
-export const endpoint64 = defineEndpoint({
+export const endpoint64 = defineMockEndpoint({
     path: '/reports/item-64',
     requests: {
         [HttpMethod.Post]: {
@@ -1369,7 +1368,7 @@ export const endpoint64 = defineEndpoint({
     },
 });
 
-export const endpoint65 = defineEndpoint({
+export const endpoint65 = defineMockEndpoint({
     path: '/reports/item-65',
     requests: {
         [HttpMethod.Post]: {
@@ -1390,7 +1389,7 @@ export const endpoint65 = defineEndpoint({
     },
 });
 
-export const endpoint66 = defineEndpoint({
+export const endpoint66 = defineMockEndpoint({
     path: '/reports/item-66',
     requests: {
         [HttpMethod.Post]: {
@@ -1411,7 +1410,7 @@ export const endpoint66 = defineEndpoint({
     },
 });
 
-export const endpoint67 = defineEndpoint({
+export const endpoint67 = defineMockEndpoint({
     path: '/reports/item-67',
     requests: {
         [HttpMethod.Post]: {
@@ -1432,7 +1431,7 @@ export const endpoint67 = defineEndpoint({
     },
 });
 
-export const endpoint68 = defineEndpoint({
+export const endpoint68 = defineMockEndpoint({
     path: '/reports/item-68',
     requests: {
         [HttpMethod.Post]: {
@@ -1453,7 +1452,7 @@ export const endpoint68 = defineEndpoint({
     },
 });
 
-export const endpoint69 = defineEndpoint({
+export const endpoint69 = defineMockEndpoint({
     path: '/reports/item-69',
     requests: {
         [HttpMethod.Post]: {
@@ -1474,7 +1473,7 @@ export const endpoint69 = defineEndpoint({
     },
 });
 
-export const endpoint70 = defineEndpoint({
+export const endpoint70 = defineMockEndpoint({
     path: '/reports/item-70',
     requests: {
         [HttpMethod.Post]: {
@@ -1495,7 +1494,7 @@ export const endpoint70 = defineEndpoint({
     },
 });
 
-export const endpoint71 = defineEndpoint({
+export const endpoint71 = defineMockEndpoint({
     path: '/reports/item-71',
     requests: {
         [HttpMethod.Post]: {
@@ -1516,7 +1515,7 @@ export const endpoint71 = defineEndpoint({
     },
 });
 
-export const endpoint72 = defineEndpoint({
+export const endpoint72 = defineMockEndpoint({
     path: '/reports/item-72',
     requests: {
         [HttpMethod.Post]: {
@@ -1537,7 +1536,7 @@ export const endpoint72 = defineEndpoint({
     },
 });
 
-export const endpoint73 = defineEndpoint({
+export const endpoint73 = defineMockEndpoint({
     path: '/reports/item-73',
     requests: {
         [HttpMethod.Post]: {
@@ -1558,7 +1557,7 @@ export const endpoint73 = defineEndpoint({
     },
 });
 
-export const endpoint74 = defineEndpoint({
+export const endpoint74 = defineMockEndpoint({
     path: '/reports/item-74',
     requests: {
         [HttpMethod.Post]: {
@@ -1579,7 +1578,7 @@ export const endpoint74 = defineEndpoint({
     },
 });
 
-export const endpoint75 = defineEndpoint({
+export const endpoint75 = defineMockEndpoint({
     path: '/reports/item-75',
     requests: {
         [HttpMethod.Post]: {
@@ -1600,7 +1599,7 @@ export const endpoint75 = defineEndpoint({
     },
 });
 
-export const endpoint76 = defineEndpoint({
+export const endpoint76 = defineMockEndpoint({
     path: '/reports/item-76',
     requests: {
         [HttpMethod.Post]: {
@@ -1621,7 +1620,7 @@ export const endpoint76 = defineEndpoint({
     },
 });
 
-export const endpoint77 = defineEndpoint({
+export const endpoint77 = defineMockEndpoint({
     path: '/reports/item-77',
     requests: {
         [HttpMethod.Post]: {
@@ -1642,7 +1641,7 @@ export const endpoint77 = defineEndpoint({
     },
 });
 
-export const endpoint78 = defineEndpoint({
+export const endpoint78 = defineMockEndpoint({
     path: '/reports/item-78',
     requests: {
         [HttpMethod.Post]: {
@@ -1663,7 +1662,7 @@ export const endpoint78 = defineEndpoint({
     },
 });
 
-export const endpoint79 = defineEndpoint({
+export const endpoint79 = defineMockEndpoint({
     path: '/reports/item-79',
     requests: {
         [HttpMethod.Post]: {
@@ -1684,7 +1683,7 @@ export const endpoint79 = defineEndpoint({
     },
 });
 
-export const endpoint80 = defineEndpoint({
+export const endpoint80 = defineMockEndpoint({
     path: '/reports/item-80',
     requests: {
         [HttpMethod.Post]: {
@@ -1705,7 +1704,7 @@ export const endpoint80 = defineEndpoint({
     },
 });
 
-export const endpoint81 = defineEndpoint({
+export const endpoint81 = defineMockEndpoint({
     path: '/reports/item-81',
     requests: {
         [HttpMethod.Post]: {
@@ -1726,7 +1725,7 @@ export const endpoint81 = defineEndpoint({
     },
 });
 
-export const endpoint82 = defineEndpoint({
+export const endpoint82 = defineMockEndpoint({
     path: '/reports/item-82',
     requests: {
         [HttpMethod.Post]: {
@@ -1747,7 +1746,7 @@ export const endpoint82 = defineEndpoint({
     },
 });
 
-export const endpoint83 = defineEndpoint({
+export const endpoint83 = defineMockEndpoint({
     path: '/reports/item-83',
     requests: {
         [HttpMethod.Post]: {
@@ -1768,7 +1767,7 @@ export const endpoint83 = defineEndpoint({
     },
 });
 
-export const endpoint84 = defineEndpoint({
+export const endpoint84 = defineMockEndpoint({
     path: '/reports/item-84',
     requests: {
         [HttpMethod.Post]: {
@@ -1789,7 +1788,7 @@ export const endpoint84 = defineEndpoint({
     },
 });
 
-export const endpoint85 = defineEndpoint({
+export const endpoint85 = defineMockEndpoint({
     path: '/reports/item-85',
     requests: {
         [HttpMethod.Post]: {
@@ -1810,7 +1809,7 @@ export const endpoint85 = defineEndpoint({
     },
 });
 
-export const endpoint86 = defineEndpoint({
+export const endpoint86 = defineMockEndpoint({
     path: '/reports/item-86',
     requests: {
         [HttpMethod.Post]: {
@@ -1831,7 +1830,7 @@ export const endpoint86 = defineEndpoint({
     },
 });
 
-export const endpoint87 = defineEndpoint({
+export const endpoint87 = defineMockEndpoint({
     path: '/reports/item-87',
     requests: {
         [HttpMethod.Post]: {
@@ -1852,7 +1851,7 @@ export const endpoint87 = defineEndpoint({
     },
 });
 
-export const endpoint88 = defineEndpoint({
+export const endpoint88 = defineMockEndpoint({
     path: '/reports/item-88',
     requests: {
         [HttpMethod.Post]: {
@@ -1873,7 +1872,7 @@ export const endpoint88 = defineEndpoint({
     },
 });
 
-export const endpoint89 = defineEndpoint({
+export const endpoint89 = defineMockEndpoint({
     path: '/reports/item-89',
     requests: {
         [HttpMethod.Post]: {
@@ -1894,7 +1893,7 @@ export const endpoint89 = defineEndpoint({
     },
 });
 
-export const endpoint90 = defineEndpoint({
+export const endpoint90 = defineMockEndpoint({
     path: '/reports/item-90',
     requests: {
         [HttpMethod.Post]: {
@@ -1915,7 +1914,7 @@ export const endpoint90 = defineEndpoint({
     },
 });
 
-export const endpoint91 = defineEndpoint({
+export const endpoint91 = defineMockEndpoint({
     path: '/reports/item-91',
     requests: {
         [HttpMethod.Post]: {
@@ -1936,7 +1935,7 @@ export const endpoint91 = defineEndpoint({
     },
 });
 
-export const endpoint92 = defineEndpoint({
+export const endpoint92 = defineMockEndpoint({
     path: '/reports/item-92',
     requests: {
         [HttpMethod.Post]: {
@@ -1957,7 +1956,7 @@ export const endpoint92 = defineEndpoint({
     },
 });
 
-export const endpoint93 = defineEndpoint({
+export const endpoint93 = defineMockEndpoint({
     path: '/reports/item-93',
     requests: {
         [HttpMethod.Post]: {
@@ -1978,7 +1977,7 @@ export const endpoint93 = defineEndpoint({
     },
 });
 
-export const endpoint94 = defineEndpoint({
+export const endpoint94 = defineMockEndpoint({
     path: '/reports/item-94',
     requests: {
         [HttpMethod.Post]: {
@@ -1999,7 +1998,7 @@ export const endpoint94 = defineEndpoint({
     },
 });
 
-export const endpoint95 = defineEndpoint({
+export const endpoint95 = defineMockEndpoint({
     path: '/reports/item-95',
     requests: {
         [HttpMethod.Post]: {
@@ -2020,7 +2019,7 @@ export const endpoint95 = defineEndpoint({
     },
 });
 
-export const endpoint96 = defineEndpoint({
+export const endpoint96 = defineMockEndpoint({
     path: '/reports/item-96',
     requests: {
         [HttpMethod.Post]: {
@@ -2041,7 +2040,7 @@ export const endpoint96 = defineEndpoint({
     },
 });
 
-export const endpoint97 = defineEndpoint({
+export const endpoint97 = defineMockEndpoint({
     path: '/reports/item-97',
     requests: {
         [HttpMethod.Post]: {
@@ -2062,7 +2061,7 @@ export const endpoint97 = defineEndpoint({
     },
 });
 
-export const endpoint98 = defineEndpoint({
+export const endpoint98 = defineMockEndpoint({
     path: '/reports/item-98',
     requests: {
         [HttpMethod.Post]: {
@@ -2083,7 +2082,7 @@ export const endpoint98 = defineEndpoint({
     },
 });
 
-export const endpoint99 = defineEndpoint({
+export const endpoint99 = defineMockEndpoint({
     path: '/reports/item-99',
     requests: {
         [HttpMethod.Post]: {
@@ -2104,7 +2103,7 @@ export const endpoint99 = defineEndpoint({
     },
 });
 
-export const endpoint100 = defineEndpoint({
+export const endpoint100 = defineMockEndpoint({
     path: '/reports/item-100',
     requests: {
         [HttpMethod.Post]: {
@@ -2125,7 +2124,7 @@ export const endpoint100 = defineEndpoint({
     },
 });
 
-export const endpoint101 = defineEndpoint({
+export const endpoint101 = defineMockEndpoint({
     path: '/reports/item-101',
     requests: {
         [HttpMethod.Post]: {
@@ -2146,7 +2145,7 @@ export const endpoint101 = defineEndpoint({
     },
 });
 
-export const endpoint102 = defineEndpoint({
+export const endpoint102 = defineMockEndpoint({
     path: '/reports/item-102',
     requests: {
         [HttpMethod.Post]: {
@@ -2167,7 +2166,7 @@ export const endpoint102 = defineEndpoint({
     },
 });
 
-export const endpoint103 = defineEndpoint({
+export const endpoint103 = defineMockEndpoint({
     path: '/reports/item-103',
     requests: {
         [HttpMethod.Post]: {
@@ -2188,7 +2187,7 @@ export const endpoint103 = defineEndpoint({
     },
 });
 
-export const endpoint104 = defineEndpoint({
+export const endpoint104 = defineMockEndpoint({
     path: '/reports/item-104',
     requests: {
         [HttpMethod.Post]: {
@@ -2209,7 +2208,7 @@ export const endpoint104 = defineEndpoint({
     },
 });
 
-export const endpoint105 = defineEndpoint({
+export const endpoint105 = defineMockEndpoint({
     path: '/reports/item-105',
     requests: {
         [HttpMethod.Post]: {
@@ -2230,7 +2229,7 @@ export const endpoint105 = defineEndpoint({
     },
 });
 
-export const endpoint106 = defineEndpoint({
+export const endpoint106 = defineMockEndpoint({
     path: '/reports/item-106',
     requests: {
         [HttpMethod.Post]: {
@@ -2251,7 +2250,7 @@ export const endpoint106 = defineEndpoint({
     },
 });
 
-export const endpoint107 = defineEndpoint({
+export const endpoint107 = defineMockEndpoint({
     path: '/reports/item-107',
     requests: {
         [HttpMethod.Post]: {
@@ -2272,7 +2271,7 @@ export const endpoint107 = defineEndpoint({
     },
 });
 
-export const endpoint108 = defineEndpoint({
+export const endpoint108 = defineMockEndpoint({
     path: '/reports/item-108',
     requests: {
         [HttpMethod.Post]: {
@@ -2293,7 +2292,7 @@ export const endpoint108 = defineEndpoint({
     },
 });
 
-export const endpoint109 = defineEndpoint({
+export const endpoint109 = defineMockEndpoint({
     path: '/reports/item-109',
     requests: {
         [HttpMethod.Post]: {
@@ -2314,7 +2313,7 @@ export const endpoint109 = defineEndpoint({
     },
 });
 
-export const endpoint110 = defineEndpoint({
+export const endpoint110 = defineMockEndpoint({
     path: '/reports/item-110',
     requests: {
         [HttpMethod.Post]: {
@@ -2335,7 +2334,7 @@ export const endpoint110 = defineEndpoint({
     },
 });
 
-export const endpoint111 = defineEndpoint({
+export const endpoint111 = defineMockEndpoint({
     path: '/reports/item-111',
     requests: {
         [HttpMethod.Post]: {
@@ -2356,7 +2355,7 @@ export const endpoint111 = defineEndpoint({
     },
 });
 
-export const endpoint112 = defineEndpoint({
+export const endpoint112 = defineMockEndpoint({
     path: '/reports/item-112',
     requests: {
         [HttpMethod.Post]: {
@@ -2377,7 +2376,7 @@ export const endpoint112 = defineEndpoint({
     },
 });
 
-export const endpoint113 = defineEndpoint({
+export const endpoint113 = defineMockEndpoint({
     path: '/reports/item-113',
     requests: {
         [HttpMethod.Post]: {
@@ -2398,7 +2397,7 @@ export const endpoint113 = defineEndpoint({
     },
 });
 
-export const endpoint114 = defineEndpoint({
+export const endpoint114 = defineMockEndpoint({
     path: '/reports/item-114',
     requests: {
         [HttpMethod.Post]: {
@@ -2419,7 +2418,7 @@ export const endpoint114 = defineEndpoint({
     },
 });
 
-export const endpoint115 = defineEndpoint({
+export const endpoint115 = defineMockEndpoint({
     path: '/reports/item-115',
     requests: {
         [HttpMethod.Post]: {
@@ -2440,7 +2439,7 @@ export const endpoint115 = defineEndpoint({
     },
 });
 
-export const endpoint116 = defineEndpoint({
+export const endpoint116 = defineMockEndpoint({
     path: '/reports/item-116',
     requests: {
         [HttpMethod.Post]: {
@@ -2461,7 +2460,7 @@ export const endpoint116 = defineEndpoint({
     },
 });
 
-export const endpoint117 = defineEndpoint({
+export const endpoint117 = defineMockEndpoint({
     path: '/reports/item-117',
     requests: {
         [HttpMethod.Post]: {
@@ -2482,7 +2481,7 @@ export const endpoint117 = defineEndpoint({
     },
 });
 
-export const endpoint118 = defineEndpoint({
+export const endpoint118 = defineMockEndpoint({
     path: '/reports/item-118',
     requests: {
         [HttpMethod.Post]: {
@@ -2503,7 +2502,7 @@ export const endpoint118 = defineEndpoint({
     },
 });
 
-export const endpoint119 = defineEndpoint({
+export const endpoint119 = defineMockEndpoint({
     path: '/reports/item-119',
     requests: {
         [HttpMethod.Post]: {
@@ -2524,7 +2523,7 @@ export const endpoint119 = defineEndpoint({
     },
 });
 
-export const endpoint120 = defineEndpoint({
+export const endpoint120 = defineMockEndpoint({
     path: '/reports/item-120',
     requests: {
         [HttpMethod.Post]: {
@@ -2545,7 +2544,7 @@ export const endpoint120 = defineEndpoint({
     },
 });
 
-export const endpoint121 = defineEndpoint({
+export const endpoint121 = defineMockEndpoint({
     path: '/reports/item-121',
     requests: {
         [HttpMethod.Post]: {
@@ -2566,7 +2565,7 @@ export const endpoint121 = defineEndpoint({
     },
 });
 
-export const endpoint122 = defineEndpoint({
+export const endpoint122 = defineMockEndpoint({
     path: '/reports/item-122',
     requests: {
         [HttpMethod.Post]: {
@@ -2587,7 +2586,7 @@ export const endpoint122 = defineEndpoint({
     },
 });
 
-export const endpoint123 = defineEndpoint({
+export const endpoint123 = defineMockEndpoint({
     path: '/reports/item-123',
     requests: {
         [HttpMethod.Post]: {
@@ -2608,7 +2607,7 @@ export const endpoint123 = defineEndpoint({
     },
 });
 
-export const endpoint124 = defineEndpoint({
+export const endpoint124 = defineMockEndpoint({
     path: '/reports/item-124',
     requests: {
         [HttpMethod.Post]: {
@@ -2629,7 +2628,7 @@ export const endpoint124 = defineEndpoint({
     },
 });
 
-export const endpoint125 = defineEndpoint({
+export const endpoint125 = defineMockEndpoint({
     path: '/reports/item-125',
     requests: {
         [HttpMethod.Post]: {
@@ -2650,7 +2649,7 @@ export const endpoint125 = defineEndpoint({
     },
 });
 
-export const endpoint126 = defineEndpoint({
+export const endpoint126 = defineMockEndpoint({
     path: '/reports/item-126',
     requests: {
         [HttpMethod.Post]: {
@@ -2671,7 +2670,7 @@ export const endpoint126 = defineEndpoint({
     },
 });
 
-export const endpoint127 = defineEndpoint({
+export const endpoint127 = defineMockEndpoint({
     path: '/reports/item-127',
     requests: {
         [HttpMethod.Post]: {
@@ -2692,7 +2691,7 @@ export const endpoint127 = defineEndpoint({
     },
 });
 
-export const endpoint128 = defineEndpoint({
+export const endpoint128 = defineMockEndpoint({
     path: '/reports/item-128',
     requests: {
         [HttpMethod.Post]: {
@@ -2713,7 +2712,7 @@ export const endpoint128 = defineEndpoint({
     },
 });
 
-export const endpoint129 = defineEndpoint({
+export const endpoint129 = defineMockEndpoint({
     path: '/reports/item-129',
     requests: {
         [HttpMethod.Post]: {
@@ -2734,7 +2733,7 @@ export const endpoint129 = defineEndpoint({
     },
 });
 
-export const endpoint130 = defineEndpoint({
+export const endpoint130 = defineMockEndpoint({
     path: '/reports/item-130',
     requests: {
         [HttpMethod.Post]: {
@@ -2755,7 +2754,7 @@ export const endpoint130 = defineEndpoint({
     },
 });
 
-export const endpoint131 = defineEndpoint({
+export const endpoint131 = defineMockEndpoint({
     path: '/reports/item-131',
     requests: {
         [HttpMethod.Post]: {
@@ -2776,7 +2775,7 @@ export const endpoint131 = defineEndpoint({
     },
 });
 
-export const endpoint132 = defineEndpoint({
+export const endpoint132 = defineMockEndpoint({
     path: '/reports/item-132',
     requests: {
         [HttpMethod.Post]: {
@@ -2797,7 +2796,7 @@ export const endpoint132 = defineEndpoint({
     },
 });
 
-export const endpoint133 = defineEndpoint({
+export const endpoint133 = defineMockEndpoint({
     path: '/reports/item-133',
     requests: {
         [HttpMethod.Post]: {
@@ -2818,7 +2817,7 @@ export const endpoint133 = defineEndpoint({
     },
 });
 
-export const endpoint134 = defineEndpoint({
+export const endpoint134 = defineMockEndpoint({
     path: '/reports/item-134',
     requests: {
         [HttpMethod.Post]: {
@@ -2839,7 +2838,7 @@ export const endpoint134 = defineEndpoint({
     },
 });
 
-export const endpoint135 = defineEndpoint({
+export const endpoint135 = defineMockEndpoint({
     path: '/reports/item-135',
     requests: {
         [HttpMethod.Post]: {
@@ -2860,7 +2859,7 @@ export const endpoint135 = defineEndpoint({
     },
 });
 
-export const endpoint136 = defineEndpoint({
+export const endpoint136 = defineMockEndpoint({
     path: '/reports/item-136',
     requests: {
         [HttpMethod.Post]: {
@@ -2881,7 +2880,7 @@ export const endpoint136 = defineEndpoint({
     },
 });
 
-export const endpoint137 = defineEndpoint({
+export const endpoint137 = defineMockEndpoint({
     path: '/reports/item-137',
     requests: {
         [HttpMethod.Post]: {
@@ -2902,7 +2901,7 @@ export const endpoint137 = defineEndpoint({
     },
 });
 
-export const endpoint138 = defineEndpoint({
+export const endpoint138 = defineMockEndpoint({
     path: '/reports/item-138',
     requests: {
         [HttpMethod.Post]: {
@@ -2923,7 +2922,7 @@ export const endpoint138 = defineEndpoint({
     },
 });
 
-export const endpoint139 = defineEndpoint({
+export const endpoint139 = defineMockEndpoint({
     path: '/reports/item-139',
     requests: {
         [HttpMethod.Post]: {
@@ -2944,7 +2943,7 @@ export const endpoint139 = defineEndpoint({
     },
 });
 
-export const endpoint140 = defineEndpoint({
+export const endpoint140 = defineMockEndpoint({
     path: '/reports/item-140',
     requests: {
         [HttpMethod.Post]: {
@@ -2965,7 +2964,7 @@ export const endpoint140 = defineEndpoint({
     },
 });
 
-export const endpoint141 = defineEndpoint({
+export const endpoint141 = defineMockEndpoint({
     path: '/reports/item-141',
     requests: {
         [HttpMethod.Post]: {
@@ -2986,7 +2985,7 @@ export const endpoint141 = defineEndpoint({
     },
 });
 
-export const endpoint142 = defineEndpoint({
+export const endpoint142 = defineMockEndpoint({
     path: '/reports/item-142',
     requests: {
         [HttpMethod.Post]: {
@@ -3007,7 +3006,7 @@ export const endpoint142 = defineEndpoint({
     },
 });
 
-export const endpoint143 = defineEndpoint({
+export const endpoint143 = defineMockEndpoint({
     path: '/reports/item-143',
     requests: {
         [HttpMethod.Post]: {
@@ -3028,7 +3027,7 @@ export const endpoint143 = defineEndpoint({
     },
 });
 
-export const endpoint144 = defineEndpoint({
+export const endpoint144 = defineMockEndpoint({
     path: '/reports/item-144',
     requests: {
         [HttpMethod.Post]: {
@@ -3049,7 +3048,7 @@ export const endpoint144 = defineEndpoint({
     },
 });
 
-export const endpoint145 = defineEndpoint({
+export const endpoint145 = defineMockEndpoint({
     path: '/reports/item-145',
     requests: {
         [HttpMethod.Post]: {
@@ -3070,7 +3069,7 @@ export const endpoint145 = defineEndpoint({
     },
 });
 
-export const endpoint146 = defineEndpoint({
+export const endpoint146 = defineMockEndpoint({
     path: '/reports/item-146',
     requests: {
         [HttpMethod.Post]: {
@@ -3091,7 +3090,7 @@ export const endpoint146 = defineEndpoint({
     },
 });
 
-export const endpoint147 = defineEndpoint({
+export const endpoint147 = defineMockEndpoint({
     path: '/reports/item-147',
     requests: {
         [HttpMethod.Post]: {
@@ -3112,7 +3111,7 @@ export const endpoint147 = defineEndpoint({
     },
 });
 
-export const endpoint148 = defineEndpoint({
+export const endpoint148 = defineMockEndpoint({
     path: '/reports/item-148',
     requests: {
         [HttpMethod.Post]: {
@@ -3133,7 +3132,7 @@ export const endpoint148 = defineEndpoint({
     },
 });
 
-export const endpoint149 = defineEndpoint({
+export const endpoint149 = defineMockEndpoint({
     path: '/reports/item-149',
     requests: {
         [HttpMethod.Post]: {
@@ -3154,7 +3153,7 @@ export const endpoint149 = defineEndpoint({
     },
 });
 
-export const endpoint150 = defineEndpoint({
+export const endpoint150 = defineMockEndpoint({
     path: '/reports/item-150',
     requests: {
         [HttpMethod.Post]: {
@@ -3175,7 +3174,7 @@ export const endpoint150 = defineEndpoint({
     },
 });
 
-export const endpoint151 = defineEndpoint({
+export const endpoint151 = defineMockEndpoint({
     path: '/reports/item-151',
     requests: {
         [HttpMethod.Post]: {
@@ -3196,7 +3195,7 @@ export const endpoint151 = defineEndpoint({
     },
 });
 
-export const endpoint152 = defineEndpoint({
+export const endpoint152 = defineMockEndpoint({
     path: '/reports/item-152',
     requests: {
         [HttpMethod.Post]: {
@@ -3217,7 +3216,7 @@ export const endpoint152 = defineEndpoint({
     },
 });
 
-export const endpoint153 = defineEndpoint({
+export const endpoint153 = defineMockEndpoint({
     path: '/reports/item-153',
     requests: {
         [HttpMethod.Post]: {
@@ -3238,7 +3237,7 @@ export const endpoint153 = defineEndpoint({
     },
 });
 
-export const endpoint154 = defineEndpoint({
+export const endpoint154 = defineMockEndpoint({
     path: '/reports/item-154',
     requests: {
         [HttpMethod.Post]: {
@@ -3259,7 +3258,7 @@ export const endpoint154 = defineEndpoint({
     },
 });
 
-export const endpoint155 = defineEndpoint({
+export const endpoint155 = defineMockEndpoint({
     path: '/reports/item-155',
     requests: {
         [HttpMethod.Post]: {
@@ -3280,7 +3279,7 @@ export const endpoint155 = defineEndpoint({
     },
 });
 
-export const endpoint156 = defineEndpoint({
+export const endpoint156 = defineMockEndpoint({
     path: '/reports/item-156',
     requests: {
         [HttpMethod.Post]: {
@@ -3301,7 +3300,7 @@ export const endpoint156 = defineEndpoint({
     },
 });
 
-export const endpoint157 = defineEndpoint({
+export const endpoint157 = defineMockEndpoint({
     path: '/reports/item-157',
     requests: {
         [HttpMethod.Post]: {
@@ -3322,7 +3321,7 @@ export const endpoint157 = defineEndpoint({
     },
 });
 
-export const endpoint158 = defineEndpoint({
+export const endpoint158 = defineMockEndpoint({
     path: '/reports/item-158',
     requests: {
         [HttpMethod.Post]: {
@@ -3343,7 +3342,7 @@ export const endpoint158 = defineEndpoint({
     },
 });
 
-export const endpoint159 = defineEndpoint({
+export const endpoint159 = defineMockEndpoint({
     path: '/reports/item-159',
     requests: {
         [HttpMethod.Post]: {
@@ -3364,7 +3363,7 @@ export const endpoint159 = defineEndpoint({
     },
 });
 
-export const endpoint160 = defineEndpoint({
+export const endpoint160 = defineMockEndpoint({
     path: '/reports/item-160',
     requests: {
         [HttpMethod.Post]: {
@@ -3385,7 +3384,7 @@ export const endpoint160 = defineEndpoint({
     },
 });
 
-export const endpoint161 = defineEndpoint({
+export const endpoint161 = defineMockEndpoint({
     path: '/reports/item-161',
     requests: {
         [HttpMethod.Post]: {
@@ -3406,7 +3405,7 @@ export const endpoint161 = defineEndpoint({
     },
 });
 
-export const endpoint162 = defineEndpoint({
+export const endpoint162 = defineMockEndpoint({
     path: '/reports/item-162',
     requests: {
         [HttpMethod.Post]: {
@@ -3427,7 +3426,7 @@ export const endpoint162 = defineEndpoint({
     },
 });
 
-export const endpoint163 = defineEndpoint({
+export const endpoint163 = defineMockEndpoint({
     path: '/reports/item-163',
     requests: {
         [HttpMethod.Post]: {
@@ -3448,7 +3447,7 @@ export const endpoint163 = defineEndpoint({
     },
 });
 
-export const endpoint164 = defineEndpoint({
+export const endpoint164 = defineMockEndpoint({
     path: '/reports/item-164',
     requests: {
         [HttpMethod.Post]: {
@@ -3469,7 +3468,7 @@ export const endpoint164 = defineEndpoint({
     },
 });
 
-export const endpoint165 = defineEndpoint({
+export const endpoint165 = defineMockEndpoint({
     path: '/reports/item-165',
     requests: {
         [HttpMethod.Post]: {
@@ -3490,7 +3489,7 @@ export const endpoint165 = defineEndpoint({
     },
 });
 
-export const endpoint166 = defineEndpoint({
+export const endpoint166 = defineMockEndpoint({
     path: '/reports/item-166',
     requests: {
         [HttpMethod.Post]: {
@@ -3511,7 +3510,7 @@ export const endpoint166 = defineEndpoint({
     },
 });
 
-export const endpoint167 = defineEndpoint({
+export const endpoint167 = defineMockEndpoint({
     path: '/reports/item-167',
     requests: {
         [HttpMethod.Post]: {
@@ -3532,7 +3531,7 @@ export const endpoint167 = defineEndpoint({
     },
 });
 
-export const endpoint168 = defineEndpoint({
+export const endpoint168 = defineMockEndpoint({
     path: '/reports/item-168',
     requests: {
         [HttpMethod.Post]: {
@@ -3553,7 +3552,7 @@ export const endpoint168 = defineEndpoint({
     },
 });
 
-export const endpoint169 = defineEndpoint({
+export const endpoint169 = defineMockEndpoint({
     path: '/reports/item-169',
     requests: {
         [HttpMethod.Post]: {
@@ -3574,7 +3573,7 @@ export const endpoint169 = defineEndpoint({
     },
 });
 
-export const endpoint170 = defineEndpoint({
+export const endpoint170 = defineMockEndpoint({
     path: '/reports/item-170',
     requests: {
         [HttpMethod.Post]: {
@@ -3595,7 +3594,7 @@ export const endpoint170 = defineEndpoint({
     },
 });
 
-export const endpoint171 = defineEndpoint({
+export const endpoint171 = defineMockEndpoint({
     path: '/reports/item-171',
     requests: {
         [HttpMethod.Post]: {
@@ -3616,7 +3615,7 @@ export const endpoint171 = defineEndpoint({
     },
 });
 
-export const endpoint172 = defineEndpoint({
+export const endpoint172 = defineMockEndpoint({
     path: '/reports/item-172',
     requests: {
         [HttpMethod.Post]: {
@@ -3637,7 +3636,7 @@ export const endpoint172 = defineEndpoint({
     },
 });
 
-export const endpoint173 = defineEndpoint({
+export const endpoint173 = defineMockEndpoint({
     path: '/reports/item-173',
     requests: {
         [HttpMethod.Post]: {
@@ -3658,7 +3657,7 @@ export const endpoint173 = defineEndpoint({
     },
 });
 
-export const endpoint174 = defineEndpoint({
+export const endpoint174 = defineMockEndpoint({
     path: '/reports/item-174',
     requests: {
         [HttpMethod.Post]: {
@@ -3679,7 +3678,7 @@ export const endpoint174 = defineEndpoint({
     },
 });
 
-export const endpoint175 = defineEndpoint({
+export const endpoint175 = defineMockEndpoint({
     path: '/reports/item-175',
     requests: {
         [HttpMethod.Post]: {
@@ -3700,7 +3699,7 @@ export const endpoint175 = defineEndpoint({
     },
 });
 
-export const endpoint176 = defineEndpoint({
+export const endpoint176 = defineMockEndpoint({
     path: '/reports/item-176',
     requests: {
         [HttpMethod.Post]: {
@@ -3721,7 +3720,7 @@ export const endpoint176 = defineEndpoint({
     },
 });
 
-export const endpoint177 = defineEndpoint({
+export const endpoint177 = defineMockEndpoint({
     path: '/reports/item-177',
     requests: {
         [HttpMethod.Post]: {
@@ -3742,7 +3741,7 @@ export const endpoint177 = defineEndpoint({
     },
 });
 
-export const endpoint178 = defineEndpoint({
+export const endpoint178 = defineMockEndpoint({
     path: '/reports/item-178',
     requests: {
         [HttpMethod.Post]: {
@@ -3763,7 +3762,7 @@ export const endpoint178 = defineEndpoint({
     },
 });
 
-export const endpoint179 = defineEndpoint({
+export const endpoint179 = defineMockEndpoint({
     path: '/reports/item-179',
     requests: {
         [HttpMethod.Post]: {
@@ -3784,7 +3783,7 @@ export const endpoint179 = defineEndpoint({
     },
 });
 
-export const endpoint180 = defineEndpoint({
+export const endpoint180 = defineMockEndpoint({
     path: '/reports/item-180',
     requests: {
         [HttpMethod.Post]: {
@@ -3805,7 +3804,7 @@ export const endpoint180 = defineEndpoint({
     },
 });
 
-export const endpoint181 = defineEndpoint({
+export const endpoint181 = defineMockEndpoint({
     path: '/reports/item-181',
     requests: {
         [HttpMethod.Post]: {
@@ -3826,7 +3825,7 @@ export const endpoint181 = defineEndpoint({
     },
 });
 
-export const endpoint182 = defineEndpoint({
+export const endpoint182 = defineMockEndpoint({
     path: '/reports/item-182',
     requests: {
         [HttpMethod.Post]: {
@@ -3847,7 +3846,7 @@ export const endpoint182 = defineEndpoint({
     },
 });
 
-export const endpoint183 = defineEndpoint({
+export const endpoint183 = defineMockEndpoint({
     path: '/reports/item-183',
     requests: {
         [HttpMethod.Post]: {
@@ -3868,7 +3867,7 @@ export const endpoint183 = defineEndpoint({
     },
 });
 
-export const endpoint184 = defineEndpoint({
+export const endpoint184 = defineMockEndpoint({
     path: '/reports/item-184',
     requests: {
         [HttpMethod.Post]: {
@@ -3889,7 +3888,7 @@ export const endpoint184 = defineEndpoint({
     },
 });
 
-export const endpoint185 = defineEndpoint({
+export const endpoint185 = defineMockEndpoint({
     path: '/reports/item-185',
     requests: {
         [HttpMethod.Post]: {
@@ -3910,7 +3909,7 @@ export const endpoint185 = defineEndpoint({
     },
 });
 
-export const endpoint186 = defineEndpoint({
+export const endpoint186 = defineMockEndpoint({
     path: '/reports/item-186',
     requests: {
         [HttpMethod.Post]: {
@@ -3931,7 +3930,7 @@ export const endpoint186 = defineEndpoint({
     },
 });
 
-export const endpoint187 = defineEndpoint({
+export const endpoint187 = defineMockEndpoint({
     path: '/reports/item-187',
     requests: {
         [HttpMethod.Post]: {
@@ -3952,7 +3951,7 @@ export const endpoint187 = defineEndpoint({
     },
 });
 
-export const endpoint188 = defineEndpoint({
+export const endpoint188 = defineMockEndpoint({
     path: '/reports/item-188',
     requests: {
         [HttpMethod.Post]: {
@@ -3973,7 +3972,7 @@ export const endpoint188 = defineEndpoint({
     },
 });
 
-export const endpoint189 = defineEndpoint({
+export const endpoint189 = defineMockEndpoint({
     path: '/reports/item-189',
     requests: {
         [HttpMethod.Post]: {
@@ -3994,7 +3993,7 @@ export const endpoint189 = defineEndpoint({
     },
 });
 
-export const endpoint190 = defineEndpoint({
+export const endpoint190 = defineMockEndpoint({
     path: '/reports/item-190',
     requests: {
         [HttpMethod.Post]: {
@@ -4015,7 +4014,7 @@ export const endpoint190 = defineEndpoint({
     },
 });
 
-export const endpoint191 = defineEndpoint({
+export const endpoint191 = defineMockEndpoint({
     path: '/reports/item-191',
     requests: {
         [HttpMethod.Post]: {
@@ -4036,7 +4035,7 @@ export const endpoint191 = defineEndpoint({
     },
 });
 
-export const endpoint192 = defineEndpoint({
+export const endpoint192 = defineMockEndpoint({
     path: '/reports/item-192',
     requests: {
         [HttpMethod.Post]: {
@@ -4057,7 +4056,7 @@ export const endpoint192 = defineEndpoint({
     },
 });
 
-export const endpoint193 = defineEndpoint({
+export const endpoint193 = defineMockEndpoint({
     path: '/reports/item-193',
     requests: {
         [HttpMethod.Post]: {
@@ -4078,7 +4077,7 @@ export const endpoint193 = defineEndpoint({
     },
 });
 
-export const endpoint194 = defineEndpoint({
+export const endpoint194 = defineMockEndpoint({
     path: '/reports/item-194',
     requests: {
         [HttpMethod.Post]: {
@@ -4099,7 +4098,7 @@ export const endpoint194 = defineEndpoint({
     },
 });
 
-export const endpoint195 = defineEndpoint({
+export const endpoint195 = defineMockEndpoint({
     path: '/reports/item-195',
     requests: {
         [HttpMethod.Post]: {
@@ -4120,7 +4119,7 @@ export const endpoint195 = defineEndpoint({
     },
 });
 
-export const endpoint196 = defineEndpoint({
+export const endpoint196 = defineMockEndpoint({
     path: '/reports/item-196',
     requests: {
         [HttpMethod.Post]: {
@@ -4141,7 +4140,7 @@ export const endpoint196 = defineEndpoint({
     },
 });
 
-export const endpoint197 = defineEndpoint({
+export const endpoint197 = defineMockEndpoint({
     path: '/reports/item-197',
     requests: {
         [HttpMethod.Post]: {
@@ -4162,7 +4161,7 @@ export const endpoint197 = defineEndpoint({
     },
 });
 
-export const endpoint198 = defineEndpoint({
+export const endpoint198 = defineMockEndpoint({
     path: '/reports/item-198',
     requests: {
         [HttpMethod.Post]: {
@@ -4183,7 +4182,7 @@ export const endpoint198 = defineEndpoint({
     },
 });
 
-export const endpoint199 = defineEndpoint({
+export const endpoint199 = defineMockEndpoint({
     path: '/reports/item-199',
     requests: {
         [HttpMethod.Post]: {
@@ -4204,7 +4203,7 @@ export const endpoint199 = defineEndpoint({
     },
 });
 
-export const endpoint200 = defineEndpoint({
+export const endpoint200 = defineMockEndpoint({
     path: '/reports/item-200',
     requests: {
         [HttpMethod.Post]: {
@@ -4225,7 +4224,7 @@ export const endpoint200 = defineEndpoint({
     },
 });
 
-export const endpoint201 = defineEndpoint({
+export const endpoint201 = defineMockEndpoint({
     path: '/reports/item-201',
     requests: {
         [HttpMethod.Post]: {
@@ -4246,7 +4245,7 @@ export const endpoint201 = defineEndpoint({
     },
 });
 
-export const endpoint202 = defineEndpoint({
+export const endpoint202 = defineMockEndpoint({
     path: '/reports/item-202',
     requests: {
         [HttpMethod.Post]: {
@@ -4267,7 +4266,7 @@ export const endpoint202 = defineEndpoint({
     },
 });
 
-export const endpoint203 = defineEndpoint({
+export const endpoint203 = defineMockEndpoint({
     path: '/reports/item-203',
     requests: {
         [HttpMethod.Post]: {
@@ -4288,7 +4287,7 @@ export const endpoint203 = defineEndpoint({
     },
 });
 
-export const endpoint204 = defineEndpoint({
+export const endpoint204 = defineMockEndpoint({
     path: '/reports/item-204',
     requests: {
         [HttpMethod.Post]: {
@@ -4309,7 +4308,7 @@ export const endpoint204 = defineEndpoint({
     },
 });
 
-export const endpoint205 = defineEndpoint({
+export const endpoint205 = defineMockEndpoint({
     path: '/reports/item-205',
     requests: {
         [HttpMethod.Post]: {
@@ -4330,7 +4329,7 @@ export const endpoint205 = defineEndpoint({
     },
 });
 
-export const endpoint206 = defineEndpoint({
+export const endpoint206 = defineMockEndpoint({
     path: '/reports/item-206',
     requests: {
         [HttpMethod.Post]: {
@@ -4351,7 +4350,7 @@ export const endpoint206 = defineEndpoint({
     },
 });
 
-export const endpoint207 = defineEndpoint({
+export const endpoint207 = defineMockEndpoint({
     path: '/reports/item-207',
     requests: {
         [HttpMethod.Post]: {
@@ -4372,7 +4371,7 @@ export const endpoint207 = defineEndpoint({
     },
 });
 
-export const endpoint208 = defineEndpoint({
+export const endpoint208 = defineMockEndpoint({
     path: '/reports/item-208',
     requests: {
         [HttpMethod.Post]: {
@@ -4393,7 +4392,7 @@ export const endpoint208 = defineEndpoint({
     },
 });
 
-export const endpoint209 = defineEndpoint({
+export const endpoint209 = defineMockEndpoint({
     path: '/reports/item-209',
     requests: {
         [HttpMethod.Post]: {
@@ -4414,7 +4413,7 @@ export const endpoint209 = defineEndpoint({
     },
 });
 
-export const endpoint210 = defineEndpoint({
+export const endpoint210 = defineMockEndpoint({
     path: '/reports/item-210',
     requests: {
         [HttpMethod.Post]: {
@@ -4435,7 +4434,7 @@ export const endpoint210 = defineEndpoint({
     },
 });
 
-export const endpoint211 = defineEndpoint({
+export const endpoint211 = defineMockEndpoint({
     path: '/reports/item-211',
     requests: {
         [HttpMethod.Post]: {
@@ -4456,7 +4455,7 @@ export const endpoint211 = defineEndpoint({
     },
 });
 
-export const endpoint212 = defineEndpoint({
+export const endpoint212 = defineMockEndpoint({
     path: '/reports/item-212',
     requests: {
         [HttpMethod.Post]: {
@@ -4477,7 +4476,7 @@ export const endpoint212 = defineEndpoint({
     },
 });
 
-export const endpoint213 = defineEndpoint({
+export const endpoint213 = defineMockEndpoint({
     path: '/reports/item-213',
     requests: {
         [HttpMethod.Post]: {
@@ -4498,7 +4497,7 @@ export const endpoint213 = defineEndpoint({
     },
 });
 
-export const endpoint214 = defineEndpoint({
+export const endpoint214 = defineMockEndpoint({
     path: '/reports/item-214',
     requests: {
         [HttpMethod.Post]: {
@@ -4519,7 +4518,7 @@ export const endpoint214 = defineEndpoint({
     },
 });
 
-export const endpoint215 = defineEndpoint({
+export const endpoint215 = defineMockEndpoint({
     path: '/reports/item-215',
     requests: {
         [HttpMethod.Post]: {
@@ -4540,7 +4539,7 @@ export const endpoint215 = defineEndpoint({
     },
 });
 
-export const endpoint216 = defineEndpoint({
+export const endpoint216 = defineMockEndpoint({
     path: '/reports/item-216',
     requests: {
         [HttpMethod.Post]: {
@@ -4561,7 +4560,7 @@ export const endpoint216 = defineEndpoint({
     },
 });
 
-export const endpoint217 = defineEndpoint({
+export const endpoint217 = defineMockEndpoint({
     path: '/reports/item-217',
     requests: {
         [HttpMethod.Post]: {
@@ -4582,7 +4581,7 @@ export const endpoint217 = defineEndpoint({
     },
 });
 
-export const endpoint218 = defineEndpoint({
+export const endpoint218 = defineMockEndpoint({
     path: '/reports/item-218',
     requests: {
         [HttpMethod.Post]: {
@@ -4603,7 +4602,7 @@ export const endpoint218 = defineEndpoint({
     },
 });
 
-export const endpoint219 = defineEndpoint({
+export const endpoint219 = defineMockEndpoint({
     path: '/reports/item-219',
     requests: {
         [HttpMethod.Post]: {
@@ -4624,7 +4623,7 @@ export const endpoint219 = defineEndpoint({
     },
 });
 
-export const endpoint220 = defineEndpoint({
+export const endpoint220 = defineMockEndpoint({
     path: '/reports/item-220',
     requests: {
         [HttpMethod.Post]: {
@@ -4645,7 +4644,7 @@ export const endpoint220 = defineEndpoint({
     },
 });
 
-export const endpoint221 = defineEndpoint({
+export const endpoint221 = defineMockEndpoint({
     path: '/reports/item-221',
     requests: {
         [HttpMethod.Post]: {
@@ -4666,7 +4665,7 @@ export const endpoint221 = defineEndpoint({
     },
 });
 
-export const endpoint222 = defineEndpoint({
+export const endpoint222 = defineMockEndpoint({
     path: '/reports/item-222',
     requests: {
         [HttpMethod.Post]: {
@@ -4687,7 +4686,7 @@ export const endpoint222 = defineEndpoint({
     },
 });
 
-export const endpoint223 = defineEndpoint({
+export const endpoint223 = defineMockEndpoint({
     path: '/reports/item-223',
     requests: {
         [HttpMethod.Post]: {
@@ -4708,7 +4707,7 @@ export const endpoint223 = defineEndpoint({
     },
 });
 
-export const endpoint224 = defineEndpoint({
+export const endpoint224 = defineMockEndpoint({
     path: '/reports/item-224',
     requests: {
         [HttpMethod.Post]: {
@@ -4729,7 +4728,7 @@ export const endpoint224 = defineEndpoint({
     },
 });
 
-export const endpoint225 = defineEndpoint({
+export const endpoint225 = defineMockEndpoint({
     path: '/reports/item-225',
     requests: {
         [HttpMethod.Post]: {
@@ -4750,7 +4749,7 @@ export const endpoint225 = defineEndpoint({
     },
 });
 
-export const endpoint226 = defineEndpoint({
+export const endpoint226 = defineMockEndpoint({
     path: '/reports/item-226',
     requests: {
         [HttpMethod.Post]: {
@@ -4771,7 +4770,7 @@ export const endpoint226 = defineEndpoint({
     },
 });
 
-export const endpoint227 = defineEndpoint({
+export const endpoint227 = defineMockEndpoint({
     path: '/reports/item-227',
     requests: {
         [HttpMethod.Post]: {
@@ -4792,7 +4791,7 @@ export const endpoint227 = defineEndpoint({
     },
 });
 
-export const endpoint228 = defineEndpoint({
+export const endpoint228 = defineMockEndpoint({
     path: '/reports/item-228',
     requests: {
         [HttpMethod.Post]: {
@@ -4813,7 +4812,7 @@ export const endpoint228 = defineEndpoint({
     },
 });
 
-export const endpoint229 = defineEndpoint({
+export const endpoint229 = defineMockEndpoint({
     path: '/reports/item-229',
     requests: {
         [HttpMethod.Post]: {
@@ -4834,7 +4833,7 @@ export const endpoint229 = defineEndpoint({
     },
 });
 
-export const endpoint230 = defineEndpoint({
+export const endpoint230 = defineMockEndpoint({
     path: '/reports/item-230',
     requests: {
         [HttpMethod.Post]: {
@@ -4855,7 +4854,7 @@ export const endpoint230 = defineEndpoint({
     },
 });
 
-export const endpoint231 = defineEndpoint({
+export const endpoint231 = defineMockEndpoint({
     path: '/reports/item-231',
     requests: {
         [HttpMethod.Post]: {
@@ -4876,7 +4875,7 @@ export const endpoint231 = defineEndpoint({
     },
 });
 
-export const endpoint232 = defineEndpoint({
+export const endpoint232 = defineMockEndpoint({
     path: '/reports/item-232',
     requests: {
         [HttpMethod.Post]: {
@@ -4897,7 +4896,7 @@ export const endpoint232 = defineEndpoint({
     },
 });
 
-export const endpoint233 = defineEndpoint({
+export const endpoint233 = defineMockEndpoint({
     path: '/reports/item-233',
     requests: {
         [HttpMethod.Post]: {
@@ -4918,7 +4917,7 @@ export const endpoint233 = defineEndpoint({
     },
 });
 
-export const endpoint234 = defineEndpoint({
+export const endpoint234 = defineMockEndpoint({
     path: '/reports/item-234',
     requests: {
         [HttpMethod.Post]: {
@@ -4939,7 +4938,7 @@ export const endpoint234 = defineEndpoint({
     },
 });
 
-export const endpoint235 = defineEndpoint({
+export const endpoint235 = defineMockEndpoint({
     path: '/reports/item-235',
     requests: {
         [HttpMethod.Post]: {
@@ -4960,7 +4959,7 @@ export const endpoint235 = defineEndpoint({
     },
 });
 
-export const endpoint236 = defineEndpoint({
+export const endpoint236 = defineMockEndpoint({
     path: '/reports/item-236',
     requests: {
         [HttpMethod.Post]: {
@@ -4981,7 +4980,7 @@ export const endpoint236 = defineEndpoint({
     },
 });
 
-export const endpoint237 = defineEndpoint({
+export const endpoint237 = defineMockEndpoint({
     path: '/reports/item-237',
     requests: {
         [HttpMethod.Post]: {
@@ -5002,7 +5001,7 @@ export const endpoint237 = defineEndpoint({
     },
 });
 
-export const endpoint238 = defineEndpoint({
+export const endpoint238 = defineMockEndpoint({
     path: '/reports/item-238',
     requests: {
         [HttpMethod.Post]: {
@@ -5023,7 +5022,7 @@ export const endpoint238 = defineEndpoint({
     },
 });
 
-export const endpoint239 = defineEndpoint({
+export const endpoint239 = defineMockEndpoint({
     path: '/reports/item-239',
     requests: {
         [HttpMethod.Post]: {
@@ -5044,7 +5043,7 @@ export const endpoint239 = defineEndpoint({
     },
 });
 
-export const endpoint240 = defineEndpoint({
+export const endpoint240 = defineMockEndpoint({
     path: '/reports/item-240',
     requests: {
         [HttpMethod.Post]: {
@@ -5065,7 +5064,7 @@ export const endpoint240 = defineEndpoint({
     },
 });
 
-export const endpoint241 = defineEndpoint({
+export const endpoint241 = defineMockEndpoint({
     path: '/reports/item-241',
     requests: {
         [HttpMethod.Post]: {
@@ -5086,7 +5085,7 @@ export const endpoint241 = defineEndpoint({
     },
 });
 
-export const endpoint242 = defineEndpoint({
+export const endpoint242 = defineMockEndpoint({
     path: '/reports/item-242',
     requests: {
         [HttpMethod.Post]: {
@@ -5107,7 +5106,7 @@ export const endpoint242 = defineEndpoint({
     },
 });
 
-export const endpoint243 = defineEndpoint({
+export const endpoint243 = defineMockEndpoint({
     path: '/reports/item-243',
     requests: {
         [HttpMethod.Post]: {
@@ -5128,7 +5127,7 @@ export const endpoint243 = defineEndpoint({
     },
 });
 
-export const endpoint244 = defineEndpoint({
+export const endpoint244 = defineMockEndpoint({
     path: '/reports/item-244',
     requests: {
         [HttpMethod.Post]: {
@@ -5149,7 +5148,7 @@ export const endpoint244 = defineEndpoint({
     },
 });
 
-export const endpoint245 = defineEndpoint({
+export const endpoint245 = defineMockEndpoint({
     path: '/reports/item-245',
     requests: {
         [HttpMethod.Post]: {
@@ -5170,7 +5169,7 @@ export const endpoint245 = defineEndpoint({
     },
 });
 
-export const endpoint246 = defineEndpoint({
+export const endpoint246 = defineMockEndpoint({
     path: '/reports/item-246',
     requests: {
         [HttpMethod.Post]: {
@@ -5191,7 +5190,7 @@ export const endpoint246 = defineEndpoint({
     },
 });
 
-export const endpoint247 = defineEndpoint({
+export const endpoint247 = defineMockEndpoint({
     path: '/reports/item-247',
     requests: {
         [HttpMethod.Post]: {
@@ -5212,7 +5211,7 @@ export const endpoint247 = defineEndpoint({
     },
 });
 
-export const endpoint248 = defineEndpoint({
+export const endpoint248 = defineMockEndpoint({
     path: '/reports/item-248',
     requests: {
         [HttpMethod.Post]: {
@@ -5233,7 +5232,7 @@ export const endpoint248 = defineEndpoint({
     },
 });
 
-export const endpoint249 = defineEndpoint({
+export const endpoint249 = defineMockEndpoint({
     path: '/reports/item-249',
     requests: {
         [HttpMethod.Post]: {
@@ -5254,7 +5253,7 @@ export const endpoint249 = defineEndpoint({
     },
 });
 
-export const endpoint250 = defineEndpoint({
+export const endpoint250 = defineMockEndpoint({
     path: '/reports/item-250',
     requests: {
         [HttpMethod.Post]: {
@@ -5275,7 +5274,7 @@ export const endpoint250 = defineEndpoint({
     },
 });
 
-export const endpoint251 = defineEndpoint({
+export const endpoint251 = defineMockEndpoint({
     path: '/reports/item-251',
     requests: {
         [HttpMethod.Post]: {
@@ -5296,7 +5295,7 @@ export const endpoint251 = defineEndpoint({
     },
 });
 
-export const endpoint252 = defineEndpoint({
+export const endpoint252 = defineMockEndpoint({
     path: '/reports/item-252',
     requests: {
         [HttpMethod.Post]: {
@@ -5317,7 +5316,7 @@ export const endpoint252 = defineEndpoint({
     },
 });
 
-export const endpoint253 = defineEndpoint({
+export const endpoint253 = defineMockEndpoint({
     path: '/reports/item-253',
     requests: {
         [HttpMethod.Post]: {
@@ -5338,7 +5337,7 @@ export const endpoint253 = defineEndpoint({
     },
 });
 
-export const endpoint254 = defineEndpoint({
+export const endpoint254 = defineMockEndpoint({
     path: '/reports/item-254',
     requests: {
         [HttpMethod.Post]: {
@@ -5359,7 +5358,7 @@ export const endpoint254 = defineEndpoint({
     },
 });
 
-export const endpoint255 = defineEndpoint({
+export const endpoint255 = defineMockEndpoint({
     path: '/reports/item-255',
     requests: {
         [HttpMethod.Post]: {
@@ -5380,7 +5379,7 @@ export const endpoint255 = defineEndpoint({
     },
 });
 
-export const endpoint256 = defineEndpoint({
+export const endpoint256 = defineMockEndpoint({
     path: '/reports/item-256',
     requests: {
         [HttpMethod.Post]: {
@@ -5401,7 +5400,7 @@ export const endpoint256 = defineEndpoint({
     },
 });
 
-export const endpoint257 = defineEndpoint({
+export const endpoint257 = defineMockEndpoint({
     path: '/reports/item-257',
     requests: {
         [HttpMethod.Post]: {
@@ -5422,7 +5421,7 @@ export const endpoint257 = defineEndpoint({
     },
 });
 
-export const endpoint258 = defineEndpoint({
+export const endpoint258 = defineMockEndpoint({
     path: '/reports/item-258',
     requests: {
         [HttpMethod.Post]: {
@@ -5443,7 +5442,7 @@ export const endpoint258 = defineEndpoint({
     },
 });
 
-export const endpoint259 = defineEndpoint({
+export const endpoint259 = defineMockEndpoint({
     path: '/reports/item-259',
     requests: {
         [HttpMethod.Post]: {
@@ -5464,7 +5463,7 @@ export const endpoint259 = defineEndpoint({
     },
 });
 
-export const endpoint260 = defineEndpoint({
+export const endpoint260 = defineMockEndpoint({
     path: '/reports/item-260',
     requests: {
         [HttpMethod.Post]: {
@@ -5485,7 +5484,7 @@ export const endpoint260 = defineEndpoint({
     },
 });
 
-export const endpoint261 = defineEndpoint({
+export const endpoint261 = defineMockEndpoint({
     path: '/reports/item-261',
     requests: {
         [HttpMethod.Post]: {
@@ -5506,7 +5505,7 @@ export const endpoint261 = defineEndpoint({
     },
 });
 
-export const endpoint262 = defineEndpoint({
+export const endpoint262 = defineMockEndpoint({
     path: '/reports/item-262',
     requests: {
         [HttpMethod.Post]: {
@@ -5527,7 +5526,7 @@ export const endpoint262 = defineEndpoint({
     },
 });
 
-export const endpoint263 = defineEndpoint({
+export const endpoint263 = defineMockEndpoint({
     path: '/reports/item-263',
     requests: {
         [HttpMethod.Post]: {
@@ -5548,7 +5547,7 @@ export const endpoint263 = defineEndpoint({
     },
 });
 
-export const endpoint264 = defineEndpoint({
+export const endpoint264 = defineMockEndpoint({
     path: '/reports/item-264',
     requests: {
         [HttpMethod.Post]: {
@@ -5569,7 +5568,7 @@ export const endpoint264 = defineEndpoint({
     },
 });
 
-export const endpoint265 = defineEndpoint({
+export const endpoint265 = defineMockEndpoint({
     path: '/reports/item-265',
     requests: {
         [HttpMethod.Post]: {
@@ -5590,7 +5589,7 @@ export const endpoint265 = defineEndpoint({
     },
 });
 
-export const endpoint266 = defineEndpoint({
+export const endpoint266 = defineMockEndpoint({
     path: '/reports/item-266',
     requests: {
         [HttpMethod.Post]: {
@@ -5611,7 +5610,7 @@ export const endpoint266 = defineEndpoint({
     },
 });
 
-export const endpoint267 = defineEndpoint({
+export const endpoint267 = defineMockEndpoint({
     path: '/reports/item-267',
     requests: {
         [HttpMethod.Post]: {
@@ -5632,7 +5631,7 @@ export const endpoint267 = defineEndpoint({
     },
 });
 
-export const endpoint268 = defineEndpoint({
+export const endpoint268 = defineMockEndpoint({
     path: '/reports/item-268',
     requests: {
         [HttpMethod.Post]: {
@@ -5653,7 +5652,7 @@ export const endpoint268 = defineEndpoint({
     },
 });
 
-export const endpoint269 = defineEndpoint({
+export const endpoint269 = defineMockEndpoint({
     path: '/reports/item-269',
     requests: {
         [HttpMethod.Post]: {
@@ -5674,7 +5673,7 @@ export const endpoint269 = defineEndpoint({
     },
 });
 
-export const endpoint270 = defineEndpoint({
+export const endpoint270 = defineMockEndpoint({
     path: '/reports/item-270',
     requests: {
         [HttpMethod.Post]: {
@@ -5695,7 +5694,7 @@ export const endpoint270 = defineEndpoint({
     },
 });
 
-export const endpoint271 = defineEndpoint({
+export const endpoint271 = defineMockEndpoint({
     path: '/reports/item-271',
     requests: {
         [HttpMethod.Post]: {
@@ -5716,7 +5715,7 @@ export const endpoint271 = defineEndpoint({
     },
 });
 
-export const endpoint272 = defineEndpoint({
+export const endpoint272 = defineMockEndpoint({
     path: '/reports/item-272',
     requests: {
         [HttpMethod.Post]: {
@@ -5737,7 +5736,7 @@ export const endpoint272 = defineEndpoint({
     },
 });
 
-export const endpoint273 = defineEndpoint({
+export const endpoint273 = defineMockEndpoint({
     path: '/reports/item-273',
     requests: {
         [HttpMethod.Post]: {
@@ -5758,7 +5757,7 @@ export const endpoint273 = defineEndpoint({
     },
 });
 
-export const endpoint274 = defineEndpoint({
+export const endpoint274 = defineMockEndpoint({
     path: '/reports/item-274',
     requests: {
         [HttpMethod.Post]: {
@@ -5779,7 +5778,7 @@ export const endpoint274 = defineEndpoint({
     },
 });
 
-export const endpoint275 = defineEndpoint({
+export const endpoint275 = defineMockEndpoint({
     path: '/reports/item-275',
     requests: {
         [HttpMethod.Post]: {
@@ -5800,7 +5799,7 @@ export const endpoint275 = defineEndpoint({
     },
 });
 
-export const endpoint276 = defineEndpoint({
+export const endpoint276 = defineMockEndpoint({
     path: '/reports/item-276',
     requests: {
         [HttpMethod.Post]: {
@@ -5821,7 +5820,7 @@ export const endpoint276 = defineEndpoint({
     },
 });
 
-export const endpoint277 = defineEndpoint({
+export const endpoint277 = defineMockEndpoint({
     path: '/reports/item-277',
     requests: {
         [HttpMethod.Post]: {
@@ -5842,7 +5841,7 @@ export const endpoint277 = defineEndpoint({
     },
 });
 
-export const endpoint278 = defineEndpoint({
+export const endpoint278 = defineMockEndpoint({
     path: '/reports/item-278',
     requests: {
         [HttpMethod.Post]: {
@@ -5863,7 +5862,7 @@ export const endpoint278 = defineEndpoint({
     },
 });
 
-export const endpoint279 = defineEndpoint({
+export const endpoint279 = defineMockEndpoint({
     path: '/reports/item-279',
     requests: {
         [HttpMethod.Post]: {
@@ -5884,7 +5883,7 @@ export const endpoint279 = defineEndpoint({
     },
 });
 
-export const endpoint280 = defineEndpoint({
+export const endpoint280 = defineMockEndpoint({
     path: '/reports/item-280',
     requests: {
         [HttpMethod.Post]: {
@@ -5905,7 +5904,7 @@ export const endpoint280 = defineEndpoint({
     },
 });
 
-export const endpoint281 = defineEndpoint({
+export const endpoint281 = defineMockEndpoint({
     path: '/reports/item-281',
     requests: {
         [HttpMethod.Post]: {
@@ -5926,7 +5925,7 @@ export const endpoint281 = defineEndpoint({
     },
 });
 
-export const endpoint282 = defineEndpoint({
+export const endpoint282 = defineMockEndpoint({
     path: '/reports/item-282',
     requests: {
         [HttpMethod.Post]: {
@@ -5947,7 +5946,7 @@ export const endpoint282 = defineEndpoint({
     },
 });
 
-export const endpoint283 = defineEndpoint({
+export const endpoint283 = defineMockEndpoint({
     path: '/reports/item-283',
     requests: {
         [HttpMethod.Post]: {
@@ -5968,7 +5967,7 @@ export const endpoint283 = defineEndpoint({
     },
 });
 
-export const endpoint284 = defineEndpoint({
+export const endpoint284 = defineMockEndpoint({
     path: '/reports/item-284',
     requests: {
         [HttpMethod.Post]: {
@@ -5989,7 +5988,7 @@ export const endpoint284 = defineEndpoint({
     },
 });
 
-export const endpoint285 = defineEndpoint({
+export const endpoint285 = defineMockEndpoint({
     path: '/reports/item-285',
     requests: {
         [HttpMethod.Post]: {
@@ -6010,7 +6009,7 @@ export const endpoint285 = defineEndpoint({
     },
 });
 
-export const endpoint286 = defineEndpoint({
+export const endpoint286 = defineMockEndpoint({
     path: '/reports/item-286',
     requests: {
         [HttpMethod.Post]: {
@@ -6031,7 +6030,7 @@ export const endpoint286 = defineEndpoint({
     },
 });
 
-export const endpoint287 = defineEndpoint({
+export const endpoint287 = defineMockEndpoint({
     path: '/reports/item-287',
     requests: {
         [HttpMethod.Post]: {
@@ -6052,7 +6051,7 @@ export const endpoint287 = defineEndpoint({
     },
 });
 
-export const endpoint288 = defineEndpoint({
+export const endpoint288 = defineMockEndpoint({
     path: '/reports/item-288',
     requests: {
         [HttpMethod.Post]: {
@@ -6073,7 +6072,7 @@ export const endpoint288 = defineEndpoint({
     },
 });
 
-export const endpoint289 = defineEndpoint({
+export const endpoint289 = defineMockEndpoint({
     path: '/reports/item-289',
     requests: {
         [HttpMethod.Post]: {
@@ -6094,7 +6093,7 @@ export const endpoint289 = defineEndpoint({
     },
 });
 
-export const endpoint290 = defineEndpoint({
+export const endpoint290 = defineMockEndpoint({
     path: '/reports/item-290',
     requests: {
         [HttpMethod.Post]: {
@@ -6115,7 +6114,7 @@ export const endpoint290 = defineEndpoint({
     },
 });
 
-export const endpoint291 = defineEndpoint({
+export const endpoint291 = defineMockEndpoint({
     path: '/reports/item-291',
     requests: {
         [HttpMethod.Post]: {
@@ -6136,7 +6135,7 @@ export const endpoint291 = defineEndpoint({
     },
 });
 
-export const endpoint292 = defineEndpoint({
+export const endpoint292 = defineMockEndpoint({
     path: '/reports/item-292',
     requests: {
         [HttpMethod.Post]: {
@@ -6157,7 +6156,7 @@ export const endpoint292 = defineEndpoint({
     },
 });
 
-export const endpoint293 = defineEndpoint({
+export const endpoint293 = defineMockEndpoint({
     path: '/reports/item-293',
     requests: {
         [HttpMethod.Post]: {
@@ -6178,7 +6177,7 @@ export const endpoint293 = defineEndpoint({
     },
 });
 
-export const endpoint294 = defineEndpoint({
+export const endpoint294 = defineMockEndpoint({
     path: '/reports/item-294',
     requests: {
         [HttpMethod.Post]: {
@@ -6199,7 +6198,7 @@ export const endpoint294 = defineEndpoint({
     },
 });
 
-export const endpoint295 = defineEndpoint({
+export const endpoint295 = defineMockEndpoint({
     path: '/reports/item-295',
     requests: {
         [HttpMethod.Post]: {
@@ -6220,7 +6219,7 @@ export const endpoint295 = defineEndpoint({
     },
 });
 
-export const endpoint296 = defineEndpoint({
+export const endpoint296 = defineMockEndpoint({
     path: '/reports/item-296',
     requests: {
         [HttpMethod.Post]: {
@@ -6241,7 +6240,7 @@ export const endpoint296 = defineEndpoint({
     },
 });
 
-export const endpoint297 = defineEndpoint({
+export const endpoint297 = defineMockEndpoint({
     path: '/reports/item-297',
     requests: {
         [HttpMethod.Post]: {
@@ -6262,7 +6261,7 @@ export const endpoint297 = defineEndpoint({
     },
 });
 
-export const endpoint298 = defineEndpoint({
+export const endpoint298 = defineMockEndpoint({
     path: '/reports/item-298',
     requests: {
         [HttpMethod.Post]: {
@@ -6283,7 +6282,7 @@ export const endpoint298 = defineEndpoint({
     },
 });
 
-export const endpoint299 = defineEndpoint({
+export const endpoint299 = defineMockEndpoint({
     path: '/reports/item-299',
     requests: {
         [HttpMethod.Post]: {
@@ -6304,7 +6303,7 @@ export const endpoint299 = defineEndpoint({
     },
 });
 
-export const endpoint300 = defineEndpoint({
+export const endpoint300 = defineMockEndpoint({
     path: '/reports/item-300',
     requests: {
         [HttpMethod.Post]: {
@@ -6325,7 +6324,7 @@ export const endpoint300 = defineEndpoint({
     },
 });
 
-export const endpoint301 = defineEndpoint({
+export const endpoint301 = defineMockEndpoint({
     path: '/reports/item-301',
     requests: {
         [HttpMethod.Post]: {
@@ -6346,7 +6345,7 @@ export const endpoint301 = defineEndpoint({
     },
 });
 
-export const endpoint302 = defineEndpoint({
+export const endpoint302 = defineMockEndpoint({
     path: '/reports/item-302',
     requests: {
         [HttpMethod.Post]: {
@@ -6367,7 +6366,7 @@ export const endpoint302 = defineEndpoint({
     },
 });
 
-export const endpoint303 = defineEndpoint({
+export const endpoint303 = defineMockEndpoint({
     path: '/reports/item-303',
     requests: {
         [HttpMethod.Post]: {
@@ -6388,7 +6387,7 @@ export const endpoint303 = defineEndpoint({
     },
 });
 
-export const endpoint304 = defineEndpoint({
+export const endpoint304 = defineMockEndpoint({
     path: '/reports/item-304',
     requests: {
         [HttpMethod.Post]: {
@@ -6409,7 +6408,7 @@ export const endpoint304 = defineEndpoint({
     },
 });
 
-export const endpoint305 = defineEndpoint({
+export const endpoint305 = defineMockEndpoint({
     path: '/reports/item-305',
     requests: {
         [HttpMethod.Post]: {
@@ -6430,7 +6429,7 @@ export const endpoint305 = defineEndpoint({
     },
 });
 
-export const endpoint306 = defineEndpoint({
+export const endpoint306 = defineMockEndpoint({
     path: '/reports/item-306',
     requests: {
         [HttpMethod.Post]: {
@@ -6451,7 +6450,7 @@ export const endpoint306 = defineEndpoint({
     },
 });
 
-export const endpoint307 = defineEndpoint({
+export const endpoint307 = defineMockEndpoint({
     path: '/reports/item-307',
     requests: {
         [HttpMethod.Post]: {
@@ -6472,7 +6471,7 @@ export const endpoint307 = defineEndpoint({
     },
 });
 
-export const endpoint308 = defineEndpoint({
+export const endpoint308 = defineMockEndpoint({
     path: '/reports/item-308',
     requests: {
         [HttpMethod.Post]: {
@@ -6493,7 +6492,7 @@ export const endpoint308 = defineEndpoint({
     },
 });
 
-export const endpoint309 = defineEndpoint({
+export const endpoint309 = defineMockEndpoint({
     path: '/reports/item-309',
     requests: {
         [HttpMethod.Post]: {
@@ -6514,7 +6513,7 @@ export const endpoint309 = defineEndpoint({
     },
 });
 
-export const endpoint310 = defineEndpoint({
+export const endpoint310 = defineMockEndpoint({
     path: '/reports/item-310',
     requests: {
         [HttpMethod.Post]: {
@@ -6535,7 +6534,7 @@ export const endpoint310 = defineEndpoint({
     },
 });
 
-export const endpoint311 = defineEndpoint({
+export const endpoint311 = defineMockEndpoint({
     path: '/reports/item-311',
     requests: {
         [HttpMethod.Post]: {
@@ -6556,7 +6555,7 @@ export const endpoint311 = defineEndpoint({
     },
 });
 
-export const endpoint312 = defineEndpoint({
+export const endpoint312 = defineMockEndpoint({
     path: '/reports/item-312',
     requests: {
         [HttpMethod.Post]: {
@@ -6577,7 +6576,7 @@ export const endpoint312 = defineEndpoint({
     },
 });
 
-export const endpoint313 = defineEndpoint({
+export const endpoint313 = defineMockEndpoint({
     path: '/reports/item-313',
     requests: {
         [HttpMethod.Post]: {
@@ -6598,7 +6597,7 @@ export const endpoint313 = defineEndpoint({
     },
 });
 
-export const endpoint314 = defineEndpoint({
+export const endpoint314 = defineMockEndpoint({
     path: '/reports/item-314',
     requests: {
         [HttpMethod.Post]: {
@@ -6619,7 +6618,7 @@ export const endpoint314 = defineEndpoint({
     },
 });
 
-export const endpoint315 = defineEndpoint({
+export const endpoint315 = defineMockEndpoint({
     path: '/reports/item-315',
     requests: {
         [HttpMethod.Post]: {
@@ -6640,7 +6639,7 @@ export const endpoint315 = defineEndpoint({
     },
 });
 
-export const endpoint316 = defineEndpoint({
+export const endpoint316 = defineMockEndpoint({
     path: '/reports/item-316',
     requests: {
         [HttpMethod.Post]: {
@@ -6661,7 +6660,7 @@ export const endpoint316 = defineEndpoint({
     },
 });
 
-export const endpoint317 = defineEndpoint({
+export const endpoint317 = defineMockEndpoint({
     path: '/reports/item-317',
     requests: {
         [HttpMethod.Post]: {
@@ -6682,7 +6681,7 @@ export const endpoint317 = defineEndpoint({
     },
 });
 
-export const endpoint318 = defineEndpoint({
+export const endpoint318 = defineMockEndpoint({
     path: '/reports/item-318',
     requests: {
         [HttpMethod.Post]: {
@@ -6703,7 +6702,7 @@ export const endpoint318 = defineEndpoint({
     },
 });
 
-export const endpoint319 = defineEndpoint({
+export const endpoint319 = defineMockEndpoint({
     path: '/reports/item-319',
     requests: {
         [HttpMethod.Post]: {
@@ -6724,7 +6723,7 @@ export const endpoint319 = defineEndpoint({
     },
 });
 
-export const endpoint320 = defineEndpoint({
+export const endpoint320 = defineMockEndpoint({
     path: '/reports/item-320',
     requests: {
         [HttpMethod.Post]: {
@@ -6745,7 +6744,7 @@ export const endpoint320 = defineEndpoint({
     },
 });
 
-export const endpoint321 = defineEndpoint({
+export const endpoint321 = defineMockEndpoint({
     path: '/reports/item-321',
     requests: {
         [HttpMethod.Post]: {
@@ -6766,7 +6765,7 @@ export const endpoint321 = defineEndpoint({
     },
 });
 
-export const endpoint322 = defineEndpoint({
+export const endpoint322 = defineMockEndpoint({
     path: '/reports/item-322',
     requests: {
         [HttpMethod.Post]: {
@@ -6787,7 +6786,7 @@ export const endpoint322 = defineEndpoint({
     },
 });
 
-export const endpoint323 = defineEndpoint({
+export const endpoint323 = defineMockEndpoint({
     path: '/reports/item-323',
     requests: {
         [HttpMethod.Post]: {
@@ -6808,7 +6807,7 @@ export const endpoint323 = defineEndpoint({
     },
 });
 
-export const endpoint324 = defineEndpoint({
+export const endpoint324 = defineMockEndpoint({
     path: '/reports/item-324',
     requests: {
         [HttpMethod.Post]: {
@@ -6829,7 +6828,7 @@ export const endpoint324 = defineEndpoint({
     },
 });
 
-export const endpoint325 = defineEndpoint({
+export const endpoint325 = defineMockEndpoint({
     path: '/reports/item-325',
     requests: {
         [HttpMethod.Post]: {
@@ -6850,7 +6849,7 @@ export const endpoint325 = defineEndpoint({
     },
 });
 
-export const endpoint326 = defineEndpoint({
+export const endpoint326 = defineMockEndpoint({
     path: '/reports/item-326',
     requests: {
         [HttpMethod.Post]: {
@@ -6871,7 +6870,7 @@ export const endpoint326 = defineEndpoint({
     },
 });
 
-export const endpoint327 = defineEndpoint({
+export const endpoint327 = defineMockEndpoint({
     path: '/reports/item-327',
     requests: {
         [HttpMethod.Post]: {
@@ -6892,7 +6891,7 @@ export const endpoint327 = defineEndpoint({
     },
 });
 
-export const endpoint328 = defineEndpoint({
+export const endpoint328 = defineMockEndpoint({
     path: '/reports/item-328',
     requests: {
         [HttpMethod.Post]: {
@@ -6913,7 +6912,7 @@ export const endpoint328 = defineEndpoint({
     },
 });
 
-export const endpoint329 = defineEndpoint({
+export const endpoint329 = defineMockEndpoint({
     path: '/reports/item-329',
     requests: {
         [HttpMethod.Post]: {
@@ -6934,7 +6933,7 @@ export const endpoint329 = defineEndpoint({
     },
 });
 
-export const endpoint330 = defineEndpoint({
+export const endpoint330 = defineMockEndpoint({
     path: '/reports/item-330',
     requests: {
         [HttpMethod.Post]: {
@@ -6955,7 +6954,7 @@ export const endpoint330 = defineEndpoint({
     },
 });
 
-export const endpoint331 = defineEndpoint({
+export const endpoint331 = defineMockEndpoint({
     path: '/reports/item-331',
     requests: {
         [HttpMethod.Post]: {
@@ -6976,7 +6975,7 @@ export const endpoint331 = defineEndpoint({
     },
 });
 
-export const endpoint332 = defineEndpoint({
+export const endpoint332 = defineMockEndpoint({
     path: '/reports/item-332',
     requests: {
         [HttpMethod.Post]: {
@@ -6997,7 +6996,7 @@ export const endpoint332 = defineEndpoint({
     },
 });
 
-export const endpoint333 = defineEndpoint({
+export const endpoint333 = defineMockEndpoint({
     path: '/reports/item-333',
     requests: {
         [HttpMethod.Post]: {
@@ -7018,7 +7017,7 @@ export const endpoint333 = defineEndpoint({
     },
 });
 
-export const endpoint334 = defineEndpoint({
+export const endpoint334 = defineMockEndpoint({
     path: '/reports/item-334',
     requests: {
         [HttpMethod.Post]: {
@@ -7039,7 +7038,7 @@ export const endpoint334 = defineEndpoint({
     },
 });
 
-export const endpoint335 = defineEndpoint({
+export const endpoint335 = defineMockEndpoint({
     path: '/reports/item-335',
     requests: {
         [HttpMethod.Post]: {
@@ -7060,7 +7059,7 @@ export const endpoint335 = defineEndpoint({
     },
 });
 
-export const endpoint336 = defineEndpoint({
+export const endpoint336 = defineMockEndpoint({
     path: '/reports/item-336',
     requests: {
         [HttpMethod.Post]: {
@@ -7081,7 +7080,7 @@ export const endpoint336 = defineEndpoint({
     },
 });
 
-export const endpoint337 = defineEndpoint({
+export const endpoint337 = defineMockEndpoint({
     path: '/reports/item-337',
     requests: {
         [HttpMethod.Post]: {
@@ -7102,7 +7101,7 @@ export const endpoint337 = defineEndpoint({
     },
 });
 
-export const endpoint338 = defineEndpoint({
+export const endpoint338 = defineMockEndpoint({
     path: '/reports/item-338',
     requests: {
         [HttpMethod.Post]: {
@@ -7123,7 +7122,7 @@ export const endpoint338 = defineEndpoint({
     },
 });
 
-export const endpoint339 = defineEndpoint({
+export const endpoint339 = defineMockEndpoint({
     path: '/reports/item-339',
     requests: {
         [HttpMethod.Post]: {
@@ -7144,7 +7143,7 @@ export const endpoint339 = defineEndpoint({
     },
 });
 
-export const endpoint340 = defineEndpoint({
+export const endpoint340 = defineMockEndpoint({
     path: '/reports/item-340',
     requests: {
         [HttpMethod.Post]: {
@@ -7165,7 +7164,7 @@ export const endpoint340 = defineEndpoint({
     },
 });
 
-export const endpoint341 = defineEndpoint({
+export const endpoint341 = defineMockEndpoint({
     path: '/reports/item-341',
     requests: {
         [HttpMethod.Post]: {
@@ -7186,7 +7185,7 @@ export const endpoint341 = defineEndpoint({
     },
 });
 
-export const endpoint342 = defineEndpoint({
+export const endpoint342 = defineMockEndpoint({
     path: '/reports/item-342',
     requests: {
         [HttpMethod.Post]: {
@@ -7207,7 +7206,7 @@ export const endpoint342 = defineEndpoint({
     },
 });
 
-export const endpoint343 = defineEndpoint({
+export const endpoint343 = defineMockEndpoint({
     path: '/reports/item-343',
     requests: {
         [HttpMethod.Post]: {
@@ -7228,7 +7227,7 @@ export const endpoint343 = defineEndpoint({
     },
 });
 
-export const endpoint344 = defineEndpoint({
+export const endpoint344 = defineMockEndpoint({
     path: '/reports/item-344',
     requests: {
         [HttpMethod.Post]: {
@@ -7249,7 +7248,7 @@ export const endpoint344 = defineEndpoint({
     },
 });
 
-export const endpoint345 = defineEndpoint({
+export const endpoint345 = defineMockEndpoint({
     path: '/reports/item-345',
     requests: {
         [HttpMethod.Post]: {
@@ -7270,7 +7269,7 @@ export const endpoint345 = defineEndpoint({
     },
 });
 
-export const endpoint346 = defineEndpoint({
+export const endpoint346 = defineMockEndpoint({
     path: '/reports/item-346',
     requests: {
         [HttpMethod.Post]: {
@@ -7291,7 +7290,7 @@ export const endpoint346 = defineEndpoint({
     },
 });
 
-export const endpoint347 = defineEndpoint({
+export const endpoint347 = defineMockEndpoint({
     path: '/reports/item-347',
     requests: {
         [HttpMethod.Post]: {
@@ -7312,7 +7311,7 @@ export const endpoint347 = defineEndpoint({
     },
 });
 
-export const endpoint348 = defineEndpoint({
+export const endpoint348 = defineMockEndpoint({
     path: '/reports/item-348',
     requests: {
         [HttpMethod.Post]: {
@@ -7333,7 +7332,7 @@ export const endpoint348 = defineEndpoint({
     },
 });
 
-export const endpoint349 = defineEndpoint({
+export const endpoint349 = defineMockEndpoint({
     path: '/reports/item-349',
     requests: {
         [HttpMethod.Post]: {
@@ -7354,7 +7353,7 @@ export const endpoint349 = defineEndpoint({
     },
 });
 
-export const endpoint350 = defineEndpoint({
+export const endpoint350 = defineMockEndpoint({
     path: '/reports/item-350',
     requests: {
         [HttpMethod.Post]: {
@@ -7375,7 +7374,7 @@ export const endpoint350 = defineEndpoint({
     },
 });
 
-export const endpoint351 = defineEndpoint({
+export const endpoint351 = defineMockEndpoint({
     path: '/reports/item-351',
     requests: {
         [HttpMethod.Post]: {
@@ -7396,7 +7395,7 @@ export const endpoint351 = defineEndpoint({
     },
 });
 
-export const endpoint352 = defineEndpoint({
+export const endpoint352 = defineMockEndpoint({
     path: '/reports/item-352',
     requests: {
         [HttpMethod.Post]: {
@@ -7417,7 +7416,7 @@ export const endpoint352 = defineEndpoint({
     },
 });
 
-export const endpoint353 = defineEndpoint({
+export const endpoint353 = defineMockEndpoint({
     path: '/reports/item-353',
     requests: {
         [HttpMethod.Post]: {
@@ -7438,7 +7437,7 @@ export const endpoint353 = defineEndpoint({
     },
 });
 
-export const endpoint354 = defineEndpoint({
+export const endpoint354 = defineMockEndpoint({
     path: '/reports/item-354',
     requests: {
         [HttpMethod.Post]: {
@@ -7459,7 +7458,7 @@ export const endpoint354 = defineEndpoint({
     },
 });
 
-export const endpoint355 = defineEndpoint({
+export const endpoint355 = defineMockEndpoint({
     path: '/reports/item-355',
     requests: {
         [HttpMethod.Post]: {
@@ -7480,7 +7479,7 @@ export const endpoint355 = defineEndpoint({
     },
 });
 
-export const endpoint356 = defineEndpoint({
+export const endpoint356 = defineMockEndpoint({
     path: '/reports/item-356',
     requests: {
         [HttpMethod.Post]: {
@@ -7501,7 +7500,7 @@ export const endpoint356 = defineEndpoint({
     },
 });
 
-export const endpoint357 = defineEndpoint({
+export const endpoint357 = defineMockEndpoint({
     path: '/reports/item-357',
     requests: {
         [HttpMethod.Post]: {
@@ -7522,7 +7521,7 @@ export const endpoint357 = defineEndpoint({
     },
 });
 
-export const endpoint358 = defineEndpoint({
+export const endpoint358 = defineMockEndpoint({
     path: '/reports/item-358',
     requests: {
         [HttpMethod.Post]: {
@@ -7543,7 +7542,7 @@ export const endpoint358 = defineEndpoint({
     },
 });
 
-export const endpoint359 = defineEndpoint({
+export const endpoint359 = defineMockEndpoint({
     path: '/reports/item-359',
     requests: {
         [HttpMethod.Post]: {
@@ -7564,7 +7563,7 @@ export const endpoint359 = defineEndpoint({
     },
 });
 
-export const endpoint360 = defineEndpoint({
+export const endpoint360 = defineMockEndpoint({
     path: '/reports/item-360',
     requests: {
         [HttpMethod.Post]: {
@@ -7585,7 +7584,7 @@ export const endpoint360 = defineEndpoint({
     },
 });
 
-export const endpoint361 = defineEndpoint({
+export const endpoint361 = defineMockEndpoint({
     path: '/reports/item-361',
     requests: {
         [HttpMethod.Post]: {
@@ -7606,7 +7605,7 @@ export const endpoint361 = defineEndpoint({
     },
 });
 
-export const endpoint362 = defineEndpoint({
+export const endpoint362 = defineMockEndpoint({
     path: '/reports/item-362',
     requests: {
         [HttpMethod.Post]: {
@@ -7627,7 +7626,7 @@ export const endpoint362 = defineEndpoint({
     },
 });
 
-export const endpoint363 = defineEndpoint({
+export const endpoint363 = defineMockEndpoint({
     path: '/reports/item-363',
     requests: {
         [HttpMethod.Post]: {
@@ -7648,7 +7647,7 @@ export const endpoint363 = defineEndpoint({
     },
 });
 
-export const endpoint364 = defineEndpoint({
+export const endpoint364 = defineMockEndpoint({
     path: '/reports/item-364',
     requests: {
         [HttpMethod.Post]: {
@@ -7669,7 +7668,7 @@ export const endpoint364 = defineEndpoint({
     },
 });
 
-export const endpoint365 = defineEndpoint({
+export const endpoint365 = defineMockEndpoint({
     path: '/reports/item-365',
     requests: {
         [HttpMethod.Post]: {
@@ -7690,7 +7689,7 @@ export const endpoint365 = defineEndpoint({
     },
 });
 
-export const endpoint366 = defineEndpoint({
+export const endpoint366 = defineMockEndpoint({
     path: '/reports/item-366',
     requests: {
         [HttpMethod.Post]: {
@@ -7711,7 +7710,7 @@ export const endpoint366 = defineEndpoint({
     },
 });
 
-export const endpoint367 = defineEndpoint({
+export const endpoint367 = defineMockEndpoint({
     path: '/reports/item-367',
     requests: {
         [HttpMethod.Post]: {
@@ -7732,7 +7731,7 @@ export const endpoint367 = defineEndpoint({
     },
 });
 
-export const endpoint368 = defineEndpoint({
+export const endpoint368 = defineMockEndpoint({
     path: '/reports/item-368',
     requests: {
         [HttpMethod.Post]: {
@@ -7753,7 +7752,7 @@ export const endpoint368 = defineEndpoint({
     },
 });
 
-export const endpoint369 = defineEndpoint({
+export const endpoint369 = defineMockEndpoint({
     path: '/reports/item-369',
     requests: {
         [HttpMethod.Post]: {
@@ -7774,7 +7773,7 @@ export const endpoint369 = defineEndpoint({
     },
 });
 
-export const endpoint370 = defineEndpoint({
+export const endpoint370 = defineMockEndpoint({
     path: '/reports/item-370',
     requests: {
         [HttpMethod.Post]: {
@@ -7795,7 +7794,7 @@ export const endpoint370 = defineEndpoint({
     },
 });
 
-export const endpoint371 = defineEndpoint({
+export const endpoint371 = defineMockEndpoint({
     path: '/reports/item-371',
     requests: {
         [HttpMethod.Post]: {
@@ -7816,7 +7815,7 @@ export const endpoint371 = defineEndpoint({
     },
 });
 
-export const endpoint372 = defineEndpoint({
+export const endpoint372 = defineMockEndpoint({
     path: '/reports/item-372',
     requests: {
         [HttpMethod.Post]: {
@@ -7837,7 +7836,7 @@ export const endpoint372 = defineEndpoint({
     },
 });
 
-export const endpoint373 = defineEndpoint({
+export const endpoint373 = defineMockEndpoint({
     path: '/reports/item-373',
     requests: {
         [HttpMethod.Post]: {
@@ -7858,7 +7857,7 @@ export const endpoint373 = defineEndpoint({
     },
 });
 
-export const endpoint374 = defineEndpoint({
+export const endpoint374 = defineMockEndpoint({
     path: '/reports/item-374',
     requests: {
         [HttpMethod.Post]: {
@@ -7879,7 +7878,7 @@ export const endpoint374 = defineEndpoint({
     },
 });
 
-export const endpoint375 = defineEndpoint({
+export const endpoint375 = defineMockEndpoint({
     path: '/reports/item-375',
     requests: {
         [HttpMethod.Post]: {
@@ -7900,7 +7899,7 @@ export const endpoint375 = defineEndpoint({
     },
 });
 
-export const endpoint376 = defineEndpoint({
+export const endpoint376 = defineMockEndpoint({
     path: '/reports/item-376',
     requests: {
         [HttpMethod.Post]: {
@@ -7921,7 +7920,7 @@ export const endpoint376 = defineEndpoint({
     },
 });
 
-export const endpoint377 = defineEndpoint({
+export const endpoint377 = defineMockEndpoint({
     path: '/reports/item-377',
     requests: {
         [HttpMethod.Post]: {
@@ -7942,7 +7941,7 @@ export const endpoint377 = defineEndpoint({
     },
 });
 
-export const endpoint378 = defineEndpoint({
+export const endpoint378 = defineMockEndpoint({
     path: '/reports/item-378',
     requests: {
         [HttpMethod.Post]: {
@@ -7963,7 +7962,7 @@ export const endpoint378 = defineEndpoint({
     },
 });
 
-export const endpoint379 = defineEndpoint({
+export const endpoint379 = defineMockEndpoint({
     path: '/reports/item-379',
     requests: {
         [HttpMethod.Post]: {
@@ -7984,7 +7983,7 @@ export const endpoint379 = defineEndpoint({
     },
 });
 
-export const endpoint380 = defineEndpoint({
+export const endpoint380 = defineMockEndpoint({
     path: '/reports/item-380',
     requests: {
         [HttpMethod.Post]: {
@@ -8005,7 +8004,7 @@ export const endpoint380 = defineEndpoint({
     },
 });
 
-export const endpoint381 = defineEndpoint({
+export const endpoint381 = defineMockEndpoint({
     path: '/reports/item-381',
     requests: {
         [HttpMethod.Post]: {
@@ -8026,7 +8025,7 @@ export const endpoint381 = defineEndpoint({
     },
 });
 
-export const endpoint382 = defineEndpoint({
+export const endpoint382 = defineMockEndpoint({
     path: '/reports/item-382',
     requests: {
         [HttpMethod.Post]: {
@@ -8047,7 +8046,7 @@ export const endpoint382 = defineEndpoint({
     },
 });
 
-export const endpoint383 = defineEndpoint({
+export const endpoint383 = defineMockEndpoint({
     path: '/reports/item-383',
     requests: {
         [HttpMethod.Post]: {
@@ -8068,7 +8067,7 @@ export const endpoint383 = defineEndpoint({
     },
 });
 
-export const endpoint384 = defineEndpoint({
+export const endpoint384 = defineMockEndpoint({
     path: '/reports/item-384',
     requests: {
         [HttpMethod.Post]: {
@@ -8089,7 +8088,7 @@ export const endpoint384 = defineEndpoint({
     },
 });
 
-export const endpoint385 = defineEndpoint({
+export const endpoint385 = defineMockEndpoint({
     path: '/reports/item-385',
     requests: {
         [HttpMethod.Post]: {
@@ -8110,7 +8109,7 @@ export const endpoint385 = defineEndpoint({
     },
 });
 
-export const endpoint386 = defineEndpoint({
+export const endpoint386 = defineMockEndpoint({
     path: '/reports/item-386',
     requests: {
         [HttpMethod.Post]: {
@@ -8131,7 +8130,7 @@ export const endpoint386 = defineEndpoint({
     },
 });
 
-export const endpoint387 = defineEndpoint({
+export const endpoint387 = defineMockEndpoint({
     path: '/reports/item-387',
     requests: {
         [HttpMethod.Post]: {
@@ -8152,7 +8151,7 @@ export const endpoint387 = defineEndpoint({
     },
 });
 
-export const endpoint388 = defineEndpoint({
+export const endpoint388 = defineMockEndpoint({
     path: '/reports/item-388',
     requests: {
         [HttpMethod.Post]: {
@@ -8173,7 +8172,7 @@ export const endpoint388 = defineEndpoint({
     },
 });
 
-export const endpoint389 = defineEndpoint({
+export const endpoint389 = defineMockEndpoint({
     path: '/reports/item-389',
     requests: {
         [HttpMethod.Post]: {
@@ -8194,7 +8193,7 @@ export const endpoint389 = defineEndpoint({
     },
 });
 
-export const endpoint390 = defineEndpoint({
+export const endpoint390 = defineMockEndpoint({
     path: '/reports/item-390',
     requests: {
         [HttpMethod.Post]: {
@@ -8215,7 +8214,7 @@ export const endpoint390 = defineEndpoint({
     },
 });
 
-export const endpoint391 = defineEndpoint({
+export const endpoint391 = defineMockEndpoint({
     path: '/reports/item-391',
     requests: {
         [HttpMethod.Post]: {
@@ -8236,7 +8235,7 @@ export const endpoint391 = defineEndpoint({
     },
 });
 
-export const endpoint392 = defineEndpoint({
+export const endpoint392 = defineMockEndpoint({
     path: '/reports/item-392',
     requests: {
         [HttpMethod.Post]: {
@@ -8257,7 +8256,7 @@ export const endpoint392 = defineEndpoint({
     },
 });
 
-export const endpoint393 = defineEndpoint({
+export const endpoint393 = defineMockEndpoint({
     path: '/reports/item-393',
     requests: {
         [HttpMethod.Post]: {
@@ -8278,7 +8277,7 @@ export const endpoint393 = defineEndpoint({
     },
 });
 
-export const endpoint394 = defineEndpoint({
+export const endpoint394 = defineMockEndpoint({
     path: '/reports/item-394',
     requests: {
         [HttpMethod.Post]: {
@@ -8299,7 +8298,7 @@ export const endpoint394 = defineEndpoint({
     },
 });
 
-export const endpoint395 = defineEndpoint({
+export const endpoint395 = defineMockEndpoint({
     path: '/reports/item-395',
     requests: {
         [HttpMethod.Post]: {
@@ -8320,7 +8319,7 @@ export const endpoint395 = defineEndpoint({
     },
 });
 
-export const endpoint396 = defineEndpoint({
+export const endpoint396 = defineMockEndpoint({
     path: '/reports/item-396',
     requests: {
         [HttpMethod.Post]: {
@@ -8341,7 +8340,7 @@ export const endpoint396 = defineEndpoint({
     },
 });
 
-export const endpoint397 = defineEndpoint({
+export const endpoint397 = defineMockEndpoint({
     path: '/reports/item-397',
     requests: {
         [HttpMethod.Post]: {
@@ -8362,7 +8361,7 @@ export const endpoint397 = defineEndpoint({
     },
 });
 
-export const endpoint398 = defineEndpoint({
+export const endpoint398 = defineMockEndpoint({
     path: '/reports/item-398',
     requests: {
         [HttpMethod.Post]: {
@@ -8383,7 +8382,7 @@ export const endpoint398 = defineEndpoint({
     },
 });
 
-export const endpoint399 = defineEndpoint({
+export const endpoint399 = defineMockEndpoint({
     path: '/reports/item-399',
     requests: {
         [HttpMethod.Post]: {
@@ -8404,7 +8403,7 @@ export const endpoint399 = defineEndpoint({
     },
 });
 
-export const endpoint400 = defineEndpoint({
+export const endpoint400 = defineMockEndpoint({
     path: '/reports/item-400',
     requests: {
         [HttpMethod.Post]: {
@@ -8425,7 +8424,7 @@ export const endpoint400 = defineEndpoint({
     },
 });
 
-export const endpoint401 = defineEndpoint({
+export const endpoint401 = defineMockEndpoint({
     path: '/reports/item-401',
     requests: {
         [HttpMethod.Post]: {
@@ -8446,7 +8445,7 @@ export const endpoint401 = defineEndpoint({
     },
 });
 
-export const endpoint402 = defineEndpoint({
+export const endpoint402 = defineMockEndpoint({
     path: '/reports/item-402',
     requests: {
         [HttpMethod.Post]: {
@@ -8467,7 +8466,7 @@ export const endpoint402 = defineEndpoint({
     },
 });
 
-export const endpoint403 = defineEndpoint({
+export const endpoint403 = defineMockEndpoint({
     path: '/reports/item-403',
     requests: {
         [HttpMethod.Post]: {
@@ -8488,7 +8487,7 @@ export const endpoint403 = defineEndpoint({
     },
 });
 
-export const endpoint404 = defineEndpoint({
+export const endpoint404 = defineMockEndpoint({
     path: '/reports/item-404',
     requests: {
         [HttpMethod.Post]: {
@@ -8509,7 +8508,7 @@ export const endpoint404 = defineEndpoint({
     },
 });
 
-export const endpoint405 = defineEndpoint({
+export const endpoint405 = defineMockEndpoint({
     path: '/reports/item-405',
     requests: {
         [HttpMethod.Post]: {
@@ -8530,7 +8529,7 @@ export const endpoint405 = defineEndpoint({
     },
 });
 
-export const endpoint406 = defineEndpoint({
+export const endpoint406 = defineMockEndpoint({
     path: '/reports/item-406',
     requests: {
         [HttpMethod.Post]: {
@@ -8551,7 +8550,7 @@ export const endpoint406 = defineEndpoint({
     },
 });
 
-export const endpoint407 = defineEndpoint({
+export const endpoint407 = defineMockEndpoint({
     path: '/reports/item-407',
     requests: {
         [HttpMethod.Post]: {
@@ -8572,7 +8571,7 @@ export const endpoint407 = defineEndpoint({
     },
 });
 
-export const endpoint408 = defineEndpoint({
+export const endpoint408 = defineMockEndpoint({
     path: '/reports/item-408',
     requests: {
         [HttpMethod.Post]: {
@@ -8593,7 +8592,7 @@ export const endpoint408 = defineEndpoint({
     },
 });
 
-export const endpoint409 = defineEndpoint({
+export const endpoint409 = defineMockEndpoint({
     path: '/reports/item-409',
     requests: {
         [HttpMethod.Post]: {
@@ -8614,7 +8613,7 @@ export const endpoint409 = defineEndpoint({
     },
 });
 
-export const endpoint410 = defineEndpoint({
+export const endpoint410 = defineMockEndpoint({
     path: '/reports/item-410',
     requests: {
         [HttpMethod.Post]: {
@@ -8635,7 +8634,7 @@ export const endpoint410 = defineEndpoint({
     },
 });
 
-export const endpoint411 = defineEndpoint({
+export const endpoint411 = defineMockEndpoint({
     path: '/reports/item-411',
     requests: {
         [HttpMethod.Post]: {
@@ -8656,7 +8655,7 @@ export const endpoint411 = defineEndpoint({
     },
 });
 
-export const endpoint412 = defineEndpoint({
+export const endpoint412 = defineMockEndpoint({
     path: '/reports/item-412',
     requests: {
         [HttpMethod.Post]: {
@@ -8677,7 +8676,7 @@ export const endpoint412 = defineEndpoint({
     },
 });
 
-export const endpoint413 = defineEndpoint({
+export const endpoint413 = defineMockEndpoint({
     path: '/reports/item-413',
     requests: {
         [HttpMethod.Post]: {
@@ -8698,7 +8697,7 @@ export const endpoint413 = defineEndpoint({
     },
 });
 
-export const endpoint414 = defineEndpoint({
+export const endpoint414 = defineMockEndpoint({
     path: '/reports/item-414',
     requests: {
         [HttpMethod.Post]: {
@@ -8719,7 +8718,7 @@ export const endpoint414 = defineEndpoint({
     },
 });
 
-export const endpoint415 = defineEndpoint({
+export const endpoint415 = defineMockEndpoint({
     path: '/reports/item-415',
     requests: {
         [HttpMethod.Post]: {
@@ -8740,7 +8739,7 @@ export const endpoint415 = defineEndpoint({
     },
 });
 
-export const endpoint416 = defineEndpoint({
+export const endpoint416 = defineMockEndpoint({
     path: '/reports/item-416',
     requests: {
         [HttpMethod.Post]: {
@@ -8761,7 +8760,7 @@ export const endpoint416 = defineEndpoint({
     },
 });
 
-export const endpoint417 = defineEndpoint({
+export const endpoint417 = defineMockEndpoint({
     path: '/reports/item-417',
     requests: {
         [HttpMethod.Post]: {
@@ -8782,7 +8781,7 @@ export const endpoint417 = defineEndpoint({
     },
 });
 
-export const endpoint418 = defineEndpoint({
+export const endpoint418 = defineMockEndpoint({
     path: '/reports/item-418',
     requests: {
         [HttpMethod.Post]: {
@@ -8803,7 +8802,7 @@ export const endpoint418 = defineEndpoint({
     },
 });
 
-export const endpoint419 = defineEndpoint({
+export const endpoint419 = defineMockEndpoint({
     path: '/reports/item-419',
     requests: {
         [HttpMethod.Post]: {
@@ -8824,7 +8823,7 @@ export const endpoint419 = defineEndpoint({
     },
 });
 
-export const endpoint420 = defineEndpoint({
+export const endpoint420 = defineMockEndpoint({
     path: '/reports/item-420',
     requests: {
         [HttpMethod.Post]: {
@@ -8845,7 +8844,7 @@ export const endpoint420 = defineEndpoint({
     },
 });
 
-export const endpoint421 = defineEndpoint({
+export const endpoint421 = defineMockEndpoint({
     path: '/reports/item-421',
     requests: {
         [HttpMethod.Post]: {
@@ -8866,7 +8865,7 @@ export const endpoint421 = defineEndpoint({
     },
 });
 
-export const endpoint422 = defineEndpoint({
+export const endpoint422 = defineMockEndpoint({
     path: '/reports/item-422',
     requests: {
         [HttpMethod.Post]: {
@@ -8887,7 +8886,7 @@ export const endpoint422 = defineEndpoint({
     },
 });
 
-export const endpoint423 = defineEndpoint({
+export const endpoint423 = defineMockEndpoint({
     path: '/reports/item-423',
     requests: {
         [HttpMethod.Post]: {
@@ -8908,7 +8907,7 @@ export const endpoint423 = defineEndpoint({
     },
 });
 
-export const endpoint424 = defineEndpoint({
+export const endpoint424 = defineMockEndpoint({
     path: '/reports/item-424',
     requests: {
         [HttpMethod.Post]: {
@@ -8929,7 +8928,7 @@ export const endpoint424 = defineEndpoint({
     },
 });
 
-export const endpoint425 = defineEndpoint({
+export const endpoint425 = defineMockEndpoint({
     path: '/reports/item-425',
     requests: {
         [HttpMethod.Post]: {
@@ -8950,7 +8949,7 @@ export const endpoint425 = defineEndpoint({
     },
 });
 
-export const endpoint426 = defineEndpoint({
+export const endpoint426 = defineMockEndpoint({
     path: '/reports/item-426',
     requests: {
         [HttpMethod.Post]: {
@@ -8971,7 +8970,7 @@ export const endpoint426 = defineEndpoint({
     },
 });
 
-export const endpoint427 = defineEndpoint({
+export const endpoint427 = defineMockEndpoint({
     path: '/reports/item-427',
     requests: {
         [HttpMethod.Post]: {
@@ -8992,7 +8991,7 @@ export const endpoint427 = defineEndpoint({
     },
 });
 
-export const endpoint428 = defineEndpoint({
+export const endpoint428 = defineMockEndpoint({
     path: '/reports/item-428',
     requests: {
         [HttpMethod.Post]: {
@@ -9013,7 +9012,7 @@ export const endpoint428 = defineEndpoint({
     },
 });
 
-export const endpoint429 = defineEndpoint({
+export const endpoint429 = defineMockEndpoint({
     path: '/reports/item-429',
     requests: {
         [HttpMethod.Post]: {
@@ -9034,7 +9033,7 @@ export const endpoint429 = defineEndpoint({
     },
 });
 
-export const endpoint430 = defineEndpoint({
+export const endpoint430 = defineMockEndpoint({
     path: '/reports/item-430',
     requests: {
         [HttpMethod.Post]: {
@@ -9055,7 +9054,7 @@ export const endpoint430 = defineEndpoint({
     },
 });
 
-export const endpoint431 = defineEndpoint({
+export const endpoint431 = defineMockEndpoint({
     path: '/reports/item-431',
     requests: {
         [HttpMethod.Post]: {
@@ -9076,7 +9075,7 @@ export const endpoint431 = defineEndpoint({
     },
 });
 
-export const endpoint432 = defineEndpoint({
+export const endpoint432 = defineMockEndpoint({
     path: '/reports/item-432',
     requests: {
         [HttpMethod.Post]: {
@@ -9097,7 +9096,7 @@ export const endpoint432 = defineEndpoint({
     },
 });
 
-export const endpoint433 = defineEndpoint({
+export const endpoint433 = defineMockEndpoint({
     path: '/reports/item-433',
     requests: {
         [HttpMethod.Post]: {
@@ -9118,7 +9117,7 @@ export const endpoint433 = defineEndpoint({
     },
 });
 
-export const endpoint434 = defineEndpoint({
+export const endpoint434 = defineMockEndpoint({
     path: '/reports/item-434',
     requests: {
         [HttpMethod.Post]: {
@@ -9139,7 +9138,7 @@ export const endpoint434 = defineEndpoint({
     },
 });
 
-export const endpoint435 = defineEndpoint({
+export const endpoint435 = defineMockEndpoint({
     path: '/reports/item-435',
     requests: {
         [HttpMethod.Post]: {
@@ -9160,7 +9159,7 @@ export const endpoint435 = defineEndpoint({
     },
 });
 
-export const endpoint436 = defineEndpoint({
+export const endpoint436 = defineMockEndpoint({
     path: '/reports/item-436',
     requests: {
         [HttpMethod.Post]: {
@@ -9181,7 +9180,7 @@ export const endpoint436 = defineEndpoint({
     },
 });
 
-export const endpoint437 = defineEndpoint({
+export const endpoint437 = defineMockEndpoint({
     path: '/reports/item-437',
     requests: {
         [HttpMethod.Post]: {
@@ -9202,7 +9201,7 @@ export const endpoint437 = defineEndpoint({
     },
 });
 
-export const endpoint438 = defineEndpoint({
+export const endpoint438 = defineMockEndpoint({
     path: '/reports/item-438',
     requests: {
         [HttpMethod.Post]: {
@@ -9223,7 +9222,7 @@ export const endpoint438 = defineEndpoint({
     },
 });
 
-export const endpoint439 = defineEndpoint({
+export const endpoint439 = defineMockEndpoint({
     path: '/reports/item-439',
     requests: {
         [HttpMethod.Post]: {
@@ -9244,7 +9243,7 @@ export const endpoint439 = defineEndpoint({
     },
 });
 
-export const endpoint440 = defineEndpoint({
+export const endpoint440 = defineMockEndpoint({
     path: '/reports/item-440',
     requests: {
         [HttpMethod.Post]: {
@@ -9265,7 +9264,7 @@ export const endpoint440 = defineEndpoint({
     },
 });
 
-export const endpoint441 = defineEndpoint({
+export const endpoint441 = defineMockEndpoint({
     path: '/reports/item-441',
     requests: {
         [HttpMethod.Post]: {
@@ -9286,7 +9285,7 @@ export const endpoint441 = defineEndpoint({
     },
 });
 
-export const endpoint442 = defineEndpoint({
+export const endpoint442 = defineMockEndpoint({
     path: '/reports/item-442',
     requests: {
         [HttpMethod.Post]: {
@@ -9307,7 +9306,7 @@ export const endpoint442 = defineEndpoint({
     },
 });
 
-export const endpoint443 = defineEndpoint({
+export const endpoint443 = defineMockEndpoint({
     path: '/reports/item-443',
     requests: {
         [HttpMethod.Post]: {
@@ -9328,7 +9327,7 @@ export const endpoint443 = defineEndpoint({
     },
 });
 
-export const endpoint444 = defineEndpoint({
+export const endpoint444 = defineMockEndpoint({
     path: '/reports/item-444',
     requests: {
         [HttpMethod.Post]: {
@@ -9349,7 +9348,7 @@ export const endpoint444 = defineEndpoint({
     },
 });
 
-export const endpoint445 = defineEndpoint({
+export const endpoint445 = defineMockEndpoint({
     path: '/reports/item-445',
     requests: {
         [HttpMethod.Post]: {
@@ -9370,7 +9369,7 @@ export const endpoint445 = defineEndpoint({
     },
 });
 
-export const endpoint446 = defineEndpoint({
+export const endpoint446 = defineMockEndpoint({
     path: '/reports/item-446',
     requests: {
         [HttpMethod.Post]: {
@@ -9391,7 +9390,7 @@ export const endpoint446 = defineEndpoint({
     },
 });
 
-export const endpoint447 = defineEndpoint({
+export const endpoint447 = defineMockEndpoint({
     path: '/reports/item-447',
     requests: {
         [HttpMethod.Post]: {
@@ -9412,7 +9411,7 @@ export const endpoint447 = defineEndpoint({
     },
 });
 
-export const endpoint448 = defineEndpoint({
+export const endpoint448 = defineMockEndpoint({
     path: '/reports/item-448',
     requests: {
         [HttpMethod.Post]: {
@@ -9433,7 +9432,7 @@ export const endpoint448 = defineEndpoint({
     },
 });
 
-export const endpoint449 = defineEndpoint({
+export const endpoint449 = defineMockEndpoint({
     path: '/reports/item-449',
     requests: {
         [HttpMethod.Post]: {
@@ -9454,7 +9453,7 @@ export const endpoint449 = defineEndpoint({
     },
 });
 
-export const endpoint450 = defineEndpoint({
+export const endpoint450 = defineMockEndpoint({
     path: '/reports/item-450',
     requests: {
         [HttpMethod.Post]: {
@@ -9475,7 +9474,7 @@ export const endpoint450 = defineEndpoint({
     },
 });
 
-export const endpoint451 = defineEndpoint({
+export const endpoint451 = defineMockEndpoint({
     path: '/reports/item-451',
     requests: {
         [HttpMethod.Post]: {
@@ -9496,7 +9495,7 @@ export const endpoint451 = defineEndpoint({
     },
 });
 
-export const endpoint452 = defineEndpoint({
+export const endpoint452 = defineMockEndpoint({
     path: '/reports/item-452',
     requests: {
         [HttpMethod.Post]: {
@@ -9517,7 +9516,7 @@ export const endpoint452 = defineEndpoint({
     },
 });
 
-export const endpoint453 = defineEndpoint({
+export const endpoint453 = defineMockEndpoint({
     path: '/reports/item-453',
     requests: {
         [HttpMethod.Post]: {
@@ -9538,7 +9537,7 @@ export const endpoint453 = defineEndpoint({
     },
 });
 
-export const endpoint454 = defineEndpoint({
+export const endpoint454 = defineMockEndpoint({
     path: '/reports/item-454',
     requests: {
         [HttpMethod.Post]: {
@@ -9559,7 +9558,7 @@ export const endpoint454 = defineEndpoint({
     },
 });
 
-export const endpoint455 = defineEndpoint({
+export const endpoint455 = defineMockEndpoint({
     path: '/reports/item-455',
     requests: {
         [HttpMethod.Post]: {
@@ -9580,7 +9579,7 @@ export const endpoint455 = defineEndpoint({
     },
 });
 
-export const endpoint456 = defineEndpoint({
+export const endpoint456 = defineMockEndpoint({
     path: '/reports/item-456',
     requests: {
         [HttpMethod.Post]: {
@@ -9601,7 +9600,7 @@ export const endpoint456 = defineEndpoint({
     },
 });
 
-export const endpoint457 = defineEndpoint({
+export const endpoint457 = defineMockEndpoint({
     path: '/reports/item-457',
     requests: {
         [HttpMethod.Post]: {
@@ -9622,7 +9621,7 @@ export const endpoint457 = defineEndpoint({
     },
 });
 
-export const endpoint458 = defineEndpoint({
+export const endpoint458 = defineMockEndpoint({
     path: '/reports/item-458',
     requests: {
         [HttpMethod.Post]: {
@@ -9643,7 +9642,7 @@ export const endpoint458 = defineEndpoint({
     },
 });
 
-export const endpoint459 = defineEndpoint({
+export const endpoint459 = defineMockEndpoint({
     path: '/reports/item-459',
     requests: {
         [HttpMethod.Post]: {
@@ -9664,7 +9663,7 @@ export const endpoint459 = defineEndpoint({
     },
 });
 
-export const endpoint460 = defineEndpoint({
+export const endpoint460 = defineMockEndpoint({
     path: '/reports/item-460',
     requests: {
         [HttpMethod.Post]: {
@@ -9685,7 +9684,7 @@ export const endpoint460 = defineEndpoint({
     },
 });
 
-export const endpoint461 = defineEndpoint({
+export const endpoint461 = defineMockEndpoint({
     path: '/reports/item-461',
     requests: {
         [HttpMethod.Post]: {
@@ -9706,7 +9705,7 @@ export const endpoint461 = defineEndpoint({
     },
 });
 
-export const endpoint462 = defineEndpoint({
+export const endpoint462 = defineMockEndpoint({
     path: '/reports/item-462',
     requests: {
         [HttpMethod.Post]: {
@@ -9727,7 +9726,7 @@ export const endpoint462 = defineEndpoint({
     },
 });
 
-export const endpoint463 = defineEndpoint({
+export const endpoint463 = defineMockEndpoint({
     path: '/reports/item-463',
     requests: {
         [HttpMethod.Post]: {
@@ -9748,7 +9747,7 @@ export const endpoint463 = defineEndpoint({
     },
 });
 
-export const endpoint464 = defineEndpoint({
+export const endpoint464 = defineMockEndpoint({
     path: '/reports/item-464',
     requests: {
         [HttpMethod.Post]: {
@@ -9769,7 +9768,7 @@ export const endpoint464 = defineEndpoint({
     },
 });
 
-export const endpoint465 = defineEndpoint({
+export const endpoint465 = defineMockEndpoint({
     path: '/reports/item-465',
     requests: {
         [HttpMethod.Post]: {
@@ -9790,7 +9789,7 @@ export const endpoint465 = defineEndpoint({
     },
 });
 
-export const endpoint466 = defineEndpoint({
+export const endpoint466 = defineMockEndpoint({
     path: '/reports/item-466',
     requests: {
         [HttpMethod.Post]: {
@@ -9811,7 +9810,7 @@ export const endpoint466 = defineEndpoint({
     },
 });
 
-export const endpoint467 = defineEndpoint({
+export const endpoint467 = defineMockEndpoint({
     path: '/reports/item-467',
     requests: {
         [HttpMethod.Post]: {
@@ -9832,7 +9831,7 @@ export const endpoint467 = defineEndpoint({
     },
 });
 
-export const endpoint468 = defineEndpoint({
+export const endpoint468 = defineMockEndpoint({
     path: '/reports/item-468',
     requests: {
         [HttpMethod.Post]: {
@@ -9853,7 +9852,7 @@ export const endpoint468 = defineEndpoint({
     },
 });
 
-export const endpoint469 = defineEndpoint({
+export const endpoint469 = defineMockEndpoint({
     path: '/reports/item-469',
     requests: {
         [HttpMethod.Post]: {
@@ -9874,7 +9873,7 @@ export const endpoint469 = defineEndpoint({
     },
 });
 
-export const endpoint470 = defineEndpoint({
+export const endpoint470 = defineMockEndpoint({
     path: '/reports/item-470',
     requests: {
         [HttpMethod.Post]: {
@@ -9895,7 +9894,7 @@ export const endpoint470 = defineEndpoint({
     },
 });
 
-export const endpoint471 = defineEndpoint({
+export const endpoint471 = defineMockEndpoint({
     path: '/reports/item-471',
     requests: {
         [HttpMethod.Post]: {
@@ -9916,7 +9915,7 @@ export const endpoint471 = defineEndpoint({
     },
 });
 
-export const endpoint472 = defineEndpoint({
+export const endpoint472 = defineMockEndpoint({
     path: '/reports/item-472',
     requests: {
         [HttpMethod.Post]: {
@@ -9937,7 +9936,7 @@ export const endpoint472 = defineEndpoint({
     },
 });
 
-export const endpoint473 = defineEndpoint({
+export const endpoint473 = defineMockEndpoint({
     path: '/reports/item-473',
     requests: {
         [HttpMethod.Post]: {
@@ -9958,7 +9957,7 @@ export const endpoint473 = defineEndpoint({
     },
 });
 
-export const endpoint474 = defineEndpoint({
+export const endpoint474 = defineMockEndpoint({
     path: '/reports/item-474',
     requests: {
         [HttpMethod.Post]: {
@@ -9979,7 +9978,7 @@ export const endpoint474 = defineEndpoint({
     },
 });
 
-export const endpoint475 = defineEndpoint({
+export const endpoint475 = defineMockEndpoint({
     path: '/reports/item-475',
     requests: {
         [HttpMethod.Post]: {
@@ -10000,7 +9999,7 @@ export const endpoint475 = defineEndpoint({
     },
 });
 
-export const endpoint476 = defineEndpoint({
+export const endpoint476 = defineMockEndpoint({
     path: '/reports/item-476',
     requests: {
         [HttpMethod.Post]: {
@@ -10021,7 +10020,7 @@ export const endpoint476 = defineEndpoint({
     },
 });
 
-export const endpoint477 = defineEndpoint({
+export const endpoint477 = defineMockEndpoint({
     path: '/reports/item-477',
     requests: {
         [HttpMethod.Post]: {
@@ -10042,7 +10041,7 @@ export const endpoint477 = defineEndpoint({
     },
 });
 
-export const endpoint478 = defineEndpoint({
+export const endpoint478 = defineMockEndpoint({
     path: '/reports/item-478',
     requests: {
         [HttpMethod.Post]: {
@@ -10063,7 +10062,7 @@ export const endpoint478 = defineEndpoint({
     },
 });
 
-export const endpoint479 = defineEndpoint({
+export const endpoint479 = defineMockEndpoint({
     path: '/reports/item-479',
     requests: {
         [HttpMethod.Post]: {
@@ -10084,7 +10083,7 @@ export const endpoint479 = defineEndpoint({
     },
 });
 
-export const endpoint480 = defineEndpoint({
+export const endpoint480 = defineMockEndpoint({
     path: '/reports/item-480',
     requests: {
         [HttpMethod.Post]: {
@@ -10105,7 +10104,7 @@ export const endpoint480 = defineEndpoint({
     },
 });
 
-export const endpoint481 = defineEndpoint({
+export const endpoint481 = defineMockEndpoint({
     path: '/reports/item-481',
     requests: {
         [HttpMethod.Post]: {
@@ -10126,7 +10125,7 @@ export const endpoint481 = defineEndpoint({
     },
 });
 
-export const endpoint482 = defineEndpoint({
+export const endpoint482 = defineMockEndpoint({
     path: '/reports/item-482',
     requests: {
         [HttpMethod.Post]: {
@@ -10147,7 +10146,7 @@ export const endpoint482 = defineEndpoint({
     },
 });
 
-export const endpoint483 = defineEndpoint({
+export const endpoint483 = defineMockEndpoint({
     path: '/reports/item-483',
     requests: {
         [HttpMethod.Post]: {
@@ -10168,7 +10167,7 @@ export const endpoint483 = defineEndpoint({
     },
 });
 
-export const endpoint484 = defineEndpoint({
+export const endpoint484 = defineMockEndpoint({
     path: '/reports/item-484',
     requests: {
         [HttpMethod.Post]: {
@@ -10189,7 +10188,7 @@ export const endpoint484 = defineEndpoint({
     },
 });
 
-export const endpoint485 = defineEndpoint({
+export const endpoint485 = defineMockEndpoint({
     path: '/reports/item-485',
     requests: {
         [HttpMethod.Post]: {
@@ -10210,7 +10209,7 @@ export const endpoint485 = defineEndpoint({
     },
 });
 
-export const endpoint486 = defineEndpoint({
+export const endpoint486 = defineMockEndpoint({
     path: '/reports/item-486',
     requests: {
         [HttpMethod.Post]: {
@@ -10231,7 +10230,7 @@ export const endpoint486 = defineEndpoint({
     },
 });
 
-export const endpoint487 = defineEndpoint({
+export const endpoint487 = defineMockEndpoint({
     path: '/reports/item-487',
     requests: {
         [HttpMethod.Post]: {
@@ -10252,7 +10251,7 @@ export const endpoint487 = defineEndpoint({
     },
 });
 
-export const endpoint488 = defineEndpoint({
+export const endpoint488 = defineMockEndpoint({
     path: '/reports/item-488',
     requests: {
         [HttpMethod.Post]: {
@@ -10273,7 +10272,7 @@ export const endpoint488 = defineEndpoint({
     },
 });
 
-export const endpoint489 = defineEndpoint({
+export const endpoint489 = defineMockEndpoint({
     path: '/reports/item-489',
     requests: {
         [HttpMethod.Post]: {
@@ -10294,7 +10293,7 @@ export const endpoint489 = defineEndpoint({
     },
 });
 
-export const endpoint490 = defineEndpoint({
+export const endpoint490 = defineMockEndpoint({
     path: '/reports/item-490',
     requests: {
         [HttpMethod.Post]: {
@@ -10315,7 +10314,7 @@ export const endpoint490 = defineEndpoint({
     },
 });
 
-export const endpoint491 = defineEndpoint({
+export const endpoint491 = defineMockEndpoint({
     path: '/reports/item-491',
     requests: {
         [HttpMethod.Post]: {
@@ -10336,7 +10335,7 @@ export const endpoint491 = defineEndpoint({
     },
 });
 
-export const endpoint492 = defineEndpoint({
+export const endpoint492 = defineMockEndpoint({
     path: '/reports/item-492',
     requests: {
         [HttpMethod.Post]: {
@@ -10357,7 +10356,7 @@ export const endpoint492 = defineEndpoint({
     },
 });
 
-export const endpoint493 = defineEndpoint({
+export const endpoint493 = defineMockEndpoint({
     path: '/reports/item-493',
     requests: {
         [HttpMethod.Post]: {
@@ -10378,7 +10377,7 @@ export const endpoint493 = defineEndpoint({
     },
 });
 
-export const endpoint494 = defineEndpoint({
+export const endpoint494 = defineMockEndpoint({
     path: '/reports/item-494',
     requests: {
         [HttpMethod.Post]: {
@@ -10399,7 +10398,7 @@ export const endpoint494 = defineEndpoint({
     },
 });
 
-export const endpoint495 = defineEndpoint({
+export const endpoint495 = defineMockEndpoint({
     path: '/reports/item-495',
     requests: {
         [HttpMethod.Post]: {
@@ -10420,7 +10419,7 @@ export const endpoint495 = defineEndpoint({
     },
 });
 
-export const endpoint496 = defineEndpoint({
+export const endpoint496 = defineMockEndpoint({
     path: '/reports/item-496',
     requests: {
         [HttpMethod.Post]: {
@@ -10441,7 +10440,7 @@ export const endpoint496 = defineEndpoint({
     },
 });
 
-export const endpoint497 = defineEndpoint({
+export const endpoint497 = defineMockEndpoint({
     path: '/reports/item-497',
     requests: {
         [HttpMethod.Post]: {
@@ -10462,7 +10461,7 @@ export const endpoint497 = defineEndpoint({
     },
 });
 
-export const endpoint498 = defineEndpoint({
+export const endpoint498 = defineMockEndpoint({
     path: '/reports/item-498',
     requests: {
         [HttpMethod.Post]: {
@@ -10483,7 +10482,7 @@ export const endpoint498 = defineEndpoint({
     },
 });
 
-export const endpoint499 = defineEndpoint({
+export const endpoint499 = defineMockEndpoint({
     path: '/reports/item-499',
     requests: {
         [HttpMethod.Post]: {
@@ -10504,7 +10503,7 @@ export const endpoint499 = defineEndpoint({
     },
 });
 
-export const endpoint500 = defineEndpoint({
+export const endpoint500 = defineMockEndpoint({
     path: '/reports/item-500',
     requests: {
         [HttpMethod.Post]: {
@@ -10525,7 +10524,7 @@ export const endpoint500 = defineEndpoint({
     },
 });
 
-export const endpoint501 = defineEndpoint({
+export const endpoint501 = defineMockEndpoint({
     path: '/reports/item-501',
     requests: {
         [HttpMethod.Post]: {
@@ -10546,7 +10545,7 @@ export const endpoint501 = defineEndpoint({
     },
 });
 
-export const endpoint502 = defineEndpoint({
+export const endpoint502 = defineMockEndpoint({
     path: '/reports/item-502',
     requests: {
         [HttpMethod.Post]: {
@@ -10567,7 +10566,7 @@ export const endpoint502 = defineEndpoint({
     },
 });
 
-export const endpoint503 = defineEndpoint({
+export const endpoint503 = defineMockEndpoint({
     path: '/reports/item-503',
     requests: {
         [HttpMethod.Post]: {
@@ -10588,7 +10587,7 @@ export const endpoint503 = defineEndpoint({
     },
 });
 
-export const endpoint504 = defineEndpoint({
+export const endpoint504 = defineMockEndpoint({
     path: '/reports/item-504',
     requests: {
         [HttpMethod.Post]: {
@@ -10609,7 +10608,7 @@ export const endpoint504 = defineEndpoint({
     },
 });
 
-export const endpoint505 = defineEndpoint({
+export const endpoint505 = defineMockEndpoint({
     path: '/reports/item-505',
     requests: {
         [HttpMethod.Post]: {
@@ -10630,7 +10629,7 @@ export const endpoint505 = defineEndpoint({
     },
 });
 
-export const endpoint506 = defineEndpoint({
+export const endpoint506 = defineMockEndpoint({
     path: '/reports/item-506',
     requests: {
         [HttpMethod.Post]: {
@@ -10651,7 +10650,7 @@ export const endpoint506 = defineEndpoint({
     },
 });
 
-export const endpoint507 = defineEndpoint({
+export const endpoint507 = defineMockEndpoint({
     path: '/reports/item-507',
     requests: {
         [HttpMethod.Post]: {
@@ -10672,7 +10671,7 @@ export const endpoint507 = defineEndpoint({
     },
 });
 
-export const endpoint508 = defineEndpoint({
+export const endpoint508 = defineMockEndpoint({
     path: '/reports/item-508',
     requests: {
         [HttpMethod.Post]: {
@@ -10693,7 +10692,7 @@ export const endpoint508 = defineEndpoint({
     },
 });
 
-export const endpoint509 = defineEndpoint({
+export const endpoint509 = defineMockEndpoint({
     path: '/reports/item-509',
     requests: {
         [HttpMethod.Post]: {
@@ -10714,7 +10713,7 @@ export const endpoint509 = defineEndpoint({
     },
 });
 
-export const endpoint510 = defineEndpoint({
+export const endpoint510 = defineMockEndpoint({
     path: '/reports/item-510',
     requests: {
         [HttpMethod.Post]: {
@@ -10735,7 +10734,7 @@ export const endpoint510 = defineEndpoint({
     },
 });
 
-export const endpoint511 = defineEndpoint({
+export const endpoint511 = defineMockEndpoint({
     path: '/reports/item-511',
     requests: {
         [HttpMethod.Post]: {
@@ -10756,7 +10755,7 @@ export const endpoint511 = defineEndpoint({
     },
 });
 
-export const endpoint512 = defineEndpoint({
+export const endpoint512 = defineMockEndpoint({
     path: '/reports/item-512',
     requests: {
         [HttpMethod.Post]: {
@@ -10777,7 +10776,7 @@ export const endpoint512 = defineEndpoint({
     },
 });
 
-export const endpoint513 = defineEndpoint({
+export const endpoint513 = defineMockEndpoint({
     path: '/reports/item-513',
     requests: {
         [HttpMethod.Post]: {
@@ -10798,7 +10797,7 @@ export const endpoint513 = defineEndpoint({
     },
 });
 
-export const endpoint514 = defineEndpoint({
+export const endpoint514 = defineMockEndpoint({
     path: '/reports/item-514',
     requests: {
         [HttpMethod.Post]: {
@@ -10819,7 +10818,7 @@ export const endpoint514 = defineEndpoint({
     },
 });
 
-export const endpoint515 = defineEndpoint({
+export const endpoint515 = defineMockEndpoint({
     path: '/reports/item-515',
     requests: {
         [HttpMethod.Post]: {
@@ -10840,7 +10839,7 @@ export const endpoint515 = defineEndpoint({
     },
 });
 
-export const endpoint516 = defineEndpoint({
+export const endpoint516 = defineMockEndpoint({
     path: '/reports/item-516',
     requests: {
         [HttpMethod.Post]: {
@@ -10861,7 +10860,7 @@ export const endpoint516 = defineEndpoint({
     },
 });
 
-export const endpoint517 = defineEndpoint({
+export const endpoint517 = defineMockEndpoint({
     path: '/reports/item-517',
     requests: {
         [HttpMethod.Post]: {
@@ -10882,7 +10881,7 @@ export const endpoint517 = defineEndpoint({
     },
 });
 
-export const endpoint518 = defineEndpoint({
+export const endpoint518 = defineMockEndpoint({
     path: '/reports/item-518',
     requests: {
         [HttpMethod.Post]: {
@@ -10903,7 +10902,7 @@ export const endpoint518 = defineEndpoint({
     },
 });
 
-export const endpoint519 = defineEndpoint({
+export const endpoint519 = defineMockEndpoint({
     path: '/reports/item-519',
     requests: {
         [HttpMethod.Post]: {
@@ -10924,7 +10923,7 @@ export const endpoint519 = defineEndpoint({
     },
 });
 
-export const endpoint520 = defineEndpoint({
+export const endpoint520 = defineMockEndpoint({
     path: '/reports/item-520',
     requests: {
         [HttpMethod.Post]: {
@@ -10945,7 +10944,7 @@ export const endpoint520 = defineEndpoint({
     },
 });
 
-export const endpoint521 = defineEndpoint({
+export const endpoint521 = defineMockEndpoint({
     path: '/reports/item-521',
     requests: {
         [HttpMethod.Post]: {
@@ -10966,7 +10965,7 @@ export const endpoint521 = defineEndpoint({
     },
 });
 
-export const endpoint522 = defineEndpoint({
+export const endpoint522 = defineMockEndpoint({
     path: '/reports/item-522',
     requests: {
         [HttpMethod.Post]: {
@@ -10987,7 +10986,7 @@ export const endpoint522 = defineEndpoint({
     },
 });
 
-export const endpoint523 = defineEndpoint({
+export const endpoint523 = defineMockEndpoint({
     path: '/reports/item-523',
     requests: {
         [HttpMethod.Post]: {
@@ -11008,7 +11007,7 @@ export const endpoint523 = defineEndpoint({
     },
 });
 
-export const endpoint524 = defineEndpoint({
+export const endpoint524 = defineMockEndpoint({
     path: '/reports/item-524',
     requests: {
         [HttpMethod.Post]: {
@@ -11029,7 +11028,7 @@ export const endpoint524 = defineEndpoint({
     },
 });
 
-export const endpoint525 = defineEndpoint({
+export const endpoint525 = defineMockEndpoint({
     path: '/reports/item-525',
     requests: {
         [HttpMethod.Post]: {
@@ -11050,7 +11049,7 @@ export const endpoint525 = defineEndpoint({
     },
 });
 
-export const endpoint526 = defineEndpoint({
+export const endpoint526 = defineMockEndpoint({
     path: '/reports/item-526',
     requests: {
         [HttpMethod.Post]: {
@@ -11071,7 +11070,7 @@ export const endpoint526 = defineEndpoint({
     },
 });
 
-export const endpoint527 = defineEndpoint({
+export const endpoint527 = defineMockEndpoint({
     path: '/reports/item-527',
     requests: {
         [HttpMethod.Post]: {
@@ -11092,7 +11091,7 @@ export const endpoint527 = defineEndpoint({
     },
 });
 
-export const endpoint528 = defineEndpoint({
+export const endpoint528 = defineMockEndpoint({
     path: '/reports/item-528',
     requests: {
         [HttpMethod.Post]: {
@@ -11113,7 +11112,7 @@ export const endpoint528 = defineEndpoint({
     },
 });
 
-export const endpoint529 = defineEndpoint({
+export const endpoint529 = defineMockEndpoint({
     path: '/reports/item-529',
     requests: {
         [HttpMethod.Post]: {
@@ -11134,7 +11133,7 @@ export const endpoint529 = defineEndpoint({
     },
 });
 
-export const endpoint530 = defineEndpoint({
+export const endpoint530 = defineMockEndpoint({
     path: '/reports/item-530',
     requests: {
         [HttpMethod.Post]: {
@@ -11155,7 +11154,7 @@ export const endpoint530 = defineEndpoint({
     },
 });
 
-export const endpoint531 = defineEndpoint({
+export const endpoint531 = defineMockEndpoint({
     path: '/reports/item-531',
     requests: {
         [HttpMethod.Post]: {
@@ -11176,7 +11175,7 @@ export const endpoint531 = defineEndpoint({
     },
 });
 
-export const endpoint532 = defineEndpoint({
+export const endpoint532 = defineMockEndpoint({
     path: '/reports/item-532',
     requests: {
         [HttpMethod.Post]: {
@@ -11197,7 +11196,7 @@ export const endpoint532 = defineEndpoint({
     },
 });
 
-export const endpoint533 = defineEndpoint({
+export const endpoint533 = defineMockEndpoint({
     path: '/reports/item-533',
     requests: {
         [HttpMethod.Post]: {
@@ -11218,7 +11217,7 @@ export const endpoint533 = defineEndpoint({
     },
 });
 
-export const endpoint534 = defineEndpoint({
+export const endpoint534 = defineMockEndpoint({
     path: '/reports/item-534',
     requests: {
         [HttpMethod.Post]: {
@@ -11239,7 +11238,7 @@ export const endpoint534 = defineEndpoint({
     },
 });
 
-export const endpoint535 = defineEndpoint({
+export const endpoint535 = defineMockEndpoint({
     path: '/reports/item-535',
     requests: {
         [HttpMethod.Post]: {
@@ -11260,7 +11259,7 @@ export const endpoint535 = defineEndpoint({
     },
 });
 
-export const endpoint536 = defineEndpoint({
+export const endpoint536 = defineMockEndpoint({
     path: '/reports/item-536',
     requests: {
         [HttpMethod.Post]: {
@@ -11281,7 +11280,7 @@ export const endpoint536 = defineEndpoint({
     },
 });
 
-export const endpoint537 = defineEndpoint({
+export const endpoint537 = defineMockEndpoint({
     path: '/reports/item-537',
     requests: {
         [HttpMethod.Post]: {
@@ -11302,7 +11301,7 @@ export const endpoint537 = defineEndpoint({
     },
 });
 
-export const endpoint538 = defineEndpoint({
+export const endpoint538 = defineMockEndpoint({
     path: '/reports/item-538',
     requests: {
         [HttpMethod.Post]: {
@@ -11323,7 +11322,7 @@ export const endpoint538 = defineEndpoint({
     },
 });
 
-export const endpoint539 = defineEndpoint({
+export const endpoint539 = defineMockEndpoint({
     path: '/reports/item-539',
     requests: {
         [HttpMethod.Post]: {
@@ -11344,7 +11343,7 @@ export const endpoint539 = defineEndpoint({
     },
 });
 
-export const endpoint540 = defineEndpoint({
+export const endpoint540 = defineMockEndpoint({
     path: '/reports/item-540',
     requests: {
         [HttpMethod.Post]: {
@@ -11365,7 +11364,7 @@ export const endpoint540 = defineEndpoint({
     },
 });
 
-export const endpoint541 = defineEndpoint({
+export const endpoint541 = defineMockEndpoint({
     path: '/reports/item-541',
     requests: {
         [HttpMethod.Post]: {
@@ -11386,7 +11385,7 @@ export const endpoint541 = defineEndpoint({
     },
 });
 
-export const endpoint542 = defineEndpoint({
+export const endpoint542 = defineMockEndpoint({
     path: '/reports/item-542',
     requests: {
         [HttpMethod.Post]: {
@@ -11407,7 +11406,7 @@ export const endpoint542 = defineEndpoint({
     },
 });
 
-export const endpoint543 = defineEndpoint({
+export const endpoint543 = defineMockEndpoint({
     path: '/reports/item-543',
     requests: {
         [HttpMethod.Post]: {
@@ -11428,7 +11427,7 @@ export const endpoint543 = defineEndpoint({
     },
 });
 
-export const endpoint544 = defineEndpoint({
+export const endpoint544 = defineMockEndpoint({
     path: '/reports/item-544',
     requests: {
         [HttpMethod.Post]: {
@@ -11449,7 +11448,7 @@ export const endpoint544 = defineEndpoint({
     },
 });
 
-export const endpoint545 = defineEndpoint({
+export const endpoint545 = defineMockEndpoint({
     path: '/reports/item-545',
     requests: {
         [HttpMethod.Post]: {
@@ -11470,7 +11469,7 @@ export const endpoint545 = defineEndpoint({
     },
 });
 
-export const endpoint546 = defineEndpoint({
+export const endpoint546 = defineMockEndpoint({
     path: '/reports/item-546',
     requests: {
         [HttpMethod.Post]: {
@@ -11491,7 +11490,7 @@ export const endpoint546 = defineEndpoint({
     },
 });
 
-export const endpoint547 = defineEndpoint({
+export const endpoint547 = defineMockEndpoint({
     path: '/reports/item-547',
     requests: {
         [HttpMethod.Post]: {
@@ -11512,7 +11511,7 @@ export const endpoint547 = defineEndpoint({
     },
 });
 
-export const endpoint548 = defineEndpoint({
+export const endpoint548 = defineMockEndpoint({
     path: '/reports/item-548',
     requests: {
         [HttpMethod.Post]: {
@@ -11533,7 +11532,7 @@ export const endpoint548 = defineEndpoint({
     },
 });
 
-export const endpoint549 = defineEndpoint({
+export const endpoint549 = defineMockEndpoint({
     path: '/reports/item-549',
     requests: {
         [HttpMethod.Post]: {
@@ -11554,7 +11553,7 @@ export const endpoint549 = defineEndpoint({
     },
 });
 
-export const endpoint550 = defineEndpoint({
+export const endpoint550 = defineMockEndpoint({
     path: '/reports/item-550',
     requests: {
         [HttpMethod.Post]: {
@@ -11575,7 +11574,7 @@ export const endpoint550 = defineEndpoint({
     },
 });
 
-export const endpoint551 = defineEndpoint({
+export const endpoint551 = defineMockEndpoint({
     path: '/reports/item-551',
     requests: {
         [HttpMethod.Post]: {
@@ -11596,7 +11595,7 @@ export const endpoint551 = defineEndpoint({
     },
 });
 
-export const endpoint552 = defineEndpoint({
+export const endpoint552 = defineMockEndpoint({
     path: '/reports/item-552',
     requests: {
         [HttpMethod.Post]: {
@@ -11617,7 +11616,7 @@ export const endpoint552 = defineEndpoint({
     },
 });
 
-export const endpoint553 = defineEndpoint({
+export const endpoint553 = defineMockEndpoint({
     path: '/reports/item-553',
     requests: {
         [HttpMethod.Post]: {
@@ -11638,7 +11637,7 @@ export const endpoint553 = defineEndpoint({
     },
 });
 
-export const endpoint554 = defineEndpoint({
+export const endpoint554 = defineMockEndpoint({
     path: '/reports/item-554',
     requests: {
         [HttpMethod.Post]: {
@@ -11659,7 +11658,7 @@ export const endpoint554 = defineEndpoint({
     },
 });
 
-export const endpoint555 = defineEndpoint({
+export const endpoint555 = defineMockEndpoint({
     path: '/reports/item-555',
     requests: {
         [HttpMethod.Post]: {
@@ -11680,7 +11679,7 @@ export const endpoint555 = defineEndpoint({
     },
 });
 
-export const endpoint556 = defineEndpoint({
+export const endpoint556 = defineMockEndpoint({
     path: '/reports/item-556',
     requests: {
         [HttpMethod.Post]: {
@@ -11701,7 +11700,7 @@ export const endpoint556 = defineEndpoint({
     },
 });
 
-export const endpoint557 = defineEndpoint({
+export const endpoint557 = defineMockEndpoint({
     path: '/reports/item-557',
     requests: {
         [HttpMethod.Post]: {
@@ -11722,7 +11721,7 @@ export const endpoint557 = defineEndpoint({
     },
 });
 
-export const endpoint558 = defineEndpoint({
+export const endpoint558 = defineMockEndpoint({
     path: '/reports/item-558',
     requests: {
         [HttpMethod.Post]: {
@@ -11743,7 +11742,7 @@ export const endpoint558 = defineEndpoint({
     },
 });
 
-export const endpoint559 = defineEndpoint({
+export const endpoint559 = defineMockEndpoint({
     path: '/reports/item-559',
     requests: {
         [HttpMethod.Post]: {
@@ -11764,7 +11763,7 @@ export const endpoint559 = defineEndpoint({
     },
 });
 
-export const endpoint560 = defineEndpoint({
+export const endpoint560 = defineMockEndpoint({
     path: '/reports/item-560',
     requests: {
         [HttpMethod.Post]: {
@@ -11785,7 +11784,7 @@ export const endpoint560 = defineEndpoint({
     },
 });
 
-export const endpoint561 = defineEndpoint({
+export const endpoint561 = defineMockEndpoint({
     path: '/reports/item-561',
     requests: {
         [HttpMethod.Post]: {
@@ -11806,7 +11805,7 @@ export const endpoint561 = defineEndpoint({
     },
 });
 
-export const endpoint562 = defineEndpoint({
+export const endpoint562 = defineMockEndpoint({
     path: '/reports/item-562',
     requests: {
         [HttpMethod.Post]: {
@@ -11827,7 +11826,7 @@ export const endpoint562 = defineEndpoint({
     },
 });
 
-export const endpoint563 = defineEndpoint({
+export const endpoint563 = defineMockEndpoint({
     path: '/reports/item-563',
     requests: {
         [HttpMethod.Post]: {
@@ -11848,7 +11847,7 @@ export const endpoint563 = defineEndpoint({
     },
 });
 
-export const endpoint564 = defineEndpoint({
+export const endpoint564 = defineMockEndpoint({
     path: '/reports/item-564',
     requests: {
         [HttpMethod.Post]: {
@@ -11869,7 +11868,7 @@ export const endpoint564 = defineEndpoint({
     },
 });
 
-export const endpoint565 = defineEndpoint({
+export const endpoint565 = defineMockEndpoint({
     path: '/reports/item-565',
     requests: {
         [HttpMethod.Post]: {
@@ -11890,7 +11889,7 @@ export const endpoint565 = defineEndpoint({
     },
 });
 
-export const endpoint566 = defineEndpoint({
+export const endpoint566 = defineMockEndpoint({
     path: '/reports/item-566',
     requests: {
         [HttpMethod.Post]: {
@@ -11911,7 +11910,7 @@ export const endpoint566 = defineEndpoint({
     },
 });
 
-export const endpoint567 = defineEndpoint({
+export const endpoint567 = defineMockEndpoint({
     path: '/reports/item-567',
     requests: {
         [HttpMethod.Post]: {
@@ -11932,7 +11931,7 @@ export const endpoint567 = defineEndpoint({
     },
 });
 
-export const endpoint568 = defineEndpoint({
+export const endpoint568 = defineMockEndpoint({
     path: '/reports/item-568',
     requests: {
         [HttpMethod.Post]: {
@@ -11953,7 +11952,7 @@ export const endpoint568 = defineEndpoint({
     },
 });
 
-export const endpoint569 = defineEndpoint({
+export const endpoint569 = defineMockEndpoint({
     path: '/reports/item-569',
     requests: {
         [HttpMethod.Post]: {
@@ -11974,7 +11973,7 @@ export const endpoint569 = defineEndpoint({
     },
 });
 
-export const endpoint570 = defineEndpoint({
+export const endpoint570 = defineMockEndpoint({
     path: '/reports/item-570',
     requests: {
         [HttpMethod.Post]: {
@@ -11995,7 +11994,7 @@ export const endpoint570 = defineEndpoint({
     },
 });
 
-export const endpoint571 = defineEndpoint({
+export const endpoint571 = defineMockEndpoint({
     path: '/reports/item-571',
     requests: {
         [HttpMethod.Post]: {
@@ -12016,7 +12015,7 @@ export const endpoint571 = defineEndpoint({
     },
 });
 
-export const endpoint572 = defineEndpoint({
+export const endpoint572 = defineMockEndpoint({
     path: '/reports/item-572',
     requests: {
         [HttpMethod.Post]: {
@@ -12037,7 +12036,7 @@ export const endpoint572 = defineEndpoint({
     },
 });
 
-export const endpoint573 = defineEndpoint({
+export const endpoint573 = defineMockEndpoint({
     path: '/reports/item-573',
     requests: {
         [HttpMethod.Post]: {
@@ -12058,7 +12057,7 @@ export const endpoint573 = defineEndpoint({
     },
 });
 
-export const endpoint574 = defineEndpoint({
+export const endpoint574 = defineMockEndpoint({
     path: '/reports/item-574',
     requests: {
         [HttpMethod.Post]: {
@@ -12079,7 +12078,7 @@ export const endpoint574 = defineEndpoint({
     },
 });
 
-export const endpoint575 = defineEndpoint({
+export const endpoint575 = defineMockEndpoint({
     path: '/reports/item-575',
     requests: {
         [HttpMethod.Post]: {
@@ -12100,7 +12099,7 @@ export const endpoint575 = defineEndpoint({
     },
 });
 
-export const endpoint576 = defineEndpoint({
+export const endpoint576 = defineMockEndpoint({
     path: '/reports/item-576',
     requests: {
         [HttpMethod.Post]: {
@@ -12121,7 +12120,7 @@ export const endpoint576 = defineEndpoint({
     },
 });
 
-export const endpoint577 = defineEndpoint({
+export const endpoint577 = defineMockEndpoint({
     path: '/reports/item-577',
     requests: {
         [HttpMethod.Post]: {
@@ -12142,7 +12141,7 @@ export const endpoint577 = defineEndpoint({
     },
 });
 
-export const endpoint578 = defineEndpoint({
+export const endpoint578 = defineMockEndpoint({
     path: '/reports/item-578',
     requests: {
         [HttpMethod.Post]: {
@@ -12163,7 +12162,7 @@ export const endpoint578 = defineEndpoint({
     },
 });
 
-export const endpoint579 = defineEndpoint({
+export const endpoint579 = defineMockEndpoint({
     path: '/reports/item-579',
     requests: {
         [HttpMethod.Post]: {
@@ -12184,7 +12183,7 @@ export const endpoint579 = defineEndpoint({
     },
 });
 
-export const endpoint580 = defineEndpoint({
+export const endpoint580 = defineMockEndpoint({
     path: '/reports/item-580',
     requests: {
         [HttpMethod.Post]: {
@@ -12205,7 +12204,7 @@ export const endpoint580 = defineEndpoint({
     },
 });
 
-export const endpoint581 = defineEndpoint({
+export const endpoint581 = defineMockEndpoint({
     path: '/reports/item-581',
     requests: {
         [HttpMethod.Post]: {
@@ -12226,7 +12225,7 @@ export const endpoint581 = defineEndpoint({
     },
 });
 
-export const endpoint582 = defineEndpoint({
+export const endpoint582 = defineMockEndpoint({
     path: '/reports/item-582',
     requests: {
         [HttpMethod.Post]: {
@@ -12247,7 +12246,7 @@ export const endpoint582 = defineEndpoint({
     },
 });
 
-export const endpoint583 = defineEndpoint({
+export const endpoint583 = defineMockEndpoint({
     path: '/reports/item-583',
     requests: {
         [HttpMethod.Post]: {
@@ -12268,7 +12267,7 @@ export const endpoint583 = defineEndpoint({
     },
 });
 
-export const endpoint584 = defineEndpoint({
+export const endpoint584 = defineMockEndpoint({
     path: '/reports/item-584',
     requests: {
         [HttpMethod.Post]: {
@@ -12289,7 +12288,7 @@ export const endpoint584 = defineEndpoint({
     },
 });
 
-export const endpoint585 = defineEndpoint({
+export const endpoint585 = defineMockEndpoint({
     path: '/reports/item-585',
     requests: {
         [HttpMethod.Post]: {
@@ -12310,7 +12309,7 @@ export const endpoint585 = defineEndpoint({
     },
 });
 
-export const endpoint586 = defineEndpoint({
+export const endpoint586 = defineMockEndpoint({
     path: '/reports/item-586',
     requests: {
         [HttpMethod.Post]: {
@@ -12331,7 +12330,7 @@ export const endpoint586 = defineEndpoint({
     },
 });
 
-export const endpoint587 = defineEndpoint({
+export const endpoint587 = defineMockEndpoint({
     path: '/reports/item-587',
     requests: {
         [HttpMethod.Post]: {
@@ -12352,7 +12351,7 @@ export const endpoint587 = defineEndpoint({
     },
 });
 
-export const endpoint588 = defineEndpoint({
+export const endpoint588 = defineMockEndpoint({
     path: '/reports/item-588',
     requests: {
         [HttpMethod.Post]: {
@@ -12373,7 +12372,7 @@ export const endpoint588 = defineEndpoint({
     },
 });
 
-export const endpoint589 = defineEndpoint({
+export const endpoint589 = defineMockEndpoint({
     path: '/reports/item-589',
     requests: {
         [HttpMethod.Post]: {
@@ -12394,7 +12393,7 @@ export const endpoint589 = defineEndpoint({
     },
 });
 
-export const endpoint590 = defineEndpoint({
+export const endpoint590 = defineMockEndpoint({
     path: '/reports/item-590',
     requests: {
         [HttpMethod.Post]: {
@@ -12415,7 +12414,7 @@ export const endpoint590 = defineEndpoint({
     },
 });
 
-export const endpoint591 = defineEndpoint({
+export const endpoint591 = defineMockEndpoint({
     path: '/reports/item-591',
     requests: {
         [HttpMethod.Post]: {
@@ -12436,7 +12435,7 @@ export const endpoint591 = defineEndpoint({
     },
 });
 
-export const endpoint592 = defineEndpoint({
+export const endpoint592 = defineMockEndpoint({
     path: '/reports/item-592',
     requests: {
         [HttpMethod.Post]: {
@@ -12457,7 +12456,7 @@ export const endpoint592 = defineEndpoint({
     },
 });
 
-export const endpoint593 = defineEndpoint({
+export const endpoint593 = defineMockEndpoint({
     path: '/reports/item-593',
     requests: {
         [HttpMethod.Post]: {
@@ -12478,7 +12477,7 @@ export const endpoint593 = defineEndpoint({
     },
 });
 
-export const endpoint594 = defineEndpoint({
+export const endpoint594 = defineMockEndpoint({
     path: '/reports/item-594',
     requests: {
         [HttpMethod.Post]: {
@@ -12499,7 +12498,7 @@ export const endpoint594 = defineEndpoint({
     },
 });
 
-export const endpoint595 = defineEndpoint({
+export const endpoint595 = defineMockEndpoint({
     path: '/reports/item-595',
     requests: {
         [HttpMethod.Post]: {
@@ -12520,7 +12519,7 @@ export const endpoint595 = defineEndpoint({
     },
 });
 
-export const endpoint596 = defineEndpoint({
+export const endpoint596 = defineMockEndpoint({
     path: '/reports/item-596',
     requests: {
         [HttpMethod.Post]: {
@@ -12541,7 +12540,7 @@ export const endpoint596 = defineEndpoint({
     },
 });
 
-export const endpoint597 = defineEndpoint({
+export const endpoint597 = defineMockEndpoint({
     path: '/reports/item-597',
     requests: {
         [HttpMethod.Post]: {
@@ -12562,7 +12561,7 @@ export const endpoint597 = defineEndpoint({
     },
 });
 
-export const endpoint598 = defineEndpoint({
+export const endpoint598 = defineMockEndpoint({
     path: '/reports/item-598',
     requests: {
         [HttpMethod.Post]: {
@@ -12583,7 +12582,7 @@ export const endpoint598 = defineEndpoint({
     },
 });
 
-export const endpoint599 = defineEndpoint({
+export const endpoint599 = defineMockEndpoint({
     path: '/reports/item-599',
     requests: {
         [HttpMethod.Post]: {
@@ -12604,7 +12603,7 @@ export const endpoint599 = defineEndpoint({
     },
 });
 
-export const endpoint600 = defineEndpoint({
+export const endpoint600 = defineMockEndpoint({
     path: '/reports/item-600',
     requests: {
         [HttpMethod.Post]: {
@@ -12625,7 +12624,7 @@ export const endpoint600 = defineEndpoint({
     },
 });
 
-export const endpoint601 = defineEndpoint({
+export const endpoint601 = defineMockEndpoint({
     path: '/reports/item-601',
     requests: {
         [HttpMethod.Post]: {
@@ -12646,7 +12645,7 @@ export const endpoint601 = defineEndpoint({
     },
 });
 
-export const endpoint602 = defineEndpoint({
+export const endpoint602 = defineMockEndpoint({
     path: '/reports/item-602',
     requests: {
         [HttpMethod.Post]: {
@@ -12667,7 +12666,7 @@ export const endpoint602 = defineEndpoint({
     },
 });
 
-export const endpoint603 = defineEndpoint({
+export const endpoint603 = defineMockEndpoint({
     path: '/reports/item-603',
     requests: {
         [HttpMethod.Post]: {
@@ -12688,7 +12687,7 @@ export const endpoint603 = defineEndpoint({
     },
 });
 
-export const endpoint604 = defineEndpoint({
+export const endpoint604 = defineMockEndpoint({
     path: '/reports/item-604',
     requests: {
         [HttpMethod.Post]: {
@@ -12709,7 +12708,7 @@ export const endpoint604 = defineEndpoint({
     },
 });
 
-export const endpoint605 = defineEndpoint({
+export const endpoint605 = defineMockEndpoint({
     path: '/reports/item-605',
     requests: {
         [HttpMethod.Post]: {
@@ -12730,7 +12729,7 @@ export const endpoint605 = defineEndpoint({
     },
 });
 
-export const endpoint606 = defineEndpoint({
+export const endpoint606 = defineMockEndpoint({
     path: '/reports/item-606',
     requests: {
         [HttpMethod.Post]: {
@@ -12751,7 +12750,7 @@ export const endpoint606 = defineEndpoint({
     },
 });
 
-export const endpoint607 = defineEndpoint({
+export const endpoint607 = defineMockEndpoint({
     path: '/reports/item-607',
     requests: {
         [HttpMethod.Post]: {
@@ -12772,7 +12771,7 @@ export const endpoint607 = defineEndpoint({
     },
 });
 
-export const endpoint608 = defineEndpoint({
+export const endpoint608 = defineMockEndpoint({
     path: '/reports/item-608',
     requests: {
         [HttpMethod.Post]: {
@@ -12793,7 +12792,7 @@ export const endpoint608 = defineEndpoint({
     },
 });
 
-export const endpoint609 = defineEndpoint({
+export const endpoint609 = defineMockEndpoint({
     path: '/reports/item-609',
     requests: {
         [HttpMethod.Post]: {
@@ -12814,7 +12813,7 @@ export const endpoint609 = defineEndpoint({
     },
 });
 
-export const endpoint610 = defineEndpoint({
+export const endpoint610 = defineMockEndpoint({
     path: '/reports/item-610',
     requests: {
         [HttpMethod.Post]: {
@@ -12835,7 +12834,7 @@ export const endpoint610 = defineEndpoint({
     },
 });
 
-export const endpoint611 = defineEndpoint({
+export const endpoint611 = defineMockEndpoint({
     path: '/reports/item-611',
     requests: {
         [HttpMethod.Post]: {
@@ -12856,7 +12855,7 @@ export const endpoint611 = defineEndpoint({
     },
 });
 
-export const endpoint612 = defineEndpoint({
+export const endpoint612 = defineMockEndpoint({
     path: '/reports/item-612',
     requests: {
         [HttpMethod.Post]: {
@@ -12877,7 +12876,7 @@ export const endpoint612 = defineEndpoint({
     },
 });
 
-export const endpoint613 = defineEndpoint({
+export const endpoint613 = defineMockEndpoint({
     path: '/reports/item-613',
     requests: {
         [HttpMethod.Post]: {
@@ -12898,7 +12897,7 @@ export const endpoint613 = defineEndpoint({
     },
 });
 
-export const endpoint614 = defineEndpoint({
+export const endpoint614 = defineMockEndpoint({
     path: '/reports/item-614',
     requests: {
         [HttpMethod.Post]: {
@@ -12919,7 +12918,7 @@ export const endpoint614 = defineEndpoint({
     },
 });
 
-export const endpoint615 = defineEndpoint({
+export const endpoint615 = defineMockEndpoint({
     path: '/reports/item-615',
     requests: {
         [HttpMethod.Post]: {
@@ -12940,7 +12939,7 @@ export const endpoint615 = defineEndpoint({
     },
 });
 
-export const endpoint616 = defineEndpoint({
+export const endpoint616 = defineMockEndpoint({
     path: '/reports/item-616',
     requests: {
         [HttpMethod.Post]: {
@@ -12961,7 +12960,7 @@ export const endpoint616 = defineEndpoint({
     },
 });
 
-export const endpoint617 = defineEndpoint({
+export const endpoint617 = defineMockEndpoint({
     path: '/reports/item-617',
     requests: {
         [HttpMethod.Post]: {
@@ -12982,7 +12981,7 @@ export const endpoint617 = defineEndpoint({
     },
 });
 
-export const endpoint618 = defineEndpoint({
+export const endpoint618 = defineMockEndpoint({
     path: '/reports/item-618',
     requests: {
         [HttpMethod.Post]: {
@@ -13003,7 +13002,7 @@ export const endpoint618 = defineEndpoint({
     },
 });
 
-export const endpoint619 = defineEndpoint({
+export const endpoint619 = defineMockEndpoint({
     path: '/reports/item-619',
     requests: {
         [HttpMethod.Post]: {
@@ -13024,7 +13023,7 @@ export const endpoint619 = defineEndpoint({
     },
 });
 
-export const endpoint620 = defineEndpoint({
+export const endpoint620 = defineMockEndpoint({
     path: '/reports/item-620',
     requests: {
         [HttpMethod.Post]: {
@@ -13045,7 +13044,7 @@ export const endpoint620 = defineEndpoint({
     },
 });
 
-export const endpoint621 = defineEndpoint({
+export const endpoint621 = defineMockEndpoint({
     path: '/reports/item-621',
     requests: {
         [HttpMethod.Post]: {
@@ -13066,7 +13065,7 @@ export const endpoint621 = defineEndpoint({
     },
 });
 
-export const endpoint622 = defineEndpoint({
+export const endpoint622 = defineMockEndpoint({
     path: '/reports/item-622',
     requests: {
         [HttpMethod.Post]: {
@@ -13087,7 +13086,7 @@ export const endpoint622 = defineEndpoint({
     },
 });
 
-export const endpoint623 = defineEndpoint({
+export const endpoint623 = defineMockEndpoint({
     path: '/reports/item-623',
     requests: {
         [HttpMethod.Post]: {
@@ -13108,7 +13107,7 @@ export const endpoint623 = defineEndpoint({
     },
 });
 
-export const endpoint624 = defineEndpoint({
+export const endpoint624 = defineMockEndpoint({
     path: '/reports/item-624',
     requests: {
         [HttpMethod.Post]: {
@@ -13129,7 +13128,7 @@ export const endpoint624 = defineEndpoint({
     },
 });
 
-export const endpoint625 = defineEndpoint({
+export const endpoint625 = defineMockEndpoint({
     path: '/reports/item-625',
     requests: {
         [HttpMethod.Post]: {
@@ -13150,7 +13149,7 @@ export const endpoint625 = defineEndpoint({
     },
 });
 
-export const endpoint626 = defineEndpoint({
+export const endpoint626 = defineMockEndpoint({
     path: '/reports/item-626',
     requests: {
         [HttpMethod.Post]: {
@@ -13171,7 +13170,7 @@ export const endpoint626 = defineEndpoint({
     },
 });
 
-export const endpoint627 = defineEndpoint({
+export const endpoint627 = defineMockEndpoint({
     path: '/reports/item-627',
     requests: {
         [HttpMethod.Post]: {
@@ -13192,7 +13191,7 @@ export const endpoint627 = defineEndpoint({
     },
 });
 
-export const endpoint628 = defineEndpoint({
+export const endpoint628 = defineMockEndpoint({
     path: '/reports/item-628',
     requests: {
         [HttpMethod.Post]: {
@@ -13213,7 +13212,7 @@ export const endpoint628 = defineEndpoint({
     },
 });
 
-export const endpoint629 = defineEndpoint({
+export const endpoint629 = defineMockEndpoint({
     path: '/reports/item-629',
     requests: {
         [HttpMethod.Post]: {
@@ -13234,7 +13233,7 @@ export const endpoint629 = defineEndpoint({
     },
 });
 
-export const endpoint630 = defineEndpoint({
+export const endpoint630 = defineMockEndpoint({
     path: '/reports/item-630',
     requests: {
         [HttpMethod.Post]: {
@@ -13255,7 +13254,7 @@ export const endpoint630 = defineEndpoint({
     },
 });
 
-export const endpoint631 = defineEndpoint({
+export const endpoint631 = defineMockEndpoint({
     path: '/reports/item-631',
     requests: {
         [HttpMethod.Post]: {
@@ -13276,7 +13275,7 @@ export const endpoint631 = defineEndpoint({
     },
 });
 
-export const endpoint632 = defineEndpoint({
+export const endpoint632 = defineMockEndpoint({
     path: '/reports/item-632',
     requests: {
         [HttpMethod.Post]: {
@@ -13297,7 +13296,7 @@ export const endpoint632 = defineEndpoint({
     },
 });
 
-export const endpoint633 = defineEndpoint({
+export const endpoint633 = defineMockEndpoint({
     path: '/reports/item-633',
     requests: {
         [HttpMethod.Post]: {
@@ -13318,7 +13317,7 @@ export const endpoint633 = defineEndpoint({
     },
 });
 
-export const endpoint634 = defineEndpoint({
+export const endpoint634 = defineMockEndpoint({
     path: '/reports/item-634',
     requests: {
         [HttpMethod.Post]: {
@@ -13339,7 +13338,7 @@ export const endpoint634 = defineEndpoint({
     },
 });
 
-export const endpoint635 = defineEndpoint({
+export const endpoint635 = defineMockEndpoint({
     path: '/reports/item-635',
     requests: {
         [HttpMethod.Post]: {
@@ -13360,7 +13359,7 @@ export const endpoint635 = defineEndpoint({
     },
 });
 
-export const endpoint636 = defineEndpoint({
+export const endpoint636 = defineMockEndpoint({
     path: '/reports/item-636',
     requests: {
         [HttpMethod.Post]: {
@@ -13381,7 +13380,7 @@ export const endpoint636 = defineEndpoint({
     },
 });
 
-export const endpoint637 = defineEndpoint({
+export const endpoint637 = defineMockEndpoint({
     path: '/reports/item-637',
     requests: {
         [HttpMethod.Post]: {
@@ -13402,7 +13401,7 @@ export const endpoint637 = defineEndpoint({
     },
 });
 
-export const endpoint638 = defineEndpoint({
+export const endpoint638 = defineMockEndpoint({
     path: '/reports/item-638',
     requests: {
         [HttpMethod.Post]: {
@@ -13423,7 +13422,7 @@ export const endpoint638 = defineEndpoint({
     },
 });
 
-export const endpoint639 = defineEndpoint({
+export const endpoint639 = defineMockEndpoint({
     path: '/reports/item-639',
     requests: {
         [HttpMethod.Post]: {
@@ -13444,7 +13443,7 @@ export const endpoint639 = defineEndpoint({
     },
 });
 
-export const endpoint640 = defineEndpoint({
+export const endpoint640 = defineMockEndpoint({
     path: '/reports/item-640',
     requests: {
         [HttpMethod.Post]: {
@@ -13465,7 +13464,7 @@ export const endpoint640 = defineEndpoint({
     },
 });
 
-export const endpoint641 = defineEndpoint({
+export const endpoint641 = defineMockEndpoint({
     path: '/reports/item-641',
     requests: {
         [HttpMethod.Post]: {
@@ -13486,7 +13485,7 @@ export const endpoint641 = defineEndpoint({
     },
 });
 
-export const endpoint642 = defineEndpoint({
+export const endpoint642 = defineMockEndpoint({
     path: '/reports/item-642',
     requests: {
         [HttpMethod.Post]: {
@@ -13507,7 +13506,7 @@ export const endpoint642 = defineEndpoint({
     },
 });
 
-export const endpoint643 = defineEndpoint({
+export const endpoint643 = defineMockEndpoint({
     path: '/reports/item-643',
     requests: {
         [HttpMethod.Post]: {
@@ -13528,7 +13527,7 @@ export const endpoint643 = defineEndpoint({
     },
 });
 
-export const endpoint644 = defineEndpoint({
+export const endpoint644 = defineMockEndpoint({
     path: '/reports/item-644',
     requests: {
         [HttpMethod.Post]: {
@@ -13549,7 +13548,7 @@ export const endpoint644 = defineEndpoint({
     },
 });
 
-export const endpoint645 = defineEndpoint({
+export const endpoint645 = defineMockEndpoint({
     path: '/reports/item-645',
     requests: {
         [HttpMethod.Post]: {
@@ -13570,7 +13569,7 @@ export const endpoint645 = defineEndpoint({
     },
 });
 
-export const endpoint646 = defineEndpoint({
+export const endpoint646 = defineMockEndpoint({
     path: '/reports/item-646',
     requests: {
         [HttpMethod.Post]: {
@@ -13591,7 +13590,7 @@ export const endpoint646 = defineEndpoint({
     },
 });
 
-export const endpoint647 = defineEndpoint({
+export const endpoint647 = defineMockEndpoint({
     path: '/reports/item-647',
     requests: {
         [HttpMethod.Post]: {
@@ -13612,7 +13611,7 @@ export const endpoint647 = defineEndpoint({
     },
 });
 
-export const endpoint648 = defineEndpoint({
+export const endpoint648 = defineMockEndpoint({
     path: '/reports/item-648',
     requests: {
         [HttpMethod.Post]: {
@@ -13633,7 +13632,7 @@ export const endpoint648 = defineEndpoint({
     },
 });
 
-export const endpoint649 = defineEndpoint({
+export const endpoint649 = defineMockEndpoint({
     path: '/reports/item-649',
     requests: {
         [HttpMethod.Post]: {
@@ -13654,7 +13653,7 @@ export const endpoint649 = defineEndpoint({
     },
 });
 
-export const endpoint650 = defineEndpoint({
+export const endpoint650 = defineMockEndpoint({
     path: '/reports/item-650',
     requests: {
         [HttpMethod.Post]: {
@@ -13675,7 +13674,7 @@ export const endpoint650 = defineEndpoint({
     },
 });
 
-export const endpoint651 = defineEndpoint({
+export const endpoint651 = defineMockEndpoint({
     path: '/reports/item-651',
     requests: {
         [HttpMethod.Post]: {
@@ -13696,7 +13695,7 @@ export const endpoint651 = defineEndpoint({
     },
 });
 
-export const endpoint652 = defineEndpoint({
+export const endpoint652 = defineMockEndpoint({
     path: '/reports/item-652',
     requests: {
         [HttpMethod.Post]: {
@@ -13717,7 +13716,7 @@ export const endpoint652 = defineEndpoint({
     },
 });
 
-export const endpoint653 = defineEndpoint({
+export const endpoint653 = defineMockEndpoint({
     path: '/reports/item-653',
     requests: {
         [HttpMethod.Post]: {
@@ -13738,7 +13737,7 @@ export const endpoint653 = defineEndpoint({
     },
 });
 
-export const endpoint654 = defineEndpoint({
+export const endpoint654 = defineMockEndpoint({
     path: '/reports/item-654',
     requests: {
         [HttpMethod.Post]: {
@@ -13759,7 +13758,7 @@ export const endpoint654 = defineEndpoint({
     },
 });
 
-export const endpoint655 = defineEndpoint({
+export const endpoint655 = defineMockEndpoint({
     path: '/reports/item-655',
     requests: {
         [HttpMethod.Post]: {
@@ -13780,7 +13779,7 @@ export const endpoint655 = defineEndpoint({
     },
 });
 
-export const endpoint656 = defineEndpoint({
+export const endpoint656 = defineMockEndpoint({
     path: '/reports/item-656',
     requests: {
         [HttpMethod.Post]: {
@@ -13801,7 +13800,7 @@ export const endpoint656 = defineEndpoint({
     },
 });
 
-export const endpoint657 = defineEndpoint({
+export const endpoint657 = defineMockEndpoint({
     path: '/reports/item-657',
     requests: {
         [HttpMethod.Post]: {
@@ -13822,7 +13821,7 @@ export const endpoint657 = defineEndpoint({
     },
 });
 
-export const endpoint658 = defineEndpoint({
+export const endpoint658 = defineMockEndpoint({
     path: '/reports/item-658',
     requests: {
         [HttpMethod.Post]: {
@@ -13843,7 +13842,7 @@ export const endpoint658 = defineEndpoint({
     },
 });
 
-export const endpoint659 = defineEndpoint({
+export const endpoint659 = defineMockEndpoint({
     path: '/reports/item-659',
     requests: {
         [HttpMethod.Post]: {
@@ -13864,7 +13863,7 @@ export const endpoint659 = defineEndpoint({
     },
 });
 
-export const endpoint660 = defineEndpoint({
+export const endpoint660 = defineMockEndpoint({
     path: '/reports/item-660',
     requests: {
         [HttpMethod.Post]: {
@@ -13885,7 +13884,7 @@ export const endpoint660 = defineEndpoint({
     },
 });
 
-export const endpoint661 = defineEndpoint({
+export const endpoint661 = defineMockEndpoint({
     path: '/reports/item-661',
     requests: {
         [HttpMethod.Post]: {
@@ -13906,7 +13905,7 @@ export const endpoint661 = defineEndpoint({
     },
 });
 
-export const endpoint662 = defineEndpoint({
+export const endpoint662 = defineMockEndpoint({
     path: '/reports/item-662',
     requests: {
         [HttpMethod.Post]: {
@@ -13927,7 +13926,7 @@ export const endpoint662 = defineEndpoint({
     },
 });
 
-export const endpoint663 = defineEndpoint({
+export const endpoint663 = defineMockEndpoint({
     path: '/reports/item-663',
     requests: {
         [HttpMethod.Post]: {
@@ -13948,7 +13947,7 @@ export const endpoint663 = defineEndpoint({
     },
 });
 
-export const endpoint664 = defineEndpoint({
+export const endpoint664 = defineMockEndpoint({
     path: '/reports/item-664',
     requests: {
         [HttpMethod.Post]: {
@@ -13969,7 +13968,7 @@ export const endpoint664 = defineEndpoint({
     },
 });
 
-export const endpoint665 = defineEndpoint({
+export const endpoint665 = defineMockEndpoint({
     path: '/reports/item-665',
     requests: {
         [HttpMethod.Post]: {
@@ -13990,7 +13989,7 @@ export const endpoint665 = defineEndpoint({
     },
 });
 
-export const endpoint666 = defineEndpoint({
+export const endpoint666 = defineMockEndpoint({
     path: '/reports/item-666',
     requests: {
         [HttpMethod.Post]: {
@@ -14011,7 +14010,7 @@ export const endpoint666 = defineEndpoint({
     },
 });
 
-export const endpoint667 = defineEndpoint({
+export const endpoint667 = defineMockEndpoint({
     path: '/reports/item-667',
     requests: {
         [HttpMethod.Post]: {
@@ -14032,7 +14031,7 @@ export const endpoint667 = defineEndpoint({
     },
 });
 
-export const endpoint668 = defineEndpoint({
+export const endpoint668 = defineMockEndpoint({
     path: '/reports/item-668',
     requests: {
         [HttpMethod.Post]: {
@@ -14053,7 +14052,7 @@ export const endpoint668 = defineEndpoint({
     },
 });
 
-export const endpoint669 = defineEndpoint({
+export const endpoint669 = defineMockEndpoint({
     path: '/reports/item-669',
     requests: {
         [HttpMethod.Post]: {
@@ -14074,7 +14073,7 @@ export const endpoint669 = defineEndpoint({
     },
 });
 
-export const endpoint670 = defineEndpoint({
+export const endpoint670 = defineMockEndpoint({
     path: '/reports/item-670',
     requests: {
         [HttpMethod.Post]: {
@@ -14095,7 +14094,7 @@ export const endpoint670 = defineEndpoint({
     },
 });
 
-export const endpoint671 = defineEndpoint({
+export const endpoint671 = defineMockEndpoint({
     path: '/reports/item-671',
     requests: {
         [HttpMethod.Post]: {
@@ -14116,7 +14115,7 @@ export const endpoint671 = defineEndpoint({
     },
 });
 
-export const endpoint672 = defineEndpoint({
+export const endpoint672 = defineMockEndpoint({
     path: '/reports/item-672',
     requests: {
         [HttpMethod.Post]: {
@@ -14137,7 +14136,7 @@ export const endpoint672 = defineEndpoint({
     },
 });
 
-export const endpoint673 = defineEndpoint({
+export const endpoint673 = defineMockEndpoint({
     path: '/reports/item-673',
     requests: {
         [HttpMethod.Post]: {
@@ -14158,7 +14157,7 @@ export const endpoint673 = defineEndpoint({
     },
 });
 
-export const endpoint674 = defineEndpoint({
+export const endpoint674 = defineMockEndpoint({
     path: '/reports/item-674',
     requests: {
         [HttpMethod.Post]: {
@@ -14179,7 +14178,7 @@ export const endpoint674 = defineEndpoint({
     },
 });
 
-export const endpoint675 = defineEndpoint({
+export const endpoint675 = defineMockEndpoint({
     path: '/reports/item-675',
     requests: {
         [HttpMethod.Post]: {
@@ -14200,7 +14199,7 @@ export const endpoint675 = defineEndpoint({
     },
 });
 
-export const endpoint676 = defineEndpoint({
+export const endpoint676 = defineMockEndpoint({
     path: '/reports/item-676',
     requests: {
         [HttpMethod.Post]: {
@@ -14221,7 +14220,7 @@ export const endpoint676 = defineEndpoint({
     },
 });
 
-export const endpoint677 = defineEndpoint({
+export const endpoint677 = defineMockEndpoint({
     path: '/reports/item-677',
     requests: {
         [HttpMethod.Post]: {
@@ -14242,7 +14241,7 @@ export const endpoint677 = defineEndpoint({
     },
 });
 
-export const endpoint678 = defineEndpoint({
+export const endpoint678 = defineMockEndpoint({
     path: '/reports/item-678',
     requests: {
         [HttpMethod.Post]: {
@@ -14263,7 +14262,7 @@ export const endpoint678 = defineEndpoint({
     },
 });
 
-export const endpoint679 = defineEndpoint({
+export const endpoint679 = defineMockEndpoint({
     path: '/reports/item-679',
     requests: {
         [HttpMethod.Post]: {
@@ -14284,7 +14283,7 @@ export const endpoint679 = defineEndpoint({
     },
 });
 
-export const endpoint680 = defineEndpoint({
+export const endpoint680 = defineMockEndpoint({
     path: '/reports/item-680',
     requests: {
         [HttpMethod.Post]: {
@@ -14305,7 +14304,7 @@ export const endpoint680 = defineEndpoint({
     },
 });
 
-export const endpoint681 = defineEndpoint({
+export const endpoint681 = defineMockEndpoint({
     path: '/reports/item-681',
     requests: {
         [HttpMethod.Post]: {
@@ -14326,7 +14325,7 @@ export const endpoint681 = defineEndpoint({
     },
 });
 
-export const endpoint682 = defineEndpoint({
+export const endpoint682 = defineMockEndpoint({
     path: '/reports/item-682',
     requests: {
         [HttpMethod.Post]: {
@@ -14347,7 +14346,7 @@ export const endpoint682 = defineEndpoint({
     },
 });
 
-export const endpoint683 = defineEndpoint({
+export const endpoint683 = defineMockEndpoint({
     path: '/reports/item-683',
     requests: {
         [HttpMethod.Post]: {
@@ -14368,7 +14367,7 @@ export const endpoint683 = defineEndpoint({
     },
 });
 
-export const endpoint684 = defineEndpoint({
+export const endpoint684 = defineMockEndpoint({
     path: '/reports/item-684',
     requests: {
         [HttpMethod.Post]: {
@@ -14389,7 +14388,7 @@ export const endpoint684 = defineEndpoint({
     },
 });
 
-export const endpoint685 = defineEndpoint({
+export const endpoint685 = defineMockEndpoint({
     path: '/reports/item-685',
     requests: {
         [HttpMethod.Post]: {
@@ -14410,7 +14409,7 @@ export const endpoint685 = defineEndpoint({
     },
 });
 
-export const endpoint686 = defineEndpoint({
+export const endpoint686 = defineMockEndpoint({
     path: '/reports/item-686',
     requests: {
         [HttpMethod.Post]: {
@@ -14431,7 +14430,7 @@ export const endpoint686 = defineEndpoint({
     },
 });
 
-export const endpoint687 = defineEndpoint({
+export const endpoint687 = defineMockEndpoint({
     path: '/reports/item-687',
     requests: {
         [HttpMethod.Post]: {
@@ -14452,7 +14451,7 @@ export const endpoint687 = defineEndpoint({
     },
 });
 
-export const endpoint688 = defineEndpoint({
+export const endpoint688 = defineMockEndpoint({
     path: '/reports/item-688',
     requests: {
         [HttpMethod.Post]: {
@@ -14473,7 +14472,7 @@ export const endpoint688 = defineEndpoint({
     },
 });
 
-export const endpoint689 = defineEndpoint({
+export const endpoint689 = defineMockEndpoint({
     path: '/reports/item-689',
     requests: {
         [HttpMethod.Post]: {
@@ -14494,7 +14493,7 @@ export const endpoint689 = defineEndpoint({
     },
 });
 
-export const endpoint690 = defineEndpoint({
+export const endpoint690 = defineMockEndpoint({
     path: '/reports/item-690',
     requests: {
         [HttpMethod.Post]: {
@@ -14515,7 +14514,7 @@ export const endpoint690 = defineEndpoint({
     },
 });
 
-export const endpoint691 = defineEndpoint({
+export const endpoint691 = defineMockEndpoint({
     path: '/reports/item-691',
     requests: {
         [HttpMethod.Post]: {
@@ -14536,7 +14535,7 @@ export const endpoint691 = defineEndpoint({
     },
 });
 
-export const endpoint692 = defineEndpoint({
+export const endpoint692 = defineMockEndpoint({
     path: '/reports/item-692',
     requests: {
         [HttpMethod.Post]: {
@@ -14557,7 +14556,7 @@ export const endpoint692 = defineEndpoint({
     },
 });
 
-export const endpoint693 = defineEndpoint({
+export const endpoint693 = defineMockEndpoint({
     path: '/reports/item-693',
     requests: {
         [HttpMethod.Post]: {
@@ -14578,7 +14577,7 @@ export const endpoint693 = defineEndpoint({
     },
 });
 
-export const endpoint694 = defineEndpoint({
+export const endpoint694 = defineMockEndpoint({
     path: '/reports/item-694',
     requests: {
         [HttpMethod.Post]: {
@@ -14599,7 +14598,7 @@ export const endpoint694 = defineEndpoint({
     },
 });
 
-export const endpoint695 = defineEndpoint({
+export const endpoint695 = defineMockEndpoint({
     path: '/reports/item-695',
     requests: {
         [HttpMethod.Post]: {
@@ -14620,7 +14619,7 @@ export const endpoint695 = defineEndpoint({
     },
 });
 
-export const endpoint696 = defineEndpoint({
+export const endpoint696 = defineMockEndpoint({
     path: '/reports/item-696',
     requests: {
         [HttpMethod.Post]: {
@@ -14641,7 +14640,7 @@ export const endpoint696 = defineEndpoint({
     },
 });
 
-export const endpoint697 = defineEndpoint({
+export const endpoint697 = defineMockEndpoint({
     path: '/reports/item-697',
     requests: {
         [HttpMethod.Post]: {
@@ -14662,7 +14661,7 @@ export const endpoint697 = defineEndpoint({
     },
 });
 
-export const endpoint698 = defineEndpoint({
+export const endpoint698 = defineMockEndpoint({
     path: '/reports/item-698',
     requests: {
         [HttpMethod.Post]: {
@@ -14683,7 +14682,7 @@ export const endpoint698 = defineEndpoint({
     },
 });
 
-export const endpoint699 = defineEndpoint({
+export const endpoint699 = defineMockEndpoint({
     path: '/reports/item-699',
     requests: {
         [HttpMethod.Post]: {
@@ -14704,7 +14703,7 @@ export const endpoint699 = defineEndpoint({
     },
 });
 
-export const endpoint700 = defineEndpoint({
+export const endpoint700 = defineMockEndpoint({
     path: '/reports/item-700',
     requests: {
         [HttpMethod.Post]: {
@@ -14725,7 +14724,7 @@ export const endpoint700 = defineEndpoint({
     },
 });
 
-export const endpoint701 = defineEndpoint({
+export const endpoint701 = defineMockEndpoint({
     path: '/reports/item-701',
     requests: {
         [HttpMethod.Post]: {
@@ -14746,7 +14745,7 @@ export const endpoint701 = defineEndpoint({
     },
 });
 
-export const endpoint702 = defineEndpoint({
+export const endpoint702 = defineMockEndpoint({
     path: '/reports/item-702',
     requests: {
         [HttpMethod.Post]: {
@@ -14767,7 +14766,7 @@ export const endpoint702 = defineEndpoint({
     },
 });
 
-export const endpoint703 = defineEndpoint({
+export const endpoint703 = defineMockEndpoint({
     path: '/reports/item-703',
     requests: {
         [HttpMethod.Post]: {
@@ -14788,7 +14787,7 @@ export const endpoint703 = defineEndpoint({
     },
 });
 
-export const endpoint704 = defineEndpoint({
+export const endpoint704 = defineMockEndpoint({
     path: '/reports/item-704',
     requests: {
         [HttpMethod.Post]: {
@@ -14809,7 +14808,7 @@ export const endpoint704 = defineEndpoint({
     },
 });
 
-export const endpoint705 = defineEndpoint({
+export const endpoint705 = defineMockEndpoint({
     path: '/reports/item-705',
     requests: {
         [HttpMethod.Post]: {
@@ -14830,7 +14829,7 @@ export const endpoint705 = defineEndpoint({
     },
 });
 
-export const endpoint706 = defineEndpoint({
+export const endpoint706 = defineMockEndpoint({
     path: '/reports/item-706',
     requests: {
         [HttpMethod.Post]: {
@@ -14851,7 +14850,7 @@ export const endpoint706 = defineEndpoint({
     },
 });
 
-export const endpoint707 = defineEndpoint({
+export const endpoint707 = defineMockEndpoint({
     path: '/reports/item-707',
     requests: {
         [HttpMethod.Post]: {
@@ -14872,7 +14871,7 @@ export const endpoint707 = defineEndpoint({
     },
 });
 
-export const endpoint708 = defineEndpoint({
+export const endpoint708 = defineMockEndpoint({
     path: '/reports/item-708',
     requests: {
         [HttpMethod.Post]: {
@@ -14893,7 +14892,7 @@ export const endpoint708 = defineEndpoint({
     },
 });
 
-export const endpoint709 = defineEndpoint({
+export const endpoint709 = defineMockEndpoint({
     path: '/reports/item-709',
     requests: {
         [HttpMethod.Post]: {
@@ -14914,7 +14913,7 @@ export const endpoint709 = defineEndpoint({
     },
 });
 
-export const endpoint710 = defineEndpoint({
+export const endpoint710 = defineMockEndpoint({
     path: '/reports/item-710',
     requests: {
         [HttpMethod.Post]: {
@@ -14935,7 +14934,7 @@ export const endpoint710 = defineEndpoint({
     },
 });
 
-export const endpoint711 = defineEndpoint({
+export const endpoint711 = defineMockEndpoint({
     path: '/reports/item-711',
     requests: {
         [HttpMethod.Post]: {
@@ -14956,7 +14955,7 @@ export const endpoint711 = defineEndpoint({
     },
 });
 
-export const endpoint712 = defineEndpoint({
+export const endpoint712 = defineMockEndpoint({
     path: '/reports/item-712',
     requests: {
         [HttpMethod.Post]: {
@@ -14977,7 +14976,7 @@ export const endpoint712 = defineEndpoint({
     },
 });
 
-export const endpoint713 = defineEndpoint({
+export const endpoint713 = defineMockEndpoint({
     path: '/reports/item-713',
     requests: {
         [HttpMethod.Post]: {
@@ -14998,7 +14997,7 @@ export const endpoint713 = defineEndpoint({
     },
 });
 
-export const endpoint714 = defineEndpoint({
+export const endpoint714 = defineMockEndpoint({
     path: '/reports/item-714',
     requests: {
         [HttpMethod.Post]: {
@@ -15019,7 +15018,7 @@ export const endpoint714 = defineEndpoint({
     },
 });
 
-export const endpoint715 = defineEndpoint({
+export const endpoint715 = defineMockEndpoint({
     path: '/reports/item-715',
     requests: {
         [HttpMethod.Post]: {
@@ -15040,7 +15039,7 @@ export const endpoint715 = defineEndpoint({
     },
 });
 
-export const endpoint716 = defineEndpoint({
+export const endpoint716 = defineMockEndpoint({
     path: '/reports/item-716',
     requests: {
         [HttpMethod.Post]: {
@@ -15061,7 +15060,7 @@ export const endpoint716 = defineEndpoint({
     },
 });
 
-export const endpoint717 = defineEndpoint({
+export const endpoint717 = defineMockEndpoint({
     path: '/reports/item-717',
     requests: {
         [HttpMethod.Post]: {
@@ -15082,7 +15081,7 @@ export const endpoint717 = defineEndpoint({
     },
 });
 
-export const endpoint718 = defineEndpoint({
+export const endpoint718 = defineMockEndpoint({
     path: '/reports/item-718',
     requests: {
         [HttpMethod.Post]: {
@@ -15103,7 +15102,7 @@ export const endpoint718 = defineEndpoint({
     },
 });
 
-export const endpoint719 = defineEndpoint({
+export const endpoint719 = defineMockEndpoint({
     path: '/reports/item-719',
     requests: {
         [HttpMethod.Post]: {
@@ -15124,7 +15123,7 @@ export const endpoint719 = defineEndpoint({
     },
 });
 
-export const endpoint720 = defineEndpoint({
+export const endpoint720 = defineMockEndpoint({
     path: '/reports/item-720',
     requests: {
         [HttpMethod.Post]: {
@@ -15145,7 +15144,7 @@ export const endpoint720 = defineEndpoint({
     },
 });
 
-export const endpoint721 = defineEndpoint({
+export const endpoint721 = defineMockEndpoint({
     path: '/reports/item-721',
     requests: {
         [HttpMethod.Post]: {
@@ -15166,7 +15165,7 @@ export const endpoint721 = defineEndpoint({
     },
 });
 
-export const endpoint722 = defineEndpoint({
+export const endpoint722 = defineMockEndpoint({
     path: '/reports/item-722',
     requests: {
         [HttpMethod.Post]: {
@@ -15187,7 +15186,7 @@ export const endpoint722 = defineEndpoint({
     },
 });
 
-export const endpoint723 = defineEndpoint({
+export const endpoint723 = defineMockEndpoint({
     path: '/reports/item-723',
     requests: {
         [HttpMethod.Post]: {
@@ -15208,7 +15207,7 @@ export const endpoint723 = defineEndpoint({
     },
 });
 
-export const endpoint724 = defineEndpoint({
+export const endpoint724 = defineMockEndpoint({
     path: '/reports/item-724',
     requests: {
         [HttpMethod.Post]: {
@@ -15229,7 +15228,7 @@ export const endpoint724 = defineEndpoint({
     },
 });
 
-export const endpoint725 = defineEndpoint({
+export const endpoint725 = defineMockEndpoint({
     path: '/reports/item-725',
     requests: {
         [HttpMethod.Post]: {
@@ -15250,7 +15249,7 @@ export const endpoint725 = defineEndpoint({
     },
 });
 
-export const endpoint726 = defineEndpoint({
+export const endpoint726 = defineMockEndpoint({
     path: '/reports/item-726',
     requests: {
         [HttpMethod.Post]: {
@@ -15271,7 +15270,7 @@ export const endpoint726 = defineEndpoint({
     },
 });
 
-export const endpoint727 = defineEndpoint({
+export const endpoint727 = defineMockEndpoint({
     path: '/reports/item-727',
     requests: {
         [HttpMethod.Post]: {
@@ -15292,7 +15291,7 @@ export const endpoint727 = defineEndpoint({
     },
 });
 
-export const endpoint728 = defineEndpoint({
+export const endpoint728 = defineMockEndpoint({
     path: '/reports/item-728',
     requests: {
         [HttpMethod.Post]: {
@@ -15313,7 +15312,7 @@ export const endpoint728 = defineEndpoint({
     },
 });
 
-export const endpoint729 = defineEndpoint({
+export const endpoint729 = defineMockEndpoint({
     path: '/reports/item-729',
     requests: {
         [HttpMethod.Post]: {
@@ -15334,7 +15333,7 @@ export const endpoint729 = defineEndpoint({
     },
 });
 
-export const endpoint730 = defineEndpoint({
+export const endpoint730 = defineMockEndpoint({
     path: '/reports/item-730',
     requests: {
         [HttpMethod.Post]: {
@@ -15355,7 +15354,7 @@ export const endpoint730 = defineEndpoint({
     },
 });
 
-export const endpoint731 = defineEndpoint({
+export const endpoint731 = defineMockEndpoint({
     path: '/reports/item-731',
     requests: {
         [HttpMethod.Post]: {
@@ -15376,7 +15375,7 @@ export const endpoint731 = defineEndpoint({
     },
 });
 
-export const endpoint732 = defineEndpoint({
+export const endpoint732 = defineMockEndpoint({
     path: '/reports/item-732',
     requests: {
         [HttpMethod.Post]: {
@@ -15397,7 +15396,7 @@ export const endpoint732 = defineEndpoint({
     },
 });
 
-export const endpoint733 = defineEndpoint({
+export const endpoint733 = defineMockEndpoint({
     path: '/reports/item-733',
     requests: {
         [HttpMethod.Post]: {
@@ -15418,7 +15417,7 @@ export const endpoint733 = defineEndpoint({
     },
 });
 
-export const endpoint734 = defineEndpoint({
+export const endpoint734 = defineMockEndpoint({
     path: '/reports/item-734',
     requests: {
         [HttpMethod.Post]: {
@@ -15439,7 +15438,7 @@ export const endpoint734 = defineEndpoint({
     },
 });
 
-export const endpoint735 = defineEndpoint({
+export const endpoint735 = defineMockEndpoint({
     path: '/reports/item-735',
     requests: {
         [HttpMethod.Post]: {
@@ -15460,7 +15459,7 @@ export const endpoint735 = defineEndpoint({
     },
 });
 
-export const endpoint736 = defineEndpoint({
+export const endpoint736 = defineMockEndpoint({
     path: '/reports/item-736',
     requests: {
         [HttpMethod.Post]: {
@@ -15481,7 +15480,7 @@ export const endpoint736 = defineEndpoint({
     },
 });
 
-export const endpoint737 = defineEndpoint({
+export const endpoint737 = defineMockEndpoint({
     path: '/reports/item-737',
     requests: {
         [HttpMethod.Post]: {
@@ -15502,7 +15501,7 @@ export const endpoint737 = defineEndpoint({
     },
 });
 
-export const endpoint738 = defineEndpoint({
+export const endpoint738 = defineMockEndpoint({
     path: '/reports/item-738',
     requests: {
         [HttpMethod.Post]: {
@@ -15523,7 +15522,7 @@ export const endpoint738 = defineEndpoint({
     },
 });
 
-export const endpoint739 = defineEndpoint({
+export const endpoint739 = defineMockEndpoint({
     path: '/reports/item-739',
     requests: {
         [HttpMethod.Post]: {
@@ -15544,7 +15543,7 @@ export const endpoint739 = defineEndpoint({
     },
 });
 
-export const endpoint740 = defineEndpoint({
+export const endpoint740 = defineMockEndpoint({
     path: '/reports/item-740',
     requests: {
         [HttpMethod.Post]: {
@@ -15565,7 +15564,7 @@ export const endpoint740 = defineEndpoint({
     },
 });
 
-export const endpoint741 = defineEndpoint({
+export const endpoint741 = defineMockEndpoint({
     path: '/reports/item-741',
     requests: {
         [HttpMethod.Post]: {
@@ -15586,7 +15585,7 @@ export const endpoint741 = defineEndpoint({
     },
 });
 
-export const endpoint742 = defineEndpoint({
+export const endpoint742 = defineMockEndpoint({
     path: '/reports/item-742',
     requests: {
         [HttpMethod.Post]: {
@@ -15607,7 +15606,7 @@ export const endpoint742 = defineEndpoint({
     },
 });
 
-export const endpoint743 = defineEndpoint({
+export const endpoint743 = defineMockEndpoint({
     path: '/reports/item-743',
     requests: {
         [HttpMethod.Post]: {
@@ -15628,7 +15627,7 @@ export const endpoint743 = defineEndpoint({
     },
 });
 
-export const endpoint744 = defineEndpoint({
+export const endpoint744 = defineMockEndpoint({
     path: '/reports/item-744',
     requests: {
         [HttpMethod.Post]: {
@@ -15649,7 +15648,7 @@ export const endpoint744 = defineEndpoint({
     },
 });
 
-export const endpoint745 = defineEndpoint({
+export const endpoint745 = defineMockEndpoint({
     path: '/reports/item-745',
     requests: {
         [HttpMethod.Post]: {
@@ -15670,7 +15669,7 @@ export const endpoint745 = defineEndpoint({
     },
 });
 
-export const endpoint746 = defineEndpoint({
+export const endpoint746 = defineMockEndpoint({
     path: '/reports/item-746',
     requests: {
         [HttpMethod.Post]: {
@@ -15691,7 +15690,7 @@ export const endpoint746 = defineEndpoint({
     },
 });
 
-export const endpoint747 = defineEndpoint({
+export const endpoint747 = defineMockEndpoint({
     path: '/reports/item-747',
     requests: {
         [HttpMethod.Post]: {
@@ -15712,7 +15711,7 @@ export const endpoint747 = defineEndpoint({
     },
 });
 
-export const endpoint748 = defineEndpoint({
+export const endpoint748 = defineMockEndpoint({
     path: '/reports/item-748',
     requests: {
         [HttpMethod.Post]: {
@@ -15733,7 +15732,7 @@ export const endpoint748 = defineEndpoint({
     },
 });
 
-export const endpoint749 = defineEndpoint({
+export const endpoint749 = defineMockEndpoint({
     path: '/reports/item-749',
     requests: {
         [HttpMethod.Post]: {
@@ -15754,7 +15753,7 @@ export const endpoint749 = defineEndpoint({
     },
 });
 
-export const endpoint750 = defineEndpoint({
+export const endpoint750 = defineMockEndpoint({
     path: '/reports/item-750',
     requests: {
         [HttpMethod.Post]: {
@@ -15775,7 +15774,7 @@ export const endpoint750 = defineEndpoint({
     },
 });
 
-export const endpoint751 = defineEndpoint({
+export const endpoint751 = defineMockEndpoint({
     path: '/reports/item-751',
     requests: {
         [HttpMethod.Post]: {
@@ -15796,7 +15795,7 @@ export const endpoint751 = defineEndpoint({
     },
 });
 
-export const endpoint752 = defineEndpoint({
+export const endpoint752 = defineMockEndpoint({
     path: '/reports/item-752',
     requests: {
         [HttpMethod.Post]: {
@@ -15817,7 +15816,7 @@ export const endpoint752 = defineEndpoint({
     },
 });
 
-export const endpoint753 = defineEndpoint({
+export const endpoint753 = defineMockEndpoint({
     path: '/reports/item-753',
     requests: {
         [HttpMethod.Post]: {
@@ -15838,7 +15837,7 @@ export const endpoint753 = defineEndpoint({
     },
 });
 
-export const endpoint754 = defineEndpoint({
+export const endpoint754 = defineMockEndpoint({
     path: '/reports/item-754',
     requests: {
         [HttpMethod.Post]: {
@@ -15859,7 +15858,7 @@ export const endpoint754 = defineEndpoint({
     },
 });
 
-export const endpoint755 = defineEndpoint({
+export const endpoint755 = defineMockEndpoint({
     path: '/reports/item-755',
     requests: {
         [HttpMethod.Post]: {
@@ -15880,7 +15879,7 @@ export const endpoint755 = defineEndpoint({
     },
 });
 
-export const endpoint756 = defineEndpoint({
+export const endpoint756 = defineMockEndpoint({
     path: '/reports/item-756',
     requests: {
         [HttpMethod.Post]: {
@@ -15901,7 +15900,7 @@ export const endpoint756 = defineEndpoint({
     },
 });
 
-export const endpoint757 = defineEndpoint({
+export const endpoint757 = defineMockEndpoint({
     path: '/reports/item-757',
     requests: {
         [HttpMethod.Post]: {
@@ -15922,7 +15921,7 @@ export const endpoint757 = defineEndpoint({
     },
 });
 
-export const endpoint758 = defineEndpoint({
+export const endpoint758 = defineMockEndpoint({
     path: '/reports/item-758',
     requests: {
         [HttpMethod.Post]: {
@@ -15943,7 +15942,7 @@ export const endpoint758 = defineEndpoint({
     },
 });
 
-export const endpoint759 = defineEndpoint({
+export const endpoint759 = defineMockEndpoint({
     path: '/reports/item-759',
     requests: {
         [HttpMethod.Post]: {
@@ -15964,7 +15963,7 @@ export const endpoint759 = defineEndpoint({
     },
 });
 
-export const endpoint760 = defineEndpoint({
+export const endpoint760 = defineMockEndpoint({
     path: '/reports/item-760',
     requests: {
         [HttpMethod.Post]: {
@@ -15985,7 +15984,7 @@ export const endpoint760 = defineEndpoint({
     },
 });
 
-export const endpoint761 = defineEndpoint({
+export const endpoint761 = defineMockEndpoint({
     path: '/reports/item-761',
     requests: {
         [HttpMethod.Post]: {
@@ -16006,7 +16005,7 @@ export const endpoint761 = defineEndpoint({
     },
 });
 
-export const endpoint762 = defineEndpoint({
+export const endpoint762 = defineMockEndpoint({
     path: '/reports/item-762',
     requests: {
         [HttpMethod.Post]: {
@@ -16027,7 +16026,7 @@ export const endpoint762 = defineEndpoint({
     },
 });
 
-export const endpoint763 = defineEndpoint({
+export const endpoint763 = defineMockEndpoint({
     path: '/reports/item-763',
     requests: {
         [HttpMethod.Post]: {
@@ -16048,7 +16047,7 @@ export const endpoint763 = defineEndpoint({
     },
 });
 
-export const endpoint764 = defineEndpoint({
+export const endpoint764 = defineMockEndpoint({
     path: '/reports/item-764',
     requests: {
         [HttpMethod.Post]: {
@@ -16069,7 +16068,7 @@ export const endpoint764 = defineEndpoint({
     },
 });
 
-export const endpoint765 = defineEndpoint({
+export const endpoint765 = defineMockEndpoint({
     path: '/reports/item-765',
     requests: {
         [HttpMethod.Post]: {
@@ -16090,7 +16089,7 @@ export const endpoint765 = defineEndpoint({
     },
 });
 
-export const endpoint766 = defineEndpoint({
+export const endpoint766 = defineMockEndpoint({
     path: '/reports/item-766',
     requests: {
         [HttpMethod.Post]: {
@@ -16111,7 +16110,7 @@ export const endpoint766 = defineEndpoint({
     },
 });
 
-export const endpoint767 = defineEndpoint({
+export const endpoint767 = defineMockEndpoint({
     path: '/reports/item-767',
     requests: {
         [HttpMethod.Post]: {
@@ -16132,7 +16131,7 @@ export const endpoint767 = defineEndpoint({
     },
 });
 
-export const endpoint768 = defineEndpoint({
+export const endpoint768 = defineMockEndpoint({
     path: '/reports/item-768',
     requests: {
         [HttpMethod.Post]: {
@@ -16153,7 +16152,7 @@ export const endpoint768 = defineEndpoint({
     },
 });
 
-export const endpoint769 = defineEndpoint({
+export const endpoint769 = defineMockEndpoint({
     path: '/reports/item-769',
     requests: {
         [HttpMethod.Post]: {
@@ -16174,7 +16173,7 @@ export const endpoint769 = defineEndpoint({
     },
 });
 
-export const endpoint770 = defineEndpoint({
+export const endpoint770 = defineMockEndpoint({
     path: '/reports/item-770',
     requests: {
         [HttpMethod.Post]: {
@@ -16195,7 +16194,7 @@ export const endpoint770 = defineEndpoint({
     },
 });
 
-export const endpoint771 = defineEndpoint({
+export const endpoint771 = defineMockEndpoint({
     path: '/reports/item-771',
     requests: {
         [HttpMethod.Post]: {
@@ -16216,7 +16215,7 @@ export const endpoint771 = defineEndpoint({
     },
 });
 
-export const endpoint772 = defineEndpoint({
+export const endpoint772 = defineMockEndpoint({
     path: '/reports/item-772',
     requests: {
         [HttpMethod.Post]: {
@@ -16237,7 +16236,7 @@ export const endpoint772 = defineEndpoint({
     },
 });
 
-export const endpoint773 = defineEndpoint({
+export const endpoint773 = defineMockEndpoint({
     path: '/reports/item-773',
     requests: {
         [HttpMethod.Post]: {
@@ -16258,7 +16257,7 @@ export const endpoint773 = defineEndpoint({
     },
 });
 
-export const endpoint774 = defineEndpoint({
+export const endpoint774 = defineMockEndpoint({
     path: '/reports/item-774',
     requests: {
         [HttpMethod.Post]: {
@@ -16279,7 +16278,7 @@ export const endpoint774 = defineEndpoint({
     },
 });
 
-export const endpoint775 = defineEndpoint({
+export const endpoint775 = defineMockEndpoint({
     path: '/reports/item-775',
     requests: {
         [HttpMethod.Post]: {
@@ -16300,7 +16299,7 @@ export const endpoint775 = defineEndpoint({
     },
 });
 
-export const endpoint776 = defineEndpoint({
+export const endpoint776 = defineMockEndpoint({
     path: '/reports/item-776',
     requests: {
         [HttpMethod.Post]: {
@@ -16321,7 +16320,7 @@ export const endpoint776 = defineEndpoint({
     },
 });
 
-export const endpoint777 = defineEndpoint({
+export const endpoint777 = defineMockEndpoint({
     path: '/reports/item-777',
     requests: {
         [HttpMethod.Post]: {
@@ -16342,7 +16341,7 @@ export const endpoint777 = defineEndpoint({
     },
 });
 
-export const endpoint778 = defineEndpoint({
+export const endpoint778 = defineMockEndpoint({
     path: '/reports/item-778',
     requests: {
         [HttpMethod.Post]: {
@@ -16363,7 +16362,7 @@ export const endpoint778 = defineEndpoint({
     },
 });
 
-export const endpoint779 = defineEndpoint({
+export const endpoint779 = defineMockEndpoint({
     path: '/reports/item-779',
     requests: {
         [HttpMethod.Post]: {
@@ -16384,7 +16383,7 @@ export const endpoint779 = defineEndpoint({
     },
 });
 
-export const endpoint780 = defineEndpoint({
+export const endpoint780 = defineMockEndpoint({
     path: '/reports/item-780',
     requests: {
         [HttpMethod.Post]: {
@@ -16405,7 +16404,7 @@ export const endpoint780 = defineEndpoint({
     },
 });
 
-export const endpoint781 = defineEndpoint({
+export const endpoint781 = defineMockEndpoint({
     path: '/reports/item-781',
     requests: {
         [HttpMethod.Post]: {
@@ -16426,7 +16425,7 @@ export const endpoint781 = defineEndpoint({
     },
 });
 
-export const endpoint782 = defineEndpoint({
+export const endpoint782 = defineMockEndpoint({
     path: '/reports/item-782',
     requests: {
         [HttpMethod.Post]: {
@@ -16447,7 +16446,7 @@ export const endpoint782 = defineEndpoint({
     },
 });
 
-export const endpoint783 = defineEndpoint({
+export const endpoint783 = defineMockEndpoint({
     path: '/reports/item-783',
     requests: {
         [HttpMethod.Post]: {
@@ -16468,7 +16467,7 @@ export const endpoint783 = defineEndpoint({
     },
 });
 
-export const endpoint784 = defineEndpoint({
+export const endpoint784 = defineMockEndpoint({
     path: '/reports/item-784',
     requests: {
         [HttpMethod.Post]: {
@@ -16489,7 +16488,7 @@ export const endpoint784 = defineEndpoint({
     },
 });
 
-export const endpoint785 = defineEndpoint({
+export const endpoint785 = defineMockEndpoint({
     path: '/reports/item-785',
     requests: {
         [HttpMethod.Post]: {
@@ -16510,7 +16509,7 @@ export const endpoint785 = defineEndpoint({
     },
 });
 
-export const endpoint786 = defineEndpoint({
+export const endpoint786 = defineMockEndpoint({
     path: '/reports/item-786',
     requests: {
         [HttpMethod.Post]: {
@@ -16531,7 +16530,7 @@ export const endpoint786 = defineEndpoint({
     },
 });
 
-export const endpoint787 = defineEndpoint({
+export const endpoint787 = defineMockEndpoint({
     path: '/reports/item-787',
     requests: {
         [HttpMethod.Post]: {
@@ -16552,7 +16551,7 @@ export const endpoint787 = defineEndpoint({
     },
 });
 
-export const endpoint788 = defineEndpoint({
+export const endpoint788 = defineMockEndpoint({
     path: '/reports/item-788',
     requests: {
         [HttpMethod.Post]: {
@@ -16573,7 +16572,7 @@ export const endpoint788 = defineEndpoint({
     },
 });
 
-export const endpoint789 = defineEndpoint({
+export const endpoint789 = defineMockEndpoint({
     path: '/reports/item-789',
     requests: {
         [HttpMethod.Post]: {
@@ -16594,7 +16593,7 @@ export const endpoint789 = defineEndpoint({
     },
 });
 
-export const endpoint790 = defineEndpoint({
+export const endpoint790 = defineMockEndpoint({
     path: '/reports/item-790',
     requests: {
         [HttpMethod.Post]: {
@@ -16615,7 +16614,7 @@ export const endpoint790 = defineEndpoint({
     },
 });
 
-export const endpoint791 = defineEndpoint({
+export const endpoint791 = defineMockEndpoint({
     path: '/reports/item-791',
     requests: {
         [HttpMethod.Post]: {
@@ -16636,7 +16635,7 @@ export const endpoint791 = defineEndpoint({
     },
 });
 
-export const endpoint792 = defineEndpoint({
+export const endpoint792 = defineMockEndpoint({
     path: '/reports/item-792',
     requests: {
         [HttpMethod.Post]: {
@@ -16657,7 +16656,7 @@ export const endpoint792 = defineEndpoint({
     },
 });
 
-export const endpoint793 = defineEndpoint({
+export const endpoint793 = defineMockEndpoint({
     path: '/reports/item-793',
     requests: {
         [HttpMethod.Post]: {
@@ -16678,7 +16677,7 @@ export const endpoint793 = defineEndpoint({
     },
 });
 
-export const endpoint794 = defineEndpoint({
+export const endpoint794 = defineMockEndpoint({
     path: '/reports/item-794',
     requests: {
         [HttpMethod.Post]: {
@@ -16699,7 +16698,7 @@ export const endpoint794 = defineEndpoint({
     },
 });
 
-export const endpoint795 = defineEndpoint({
+export const endpoint795 = defineMockEndpoint({
     path: '/reports/item-795',
     requests: {
         [HttpMethod.Post]: {
@@ -16720,7 +16719,7 @@ export const endpoint795 = defineEndpoint({
     },
 });
 
-export const endpoint796 = defineEndpoint({
+export const endpoint796 = defineMockEndpoint({
     path: '/reports/item-796',
     requests: {
         [HttpMethod.Post]: {
@@ -16741,7 +16740,7 @@ export const endpoint796 = defineEndpoint({
     },
 });
 
-export const endpoint797 = defineEndpoint({
+export const endpoint797 = defineMockEndpoint({
     path: '/reports/item-797',
     requests: {
         [HttpMethod.Post]: {
@@ -16762,7 +16761,7 @@ export const endpoint797 = defineEndpoint({
     },
 });
 
-export const endpoint798 = defineEndpoint({
+export const endpoint798 = defineMockEndpoint({
     path: '/reports/item-798',
     requests: {
         [HttpMethod.Post]: {
@@ -16783,7 +16782,7 @@ export const endpoint798 = defineEndpoint({
     },
 });
 
-export const endpoint799 = defineEndpoint({
+export const endpoint799 = defineMockEndpoint({
     path: '/reports/item-799',
     requests: {
         [HttpMethod.Post]: {
@@ -16804,7 +16803,7 @@ export const endpoint799 = defineEndpoint({
     },
 });
 
-export const endpoint800 = defineEndpoint({
+export const endpoint800 = defineMockEndpoint({
     path: '/reports/item-800',
     requests: {
         [HttpMethod.Post]: {
@@ -16825,7 +16824,7 @@ export const endpoint800 = defineEndpoint({
     },
 });
 
-export const endpoint801 = defineEndpoint({
+export const endpoint801 = defineMockEndpoint({
     path: '/reports/item-801',
     requests: {
         [HttpMethod.Post]: {
@@ -16846,7 +16845,7 @@ export const endpoint801 = defineEndpoint({
     },
 });
 
-export const endpoint802 = defineEndpoint({
+export const endpoint802 = defineMockEndpoint({
     path: '/reports/item-802',
     requests: {
         [HttpMethod.Post]: {
@@ -16867,7 +16866,7 @@ export const endpoint802 = defineEndpoint({
     },
 });
 
-export const endpoint803 = defineEndpoint({
+export const endpoint803 = defineMockEndpoint({
     path: '/reports/item-803',
     requests: {
         [HttpMethod.Post]: {
@@ -16888,7 +16887,7 @@ export const endpoint803 = defineEndpoint({
     },
 });
 
-export const endpoint804 = defineEndpoint({
+export const endpoint804 = defineMockEndpoint({
     path: '/reports/item-804',
     requests: {
         [HttpMethod.Post]: {
@@ -16909,7 +16908,7 @@ export const endpoint804 = defineEndpoint({
     },
 });
 
-export const endpoint805 = defineEndpoint({
+export const endpoint805 = defineMockEndpoint({
     path: '/reports/item-805',
     requests: {
         [HttpMethod.Post]: {
@@ -16930,7 +16929,7 @@ export const endpoint805 = defineEndpoint({
     },
 });
 
-export const endpoint806 = defineEndpoint({
+export const endpoint806 = defineMockEndpoint({
     path: '/reports/item-806',
     requests: {
         [HttpMethod.Post]: {
@@ -16951,7 +16950,7 @@ export const endpoint806 = defineEndpoint({
     },
 });
 
-export const endpoint807 = defineEndpoint({
+export const endpoint807 = defineMockEndpoint({
     path: '/reports/item-807',
     requests: {
         [HttpMethod.Post]: {
@@ -16972,7 +16971,7 @@ export const endpoint807 = defineEndpoint({
     },
 });
 
-export const endpoint808 = defineEndpoint({
+export const endpoint808 = defineMockEndpoint({
     path: '/reports/item-808',
     requests: {
         [HttpMethod.Post]: {
@@ -16993,7 +16992,7 @@ export const endpoint808 = defineEndpoint({
     },
 });
 
-export const endpoint809 = defineEndpoint({
+export const endpoint809 = defineMockEndpoint({
     path: '/reports/item-809',
     requests: {
         [HttpMethod.Post]: {
@@ -17014,7 +17013,7 @@ export const endpoint809 = defineEndpoint({
     },
 });
 
-export const endpoint810 = defineEndpoint({
+export const endpoint810 = defineMockEndpoint({
     path: '/reports/item-810',
     requests: {
         [HttpMethod.Post]: {
@@ -17035,7 +17034,7 @@ export const endpoint810 = defineEndpoint({
     },
 });
 
-export const endpoint811 = defineEndpoint({
+export const endpoint811 = defineMockEndpoint({
     path: '/reports/item-811',
     requests: {
         [HttpMethod.Post]: {
@@ -17056,7 +17055,7 @@ export const endpoint811 = defineEndpoint({
     },
 });
 
-export const endpoint812 = defineEndpoint({
+export const endpoint812 = defineMockEndpoint({
     path: '/reports/item-812',
     requests: {
         [HttpMethod.Post]: {
@@ -17077,7 +17076,7 @@ export const endpoint812 = defineEndpoint({
     },
 });
 
-export const endpoint813 = defineEndpoint({
+export const endpoint813 = defineMockEndpoint({
     path: '/reports/item-813',
     requests: {
         [HttpMethod.Post]: {
@@ -17098,7 +17097,7 @@ export const endpoint813 = defineEndpoint({
     },
 });
 
-export const endpoint814 = defineEndpoint({
+export const endpoint814 = defineMockEndpoint({
     path: '/reports/item-814',
     requests: {
         [HttpMethod.Post]: {
@@ -17119,7 +17118,7 @@ export const endpoint814 = defineEndpoint({
     },
 });
 
-export const endpoint815 = defineEndpoint({
+export const endpoint815 = defineMockEndpoint({
     path: '/reports/item-815',
     requests: {
         [HttpMethod.Post]: {
@@ -17140,7 +17139,7 @@ export const endpoint815 = defineEndpoint({
     },
 });
 
-export const endpoint816 = defineEndpoint({
+export const endpoint816 = defineMockEndpoint({
     path: '/reports/item-816',
     requests: {
         [HttpMethod.Post]: {
@@ -17161,7 +17160,7 @@ export const endpoint816 = defineEndpoint({
     },
 });
 
-export const endpoint817 = defineEndpoint({
+export const endpoint817 = defineMockEndpoint({
     path: '/reports/item-817',
     requests: {
         [HttpMethod.Post]: {
@@ -17182,7 +17181,7 @@ export const endpoint817 = defineEndpoint({
     },
 });
 
-export const endpoint818 = defineEndpoint({
+export const endpoint818 = defineMockEndpoint({
     path: '/reports/item-818',
     requests: {
         [HttpMethod.Post]: {
@@ -17203,7 +17202,7 @@ export const endpoint818 = defineEndpoint({
     },
 });
 
-export const endpoint819 = defineEndpoint({
+export const endpoint819 = defineMockEndpoint({
     path: '/reports/item-819',
     requests: {
         [HttpMethod.Post]: {
@@ -17224,7 +17223,7 @@ export const endpoint819 = defineEndpoint({
     },
 });
 
-export const endpoint820 = defineEndpoint({
+export const endpoint820 = defineMockEndpoint({
     path: '/reports/item-820',
     requests: {
         [HttpMethod.Post]: {
@@ -17245,7 +17244,7 @@ export const endpoint820 = defineEndpoint({
     },
 });
 
-export const endpoint821 = defineEndpoint({
+export const endpoint821 = defineMockEndpoint({
     path: '/reports/item-821',
     requests: {
         [HttpMethod.Post]: {
@@ -17266,7 +17265,7 @@ export const endpoint821 = defineEndpoint({
     },
 });
 
-export const endpoint822 = defineEndpoint({
+export const endpoint822 = defineMockEndpoint({
     path: '/reports/item-822',
     requests: {
         [HttpMethod.Post]: {
@@ -17287,7 +17286,7 @@ export const endpoint822 = defineEndpoint({
     },
 });
 
-export const endpoint823 = defineEndpoint({
+export const endpoint823 = defineMockEndpoint({
     path: '/reports/item-823',
     requests: {
         [HttpMethod.Post]: {
@@ -17308,7 +17307,7 @@ export const endpoint823 = defineEndpoint({
     },
 });
 
-export const endpoint824 = defineEndpoint({
+export const endpoint824 = defineMockEndpoint({
     path: '/reports/item-824',
     requests: {
         [HttpMethod.Post]: {
@@ -17329,7 +17328,7 @@ export const endpoint824 = defineEndpoint({
     },
 });
 
-export const endpoint825 = defineEndpoint({
+export const endpoint825 = defineMockEndpoint({
     path: '/reports/item-825',
     requests: {
         [HttpMethod.Post]: {
@@ -17350,7 +17349,7 @@ export const endpoint825 = defineEndpoint({
     },
 });
 
-export const endpoint826 = defineEndpoint({
+export const endpoint826 = defineMockEndpoint({
     path: '/reports/item-826',
     requests: {
         [HttpMethod.Post]: {
@@ -17371,7 +17370,7 @@ export const endpoint826 = defineEndpoint({
     },
 });
 
-export const endpoint827 = defineEndpoint({
+export const endpoint827 = defineMockEndpoint({
     path: '/reports/item-827',
     requests: {
         [HttpMethod.Post]: {
@@ -17392,7 +17391,7 @@ export const endpoint827 = defineEndpoint({
     },
 });
 
-export const endpoint828 = defineEndpoint({
+export const endpoint828 = defineMockEndpoint({
     path: '/reports/item-828',
     requests: {
         [HttpMethod.Post]: {
@@ -17413,7 +17412,7 @@ export const endpoint828 = defineEndpoint({
     },
 });
 
-export const endpoint829 = defineEndpoint({
+export const endpoint829 = defineMockEndpoint({
     path: '/reports/item-829',
     requests: {
         [HttpMethod.Post]: {
@@ -17434,7 +17433,7 @@ export const endpoint829 = defineEndpoint({
     },
 });
 
-export const endpoint830 = defineEndpoint({
+export const endpoint830 = defineMockEndpoint({
     path: '/reports/item-830',
     requests: {
         [HttpMethod.Post]: {
@@ -17455,7 +17454,7 @@ export const endpoint830 = defineEndpoint({
     },
 });
 
-export const endpoint831 = defineEndpoint({
+export const endpoint831 = defineMockEndpoint({
     path: '/reports/item-831',
     requests: {
         [HttpMethod.Post]: {
@@ -17476,7 +17475,7 @@ export const endpoint831 = defineEndpoint({
     },
 });
 
-export const endpoint832 = defineEndpoint({
+export const endpoint832 = defineMockEndpoint({
     path: '/reports/item-832',
     requests: {
         [HttpMethod.Post]: {
@@ -17497,7 +17496,7 @@ export const endpoint832 = defineEndpoint({
     },
 });
 
-export const endpoint833 = defineEndpoint({
+export const endpoint833 = defineMockEndpoint({
     path: '/reports/item-833',
     requests: {
         [HttpMethod.Post]: {
@@ -17518,7 +17517,7 @@ export const endpoint833 = defineEndpoint({
     },
 });
 
-export const endpoint834 = defineEndpoint({
+export const endpoint834 = defineMockEndpoint({
     path: '/reports/item-834',
     requests: {
         [HttpMethod.Post]: {
@@ -17539,7 +17538,7 @@ export const endpoint834 = defineEndpoint({
     },
 });
 
-export const endpoint835 = defineEndpoint({
+export const endpoint835 = defineMockEndpoint({
     path: '/reports/item-835',
     requests: {
         [HttpMethod.Post]: {
@@ -17560,7 +17559,7 @@ export const endpoint835 = defineEndpoint({
     },
 });
 
-export const endpoint836 = defineEndpoint({
+export const endpoint836 = defineMockEndpoint({
     path: '/reports/item-836',
     requests: {
         [HttpMethod.Post]: {
@@ -17581,7 +17580,7 @@ export const endpoint836 = defineEndpoint({
     },
 });
 
-export const endpoint837 = defineEndpoint({
+export const endpoint837 = defineMockEndpoint({
     path: '/reports/item-837',
     requests: {
         [HttpMethod.Post]: {
@@ -17602,7 +17601,7 @@ export const endpoint837 = defineEndpoint({
     },
 });
 
-export const endpoint838 = defineEndpoint({
+export const endpoint838 = defineMockEndpoint({
     path: '/reports/item-838',
     requests: {
         [HttpMethod.Post]: {
@@ -17623,7 +17622,7 @@ export const endpoint838 = defineEndpoint({
     },
 });
 
-export const endpoint839 = defineEndpoint({
+export const endpoint839 = defineMockEndpoint({
     path: '/reports/item-839',
     requests: {
         [HttpMethod.Post]: {
@@ -17644,7 +17643,7 @@ export const endpoint839 = defineEndpoint({
     },
 });
 
-export const endpoint840 = defineEndpoint({
+export const endpoint840 = defineMockEndpoint({
     path: '/reports/item-840',
     requests: {
         [HttpMethod.Post]: {
@@ -17665,7 +17664,7 @@ export const endpoint840 = defineEndpoint({
     },
 });
 
-export const endpoint841 = defineEndpoint({
+export const endpoint841 = defineMockEndpoint({
     path: '/reports/item-841',
     requests: {
         [HttpMethod.Post]: {
@@ -17686,7 +17685,7 @@ export const endpoint841 = defineEndpoint({
     },
 });
 
-export const endpoint842 = defineEndpoint({
+export const endpoint842 = defineMockEndpoint({
     path: '/reports/item-842',
     requests: {
         [HttpMethod.Post]: {
@@ -17707,7 +17706,7 @@ export const endpoint842 = defineEndpoint({
     },
 });
 
-export const endpoint843 = defineEndpoint({
+export const endpoint843 = defineMockEndpoint({
     path: '/reports/item-843',
     requests: {
         [HttpMethod.Post]: {
@@ -17728,7 +17727,7 @@ export const endpoint843 = defineEndpoint({
     },
 });
 
-export const endpoint844 = defineEndpoint({
+export const endpoint844 = defineMockEndpoint({
     path: '/reports/item-844',
     requests: {
         [HttpMethod.Post]: {
@@ -17749,7 +17748,7 @@ export const endpoint844 = defineEndpoint({
     },
 });
 
-export const endpoint845 = defineEndpoint({
+export const endpoint845 = defineMockEndpoint({
     path: '/reports/item-845',
     requests: {
         [HttpMethod.Post]: {
@@ -17770,7 +17769,7 @@ export const endpoint845 = defineEndpoint({
     },
 });
 
-export const endpoint846 = defineEndpoint({
+export const endpoint846 = defineMockEndpoint({
     path: '/reports/item-846',
     requests: {
         [HttpMethod.Post]: {
@@ -17791,7 +17790,7 @@ export const endpoint846 = defineEndpoint({
     },
 });
 
-export const endpoint847 = defineEndpoint({
+export const endpoint847 = defineMockEndpoint({
     path: '/reports/item-847',
     requests: {
         [HttpMethod.Post]: {
@@ -17812,7 +17811,7 @@ export const endpoint847 = defineEndpoint({
     },
 });
 
-export const endpoint848 = defineEndpoint({
+export const endpoint848 = defineMockEndpoint({
     path: '/reports/item-848',
     requests: {
         [HttpMethod.Post]: {
@@ -17833,7 +17832,7 @@ export const endpoint848 = defineEndpoint({
     },
 });
 
-export const endpoint849 = defineEndpoint({
+export const endpoint849 = defineMockEndpoint({
     path: '/reports/item-849',
     requests: {
         [HttpMethod.Post]: {
@@ -17854,7 +17853,7 @@ export const endpoint849 = defineEndpoint({
     },
 });
 
-export const endpoint850 = defineEndpoint({
+export const endpoint850 = defineMockEndpoint({
     path: '/reports/item-850',
     requests: {
         [HttpMethod.Post]: {
@@ -17875,7 +17874,7 @@ export const endpoint850 = defineEndpoint({
     },
 });
 
-export const endpoint851 = defineEndpoint({
+export const endpoint851 = defineMockEndpoint({
     path: '/reports/item-851',
     requests: {
         [HttpMethod.Post]: {
@@ -17896,7 +17895,7 @@ export const endpoint851 = defineEndpoint({
     },
 });
 
-export const endpoint852 = defineEndpoint({
+export const endpoint852 = defineMockEndpoint({
     path: '/reports/item-852',
     requests: {
         [HttpMethod.Post]: {
@@ -17917,7 +17916,7 @@ export const endpoint852 = defineEndpoint({
     },
 });
 
-export const endpoint853 = defineEndpoint({
+export const endpoint853 = defineMockEndpoint({
     path: '/reports/item-853',
     requests: {
         [HttpMethod.Post]: {
@@ -17938,7 +17937,7 @@ export const endpoint853 = defineEndpoint({
     },
 });
 
-export const endpoint854 = defineEndpoint({
+export const endpoint854 = defineMockEndpoint({
     path: '/reports/item-854',
     requests: {
         [HttpMethod.Post]: {
@@ -17959,7 +17958,7 @@ export const endpoint854 = defineEndpoint({
     },
 });
 
-export const endpoint855 = defineEndpoint({
+export const endpoint855 = defineMockEndpoint({
     path: '/reports/item-855',
     requests: {
         [HttpMethod.Post]: {
@@ -17980,7 +17979,7 @@ export const endpoint855 = defineEndpoint({
     },
 });
 
-export const endpoint856 = defineEndpoint({
+export const endpoint856 = defineMockEndpoint({
     path: '/reports/item-856',
     requests: {
         [HttpMethod.Post]: {
@@ -18001,7 +18000,7 @@ export const endpoint856 = defineEndpoint({
     },
 });
 
-export const endpoint857 = defineEndpoint({
+export const endpoint857 = defineMockEndpoint({
     path: '/reports/item-857',
     requests: {
         [HttpMethod.Post]: {
@@ -18022,7 +18021,7 @@ export const endpoint857 = defineEndpoint({
     },
 });
 
-export const endpoint858 = defineEndpoint({
+export const endpoint858 = defineMockEndpoint({
     path: '/reports/item-858',
     requests: {
         [HttpMethod.Post]: {
@@ -18043,7 +18042,7 @@ export const endpoint858 = defineEndpoint({
     },
 });
 
-export const endpoint859 = defineEndpoint({
+export const endpoint859 = defineMockEndpoint({
     path: '/reports/item-859',
     requests: {
         [HttpMethod.Post]: {
@@ -18064,7 +18063,7 @@ export const endpoint859 = defineEndpoint({
     },
 });
 
-export const endpoint860 = defineEndpoint({
+export const endpoint860 = defineMockEndpoint({
     path: '/reports/item-860',
     requests: {
         [HttpMethod.Post]: {
@@ -18085,7 +18084,7 @@ export const endpoint860 = defineEndpoint({
     },
 });
 
-export const endpoint861 = defineEndpoint({
+export const endpoint861 = defineMockEndpoint({
     path: '/reports/item-861',
     requests: {
         [HttpMethod.Post]: {
@@ -18106,7 +18105,7 @@ export const endpoint861 = defineEndpoint({
     },
 });
 
-export const endpoint862 = defineEndpoint({
+export const endpoint862 = defineMockEndpoint({
     path: '/reports/item-862',
     requests: {
         [HttpMethod.Post]: {
@@ -18127,7 +18126,7 @@ export const endpoint862 = defineEndpoint({
     },
 });
 
-export const endpoint863 = defineEndpoint({
+export const endpoint863 = defineMockEndpoint({
     path: '/reports/item-863',
     requests: {
         [HttpMethod.Post]: {
@@ -18148,7 +18147,7 @@ export const endpoint863 = defineEndpoint({
     },
 });
 
-export const endpoint864 = defineEndpoint({
+export const endpoint864 = defineMockEndpoint({
     path: '/reports/item-864',
     requests: {
         [HttpMethod.Post]: {
@@ -18169,7 +18168,7 @@ export const endpoint864 = defineEndpoint({
     },
 });
 
-export const endpoint865 = defineEndpoint({
+export const endpoint865 = defineMockEndpoint({
     path: '/reports/item-865',
     requests: {
         [HttpMethod.Post]: {
@@ -18190,7 +18189,7 @@ export const endpoint865 = defineEndpoint({
     },
 });
 
-export const endpoint866 = defineEndpoint({
+export const endpoint866 = defineMockEndpoint({
     path: '/reports/item-866',
     requests: {
         [HttpMethod.Post]: {
@@ -18211,7 +18210,7 @@ export const endpoint866 = defineEndpoint({
     },
 });
 
-export const endpoint867 = defineEndpoint({
+export const endpoint867 = defineMockEndpoint({
     path: '/reports/item-867',
     requests: {
         [HttpMethod.Post]: {
@@ -18232,7 +18231,7 @@ export const endpoint867 = defineEndpoint({
     },
 });
 
-export const endpoint868 = defineEndpoint({
+export const endpoint868 = defineMockEndpoint({
     path: '/reports/item-868',
     requests: {
         [HttpMethod.Post]: {
@@ -18253,7 +18252,7 @@ export const endpoint868 = defineEndpoint({
     },
 });
 
-export const endpoint869 = defineEndpoint({
+export const endpoint869 = defineMockEndpoint({
     path: '/reports/item-869',
     requests: {
         [HttpMethod.Post]: {
@@ -18274,7 +18273,7 @@ export const endpoint869 = defineEndpoint({
     },
 });
 
-export const endpoint870 = defineEndpoint({
+export const endpoint870 = defineMockEndpoint({
     path: '/reports/item-870',
     requests: {
         [HttpMethod.Post]: {
@@ -18295,7 +18294,7 @@ export const endpoint870 = defineEndpoint({
     },
 });
 
-export const endpoint871 = defineEndpoint({
+export const endpoint871 = defineMockEndpoint({
     path: '/reports/item-871',
     requests: {
         [HttpMethod.Post]: {
@@ -18316,7 +18315,7 @@ export const endpoint871 = defineEndpoint({
     },
 });
 
-export const endpoint872 = defineEndpoint({
+export const endpoint872 = defineMockEndpoint({
     path: '/reports/item-872',
     requests: {
         [HttpMethod.Post]: {
@@ -18337,7 +18336,7 @@ export const endpoint872 = defineEndpoint({
     },
 });
 
-export const endpoint873 = defineEndpoint({
+export const endpoint873 = defineMockEndpoint({
     path: '/reports/item-873',
     requests: {
         [HttpMethod.Post]: {
@@ -18358,7 +18357,7 @@ export const endpoint873 = defineEndpoint({
     },
 });
 
-export const endpoint874 = defineEndpoint({
+export const endpoint874 = defineMockEndpoint({
     path: '/reports/item-874',
     requests: {
         [HttpMethod.Post]: {
@@ -18379,7 +18378,7 @@ export const endpoint874 = defineEndpoint({
     },
 });
 
-export const endpoint875 = defineEndpoint({
+export const endpoint875 = defineMockEndpoint({
     path: '/reports/item-875',
     requests: {
         [HttpMethod.Post]: {
@@ -18400,7 +18399,7 @@ export const endpoint875 = defineEndpoint({
     },
 });
 
-export const endpoint876 = defineEndpoint({
+export const endpoint876 = defineMockEndpoint({
     path: '/reports/item-876',
     requests: {
         [HttpMethod.Post]: {
@@ -18421,7 +18420,7 @@ export const endpoint876 = defineEndpoint({
     },
 });
 
-export const endpoint877 = defineEndpoint({
+export const endpoint877 = defineMockEndpoint({
     path: '/reports/item-877',
     requests: {
         [HttpMethod.Post]: {
@@ -18442,7 +18441,7 @@ export const endpoint877 = defineEndpoint({
     },
 });
 
-export const endpoint878 = defineEndpoint({
+export const endpoint878 = defineMockEndpoint({
     path: '/reports/item-878',
     requests: {
         [HttpMethod.Post]: {
@@ -18463,7 +18462,7 @@ export const endpoint878 = defineEndpoint({
     },
 });
 
-export const endpoint879 = defineEndpoint({
+export const endpoint879 = defineMockEndpoint({
     path: '/reports/item-879',
     requests: {
         [HttpMethod.Post]: {
@@ -18484,7 +18483,7 @@ export const endpoint879 = defineEndpoint({
     },
 });
 
-export const endpoint880 = defineEndpoint({
+export const endpoint880 = defineMockEndpoint({
     path: '/reports/item-880',
     requests: {
         [HttpMethod.Post]: {
@@ -18505,7 +18504,7 @@ export const endpoint880 = defineEndpoint({
     },
 });
 
-export const endpoint881 = defineEndpoint({
+export const endpoint881 = defineMockEndpoint({
     path: '/reports/item-881',
     requests: {
         [HttpMethod.Post]: {
@@ -18526,7 +18525,7 @@ export const endpoint881 = defineEndpoint({
     },
 });
 
-export const endpoint882 = defineEndpoint({
+export const endpoint882 = defineMockEndpoint({
     path: '/reports/item-882',
     requests: {
         [HttpMethod.Post]: {
@@ -18547,7 +18546,7 @@ export const endpoint882 = defineEndpoint({
     },
 });
 
-export const endpoint883 = defineEndpoint({
+export const endpoint883 = defineMockEndpoint({
     path: '/reports/item-883',
     requests: {
         [HttpMethod.Post]: {
@@ -18568,7 +18567,7 @@ export const endpoint883 = defineEndpoint({
     },
 });
 
-export const endpoint884 = defineEndpoint({
+export const endpoint884 = defineMockEndpoint({
     path: '/reports/item-884',
     requests: {
         [HttpMethod.Post]: {
@@ -18589,7 +18588,7 @@ export const endpoint884 = defineEndpoint({
     },
 });
 
-export const endpoint885 = defineEndpoint({
+export const endpoint885 = defineMockEndpoint({
     path: '/reports/item-885',
     requests: {
         [HttpMethod.Post]: {
@@ -18610,7 +18609,7 @@ export const endpoint885 = defineEndpoint({
     },
 });
 
-export const endpoint886 = defineEndpoint({
+export const endpoint886 = defineMockEndpoint({
     path: '/reports/item-886',
     requests: {
         [HttpMethod.Post]: {
@@ -18631,7 +18630,7 @@ export const endpoint886 = defineEndpoint({
     },
 });
 
-export const endpoint887 = defineEndpoint({
+export const endpoint887 = defineMockEndpoint({
     path: '/reports/item-887',
     requests: {
         [HttpMethod.Post]: {
@@ -18652,7 +18651,7 @@ export const endpoint887 = defineEndpoint({
     },
 });
 
-export const endpoint888 = defineEndpoint({
+export const endpoint888 = defineMockEndpoint({
     path: '/reports/item-888',
     requests: {
         [HttpMethod.Post]: {
@@ -18673,7 +18672,7 @@ export const endpoint888 = defineEndpoint({
     },
 });
 
-export const endpoint889 = defineEndpoint({
+export const endpoint889 = defineMockEndpoint({
     path: '/reports/item-889',
     requests: {
         [HttpMethod.Post]: {
@@ -18694,7 +18693,7 @@ export const endpoint889 = defineEndpoint({
     },
 });
 
-export const endpoint890 = defineEndpoint({
+export const endpoint890 = defineMockEndpoint({
     path: '/reports/item-890',
     requests: {
         [HttpMethod.Post]: {
@@ -18715,7 +18714,7 @@ export const endpoint890 = defineEndpoint({
     },
 });
 
-export const endpoint891 = defineEndpoint({
+export const endpoint891 = defineMockEndpoint({
     path: '/reports/item-891',
     requests: {
         [HttpMethod.Post]: {
@@ -18736,7 +18735,7 @@ export const endpoint891 = defineEndpoint({
     },
 });
 
-export const endpoint892 = defineEndpoint({
+export const endpoint892 = defineMockEndpoint({
     path: '/reports/item-892',
     requests: {
         [HttpMethod.Post]: {
@@ -18757,7 +18756,7 @@ export const endpoint892 = defineEndpoint({
     },
 });
 
-export const endpoint893 = defineEndpoint({
+export const endpoint893 = defineMockEndpoint({
     path: '/reports/item-893',
     requests: {
         [HttpMethod.Post]: {
@@ -18778,7 +18777,7 @@ export const endpoint893 = defineEndpoint({
     },
 });
 
-export const endpoint894 = defineEndpoint({
+export const endpoint894 = defineMockEndpoint({
     path: '/reports/item-894',
     requests: {
         [HttpMethod.Post]: {
@@ -18799,7 +18798,7 @@ export const endpoint894 = defineEndpoint({
     },
 });
 
-export const endpoint895 = defineEndpoint({
+export const endpoint895 = defineMockEndpoint({
     path: '/reports/item-895',
     requests: {
         [HttpMethod.Post]: {
@@ -18820,7 +18819,7 @@ export const endpoint895 = defineEndpoint({
     },
 });
 
-export const endpoint896 = defineEndpoint({
+export const endpoint896 = defineMockEndpoint({
     path: '/reports/item-896',
     requests: {
         [HttpMethod.Post]: {
@@ -18841,7 +18840,7 @@ export const endpoint896 = defineEndpoint({
     },
 });
 
-export const endpoint897 = defineEndpoint({
+export const endpoint897 = defineMockEndpoint({
     path: '/reports/item-897',
     requests: {
         [HttpMethod.Post]: {
@@ -18862,7 +18861,7 @@ export const endpoint897 = defineEndpoint({
     },
 });
 
-export const endpoint898 = defineEndpoint({
+export const endpoint898 = defineMockEndpoint({
     path: '/reports/item-898',
     requests: {
         [HttpMethod.Post]: {
@@ -18883,7 +18882,7 @@ export const endpoint898 = defineEndpoint({
     },
 });
 
-export const endpoint899 = defineEndpoint({
+export const endpoint899 = defineMockEndpoint({
     path: '/reports/item-899',
     requests: {
         [HttpMethod.Post]: {
@@ -18904,7 +18903,7 @@ export const endpoint899 = defineEndpoint({
     },
 });
 
-export const endpoint900 = defineEndpoint({
+export const endpoint900 = defineMockEndpoint({
     path: '/reports/item-900',
     requests: {
         [HttpMethod.Post]: {
@@ -18925,7 +18924,7 @@ export const endpoint900 = defineEndpoint({
     },
 });
 
-export const endpoint901 = defineEndpoint({
+export const endpoint901 = defineMockEndpoint({
     path: '/reports/item-901',
     requests: {
         [HttpMethod.Post]: {
@@ -18946,7 +18945,7 @@ export const endpoint901 = defineEndpoint({
     },
 });
 
-export const endpoint902 = defineEndpoint({
+export const endpoint902 = defineMockEndpoint({
     path: '/reports/item-902',
     requests: {
         [HttpMethod.Post]: {
@@ -18967,7 +18966,7 @@ export const endpoint902 = defineEndpoint({
     },
 });
 
-export const endpoint903 = defineEndpoint({
+export const endpoint903 = defineMockEndpoint({
     path: '/reports/item-903',
     requests: {
         [HttpMethod.Post]: {
@@ -18988,7 +18987,7 @@ export const endpoint903 = defineEndpoint({
     },
 });
 
-export const endpoint904 = defineEndpoint({
+export const endpoint904 = defineMockEndpoint({
     path: '/reports/item-904',
     requests: {
         [HttpMethod.Post]: {
@@ -19009,7 +19008,7 @@ export const endpoint904 = defineEndpoint({
     },
 });
 
-export const endpoint905 = defineEndpoint({
+export const endpoint905 = defineMockEndpoint({
     path: '/reports/item-905',
     requests: {
         [HttpMethod.Post]: {
@@ -19030,7 +19029,7 @@ export const endpoint905 = defineEndpoint({
     },
 });
 
-export const endpoint906 = defineEndpoint({
+export const endpoint906 = defineMockEndpoint({
     path: '/reports/item-906',
     requests: {
         [HttpMethod.Post]: {
@@ -19051,7 +19050,7 @@ export const endpoint906 = defineEndpoint({
     },
 });
 
-export const endpoint907 = defineEndpoint({
+export const endpoint907 = defineMockEndpoint({
     path: '/reports/item-907',
     requests: {
         [HttpMethod.Post]: {
@@ -19072,7 +19071,7 @@ export const endpoint907 = defineEndpoint({
     },
 });
 
-export const endpoint908 = defineEndpoint({
+export const endpoint908 = defineMockEndpoint({
     path: '/reports/item-908',
     requests: {
         [HttpMethod.Post]: {
@@ -19093,7 +19092,7 @@ export const endpoint908 = defineEndpoint({
     },
 });
 
-export const endpoint909 = defineEndpoint({
+export const endpoint909 = defineMockEndpoint({
     path: '/reports/item-909',
     requests: {
         [HttpMethod.Post]: {
@@ -19114,7 +19113,7 @@ export const endpoint909 = defineEndpoint({
     },
 });
 
-export const endpoint910 = defineEndpoint({
+export const endpoint910 = defineMockEndpoint({
     path: '/reports/item-910',
     requests: {
         [HttpMethod.Post]: {
@@ -19135,7 +19134,7 @@ export const endpoint910 = defineEndpoint({
     },
 });
 
-export const endpoint911 = defineEndpoint({
+export const endpoint911 = defineMockEndpoint({
     path: '/reports/item-911',
     requests: {
         [HttpMethod.Post]: {
@@ -19156,7 +19155,7 @@ export const endpoint911 = defineEndpoint({
     },
 });
 
-export const endpoint912 = defineEndpoint({
+export const endpoint912 = defineMockEndpoint({
     path: '/reports/item-912',
     requests: {
         [HttpMethod.Post]: {
@@ -19177,7 +19176,7 @@ export const endpoint912 = defineEndpoint({
     },
 });
 
-export const endpoint913 = defineEndpoint({
+export const endpoint913 = defineMockEndpoint({
     path: '/reports/item-913',
     requests: {
         [HttpMethod.Post]: {
@@ -19198,7 +19197,7 @@ export const endpoint913 = defineEndpoint({
     },
 });
 
-export const endpoint914 = defineEndpoint({
+export const endpoint914 = defineMockEndpoint({
     path: '/reports/item-914',
     requests: {
         [HttpMethod.Post]: {
@@ -19219,7 +19218,7 @@ export const endpoint914 = defineEndpoint({
     },
 });
 
-export const endpoint915 = defineEndpoint({
+export const endpoint915 = defineMockEndpoint({
     path: '/reports/item-915',
     requests: {
         [HttpMethod.Post]: {
@@ -19240,7 +19239,7 @@ export const endpoint915 = defineEndpoint({
     },
 });
 
-export const endpoint916 = defineEndpoint({
+export const endpoint916 = defineMockEndpoint({
     path: '/reports/item-916',
     requests: {
         [HttpMethod.Post]: {
@@ -19261,7 +19260,7 @@ export const endpoint916 = defineEndpoint({
     },
 });
 
-export const endpoint917 = defineEndpoint({
+export const endpoint917 = defineMockEndpoint({
     path: '/reports/item-917',
     requests: {
         [HttpMethod.Post]: {
@@ -19282,7 +19281,7 @@ export const endpoint917 = defineEndpoint({
     },
 });
 
-export const endpoint918 = defineEndpoint({
+export const endpoint918 = defineMockEndpoint({
     path: '/reports/item-918',
     requests: {
         [HttpMethod.Post]: {
@@ -19303,7 +19302,7 @@ export const endpoint918 = defineEndpoint({
     },
 });
 
-export const endpoint919 = defineEndpoint({
+export const endpoint919 = defineMockEndpoint({
     path: '/reports/item-919',
     requests: {
         [HttpMethod.Post]: {
@@ -19324,7 +19323,7 @@ export const endpoint919 = defineEndpoint({
     },
 });
 
-export const endpoint920 = defineEndpoint({
+export const endpoint920 = defineMockEndpoint({
     path: '/reports/item-920',
     requests: {
         [HttpMethod.Post]: {
@@ -19345,7 +19344,7 @@ export const endpoint920 = defineEndpoint({
     },
 });
 
-export const endpoint921 = defineEndpoint({
+export const endpoint921 = defineMockEndpoint({
     path: '/reports/item-921',
     requests: {
         [HttpMethod.Post]: {
@@ -19366,7 +19365,7 @@ export const endpoint921 = defineEndpoint({
     },
 });
 
-export const endpoint922 = defineEndpoint({
+export const endpoint922 = defineMockEndpoint({
     path: '/reports/item-922',
     requests: {
         [HttpMethod.Post]: {
@@ -19387,7 +19386,7 @@ export const endpoint922 = defineEndpoint({
     },
 });
 
-export const endpoint923 = defineEndpoint({
+export const endpoint923 = defineMockEndpoint({
     path: '/reports/item-923',
     requests: {
         [HttpMethod.Post]: {
@@ -19408,7 +19407,7 @@ export const endpoint923 = defineEndpoint({
     },
 });
 
-export const endpoint924 = defineEndpoint({
+export const endpoint924 = defineMockEndpoint({
     path: '/reports/item-924',
     requests: {
         [HttpMethod.Post]: {
@@ -19429,7 +19428,7 @@ export const endpoint924 = defineEndpoint({
     },
 });
 
-export const endpoint925 = defineEndpoint({
+export const endpoint925 = defineMockEndpoint({
     path: '/reports/item-925',
     requests: {
         [HttpMethod.Post]: {
@@ -19450,7 +19449,7 @@ export const endpoint925 = defineEndpoint({
     },
 });
 
-export const endpoint926 = defineEndpoint({
+export const endpoint926 = defineMockEndpoint({
     path: '/reports/item-926',
     requests: {
         [HttpMethod.Post]: {
@@ -19471,7 +19470,7 @@ export const endpoint926 = defineEndpoint({
     },
 });
 
-export const endpoint927 = defineEndpoint({
+export const endpoint927 = defineMockEndpoint({
     path: '/reports/item-927',
     requests: {
         [HttpMethod.Post]: {
@@ -19492,7 +19491,7 @@ export const endpoint927 = defineEndpoint({
     },
 });
 
-export const endpoint928 = defineEndpoint({
+export const endpoint928 = defineMockEndpoint({
     path: '/reports/item-928',
     requests: {
         [HttpMethod.Post]: {
@@ -19513,7 +19512,7 @@ export const endpoint928 = defineEndpoint({
     },
 });
 
-export const endpoint929 = defineEndpoint({
+export const endpoint929 = defineMockEndpoint({
     path: '/reports/item-929',
     requests: {
         [HttpMethod.Post]: {
@@ -19534,7 +19533,7 @@ export const endpoint929 = defineEndpoint({
     },
 });
 
-export const endpoint930 = defineEndpoint({
+export const endpoint930 = defineMockEndpoint({
     path: '/reports/item-930',
     requests: {
         [HttpMethod.Post]: {
@@ -19555,7 +19554,7 @@ export const endpoint930 = defineEndpoint({
     },
 });
 
-export const endpoint931 = defineEndpoint({
+export const endpoint931 = defineMockEndpoint({
     path: '/reports/item-931',
     requests: {
         [HttpMethod.Post]: {
@@ -19576,7 +19575,7 @@ export const endpoint931 = defineEndpoint({
     },
 });
 
-export const endpoint932 = defineEndpoint({
+export const endpoint932 = defineMockEndpoint({
     path: '/reports/item-932',
     requests: {
         [HttpMethod.Post]: {
@@ -19597,7 +19596,7 @@ export const endpoint932 = defineEndpoint({
     },
 });
 
-export const endpoint933 = defineEndpoint({
+export const endpoint933 = defineMockEndpoint({
     path: '/reports/item-933',
     requests: {
         [HttpMethod.Post]: {
@@ -19618,7 +19617,7 @@ export const endpoint933 = defineEndpoint({
     },
 });
 
-export const endpoint934 = defineEndpoint({
+export const endpoint934 = defineMockEndpoint({
     path: '/reports/item-934',
     requests: {
         [HttpMethod.Post]: {
@@ -19639,7 +19638,7 @@ export const endpoint934 = defineEndpoint({
     },
 });
 
-export const endpoint935 = defineEndpoint({
+export const endpoint935 = defineMockEndpoint({
     path: '/reports/item-935',
     requests: {
         [HttpMethod.Post]: {
@@ -19660,7 +19659,7 @@ export const endpoint935 = defineEndpoint({
     },
 });
 
-export const endpoint936 = defineEndpoint({
+export const endpoint936 = defineMockEndpoint({
     path: '/reports/item-936',
     requests: {
         [HttpMethod.Post]: {
@@ -19681,7 +19680,7 @@ export const endpoint936 = defineEndpoint({
     },
 });
 
-export const endpoint937 = defineEndpoint({
+export const endpoint937 = defineMockEndpoint({
     path: '/reports/item-937',
     requests: {
         [HttpMethod.Post]: {
@@ -19702,7 +19701,7 @@ export const endpoint937 = defineEndpoint({
     },
 });
 
-export const endpoint938 = defineEndpoint({
+export const endpoint938 = defineMockEndpoint({
     path: '/reports/item-938',
     requests: {
         [HttpMethod.Post]: {
@@ -19723,7 +19722,7 @@ export const endpoint938 = defineEndpoint({
     },
 });
 
-export const endpoint939 = defineEndpoint({
+export const endpoint939 = defineMockEndpoint({
     path: '/reports/item-939',
     requests: {
         [HttpMethod.Post]: {
@@ -19744,7 +19743,7 @@ export const endpoint939 = defineEndpoint({
     },
 });
 
-export const endpoint940 = defineEndpoint({
+export const endpoint940 = defineMockEndpoint({
     path: '/reports/item-940',
     requests: {
         [HttpMethod.Post]: {
@@ -19765,7 +19764,7 @@ export const endpoint940 = defineEndpoint({
     },
 });
 
-export const endpoint941 = defineEndpoint({
+export const endpoint941 = defineMockEndpoint({
     path: '/reports/item-941',
     requests: {
         [HttpMethod.Post]: {
@@ -19786,7 +19785,7 @@ export const endpoint941 = defineEndpoint({
     },
 });
 
-export const endpoint942 = defineEndpoint({
+export const endpoint942 = defineMockEndpoint({
     path: '/reports/item-942',
     requests: {
         [HttpMethod.Post]: {
@@ -19807,7 +19806,7 @@ export const endpoint942 = defineEndpoint({
     },
 });
 
-export const endpoint943 = defineEndpoint({
+export const endpoint943 = defineMockEndpoint({
     path: '/reports/item-943',
     requests: {
         [HttpMethod.Post]: {
@@ -19828,7 +19827,7 @@ export const endpoint943 = defineEndpoint({
     },
 });
 
-export const endpoint944 = defineEndpoint({
+export const endpoint944 = defineMockEndpoint({
     path: '/reports/item-944',
     requests: {
         [HttpMethod.Post]: {
@@ -19849,7 +19848,7 @@ export const endpoint944 = defineEndpoint({
     },
 });
 
-export const endpoint945 = defineEndpoint({
+export const endpoint945 = defineMockEndpoint({
     path: '/reports/item-945',
     requests: {
         [HttpMethod.Post]: {
@@ -19870,7 +19869,7 @@ export const endpoint945 = defineEndpoint({
     },
 });
 
-export const endpoint946 = defineEndpoint({
+export const endpoint946 = defineMockEndpoint({
     path: '/reports/item-946',
     requests: {
         [HttpMethod.Post]: {
@@ -19891,7 +19890,7 @@ export const endpoint946 = defineEndpoint({
     },
 });
 
-export const endpoint947 = defineEndpoint({
+export const endpoint947 = defineMockEndpoint({
     path: '/reports/item-947',
     requests: {
         [HttpMethod.Post]: {
@@ -19912,7 +19911,7 @@ export const endpoint947 = defineEndpoint({
     },
 });
 
-export const endpoint948 = defineEndpoint({
+export const endpoint948 = defineMockEndpoint({
     path: '/reports/item-948',
     requests: {
         [HttpMethod.Post]: {
@@ -19933,7 +19932,7 @@ export const endpoint948 = defineEndpoint({
     },
 });
 
-export const endpoint949 = defineEndpoint({
+export const endpoint949 = defineMockEndpoint({
     path: '/reports/item-949',
     requests: {
         [HttpMethod.Post]: {
@@ -19954,7 +19953,7 @@ export const endpoint949 = defineEndpoint({
     },
 });
 
-export const endpoint950 = defineEndpoint({
+export const endpoint950 = defineMockEndpoint({
     path: '/reports/item-950',
     requests: {
         [HttpMethod.Post]: {
@@ -19975,7 +19974,7 @@ export const endpoint950 = defineEndpoint({
     },
 });
 
-export const endpoint951 = defineEndpoint({
+export const endpoint951 = defineMockEndpoint({
     path: '/reports/item-951',
     requests: {
         [HttpMethod.Post]: {
@@ -19996,7 +19995,7 @@ export const endpoint951 = defineEndpoint({
     },
 });
 
-export const endpoint952 = defineEndpoint({
+export const endpoint952 = defineMockEndpoint({
     path: '/reports/item-952',
     requests: {
         [HttpMethod.Post]: {
@@ -20017,7 +20016,7 @@ export const endpoint952 = defineEndpoint({
     },
 });
 
-export const endpoint953 = defineEndpoint({
+export const endpoint953 = defineMockEndpoint({
     path: '/reports/item-953',
     requests: {
         [HttpMethod.Post]: {
@@ -20038,7 +20037,7 @@ export const endpoint953 = defineEndpoint({
     },
 });
 
-export const endpoint954 = defineEndpoint({
+export const endpoint954 = defineMockEndpoint({
     path: '/reports/item-954',
     requests: {
         [HttpMethod.Post]: {
@@ -20059,7 +20058,7 @@ export const endpoint954 = defineEndpoint({
     },
 });
 
-export const endpoint955 = defineEndpoint({
+export const endpoint955 = defineMockEndpoint({
     path: '/reports/item-955',
     requests: {
         [HttpMethod.Post]: {
@@ -20080,7 +20079,7 @@ export const endpoint955 = defineEndpoint({
     },
 });
 
-export const endpoint956 = defineEndpoint({
+export const endpoint956 = defineMockEndpoint({
     path: '/reports/item-956',
     requests: {
         [HttpMethod.Post]: {
@@ -20101,7 +20100,7 @@ export const endpoint956 = defineEndpoint({
     },
 });
 
-export const endpoint957 = defineEndpoint({
+export const endpoint957 = defineMockEndpoint({
     path: '/reports/item-957',
     requests: {
         [HttpMethod.Post]: {
@@ -20122,7 +20121,7 @@ export const endpoint957 = defineEndpoint({
     },
 });
 
-export const endpoint958 = defineEndpoint({
+export const endpoint958 = defineMockEndpoint({
     path: '/reports/item-958',
     requests: {
         [HttpMethod.Post]: {
@@ -20143,7 +20142,7 @@ export const endpoint958 = defineEndpoint({
     },
 });
 
-export const endpoint959 = defineEndpoint({
+export const endpoint959 = defineMockEndpoint({
     path: '/reports/item-959',
     requests: {
         [HttpMethod.Post]: {
@@ -20164,7 +20163,7 @@ export const endpoint959 = defineEndpoint({
     },
 });
 
-export const endpoint960 = defineEndpoint({
+export const endpoint960 = defineMockEndpoint({
     path: '/reports/item-960',
     requests: {
         [HttpMethod.Post]: {
@@ -20185,7 +20184,7 @@ export const endpoint960 = defineEndpoint({
     },
 });
 
-export const endpoint961 = defineEndpoint({
+export const endpoint961 = defineMockEndpoint({
     path: '/reports/item-961',
     requests: {
         [HttpMethod.Post]: {
@@ -20206,7 +20205,7 @@ export const endpoint961 = defineEndpoint({
     },
 });
 
-export const endpoint962 = defineEndpoint({
+export const endpoint962 = defineMockEndpoint({
     path: '/reports/item-962',
     requests: {
         [HttpMethod.Post]: {
@@ -20227,7 +20226,7 @@ export const endpoint962 = defineEndpoint({
     },
 });
 
-export const endpoint963 = defineEndpoint({
+export const endpoint963 = defineMockEndpoint({
     path: '/reports/item-963',
     requests: {
         [HttpMethod.Post]: {
@@ -20248,7 +20247,7 @@ export const endpoint963 = defineEndpoint({
     },
 });
 
-export const endpoint964 = defineEndpoint({
+export const endpoint964 = defineMockEndpoint({
     path: '/reports/item-964',
     requests: {
         [HttpMethod.Post]: {
@@ -20269,7 +20268,7 @@ export const endpoint964 = defineEndpoint({
     },
 });
 
-export const endpoint965 = defineEndpoint({
+export const endpoint965 = defineMockEndpoint({
     path: '/reports/item-965',
     requests: {
         [HttpMethod.Post]: {
@@ -20290,7 +20289,7 @@ export const endpoint965 = defineEndpoint({
     },
 });
 
-export const endpoint966 = defineEndpoint({
+export const endpoint966 = defineMockEndpoint({
     path: '/reports/item-966',
     requests: {
         [HttpMethod.Post]: {
@@ -20311,7 +20310,7 @@ export const endpoint966 = defineEndpoint({
     },
 });
 
-export const endpoint967 = defineEndpoint({
+export const endpoint967 = defineMockEndpoint({
     path: '/reports/item-967',
     requests: {
         [HttpMethod.Post]: {
@@ -20332,7 +20331,7 @@ export const endpoint967 = defineEndpoint({
     },
 });
 
-export const endpoint968 = defineEndpoint({
+export const endpoint968 = defineMockEndpoint({
     path: '/reports/item-968',
     requests: {
         [HttpMethod.Post]: {
@@ -20353,7 +20352,7 @@ export const endpoint968 = defineEndpoint({
     },
 });
 
-export const endpoint969 = defineEndpoint({
+export const endpoint969 = defineMockEndpoint({
     path: '/reports/item-969',
     requests: {
         [HttpMethod.Post]: {
@@ -20374,7 +20373,7 @@ export const endpoint969 = defineEndpoint({
     },
 });
 
-export const endpoint970 = defineEndpoint({
+export const endpoint970 = defineMockEndpoint({
     path: '/reports/item-970',
     requests: {
         [HttpMethod.Post]: {
@@ -20395,7 +20394,7 @@ export const endpoint970 = defineEndpoint({
     },
 });
 
-export const endpoint971 = defineEndpoint({
+export const endpoint971 = defineMockEndpoint({
     path: '/reports/item-971',
     requests: {
         [HttpMethod.Post]: {
@@ -20416,7 +20415,7 @@ export const endpoint971 = defineEndpoint({
     },
 });
 
-export const endpoint972 = defineEndpoint({
+export const endpoint972 = defineMockEndpoint({
     path: '/reports/item-972',
     requests: {
         [HttpMethod.Post]: {
@@ -20437,7 +20436,7 @@ export const endpoint972 = defineEndpoint({
     },
 });
 
-export const endpoint973 = defineEndpoint({
+export const endpoint973 = defineMockEndpoint({
     path: '/reports/item-973',
     requests: {
         [HttpMethod.Post]: {
@@ -20458,7 +20457,7 @@ export const endpoint973 = defineEndpoint({
     },
 });
 
-export const endpoint974 = defineEndpoint({
+export const endpoint974 = defineMockEndpoint({
     path: '/reports/item-974',
     requests: {
         [HttpMethod.Post]: {
@@ -20479,7 +20478,7 @@ export const endpoint974 = defineEndpoint({
     },
 });
 
-export const endpoint975 = defineEndpoint({
+export const endpoint975 = defineMockEndpoint({
     path: '/reports/item-975',
     requests: {
         [HttpMethod.Post]: {
@@ -20500,7 +20499,7 @@ export const endpoint975 = defineEndpoint({
     },
 });
 
-export const endpoint976 = defineEndpoint({
+export const endpoint976 = defineMockEndpoint({
     path: '/reports/item-976',
     requests: {
         [HttpMethod.Post]: {
@@ -20521,7 +20520,7 @@ export const endpoint976 = defineEndpoint({
     },
 });
 
-export const endpoint977 = defineEndpoint({
+export const endpoint977 = defineMockEndpoint({
     path: '/reports/item-977',
     requests: {
         [HttpMethod.Post]: {
@@ -20542,7 +20541,7 @@ export const endpoint977 = defineEndpoint({
     },
 });
 
-export const endpoint978 = defineEndpoint({
+export const endpoint978 = defineMockEndpoint({
     path: '/reports/item-978',
     requests: {
         [HttpMethod.Post]: {
@@ -20563,7 +20562,7 @@ export const endpoint978 = defineEndpoint({
     },
 });
 
-export const endpoint979 = defineEndpoint({
+export const endpoint979 = defineMockEndpoint({
     path: '/reports/item-979',
     requests: {
         [HttpMethod.Post]: {
@@ -20584,7 +20583,7 @@ export const endpoint979 = defineEndpoint({
     },
 });
 
-export const endpoint980 = defineEndpoint({
+export const endpoint980 = defineMockEndpoint({
     path: '/reports/item-980',
     requests: {
         [HttpMethod.Post]: {
@@ -20605,7 +20604,7 @@ export const endpoint980 = defineEndpoint({
     },
 });
 
-export const endpoint981 = defineEndpoint({
+export const endpoint981 = defineMockEndpoint({
     path: '/reports/item-981',
     requests: {
         [HttpMethod.Post]: {
@@ -20626,7 +20625,7 @@ export const endpoint981 = defineEndpoint({
     },
 });
 
-export const endpoint982 = defineEndpoint({
+export const endpoint982 = defineMockEndpoint({
     path: '/reports/item-982',
     requests: {
         [HttpMethod.Post]: {
@@ -20647,7 +20646,7 @@ export const endpoint982 = defineEndpoint({
     },
 });
 
-export const endpoint983 = defineEndpoint({
+export const endpoint983 = defineMockEndpoint({
     path: '/reports/item-983',
     requests: {
         [HttpMethod.Post]: {
@@ -20668,7 +20667,7 @@ export const endpoint983 = defineEndpoint({
     },
 });
 
-export const endpoint984 = defineEndpoint({
+export const endpoint984 = defineMockEndpoint({
     path: '/reports/item-984',
     requests: {
         [HttpMethod.Post]: {
@@ -20689,7 +20688,7 @@ export const endpoint984 = defineEndpoint({
     },
 });
 
-export const endpoint985 = defineEndpoint({
+export const endpoint985 = defineMockEndpoint({
     path: '/reports/item-985',
     requests: {
         [HttpMethod.Post]: {
@@ -20710,7 +20709,7 @@ export const endpoint985 = defineEndpoint({
     },
 });
 
-export const endpoint986 = defineEndpoint({
+export const endpoint986 = defineMockEndpoint({
     path: '/reports/item-986',
     requests: {
         [HttpMethod.Post]: {
@@ -20731,7 +20730,7 @@ export const endpoint986 = defineEndpoint({
     },
 });
 
-export const endpoint987 = defineEndpoint({
+export const endpoint987 = defineMockEndpoint({
     path: '/reports/item-987',
     requests: {
         [HttpMethod.Post]: {
@@ -20752,7 +20751,7 @@ export const endpoint987 = defineEndpoint({
     },
 });
 
-export const endpoint988 = defineEndpoint({
+export const endpoint988 = defineMockEndpoint({
     path: '/reports/item-988',
     requests: {
         [HttpMethod.Post]: {
@@ -20773,7 +20772,7 @@ export const endpoint988 = defineEndpoint({
     },
 });
 
-export const endpoint989 = defineEndpoint({
+export const endpoint989 = defineMockEndpoint({
     path: '/reports/item-989',
     requests: {
         [HttpMethod.Post]: {
@@ -20794,7 +20793,7 @@ export const endpoint989 = defineEndpoint({
     },
 });
 
-export const endpoint990 = defineEndpoint({
+export const endpoint990 = defineMockEndpoint({
     path: '/reports/item-990',
     requests: {
         [HttpMethod.Post]: {
@@ -20815,7 +20814,7 @@ export const endpoint990 = defineEndpoint({
     },
 });
 
-export const endpoint991 = defineEndpoint({
+export const endpoint991 = defineMockEndpoint({
     path: '/reports/item-991',
     requests: {
         [HttpMethod.Post]: {
@@ -20836,7 +20835,7 @@ export const endpoint991 = defineEndpoint({
     },
 });
 
-export const endpoint992 = defineEndpoint({
+export const endpoint992 = defineMockEndpoint({
     path: '/reports/item-992',
     requests: {
         [HttpMethod.Post]: {
@@ -20857,7 +20856,7 @@ export const endpoint992 = defineEndpoint({
     },
 });
 
-export const endpoint993 = defineEndpoint({
+export const endpoint993 = defineMockEndpoint({
     path: '/reports/item-993',
     requests: {
         [HttpMethod.Post]: {
@@ -20878,7 +20877,7 @@ export const endpoint993 = defineEndpoint({
     },
 });
 
-export const endpoint994 = defineEndpoint({
+export const endpoint994 = defineMockEndpoint({
     path: '/reports/item-994',
     requests: {
         [HttpMethod.Post]: {
@@ -20899,7 +20898,7 @@ export const endpoint994 = defineEndpoint({
     },
 });
 
-export const endpoint995 = defineEndpoint({
+export const endpoint995 = defineMockEndpoint({
     path: '/reports/item-995',
     requests: {
         [HttpMethod.Post]: {
@@ -20920,7 +20919,7 @@ export const endpoint995 = defineEndpoint({
     },
 });
 
-export const endpoint996 = defineEndpoint({
+export const endpoint996 = defineMockEndpoint({
     path: '/reports/item-996',
     requests: {
         [HttpMethod.Post]: {
@@ -20941,7 +20940,7 @@ export const endpoint996 = defineEndpoint({
     },
 });
 
-export const endpoint997 = defineEndpoint({
+export const endpoint997 = defineMockEndpoint({
     path: '/reports/item-997',
     requests: {
         [HttpMethod.Post]: {
@@ -20962,7 +20961,7 @@ export const endpoint997 = defineEndpoint({
     },
 });
 
-export const endpoint998 = defineEndpoint({
+export const endpoint998 = defineMockEndpoint({
     path: '/reports/item-998',
     requests: {
         [HttpMethod.Post]: {
@@ -20983,7 +20982,7 @@ export const endpoint998 = defineEndpoint({
     },
 });
 
-export const endpoint999 = defineEndpoint({
+export const endpoint999 = defineMockEndpoint({
     path: '/reports/item-999',
     requests: {
         [HttpMethod.Post]: {

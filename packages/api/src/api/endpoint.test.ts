@@ -422,6 +422,71 @@ describe(defineEndpoint.name, () => {
         }>();
     });
 
+    it('supports a wrapper that constrains customProps', () => {
+        type RequiredCustomProps = {
+            requiresAuth: boolean;
+        };
+
+        const defineAuthEndpoint = <const Endpoint extends EndpointDefinition<RequiredCustomProps>>(
+            endpoint: Readonly<Endpoint>,
+        ): Readonly<Endpoint> => endpoint;
+
+        const okResult = defineAuthEndpoint({
+            path: '/admin',
+            requests: {
+                [HttpMethod.Get]: {
+                    customProps: {
+                        requiresAuth: true,
+                    },
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+
+        assert.tsType(okResult.requests[HttpMethod.Get].customProps).equals<{
+            readonly requiresAuth: true;
+        }>();
+
+        defineAuthEndpoint({
+            path: '/admin',
+            requests: {
+                [HttpMethod.Get]: {
+                    customProps: {
+                        // @ts-expect-error: requiresAuth must be a boolean, not a string.
+                        requiresAuth: 'yes',
+                    },
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+
+        defineAuthEndpoint({
+            path: '/admin',
+            requests: {
+                [HttpMethod.Get]: {
+                    customProps: {
+                        requiresAuth: true,
+                        // @ts-expect-error: unknown key is rejected by the narrowed customProps type.
+                        unknownKey: 'oops',
+                    },
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+    });
+
     it('preserves searchParams types', () => {
         const queryShape = defineShape('');
         const limitShape = defineShape('');

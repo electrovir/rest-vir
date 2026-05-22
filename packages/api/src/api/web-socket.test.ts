@@ -148,6 +148,46 @@ describe(defineWebSocket.name, () => {
         }>();
     });
 
+    it('supports a wrapper that constrains customProps', () => {
+        type RequiredCustomProps = {
+            requiresAuth: boolean;
+        };
+
+        const defineAuthWebSocket = <
+            const ThisWebSocket extends WebSocketDefinition<RequiredCustomProps>,
+        >(
+            webSocket: Readonly<ThisWebSocket>,
+        ): Readonly<ThisWebSocket> => webSocket;
+
+        const okResult = defineAuthWebSocket({
+            path: '/ws',
+            customProps: {
+                requiresAuth: true,
+            },
+        });
+
+        assert.tsType(okResult.customProps).equals<{
+            readonly requiresAuth: true;
+        }>();
+
+        defineAuthWebSocket({
+            path: '/ws',
+            customProps: {
+                // @ts-expect-error: requiresAuth must be a boolean, not a string.
+                requiresAuth: 'yes',
+            },
+        });
+
+        defineAuthWebSocket({
+            path: '/ws',
+            customProps: {
+                requiresAuth: true,
+                // @ts-expect-error: unknown key is rejected by the narrowed customProps type.
+                unknownKey: 'oops',
+            },
+        });
+    });
+
     it('preserves searchParams types', () => {
         const tokenShape = defineShape('');
 
