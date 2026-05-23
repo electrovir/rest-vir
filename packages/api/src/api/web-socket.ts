@@ -2,7 +2,11 @@ import {type UnknownObject} from '@augment-vir/common';
 import {type Shape} from 'object-shape-tester';
 import {type IsNever} from 'type-fest';
 import {type NoParam} from '../util/no-param.js';
-import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
+import {
+    type BaseRoutePath,
+    type CommonRouteDefinition,
+    type CommonRouteDefinitionWithRequiredCustomProps,
+} from './route.js';
 
 /**
  * Define a single WebSocket.
@@ -36,17 +40,17 @@ export function defineWebSocket<const ThisWebSocket extends WebSocketDefinition>
 }
 
 /**
- * An individual WebSocket definition.
- *
- * Optional `CustomProps` generic narrows the `customProps` shape so wrappers like
- * `defineMyWebSocket<W extends WebSocketDefinition<MyCustomProps>>(...)` can constrain the
- * `customProps` type without touching the rest of the definition.
+ * An individual WebSocket definition. `customProps` (inherited from {@link CommonRouteDefinition})
+ * is optional and untyped. Use {@link WebSocketDefinitionWithRequiredCustomProps} when a wrapper
+ * needs to both narrow `customProps`'s type and require its presence.
  *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type WebSocketDefinition<CustomProps extends UnknownObject = UnknownObject> = {
+export type WebSocketDefinition = BaseWebSocketDefinition & CommonRouteDefinition;
+
+export type BaseWebSocketDefinition = {
     path: BaseRoutePath;
     /** Allowed messages from the WebSocket client. */
     clientMessage?: Shape | undefined;
@@ -66,7 +70,20 @@ export type WebSocketDefinition<CustomProps extends UnknownObject = UnknownObjec
      *   Order is not significant. The array is treated as a list of alternatives.
      */
     connectProtocol?: WebSocketConnectProtocolRequirement | undefined;
-} & CommonRouteDefinition<CustomProps>;
+};
+
+/**
+ * Variant of {@link WebSocketDefinition} whose `customProps` field is required and narrowed to the
+ * supplied `CustomProps` generic. Use this from wrapper signatures like `defineMyWebSocket<W
+ * extends WebSocketDefinitionWithRequiredCustomProps<MyCustomProps>>(...)` to force every caller to
+ * specify `customProps` with the expected shape.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type WebSocketDefinitionWithRequiredCustomProps<CustomProps extends UnknownObject> =
+    BaseWebSocketDefinition & CommonRouteDefinitionWithRequiredCustomProps<CustomProps>;
 
 /**
  * A single protocol-list requirement for a WebSocket. See `WebSocketDefinition.connectProtocol` for

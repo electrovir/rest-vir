@@ -1,8 +1,11 @@
 import {assert, check} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus} from '@augment-vir/common';
+import {HttpMethod, HttpStatus, mapObjectValues} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
 import {defineShape, exactShape, type Shape} from 'object-shape-tester';
+import {RestVirClient} from '../client.js';
+import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
 import {type NoParam} from '../util/no-param.js';
+import {defineApi} from './api.js';
 import {
     definableHttpMethods,
     defineEndpoint,
@@ -13,8 +16,11 @@ import {
     type DefaultErrorResponseType,
     type DefaultResponseHeadersType,
     type DefaultResponseType,
+    type DefinableHttpMethod,
     type EndpointDefinition,
+    type EndpointDefinitionWithRequiredCustomProps,
     type EndpointMethodDefinition,
+    type EndpointMethodDefinitionWithRequiredCustomProps,
     type EndpointRequestHeadersType,
     type EndpointRequestType,
     type EndpointResponseHeadersType,
@@ -427,7 +433,9 @@ describe(defineEndpoint.name, () => {
             requiresAuth: boolean;
         };
 
-        const defineAuthEndpoint = <const Endpoint extends EndpointDefinition<RequiredCustomProps>>(
+        const defineAuthEndpoint = <
+            const Endpoint extends EndpointDefinitionWithRequiredCustomProps<RequiredCustomProps>,
+        >(
             endpoint: Readonly<Endpoint>,
         ): Readonly<Endpoint> => endpoint;
 
@@ -892,6 +900,100 @@ describe('EndpointResponseType', () => {
 
     it('falls back to unknown when given NoParam', () => {
         assert.tsType<EndpointResponseType<NoParam, NoParam, NoParam>>().equals<unknown>();
+    });
+});
+
+describe('wrapper inference', () => {
+    type WrappedCustomProps = {
+        requiredAuth: 'required' | 'any';
+    };
+
+    function defineWrappedEndpoint<
+        const Endpoint extends Readonly<
+            EndpointDefinitionWithRequiredCustomProps<WrappedCustomProps>
+        >,
+    >(endpoint: Readonly<Endpoint>): Readonly<Endpoint> {
+        return defineEndpoint({
+            ...endpoint,
+            requests: mapObjectValues(
+                (endpoint as EndpointDefinition).requests,
+                (
+                    httpMethod,
+                    endpointRequest,
+                ): EndpointMethodDefinitionWithRequiredCustomProps<
+                    DefinableHttpMethod,
+                    WrappedCustomProps
+                > => {
+                    return {
+                        ...endpointRequest,
+                        customProps: {
+                            ...endpointRequest.customProps,
+                            requiredAuth: 'required',
+                        },
+                    };
+                },
+            ),
+        }) as Readonly<Endpoint>;
+    }
+
+    const wrappedSimpleEndpoint = defineWrappedEndpoint({
+        path: '/wrapped-simple',
+        requests: {
+            [HttpMethod.Get]: {
+                customProps: {
+                    requiredAuth: 'required',
+                },
+                responses: {
+                    [HttpStatus.Ok]: {
+                        responseData: exactShape('hi'),
+                    },
+                },
+            },
+        },
+    });
+
+    it('passes wrapped endpoints into defineApi without breaking the path constraint', () => {
+        const api = defineApi({
+            apiName: 'wrapped',
+            endpoints: [
+                wrappedSimpleEndpoint,
+            ],
+        });
+
+        assert.isDefined(api.endpoints['/wrapped-simple']);
+    });
+
+    it('preserves the per-method response type through the wrapper', () => {
+        assert
+            .tsType<
+                EndpointResponseType<typeof wrappedSimpleEndpoint, HttpMethod.Get, HttpStatus.Ok>
+            >()
+            .equals<'hi'>();
+    });
+
+    it('preserves Ok response type through the wrapper at the fetch call site', async () => {
+        const api = defineApi({
+            apiName: 'wrapped',
+            endpoints: [
+                wrappedSimpleEndpoint,
+            ],
+        });
+        const client = new RestVirClient(api, '', () =>
+            Promise.resolve(
+                createMockResponse({
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: 'hi',
+                }),
+            ),
+        );
+
+        const result = await client.fetch(wrappedSimpleEndpoint).GET();
+
+        assert.isDefined(result.Ok);
+        assert.strictEquals(result.Ok.responseData, 'hi');
+        assert.tsType<typeof result.Ok.responseData>().equals<'hi'>();
     });
 });
 

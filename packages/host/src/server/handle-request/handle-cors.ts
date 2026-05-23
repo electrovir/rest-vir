@@ -161,7 +161,7 @@ const contentLengthHeaders = {
 
 function buildOptionsRequestCorsHeaders(
     matchedOrigin: MatchedOrigin,
-    allowedMethods: HttpMethod[],
+    allowedMethods: `${HttpMethod}`[],
     customHeaders: ReadonlyArray<string> | undefined,
     disableRestVirApiNameHeader: boolean | undefined,
 ): OutgoingHttpHeaders {

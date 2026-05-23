@@ -16,8 +16,8 @@ export const customProps: MockCustomProps = {
 };
 
 /**
- * Project-specific definers built from `createRouteDefiners<MockCustomProps>`. Re-exported under the
- * names the mock files already use (`defineMockEndpoint` / `defineMockWebSocket`).
+ * Project-specific definers built from `createRouteDefiners<MockCustomProps>`. Re-exported under
+ * the names the mock files already use (`defineMockEndpoint` / `defineMockWebSocket`).
  */
 export const {
     defineCustomEndpoint: defineMockEndpoint,

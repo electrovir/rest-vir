@@ -10,7 +10,11 @@ import {
 import {type Shape} from 'object-shape-tester';
 import {type IsNever, type RequireAtLeastOne} from 'type-fest';
 import {type NoParam} from '../util/no-param.js';
-import {type BaseRoutePath, type CommonRouteDefinition} from './route.js';
+import {
+    type BaseRoutePath,
+    type CommonRouteDefinition,
+    type CommonRouteDefinitionWithRequiredCustomProps,
+} from './route.js';
 
 /**
  * Define a single Endpoint.
@@ -48,20 +52,39 @@ export function defineEndpoint<const Endpoint extends EndpointDefinition>(
 }
 
 /**
- * An individual Endpoint definition.
- *
- * Optional `CustomProps` generic narrows the `customProps` shape on every method definition so
- * wrappers like `defineMyEndpoint<E extends EndpointDefinition<MyCustomProps>>(...)` can constrain
- * the `customProps` type without touching the rest of the definition.
+ * An individual Endpoint definition. `customProps` (inherited from {@link CommonRouteDefinition} via
+ * {@link EndpointMethodDefinition}) is optional and untyped. Use
+ * {@link EndpointDefinitionWithRequiredCustomProps} when a wrapper needs to both narrow
+ * `customProps`'s type and require its presence on every method.
  *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointDefinition<CustomProps extends UnknownObject = UnknownObject> = {
+export type EndpointDefinition = {
     path: BaseRoutePath;
     requests: RequireAtLeastOne<{
-        [Method in DefinableHttpMethod]: EndpointMethodDefinition<Method, CustomProps>;
+        [Method in DefinableHttpMethod]: EndpointMethodDefinition<Method>;
+    }>;
+};
+
+/**
+ * Variant of {@link EndpointDefinition} whose every method requires a `customProps` field narrowed
+ * to the supplied `CustomProps` generic. Use this from wrapper signatures like `defineMyEndpoint<E
+ * extends EndpointDefinitionWithRequiredCustomProps<MyCustomProps>>(...)` to force every caller to
+ * specify `customProps` with the expected shape.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type EndpointDefinitionWithRequiredCustomProps<CustomProps extends UnknownObject> = {
+    path: BaseRoutePath;
+    requests: RequireAtLeastOne<{
+        [Method in DefinableHttpMethod]: EndpointMethodDefinitionWithRequiredCustomProps<
+            Method,
+            CustomProps
+        >;
     }>;
 };
 
@@ -125,12 +148,18 @@ export function extractEndpointMethodDefinition<
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const definableHttpMethods = [
-    HttpMethod.Get,
-    HttpMethod.Put,
-    HttpMethod.Post,
-    HttpMethod.Delete,
-    HttpMethod.Patch,
-    HttpMethod.Trace,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Get}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Put}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Post}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Delete}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Patch}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Trace}`,
 ] as const;
 
 export function extractHttpMethod(rawValue: string): DefinableHttpMethod | undefined {
@@ -160,10 +189,14 @@ export type DefinableHttpMethod = ArrayElement<typeof definableHttpMethods>;
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const httpMethodsWithBodies = [
-    HttpMethod.Post,
-    HttpMethod.Put,
-    HttpMethod.Patch,
-    HttpMethod.Delete,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Post}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Put}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Patch}`,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
+    `${HttpMethod.Delete}`,
 ] as const;
 
 /**
@@ -183,34 +216,51 @@ export type HttpMethodsWithBodies = ArrayElement<typeof httpMethodsWithBodies>;
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointMethodDefinition<
-    Method extends DefinableHttpMethod = DefinableHttpMethod,
-    CustomProps extends UnknownObject = UnknownObject,
-> = {
-    /**
-     * - Omit to disable checking entirely.
-     * - Set to `undefined` to require no request data.
-     * - Set to a shape to enforce JSON shape validation.
-     *
-     * This is ignored entirely for http methods that do not allow request bodies.
-     */
-    requestData?: Method extends HttpMethodsWithBodies ? Shape | undefined : never;
-    responses: ResponseDefinitions;
-    /**
-     * Headers that are required to be sent with requests to this endpoint.
-     *
-     * - Omit or set to `undefined` to disable required headers (assigning arbitrary headers is still
-     *   allowed).
-     * - Set to an object to enforce headers for the given keys.
-     *
-     *   - Set a key's value to a shape shape to enforce shape validation on that header's value.
-     *   - Set a key's value to a `RegExp` to require each stringified value to match the given
-     *       `RegExp`.
-     *
-     * Note that header values are always converted to strings.
-     */
-    requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
-} & CommonRouteDefinition<CustomProps>;
+export type EndpointMethodDefinition<Method extends DefinableHttpMethod = DefinableHttpMethod> =
+    BaseEndpointMethodDefinition<Method> & CommonRouteDefinition;
+
+export type BaseEndpointMethodDefinition<Method extends DefinableHttpMethod = DefinableHttpMethod> =
+    {
+        /**
+         * - Omit to disable checking entirely.
+         * - Set to `undefined` to require no request data.
+         * - Set to a shape to enforce JSON shape validation.
+         *
+         * This is ignored entirely for http methods that do not allow request bodies.
+         */
+        requestData?: Method extends HttpMethodsWithBodies ? Shape | undefined : never;
+        responses: ResponseDefinitions;
+        /**
+         * Headers that are required to be sent with requests to this endpoint.
+         *
+         * - Omit or set to `undefined` to disable required headers (assigning arbitrary headers is
+         *   still allowed).
+         * - Set to an object to enforce headers for the given keys.
+         *
+         *   - Set a key's value to a shape shape to enforce shape validation on that header's value.
+         *   - Set a key's value to a `RegExp` to require each stringified value to match the given
+         *       `RegExp`.
+         *
+         * Note that header values are always converted to strings.
+         */
+        requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
+    };
+
+/**
+ * Variant of {@link EndpointMethodDefinition} whose `customProps` field is required and narrowed to
+ * the supplied `CustomProps` generic. Composes with
+ * {@link EndpointDefinitionWithRequiredCustomProps} to enforce `customProps` presence at every
+ * method slot.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type EndpointMethodDefinitionWithRequiredCustomProps<
+    Method extends DefinableHttpMethod,
+    CustomProps extends UnknownObject,
+> = BaseEndpointMethodDefinition<Method> &
+    CommonRouteDefinitionWithRequiredCustomProps<CustomProps>;
 
 /**
  * Optionally provide explicit response body data for specific response status. Any HttpStatus

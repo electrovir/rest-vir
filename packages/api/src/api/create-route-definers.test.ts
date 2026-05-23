@@ -174,10 +174,11 @@ describe(createRouteDefiners.name, () => {
         });
     });
 
-    it('allows customProps to be omitted (optional at the type level)', () => {
-        const endpoint = defineCustomEndpoint({
+    it('requires customProps on every endpoint method and on each web socket', () => {
+        defineCustomEndpoint({
             path: '/no-auth',
             requests: {
+                // @ts-expect-error: customProps is required on every method definition.
                 [HttpMethod.Get]: {
                     responses: {
                         [HttpStatus.Ok]: {
@@ -187,12 +188,11 @@ describe(createRouteDefiners.name, () => {
                 },
             },
         });
-        assert.isDefined(endpoint);
 
-        const webSocket = defineCustomWebSocket({
+        // @ts-expect-error: customProps is required on the web socket definition.
+        defineCustomWebSocket({
             path: '/ws/no-auth',
         });
-        assert.isDefined(webSocket);
     });
 
     it('produces independent definers for different CustomProps types', () => {

@@ -17,19 +17,21 @@ import {type OriginRequirement} from './origin-requirement.js';
 export type BaseRoutePath = `/${string}` | '/';
 
 /**
- * Properties shared between all route definitions (Endpoints and WebSockets).
- *
- * The optional `CustomProps` generic narrows the type of `customProps` so wrappers (e.g. a
- * project-specific `defineEndpoint`) can require a particular shape for `customProps` without
- * forking the definition. `customProps` itself remains an optional field at the type level; if a
- * wrapper also wants to require presence it can intersect with `{customProps: CustomProps}` at the
- * wrapper signature.
+ * Properties shared between all route definitions (Endpoints and WebSockets). `customProps` is
+ * optional and untyped. Use {@link CommonRouteDefinitionWithRequiredCustomProps} (and its
+ * `EndpointDefinitionWithRequiredCustomProps` / `WebSocketDefinitionWithRequiredCustomProps`
+ * descendants) when a wrapper needs to both narrow `customProps`'s type and require its presence.
  *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type CommonRouteDefinition<CustomProps extends UnknownObject = UnknownObject> = {
+export type CommonRouteDefinition = {
+    /** Custom props that can be attached to this route. */
+    customProps?: UnknownObject | undefined;
+} & BaseCommonRouteDefinition;
+
+export type BaseCommonRouteDefinition = {
     /**
      * Search params that this route supports.
      *
@@ -55,14 +57,26 @@ export type CommonRouteDefinition<CustomProps extends UnknownObject = UnknownObj
      * required. See {@link RouteSearchParamsType} for the derived TypeScript type.
      */
     searchParams?: Readonly<Record<string, SearchParamRequirement>> | undefined;
-    /** Custom props that can be attached to this route. */
-    customProps?: CustomProps | undefined;
     /**
      * The client origin requirement for this route. If this is `undefined` or omitted, the api's
      * overall client origin requirement is fallen back to.
      */
     clientOriginRequirement?: OriginRequirement | undefined;
 };
+
+/**
+ * Variant of {@link CommonRouteDefinition} that narrows the type of `customProps` to the supplied
+ * `CustomProps` generic and requires its presence. Use this from wrapper signatures that want to
+ * require callers to specify a particular `customProps` shape on every method or route.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type CommonRouteDefinitionWithRequiredCustomProps<CustomProps extends UnknownObject> = {
+    /** Required, narrowly-typed custom props attached to this route. */
+    customProps: CustomProps;
+} & BaseCommonRouteDefinition;
 
 /**
  * Allowed runtime types for a search param. URL params are always serialized as strings on the

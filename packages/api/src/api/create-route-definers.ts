@@ -1,12 +1,12 @@
 import {type UnknownObject} from '@augment-vir/common';
-import {defineEndpoint, type EndpointDefinition} from './endpoint.js';
-import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
+import {defineEndpoint, type EndpointDefinitionWithRequiredCustomProps} from './endpoint.js';
+import {defineWebSocket, type WebSocketDefinitionWithRequiredCustomProps} from './web-socket.js';
 
 /**
  * Factory that produces a pair of route definers (`defineCustomEndpoint`, `defineCustomWebSocket`)
- * with their input `customProps` constrained to the supplied `CustomProps` type. The returned
- * functions otherwise behave exactly like the standard {@link defineEndpoint} and
- * {@link defineWebSocket} functions.
+ * whose inputs are constrained to require a `customProps` field of the supplied `CustomProps` shape
+ * on every method definition. The returned functions otherwise behave exactly like the standard
+ * {@link defineEndpoint} and {@link defineWebSocket} functions.
  *
  * @category Define API
  * @category Package : @rest-vir/api
@@ -35,11 +35,15 @@ import {defineWebSocket, type WebSocketDefinition} from './web-socket.js';
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export function createRouteDefiners<CustomProps extends UnknownObject = UnknownObject>(): {
-    defineCustomEndpoint: <const Endpoint extends EndpointDefinition<CustomProps>>(
+export function createRouteDefiners<CustomProps extends UnknownObject>(): {
+    defineCustomEndpoint: <
+        const Endpoint extends EndpointDefinitionWithRequiredCustomProps<CustomProps>,
+    >(
         endpoint: Readonly<Endpoint>,
     ) => Readonly<Endpoint>;
-    defineCustomWebSocket: <const ThisWebSocket extends WebSocketDefinition<CustomProps>>(
+    defineCustomWebSocket: <
+        const ThisWebSocket extends WebSocketDefinitionWithRequiredCustomProps<CustomProps>,
+    >(
         webSocket: Readonly<ThisWebSocket>,
     ) => Readonly<ThisWebSocket>;
 } {

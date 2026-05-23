@@ -8,6 +8,7 @@ import {
     type WebSocketClientMessageType,
     type WebSocketConnectProtocolType,
     type WebSocketDefinition,
+    type WebSocketDefinitionWithRequiredCustomProps,
     type WebSocketHostMessageType,
 } from './web-socket.js';
 
@@ -154,7 +155,8 @@ describe(defineWebSocket.name, () => {
         };
 
         const defineAuthWebSocket = <
-            const ThisWebSocket extends WebSocketDefinition<RequiredCustomProps>,
+            const ThisWebSocket extends
+                WebSocketDefinitionWithRequiredCustomProps<RequiredCustomProps>,
         >(
             webSocket: Readonly<ThisWebSocket>,
         ): Readonly<ThisWebSocket> => webSocket;

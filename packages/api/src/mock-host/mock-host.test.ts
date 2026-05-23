@@ -537,8 +537,8 @@ describe(createMockHost.name, () => {
     it('returns 500 when the implementation returns an empty result', async () => {
         const client = createMockHost(mockApi, {
             endpoints: {
+                // @ts-expect-error: missing result
                 '/handled': {
-                    // @ts-expect-error: missing result
                     [HttpMethod.Get]() {
                         return {};
                     },
@@ -555,8 +555,8 @@ describe(createMockHost.name, () => {
     it('returns 500 when the implementation returns an invalid HTTP status key', async () => {
         const client = createMockHost(mockApi, {
             endpoints: {
+                // @ts-expect-error: invalid HTTP status
                 '/no-impl': {
-                    // @ts-expect-error: invalid HTTP status
                     [HttpMethod.Get]() {
                         return {
                             999: {
