@@ -8,12 +8,12 @@ import {
 import {type RequireExactlyOne} from 'type-fest';
 import {
     type DefaultErrorResponseType,
-    type DefaultResponseHeadersType,
+    type DefaultOutgoingResponseHeadersType,
     type DefinableHttpMethod,
     type EndpointDefinition,
     type EndpointMethodDefinition,
     type EndpointRequestType,
-    type EndpointResponseHeadersType,
+    type EndpointResponseOutgoingHeadersType,
     type EndpointResponseType,
     type ExtractEndpointMethodDefinitionWithNoParam,
 } from '../api/endpoint.js';
@@ -65,7 +65,7 @@ export type EndpointImplementationStatusOutput<
     Status extends HttpStatus | NoParam = NoParam,
 > = SetNullishPropertiesAsOptional<{
     responseData: EndpointResponseType<Endpoint, Method, Status>;
-    headers?: EndpointResponseHeadersType<Endpoint, Method, Status> | undefined;
+    headers?: EndpointResponseOutgoingHeadersType<Endpoint, Method, Status> | undefined;
 }>;
 
 /**
@@ -145,7 +145,7 @@ export type EndpointMethodImplementationOutput<
                       Exclude<ErrorHttpStatus, keyof DefinedStatuses>,
                       {
                           responseData: DefaultErrorResponseType;
-                          headers?: DefaultResponseHeadersType | undefined;
+                          headers?: DefaultOutgoingResponseHeadersType | undefined;
                       }
                   > & {
                       [Status in Exclude<
@@ -154,7 +154,7 @@ export type EndpointMethodImplementationOutput<
                       >]: SetNullishPropertiesAsOptional<{
                           responseData: EndpointResponseType<Endpoint, Method, Status>;
                           headers?:
-                              | EndpointResponseHeadersType<Endpoint, Method, Status>
+                              | EndpointResponseOutgoingHeadersType<Endpoint, Method, Status>
                               | undefined;
                       }>;
                   } & {responseHandled: true}

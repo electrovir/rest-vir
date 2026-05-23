@@ -5,6 +5,7 @@ import {
     consolidateHeaders,
     headersToObject,
     mergeHeaders,
+    readHeaderValue,
 } from './header-util.js';
 
 describe(mergeHeaders.name, () => {
@@ -242,4 +243,83 @@ describe('AllowedHeaders', () => {
         assert.isDefined(outgoingNumberRecord);
         assert.isDefined(incomingHttpHeaders);
     });
+});
+
+describe(readHeaderValue.name, () => {
+    itCases(readHeaderValue, [
+        {
+            it: 'wraps a single string value in a one-element array',
+            inputs: [
+                {
+                    'content-type': 'application/json',
+                },
+                'content-type',
+            ],
+            expect: ['application/json'],
+        },
+        {
+            it: 'finds a header with a different case',
+            inputs: [
+                {
+                    'X-Request-Id': 'abc',
+                },
+                'x-request-id',
+            ],
+            expect: ['abc'],
+        },
+        {
+            it: 'matches case-insensitively in both directions',
+            inputs: [
+                {
+                    authorization: 'Bearer token',
+                },
+                'AUTHORIZATION',
+            ],
+            expect: ['Bearer token'],
+        },
+        {
+            it: 'returns an empty array when no match is found',
+            inputs: [
+                {
+                    'x-other': 'value',
+                },
+                'x-missing',
+            ],
+            expect: [],
+        },
+        {
+            it: 'returns an empty array for empty headers',
+            inputs: [
+                {},
+                'any',
+            ],
+            expect: [],
+        },
+        {
+            it: 'returns the full array when the header has multiple values',
+            inputs: [
+                {
+                    'set-cookie': [
+                        'first=1',
+                        'second=2',
+                    ],
+                },
+                'set-cookie',
+            ],
+            expect: [
+                'first=1',
+                'second=2',
+            ],
+        },
+        {
+            it: 'returns an empty array when the header value is explicitly undefined',
+            inputs: [
+                {
+                    'x-maybe': undefined,
+                },
+                'x-maybe',
+            ],
+            expect: [],
+        },
+    ]);
 });

@@ -1,4 +1,5 @@
 import {check} from '@augment-vir/assert';
+import {ensureArray, mapObject} from '@augment-vir/common';
 import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'node:http';
 
 /**
@@ -105,4 +106,34 @@ export function headersToObject(headers: AllowedHeaders | undefined): Record<str
      * duplicate-key branch here.
      */
     return Object.fromEntries(consolidateHeaders(headers).entries());
+}
+
+/**
+ * Reads a header's values with key case-insensitivity. Always returns an array: empty if the header
+ * is absent or explicitly `undefined`, a single-element array for single-valued headers, and the
+ * full list for multi-valued ones (e.g. `Set-Cookie`).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export function readHeaderValue(
+    headers: Readonly<Record<string, string | ReadonlyArray<string> | undefined>>,
+    key: string,
+): ReadonlyArray<string> {
+    const searchKey = key.toLowerCase();
+    const lowerCaseHeaders = mapObject(headers, (key, value) => {
+        return {
+            key: key.toLowerCase(),
+            value,
+        };
+    });
+
+    const value = lowerCaseHeaders[searchKey];
+
+    if (value == undefined) {
+        return [];
+    } else {
+        return ensureArray(value);
+    }
 }

@@ -439,13 +439,57 @@ export type EndpointResponseHeadersType<
     : DefaultResponseHeadersType;
 
 /**
- * Default response headers type.
+ * Like {@link EndpointResponseHeadersType} but for the write side: any non-required header may be
+ * either a single string or an array of strings. Used in implementation-output positions so
+ * endpoints can emit multi-valued headers (most notably `Set-Cookie`).
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type EndpointResponseOutgoingHeadersType<
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
+    Status extends HttpStatus | NoParam = NoParam,
+> = NonNullable<
+    NonNullable<
+        Extract<
+            Extract<Endpoint, EndpointDefinition>['requests'][Extract<Method, DefinableHttpMethod>],
+            EndpointMethodDefinition
+        >['responses']
+    >[Extract<Status, HttpStatus>]
+>['requiredResponseHeaders'] extends infer RequiredHeaders extends BaseRequiredResponseHeaders
+    ? IsNever<RequiredHeaders> extends true
+        ? DefaultOutgoingResponseHeadersType
+        : {
+              [HeaderKey in keyof RequiredHeaders]: ExtractRequiredHeaderValue<
+                  RequiredHeaders[HeaderKey]
+              >;
+          } & DefaultOutgoingResponseHeadersType
+    : DefaultOutgoingResponseHeadersType;
+
+/**
+ * Default response headers type for the read side (fetched response). Header values are always
+ * strings here because browser/Node fetch APIs join multi-valued headers when read via
+ * `Headers.get()` / `Headers.entries()`.
  *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export type DefaultResponseHeadersType = Record<string, string>;
+
+/**
+ * Default response headers type for the write side (the value returned from an endpoint
+ * implementation). Allows array values so endpoints can emit multi-valued headers (most notably
+ * `Set-Cookie`), which must be written as separate header lines on the wire rather than
+ * comma-joined.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type DefaultOutgoingResponseHeadersType = Record<string, string | ReadonlyArray<string>>;
 
 /**
  * Extract an expected required header value.

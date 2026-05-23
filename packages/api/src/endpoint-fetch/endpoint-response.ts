@@ -68,20 +68,6 @@ export function readResponseHeaders(headers: Headers) {
     return Object.fromEntries(headers.entries());
 }
 
-/** Handles reading headers with key case insensitivity. */
-export function readHeaderValue(headers: Record<string, string>, key: string): string | undefined {
-    const searchKey = key.toLowerCase();
-    const matchedKey = Object.keys(headers).find(
-        (headerKey) => headerKey.toLowerCase() === searchKey,
-    );
-
-    if (matchedKey) {
-        return headers[matchedKey];
-    } else {
-        return undefined;
-    }
-}
-
 export type HttpStatusByKey<Status extends HttpStatus> = ExtractKeysWithMatchingValues<
     typeof HttpStatus,
     Status

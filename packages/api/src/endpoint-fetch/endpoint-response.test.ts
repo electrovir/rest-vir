@@ -23,7 +23,7 @@ import type {
     ResolveShapeType,
     UnknownFetchOutput,
 } from './endpoint-response.js';
-import {httpStatusToKey, readHeaderValue, readResponseHeaders} from './endpoint-response.js';
+import {httpStatusToKey, readResponseHeaders} from './endpoint-response.js';
 
 const authLoginEndpoint = defineEndpoint({
     path: '/auth/login',
@@ -478,59 +478,6 @@ describe(readResponseHeaders.name, () => {
             expect: {
                 'x-multi': 'first, second',
             },
-        },
-    ]);
-});
-
-describe(readHeaderValue.name, () => {
-    itCases(readHeaderValue, [
-        {
-            it: 'finds an exact-case header',
-            inputs: [
-                {
-                    'content-type': 'application/json',
-                },
-                'content-type',
-            ],
-            expect: 'application/json',
-        },
-        {
-            it: 'finds a header with a different case',
-            inputs: [
-                {
-                    'X-Request-Id': 'abc',
-                },
-                'x-request-id',
-            ],
-            expect: 'abc',
-        },
-        {
-            it: 'matches case-insensitively in both directions',
-            inputs: [
-                {
-                    authorization: 'Bearer token',
-                },
-                'AUTHORIZATION',
-            ],
-            expect: 'Bearer token',
-        },
-        {
-            it: 'returns undefined when no match is found',
-            inputs: [
-                {
-                    'x-other': 'value',
-                },
-                'x-missing',
-            ],
-            expect: undefined,
-        },
-        {
-            it: 'returns undefined for empty headers',
-            inputs: [
-                {},
-                'any',
-            ],
-            expect: undefined,
         },
     ]);
 });

@@ -43,6 +43,7 @@ import {
 } from './endpoint-fetch/endpoint-response.js';
 import {extractRequiredHeaders} from './required-headers.js';
 import {extractSearchParams} from './search-params.js';
+import {readHeaderValue} from './util/header-util.js';
 import {type NoParam} from './util/no-param.js';
 import {type CommonWebSocket} from './websocket-connect/common-web-socket.js';
 import {
@@ -513,10 +514,16 @@ export async function readResponseBodyAsJsonOrText(
 ): Promise<unknown> {
     const responseText = (await response.clone().text()) || undefined;
 
+    /**
+     * `readHeaderValue` always returns an array. Check whether _any_ entry's content-type string
+     * contains `json` — covers both single-valued (typical) and the rare multi-valued case.
+     */
+    const hasJsonContentType = readHeaderValue(headers, 'content-type').some((value) =>
+        value.includes('json'),
+    );
+
     const parsed: unknown =
-        headers['content-type']?.includes('json') && responseText
-            ? parseJsonWithUndefined(responseText)
-            : undefined;
+        hasJsonContentType && responseText ? parseJsonWithUndefined(responseText) : undefined;
 
     return parsed || responseText;
 }

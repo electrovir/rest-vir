@@ -172,14 +172,19 @@ export async function handleEndpointRequest(
             );
         }
 
+        /**
+         * `Content-Type` is single-valued by spec. `readHeaderValue` always returns an array; take
+         * its first entry (if any) for the outgoing header, falling back to `application/json`.
+         */
+        const contentType =
+            readHeaderValue(statusResponse.headers || {}, 'content-type')[0] || 'application/json';
+
         return {
             statusCode,
             body: statusResponse.responseData,
             headers: {
                 ...statusResponse.headers,
-                'content-type':
-                    readHeaderValue(statusResponse.headers || {}, 'content-type') ||
-                    'application/json',
+                'content-type': contentType,
             },
         };
     } catch (error) {
