@@ -162,6 +162,32 @@ export type EndpointMethodImplementationOutput<
         : never;
 
 /**
+ * The error-status subset of {@link EndpointMethodImplementationOutput}.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * function unauthorized(): EndpointMethodImplementationErrorOutput<
+ *     typeof myEndpoint,
+ *     HttpMethod.Get
+ * > {
+ *     return {[HttpStatus.Unauthorized]: {responseData: undefined}};
+ * }
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export type EndpointMethodImplementationErrorOutput<
+    Endpoint extends EndpointDefinition | NoParam = NoParam,
+    Method extends DefinableHttpMethod | NoParam = NoParam,
+> = Extract<
+    EndpointMethodImplementationOutput<Endpoint, Method>,
+    {[Status in ErrorHttpStatus]: {[Key in Status]: unknown}}[ErrorHttpStatus]
+>;
+
+/**
  * Generic implementation record for an endpoint's methods. Both host and client (mock) reuse this
  * by supplying their own `ExtraParams` (the environment-specific parameters layered onto the shared
  * {@link BaseEndpointMethodImplementationParams}).

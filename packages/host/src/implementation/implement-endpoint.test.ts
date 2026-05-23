@@ -7,6 +7,7 @@ import {
     defineApi,
     defineEndpoint,
     type EndpointDefinition,
+    type EndpointMethodImplementationErrorOutput,
     type EndpointMethodImplementationOutput,
     HttpMethod,
     HttpStatus,
@@ -199,5 +200,87 @@ describe('EndpointImplementation', () => {
             .equals<Readonly<EndpointMethodImplementations<typeof mockEndpoint, MockContext>>>();
         assert.tsType(testAssignment.definition.path).equals<(typeof mockEndpoint)['path']>();
         assert.tsType(testAssignment.definition).equals<typeof mockEndpoint>();
+    });
+});
+
+describe('EndpointMethodImplementationErrorOutput', () => {
+    type ErrorOutput = EndpointMethodImplementationErrorOutput<typeof mockEndpoint, HttpMethod.Get>;
+
+    it('accepts a single-key error-status return', () => {
+        const unauthorized: ErrorOutput = {
+            [HttpStatus.Unauthorized]: {
+                responseData: undefined,
+            },
+        };
+        assert.isDefined(unauthorized);
+
+        const notFound: ErrorOutput = {
+            [HttpStatus.NotFound]: {
+                responseData: 'missing',
+            },
+        };
+        assert.isDefined(notFound);
+
+        const badRequest: ErrorOutput = {
+            [HttpStatus.BadRequest]: {
+                responseData: 'bad',
+            },
+        };
+        assert.isDefined(badRequest);
+    });
+
+    it('rejects a return whose key is a declared success status', () => {
+        const ok: ErrorOutput = {
+            // @ts-expect-error: 200 (Ok) is a declared success status, not an error status.
+            [HttpStatus.Ok]: {
+                responseData: {
+                    hello: 'hi',
+                },
+            },
+        };
+        assert.isDefined(ok);
+    });
+
+    it('rejects a return whose key is not a known status', () => {
+        const bogus: ErrorOutput = {
+            // @ts-expect-error: 999 is not an HttpStatus value.
+            999: {
+                responseData: undefined,
+            },
+        };
+        assert.isDefined(bogus);
+    });
+
+    it('rejects responseHandled', () => {
+        const handled: ErrorOutput = {
+            // @ts-expect-error: responseHandled is not an error-status branch.
+            responseHandled: true,
+        };
+        assert.isDefined(handled);
+    });
+
+    it('is assignable to the full implementation output', () => {
+        const errorOutput: ErrorOutput = {
+            [HttpStatus.Unauthorized]: {
+                responseData: undefined,
+            },
+        };
+        const fullOutput: EndpointMethodImplementationOutput<typeof mockEndpoint, HttpMethod.Get> =
+            errorOutput;
+        assert.isDefined(fullOutput);
+    });
+
+    it('can be returned directly from an implementation', () => {
+        const errorOutput: ErrorOutput = {
+            [HttpStatus.BadRequest]: {
+                responseData: 'invalid',
+            },
+        };
+
+        implementMockEndpoint(mockEndpoint, {
+            [HttpMethod.Get]() {
+                return errorOutput;
+            },
+        });
     });
 });
