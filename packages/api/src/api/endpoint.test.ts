@@ -1,6 +1,7 @@
 import {assert, check} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus, mapObjectValues} from '@augment-vir/common';
 import {describe, it, itCases} from '@augment-vir/test';
+import {type OutgoingHttpHeaders} from 'node:http';
 import {defineShape, exactShape, type Shape} from 'object-shape-tester';
 import {RestVirClient} from '../client.js';
 import {createMockResponse} from '../endpoint-fetch/mock-fetch.js';
@@ -14,6 +15,7 @@ import {
     httpMethodsWithBodies,
     type BaseRequiredResponseHeaders,
     type DefaultErrorResponseType,
+    type DefaultOutgoingResponseHeadersType,
     type DefaultResponseHeadersType,
     type DefaultResponseType,
     type DefinableHttpMethod,
@@ -1018,6 +1020,49 @@ describe('DefaultErrorResponseType', () => {
 describe('DefaultResponseHeadersType', () => {
     it('is Record<string, string>', () => {
         assert.tsType<DefaultResponseHeadersType>().equals<Record<string, string>>();
+    });
+});
+
+describe('DefaultOutgoingResponseHeadersType', () => {
+    it('accepts a single string value', () => {
+        const headers: DefaultOutgoingResponseHeadersType = {
+            'content-type': 'application/json',
+        };
+    });
+
+    it('accepts an array of string values', () => {
+        const headers: DefaultOutgoingResponseHeadersType = {
+            'set-cookie': [
+                'first=1',
+                'second=2',
+            ],
+        };
+    });
+
+    it('accepts an undefined value', () => {
+        const headers: DefaultOutgoingResponseHeadersType = {
+            'x-maybe': undefined,
+        };
+    });
+
+    it('accepts a numeric value (e.g. content-length)', () => {
+        const headers: DefaultOutgoingResponseHeadersType = {
+            'content-length': 1024,
+        };
+    });
+
+    it("accepts Node.js's OutgoingHttpHeaders without a cast", () => {
+        const outgoing: OutgoingHttpHeaders = {
+            'content-type': 'application/json',
+            'content-length': 1024,
+            'set-cookie': [
+                'first=1',
+                'second=2',
+            ],
+            'x-missing': undefined,
+        };
+
+        const headers: DefaultOutgoingResponseHeadersType = outgoing;
     });
 });
 

@@ -489,7 +489,10 @@ export type DefaultResponseHeadersType = Record<string, string>;
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type DefaultOutgoingResponseHeadersType = Record<string, string | ReadonlyArray<string>>;
+export type DefaultOutgoingResponseHeadersType = Record<
+    string,
+    string | number | ReadonlyArray<string> | undefined
+>;
 
 /**
  * Extract an expected required header value.

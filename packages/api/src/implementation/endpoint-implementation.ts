@@ -162,7 +162,7 @@ export type EndpointMethodImplementationOutput<
         : never;
 
 /**
- * The error-status subset of {@link EndpointMethodImplementationOutput}.
+ * A generic type just for error responses.
  *
  * @category Internal
  * @category Package : @rest-vir/api
@@ -179,13 +179,12 @@ export type EndpointMethodImplementationOutput<
  *
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
-export type EndpointMethodImplementationErrorOutput<
-    Endpoint extends EndpointDefinition | NoParam = NoParam,
-    Method extends DefinableHttpMethod | NoParam = NoParam,
-> = Extract<
-    EndpointMethodImplementationOutput<Endpoint, Method>,
-    {[Status in ErrorHttpStatus]: {[Key in Status]: unknown}}[ErrorHttpStatus]
->;
+export type EndpointMethodImplementationErrorOutput = RequireExactlyOne<{
+    [Status in ErrorHttpStatus]: {
+        responseData: DefaultErrorResponseType;
+        headers?: DefaultOutgoingResponseHeadersType | undefined;
+    };
+}>;
 
 /**
  * Generic implementation record for an endpoint's methods. Both host and client (mock) reuse this

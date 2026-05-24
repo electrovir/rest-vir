@@ -321,5 +321,15 @@ describe(readHeaderValue.name, () => {
             ],
             expect: [],
         },
+        {
+            it: 'stringifies a numeric header value (e.g. content-length)',
+            inputs: [
+                {
+                    'content-length': 1024,
+                },
+                'content-length',
+            ],
+            expect: ['1024'],
+        },
     ]);
 });

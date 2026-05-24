@@ -111,14 +111,15 @@ export function headersToObject(headers: AllowedHeaders | undefined): Record<str
 /**
  * Reads a header's values with key case-insensitivity. Always returns an array: empty if the header
  * is absent or explicitly `undefined`, a single-element array for single-valued headers, and the
- * full list for multi-valued ones (e.g. `Set-Cookie`).
+ * full list for multi-valued ones (e.g. `Set-Cookie`). Numeric values (as `node:http`'s
+ * `OutgoingHttpHeader` permits for e.g. `content-length`) are stringified.
  *
  * @category Internal
  * @category Package : @rest-vir/api
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export function readHeaderValue(
-    headers: Readonly<Record<string, string | ReadonlyArray<string> | undefined>>,
+    headers: Readonly<Record<string, string | number | ReadonlyArray<string> | undefined>>,
     key: string,
 ): ReadonlyArray<string> {
     const searchKey = key.toLowerCase();
@@ -133,6 +134,8 @@ export function readHeaderValue(
 
     if (value == undefined) {
         return [];
+    } else if (check.isNumber(value)) {
+        return [String(value)];
     } else {
         return ensureArray(value);
     }

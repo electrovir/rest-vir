@@ -204,7 +204,7 @@ describe('EndpointImplementation', () => {
 });
 
 describe('EndpointMethodImplementationErrorOutput', () => {
-    type ErrorOutput = EndpointMethodImplementationErrorOutput<typeof mockEndpoint, HttpMethod.Get>;
+    type ErrorOutput = EndpointMethodImplementationErrorOutput;
 
     it('accepts a single-key error-status return', () => {
         const unauthorized: ErrorOutput = {
