@@ -38,7 +38,7 @@ describe('BaseEndpointMethodImplementationParams', () => {
     it('never types searchParams as undefined for an endpoint with no declared searchParams', () => {
         type Params = BaseEndpointMethodImplementationParams<
             typeof noSearchParamsEndpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
 
         assert.tsType<undefined>().notMatches<Params['searchParams']>();
@@ -47,7 +47,7 @@ describe('BaseEndpointMethodImplementationParams', () => {
     it('never types searchParams as undefined for an endpoint with declared searchParams', () => {
         type Params = BaseEndpointMethodImplementationParams<
             typeof withSearchParamsEndpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
 
         assert.tsType<undefined>().notMatches<Params['searchParams']>();

@@ -41,48 +41,51 @@ describe('EndpointParamObject', () => {
     it('can be assigned to from specific implementations', () => {
         const fromNoRequestData: EndpointFetchParamObject = {} as any as EndpointFetchParamObject<
             typeof pingEndpoint,
-            HttpMethod.Post
+            typeof HttpMethod.Post
         >;
         const fromWithRequestData: EndpointFetchParamObject = {} as any as EndpointFetchParamObject<
             typeof usersCreateEndpoint,
-            HttpMethod.Post
+            typeof HttpMethod.Post
         >;
         const fromWithSearchParams: EndpointFetchParamObject =
-            {} as any as EndpointFetchParamObject<typeof searchEndpoint, HttpMethod.Get>;
+            {} as any as EndpointFetchParamObject<typeof searchEndpoint, typeof HttpMethod.Get>;
         const fromWithPathParams: EndpointFetchParamObject = {} as any as EndpointFetchParamObject<
             typeof itemByIdEndpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
         const fromWithRequiredHeaders: EndpointFetchParamObject =
-            {} as any as EndpointFetchParamObject<typeof protectedEndpoint, HttpMethod.Get>;
+            {} as any as EndpointFetchParamObject<typeof protectedEndpoint, typeof HttpMethod.Get>;
         const fromWithCustomProps: EndpointFetchParamObject = {} as any as EndpointFetchParamObject<
             typeof adminSettingsEndpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
         const fromWithResponseHeaders: EndpointFetchParamObject =
-            {} as any as EndpointFetchParamObject<typeof downloadEndpoint, HttpMethod.Get>;
+            {} as any as EndpointFetchParamObject<typeof downloadEndpoint, typeof HttpMethod.Get>;
         const fromWithAllCommonRouteFields: EndpointFetchParamObject =
-            {} as any as EndpointFetchParamObject<typeof fullRouteEndpoint, HttpMethod.Post>;
+            {} as any as EndpointFetchParamObject<typeof fullRouteEndpoint, typeof HttpMethod.Post>;
         const fromWithRegexClientOrigin: EndpointFetchParamObject =
-            {} as any as EndpointFetchParamObject<typeof partnerApiEndpoint, HttpMethod.Post>;
+            {} as any as EndpointFetchParamObject<
+                typeof partnerApiEndpoint,
+                typeof HttpMethod.Post
+            >;
         const fromMultipleRequiredHeaders: EndpointFetchParamObject =
             {} as any as EndpointFetchParamObject<
                 typeof multipleRequiredHeadersEndpoint,
-                HttpMethod.Get
+                typeof HttpMethod.Get
             >;
         const fromWildcardPath: EndpointFetchParamObject = {} as any as EndpointFetchParamObject<
             typeof wildcardEndpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
         const fromNamedParamsAndWildcard: EndpointFetchParamObject =
             {} as any as EndpointFetchParamObject<
                 typeof namedParamsAndWildcardEndpoint,
-                HttpMethod.Get
+                typeof HttpMethod.Get
             >;
     });
 
     it('makes all properties optional for an endpoint with no request data or search params', () => {
-        type Result = EndpointFetchParamObject<typeof pingEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchParamObject<typeof pingEndpoint, typeof HttpMethod.Post>;
 
         assert.tsType<Result>().matches<{
             requestData?: undefined;
@@ -96,13 +99,13 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires requestData when endpoint defines a request shape', () => {
-        type Result = EndpointFetchParamObject<typeof withBodyEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchParamObject<typeof withBodyEndpoint, typeof HttpMethod.Post>;
 
         assert.tsType<Result['requestData']>().equals<{name: string}>();
     });
 
     it('makes requestData optional when endpoint has undefined requestData', () => {
-        type Result = EndpointFetchParamObject<typeof noBodyEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchParamObject<typeof noBodyEndpoint, typeof HttpMethod.Post>;
 
         assert.tsType<Result>().matches<{
             requestData?: undefined;
@@ -110,7 +113,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires searchParams when endpoint defines search param shapes', () => {
-        type Result = EndpointFetchParamObject<typeof withSearchEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof withSearchEndpoint, typeof HttpMethod.Get>;
 
         type SearchType = Result['searchParams'];
 
@@ -124,7 +127,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires pathParams for endpoints with named path parameters', () => {
-        type Result = EndpointFetchParamObject<typeof userByIdEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof userByIdEndpoint, typeof HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -135,7 +138,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires pathParams with multiple named parameters', () => {
-        type Result = EndpointFetchParamObject<typeof userPostEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof userPostEndpoint, typeof HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -146,7 +149,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('makes pathParams optional for endpoints with no path parameters', () => {
-        type Result = EndpointFetchParamObject<typeof simpleEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof simpleEndpoint, typeof HttpMethod.Get>;
 
         assert.tsType<Result>().matches<{
             pathParams?: undefined;
@@ -154,7 +157,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires wildcard in pathParams for wildcard endpoints', () => {
-        type Result = EndpointFetchParamObject<typeof wildcardEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof wildcardEndpoint, typeof HttpMethod.Get>;
 
         assert.tsType<Result['pathParams']>().equals<
             Readonly<{
@@ -164,7 +167,10 @@ describe('EndpointParamObject', () => {
     });
 
     it('requires requiredHeaders when endpoint defines them', () => {
-        type Result = EndpointFetchParamObject<typeof singleRequiredHeaderEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<
+            typeof singleRequiredHeaderEndpoint,
+            typeof HttpMethod.Get
+        >;
 
         assert.tsType<Result>().matches<{
             requiredHeaders?: {
@@ -174,7 +180,7 @@ describe('EndpointParamObject', () => {
     });
 
     it('makes requiredHeaders optional when not defined on endpoint', () => {
-        type Result = EndpointFetchParamObject<typeof publicEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParamObject<typeof publicEndpoint, typeof HttpMethod.Get>;
 
         assert.tsType<Result>().matches<{
             requiredHeaders?: undefined;
@@ -209,7 +215,7 @@ describe('ClientFetch', () => {
 
 describe('EndpointParams', () => {
     it('is an optional tuple when no required keys exist', () => {
-        type Result = EndpointFetchParams<typeof simpleEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParams<typeof simpleEndpoint, typeof HttpMethod.Get>;
 
         /**
          * When all properties are optional, the tuple itself should be optional (zero args
@@ -219,28 +225,28 @@ describe('EndpointParams', () => {
     });
 
     it('is a required tuple when requestData is required', () => {
-        type Result = EndpointFetchParams<typeof withBodyEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchParams<typeof withBodyEndpoint, typeof HttpMethod.Post>;
 
         /** When requestData is required, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is a required tuple when pathParams are required', () => {
-        type Result = EndpointFetchParams<typeof userByIdEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParams<typeof userByIdEndpoint, typeof HttpMethod.Get>;
 
         /** When path has named params, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is a required tuple when wildcard is required', () => {
-        type Result = EndpointFetchParams<typeof wildcardEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchParams<typeof wildcardEndpoint, typeof HttpMethod.Get>;
 
         /** When path has a wildcard, the params object must be provided. */
         assert.tsType<Result>().matches<[unknown]>();
     });
 
     it('is an optional tuple when only optional features are used', () => {
-        type Result = EndpointFetchParams<typeof noBodyEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchParams<typeof noBodyEndpoint, typeof HttpMethod.Post>;
 
         assert.tsType<Result>().matches<[unknown?]>();
     });

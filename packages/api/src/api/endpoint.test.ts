@@ -72,7 +72,7 @@ describe('ExtractEndpointMethodDefinition', () => {
 
         type ExtractedEndpointMethodDefinition = ExtractEndpointMethodDefinition<
             typeof endpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
 
         assert.tsType<ExtractedEndpointMethodDefinition>().equals<
@@ -92,7 +92,7 @@ describe('ExtractEndpointMethodDefinition', () => {
 
 describe('EndpointMethodDefinition', () => {
     it('allows requestData for POST', () => {
-        const definition: EndpointMethodDefinition<HttpMethod.Post> = {
+        const definition: EndpointMethodDefinition<typeof HttpMethod.Post> = {
             clientOriginRequirement: 'https://example.com',
             requestData: defineShape({
                 name: '',
@@ -106,7 +106,7 @@ describe('EndpointMethodDefinition', () => {
     });
 
     it('disallows requestData for GET', () => {
-        const definition: EndpointMethodDefinition<HttpMethod.Get> = {
+        const definition: EndpointMethodDefinition<typeof HttpMethod.Get> = {
             clientOriginRequirement: 'https://example.com',
             // @ts-expect-error: GET does not allow requestData
             requestData: defineShape({
@@ -118,7 +118,7 @@ describe('EndpointMethodDefinition', () => {
                 },
             },
         };
-        const definition2: EndpointMethodDefinition<HttpMethod.Get> = {
+        const definition2: EndpointMethodDefinition<typeof HttpMethod.Get> = {
             clientOriginRequirement: 'https://example.com',
             responses: {
                 [HttpStatus.Ok]: {
@@ -129,7 +129,7 @@ describe('EndpointMethodDefinition', () => {
     });
 
     it('allows searchParams', () => {
-        const definition: EndpointMethodDefinition<HttpMethod.Get> = {
+        const definition: EndpointMethodDefinition<typeof HttpMethod.Get> = {
             clientOriginRequirement: '',
             searchParams: {
                 query: defineShape(''),
@@ -144,7 +144,7 @@ describe('EndpointMethodDefinition', () => {
     });
 
     it('allows customProps', () => {
-        const definition: EndpointMethodDefinition<HttpMethod.Get> = {
+        const definition: EndpointMethodDefinition<typeof HttpMethod.Get> = {
             clientOriginRequirement: '',
             customProps: {
                 someProp: 'hello',
@@ -158,7 +158,7 @@ describe('EndpointMethodDefinition', () => {
     });
 
     it('allows omitting optional fields', () => {
-        const definition: EndpointMethodDefinition<HttpMethod.Post> = {
+        const definition: EndpointMethodDefinition<typeof HttpMethod.Post> = {
             clientOriginRequirement: '',
             responses: {
                 [HttpStatus.Ok]: {
@@ -739,7 +739,7 @@ describe('ExtractEndpointMethodDefinitionWithNoParam', () => {
 
         type Extracted = ExtractEndpointMethodDefinitionWithNoParam<
             typeof endpoint,
-            HttpMethod.Get
+            typeof HttpMethod.Get
         >;
 
         assert.tsType<Extracted>().equals<
@@ -773,7 +773,7 @@ describe('EndpointRequestType', () => {
         });
 
         assert
-            .tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>()
+            .tsType<EndpointRequestType<typeof endpoint, typeof HttpMethod.Post>>()
             .equals<{title: string}>();
     });
 
@@ -792,7 +792,9 @@ describe('EndpointRequestType', () => {
             },
         });
 
-        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>().equals<undefined>();
+        assert
+            .tsType<EndpointRequestType<typeof endpoint, typeof HttpMethod.Post>>()
+            .equals<undefined>();
     });
 
     it('returns undefined when requestData is omitted', () => {
@@ -809,7 +811,9 @@ describe('EndpointRequestType', () => {
             },
         });
 
-        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Get>>().equals<undefined>();
+        assert
+            .tsType<EndpointRequestType<typeof endpoint, typeof HttpMethod.Get>>()
+            .equals<undefined>();
     });
 
     it('falls back to any when given NoParam', () => {
@@ -830,7 +834,9 @@ describe('EndpointRequestType', () => {
             },
         });
 
-        assert.tsType<EndpointRequestType<typeof endpoint, HttpMethod.Post>>().matches<any>();
+        assert
+            .tsType<EndpointRequestType<typeof endpoint, typeof HttpMethod.Post>>()
+            .matches<any>();
     });
 });
 
@@ -852,7 +858,9 @@ describe('EndpointResponseType', () => {
         });
 
         assert
-            .tsType<EndpointResponseType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>>()
+            .tsType<
+                EndpointResponseType<typeof endpoint, typeof HttpMethod.Get, typeof HttpStatus.Ok>
+            >()
             .equals<{id: string}>();
     });
 
@@ -874,8 +882,8 @@ describe('EndpointResponseType', () => {
             .tsType<
                 EndpointResponseType<
                     typeof endpoint,
-                    HttpMethod.Get,
-                    HttpStatus.InternalServerError
+                    typeof HttpMethod.Get,
+                    typeof HttpStatus.InternalServerError
                 >
             >()
             .equals<DefaultErrorResponseType>();
@@ -896,7 +904,13 @@ describe('EndpointResponseType', () => {
         });
 
         assert
-            .tsType<EndpointResponseType<typeof endpoint, HttpMethod.Get, HttpStatus.Accepted>>()
+            .tsType<
+                EndpointResponseType<
+                    typeof endpoint,
+                    typeof HttpMethod.Get,
+                    typeof HttpStatus.Accepted
+                >
+            >()
             .equals<unknown>();
     });
 
@@ -968,7 +982,11 @@ describe('wrapper inference', () => {
     it('preserves the per-method response type through the wrapper', () => {
         assert
             .tsType<
-                EndpointResponseType<typeof wrappedSimpleEndpoint, HttpMethod.Get, HttpStatus.Ok>
+                EndpointResponseType<
+                    typeof wrappedSimpleEndpoint,
+                    typeof HttpMethod.Get,
+                    typeof HttpStatus.Ok
+                >
             >()
             .equals<'hi'>();
     });
@@ -1002,12 +1020,12 @@ describe('wrapper inference', () => {
 describe('DefaultResponseType', () => {
     it('is the error response type for error statuses', () => {
         assert
-            .tsType<DefaultResponseType<HttpStatus.InternalServerError>>()
+            .tsType<DefaultResponseType<typeof HttpStatus.InternalServerError>>()
             .equals<DefaultErrorResponseType>();
     });
 
     it('is unknown for success statuses', () => {
-        assert.tsType<DefaultResponseType<HttpStatus.Ok>>().equals<unknown>();
+        assert.tsType<DefaultResponseType<typeof HttpStatus.Ok>>().equals<unknown>();
     });
 });
 
@@ -1118,7 +1136,11 @@ describe('EndpointResponseHeadersType (with required headers)', () => {
             },
         });
 
-        type Result = EndpointResponseHeadersType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>;
+        type Result = EndpointResponseHeadersType<
+            typeof endpoint,
+            typeof HttpMethod.Get,
+            typeof HttpStatus.Ok
+        >;
 
         const merged: Result = {
             'x-request-id': 'abc-123',
@@ -1144,7 +1166,11 @@ describe('EndpointResponseHeadersType (with required headers)', () => {
             },
         });
 
-        type Result = EndpointResponseHeadersType<typeof endpoint, HttpMethod.Get, HttpStatus.Ok>;
+        type Result = EndpointResponseHeadersType<
+            typeof endpoint,
+            typeof HttpMethod.Get,
+            typeof HttpStatus.Ok
+        >;
 
         assert.tsType<Result>().equals<DefaultResponseHeadersType>();
     });
@@ -1157,7 +1183,7 @@ describe('EndpointRequestHeadersType', () => {
 
     it('returns undefined when the route does not declare requiredRequestHeaders', () => {
         type Result = EndpointRequestHeadersType<
-            EndpointMethodDefinition<HttpMethod.Get> & {requiredRequestHeaders?: undefined}
+            EndpointMethodDefinition<typeof HttpMethod.Get> & {requiredRequestHeaders?: undefined}
         >;
 
         assert.tsType<Result>().equals<undefined>();
@@ -1166,7 +1192,7 @@ describe('EndpointRequestHeadersType', () => {
     it('returns a partial record of declared required headers', () => {
         const authShape = defineShape('');
         type Result = EndpointRequestHeadersType<
-            EndpointMethodDefinition<HttpMethod.Get> & {
+            EndpointMethodDefinition<typeof HttpMethod.Get> & {
                 requiredRequestHeaders: {
                     authorization: typeof authShape;
                     'x-tenant': RegExp;

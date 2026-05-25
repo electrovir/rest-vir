@@ -1,5 +1,10 @@
 import {assertWrap, check} from '@augment-vir/assert';
-import {ensureErrorAndPrependMessage, extractErrorMessage, HttpStatus} from '@augment-vir/common';
+import {
+    ensureErrorAndPrependMessage,
+    extractErrorMessage,
+    filterMap,
+    HttpStatus,
+} from '@augment-vir/common';
 import {parseUrl} from 'url-vir';
 import {type ApiDefinition} from '../api/api.js';
 import {
@@ -200,10 +205,24 @@ function buildMockResponseFromResult(
      * Find the single entry whose key parses to a valid `HttpStatus`. Don't rely on
      * `Object.entries[0]` ordering for numeric-string keys (it varies by V8 internals).
      */
-    const statusEntries = entries.filter(
+    const statusEntries = filterMap(
+        entries,
         ([
-            key,
-        ]) => check.isEnumValue(Number(key), HttpStatus),
+            rawStatusKey,
+            value,
+        ]) => {
+            const rawNumberStatusKey = Number(rawStatusKey);
+
+            if (!check.isEnumValue(rawNumberStatusKey, HttpStatus)) {
+                return undefined;
+            }
+
+            return {
+                status: rawNumberStatusKey,
+                value,
+            };
+        },
+        check.isTruthy,
     );
 
     if (statusEntries.length !== 1 || !statusEntries[0]) {
@@ -216,14 +235,11 @@ function buildMockResponseFromResult(
         });
     }
 
-    const [
-        status,
-        statusValue,
-    ] = statusEntries[0];
+    const {status, value} = statusEntries[0];
 
     return createMockResponse({
-        status: Number(status),
-        body: statusValue.responseData,
-        headers: statusValue.headers,
+        status,
+        body: value.responseData,
+        headers: value.headers,
     });
 }

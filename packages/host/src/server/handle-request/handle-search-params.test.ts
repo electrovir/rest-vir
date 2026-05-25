@@ -81,7 +81,7 @@ const noSearchImplementation: EndpointImplementation = {
 
 function buildRequest(
     query: Readonly<Record<string, unknown>> | undefined,
-    method = HttpMethod.Get,
+    method: HttpMethod = HttpMethod.Get,
 ) {
     return {
         method,

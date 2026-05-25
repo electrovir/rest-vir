@@ -113,7 +113,7 @@ describe('ResolveShapeType', () => {
 
 describe('EndpointFetchOutput', () => {
     it('handles single ok response status', () => {
-        const result = {} as EndpointFetchOutput<typeof usersEndpoint, HttpMethod.Get>;
+        const result = {} as EndpointFetchOutput<typeof usersEndpoint, typeof HttpMethod.Get>;
 
         if (result.Ok) {
             assert.tsType(result.Ok).matches<{
@@ -127,7 +127,10 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles POST endpoint with multiple response statuses', () => {
-        const result = {} as EndpointFetchOutput<typeof usersCreateEndpoint, HttpMethod.Post>;
+        const result = {} as EndpointFetchOutput<
+            typeof usersCreateEndpoint,
+            typeof HttpMethod.Post
+        >;
 
         if (result.Created) {
             assert.tsType(result.Created).matches<{
@@ -143,7 +146,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles GET endpoint with Ok and NotFound responses', () => {
-        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, HttpMethod.Get>;
+        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, typeof HttpMethod.Get>;
 
         if (result.Ok) {
             assert.tsType(result.Ok).matches<{
@@ -157,7 +160,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles endpoint with empty responses', () => {
-        const result = {} as EndpointFetchOutput<typeof partnerApiEndpoint, HttpMethod.Post>;
+        const result = {} as EndpointFetchOutput<typeof partnerApiEndpoint, typeof HttpMethod.Post>;
 
         if (result.unexpectedError) {
             assert.tsType(result.unexpectedError).matches<{
@@ -169,7 +172,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('includes headers as Record<string, string> for endpoint without response headers', () => {
-        const result = {} as EndpointFetchOutput<typeof protectedEndpoint, HttpMethod.Get>;
+        const result = {} as EndpointFetchOutput<typeof protectedEndpoint, typeof HttpMethod.Get>;
 
         if (result.Ok) {
             assert.tsType(result.Ok.headers).matches<DefaultResponseHeadersType>();
@@ -177,7 +180,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles DELETE endpoint with NoContent response', () => {
-        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, HttpMethod.Delete>;
+        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, typeof HttpMethod.Delete>;
 
         if (result.NoContent) {
             assert.tsType(result.NoContent).matches<{
@@ -189,7 +192,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles endpoint with complex nested response', () => {
-        const result = {} as EndpointFetchOutput<typeof authLoginEndpoint, HttpMethod.Post>;
+        const result = {} as EndpointFetchOutput<typeof authLoginEndpoint, typeof HttpMethod.Post>;
 
         if (result.Ok) {
             const data = result.Ok.responseData;
@@ -208,7 +211,10 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles paginated endpoint', () => {
-        const result = {} as EndpointFetchOutput<typeof projectsListEndpoint, HttpMethod.Post>;
+        const result = {} as EndpointFetchOutput<
+            typeof projectsListEndpoint,
+            typeof HttpMethod.Post
+        >;
 
         if (result.Ok) {
             const data = result.Ok.responseData;
@@ -221,7 +227,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles PUT endpoint with Ok response', () => {
-        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, HttpMethod.Put>;
+        const result = {} as EndpointFetchOutput<typeof itemByIdEndpoint, typeof HttpMethod.Put>;
 
         if (result.Ok) {
             assert.tsType(result.Ok).matches<{
@@ -233,7 +239,7 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('handles download endpoint with string response data', () => {
-        const result = {} as EndpointFetchOutput<typeof downloadEndpoint, HttpMethod.Get>;
+        const result = {} as EndpointFetchOutput<typeof downloadEndpoint, typeof HttpMethod.Get>;
 
         if (result.Ok) {
             assert.tsType(result.Ok.responseData).equals<string>();
@@ -241,20 +247,20 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('always allows string or undefined for a defined error response status', () => {
-        type CreateResult = EndpointFetchOutput<typeof usersCreateEndpoint, HttpMethod.Post>;
+        type CreateResult = EndpointFetchOutput<typeof usersCreateEndpoint, typeof HttpMethod.Post>;
 
         /** Defined error response data must include `string | undefined` in addition to its shape. */
         assert
             .tsType<NonNullable<CreateResult['BadRequest']>['responseData']>()
             .equals<{error: string} | string | undefined>();
 
-        type AuthResult = EndpointFetchOutput<typeof authLoginEndpoint, HttpMethod.Post>;
+        type AuthResult = EndpointFetchOutput<typeof authLoginEndpoint, typeof HttpMethod.Post>;
 
         assert
             .tsType<NonNullable<AuthResult['Unauthorized']>['responseData']>()
             .equals<{error: string; remainingAttempts: number} | string | undefined>();
 
-        type ItemResult = EndpointFetchOutput<typeof itemByIdEndpoint, HttpMethod.Get>;
+        type ItemResult = EndpointFetchOutput<typeof itemByIdEndpoint, typeof HttpMethod.Get>;
 
         /**
          * A defined error response with `responseData: undefined` collapses to `string |
@@ -264,7 +270,7 @@ describe('EndpointFetchOutput', () => {
             .tsType<NonNullable<ItemResult['NotFound']>['responseData']>()
             .equals<string | undefined>();
 
-        type ErrorOnlyResult = EndpointFetchOutput<typeof errorOnlyEndpoint, HttpMethod.Get>;
+        type ErrorOnlyResult = EndpointFetchOutput<typeof errorOnlyEndpoint, typeof HttpMethod.Get>;
 
         assert
             .tsType<NonNullable<ErrorOnlyResult['BadRequest']>['responseData']>()
@@ -272,13 +278,13 @@ describe('EndpointFetchOutput', () => {
     });
 
     it('does not widen success response data with string or undefined', () => {
-        type Result = EndpointFetchOutput<typeof usersCreateEndpoint, HttpMethod.Post>;
+        type Result = EndpointFetchOutput<typeof usersCreateEndpoint, typeof HttpMethod.Post>;
 
         assert.tsType<NonNullable<Result['Created']>['responseData']>().equals<{id: string}>();
     });
 
     it('exposes undefined error statuses with unknown response data', () => {
-        type Result = EndpointFetchOutput<typeof usersEndpoint, HttpMethod.Get>;
+        type Result = EndpointFetchOutput<typeof usersEndpoint, typeof HttpMethod.Get>;
 
         assert
             .tsType<NonNullable<Result['unexpectedError']>['responseData']>()
@@ -313,13 +319,19 @@ describe('UnknownFetchOutput', () => {
 
 describe('DefinedEndpointFetchOutputs', () => {
     it('produces a record keyed by HttpStatus name', () => {
-        type Result = DefinedEndpointFetchOutputs<typeof usersCreateEndpoint, HttpMethod.Post>;
+        type Result = DefinedEndpointFetchOutputs<
+            typeof usersCreateEndpoint,
+            typeof HttpMethod.Post
+        >;
 
         assert.tsType<keyof Result>().equals<'Created' | 'BadRequest'>();
     });
 
     it('returns an empty object for an endpoint with no matching method', () => {
-        type Result = DefinedEndpointFetchOutputs<typeof usersCreateEndpoint, HttpMethod.Get>;
+        type Result = DefinedEndpointFetchOutputs<
+            typeof usersCreateEndpoint,
+            typeof HttpMethod.Get
+        >;
 
         // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         assert.tsType<Result>().equals<{}>();
@@ -328,7 +340,10 @@ describe('DefinedEndpointFetchOutputs', () => {
 
 describe('DefinedEndpointFetchStreamOutputs', () => {
     it('replaces responseData with a ReadableStream<Uint8Array>', () => {
-        type Result = DefinedEndpointFetchStreamOutputs<typeof usersEndpoint, HttpMethod.Get>;
+        type Result = DefinedEndpointFetchStreamOutputs<
+            typeof usersEndpoint,
+            typeof HttpMethod.Get
+        >;
 
         assert
             .tsType<NonNullable<Result['Ok']>['responseData']>()
@@ -338,7 +353,7 @@ describe('DefinedEndpointFetchStreamOutputs', () => {
     it('preserves the error fallback for error statuses', () => {
         type Result = DefinedEndpointFetchStreamOutputs<
             typeof usersCreateEndpoint,
-            HttpMethod.Post
+            typeof HttpMethod.Post
         >;
 
         assert
@@ -349,7 +364,7 @@ describe('DefinedEndpointFetchStreamOutputs', () => {
 
 describe('EndpointFetchStreamOutput', () => {
     it('exactly-one-of unions ReadableStream success cases with unexpectedError', () => {
-        const result = {} as EndpointFetchStreamOutput<typeof usersEndpoint, HttpMethod.Get>;
+        const result = {} as EndpointFetchStreamOutput<typeof usersEndpoint, typeof HttpMethod.Get>;
 
         if (result.Ok) {
             assert.tsType<typeof result.Ok.responseData>().equals<ReadableStream<Uint8Array>>();

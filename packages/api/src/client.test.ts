@@ -333,7 +333,7 @@ const fullApi = defineApi({
 
 describe('StatusByKey', () => {
     it('extracts ok', () => {
-        type Extracted = HttpStatusByKey<HttpStatus.Ok>;
+        type Extracted = HttpStatusByKey<typeof HttpStatus.Ok>;
 
         assert.tsType<Extracted>().equals<'Ok'>();
     });

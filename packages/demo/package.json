@@ -26,8 +26,8 @@
         "test:docs": "exit 0"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.70.0",
-        "@augment-vir/common": "^31.70.0",
+        "@augment-vir/assert": "^31.71.0",
+        "@augment-vir/common": "^31.71.0",
         "@fastify/multipart": "^10.0.0",
         "@rest-vir/api": "*",
         "@rest-vir/host": "*",

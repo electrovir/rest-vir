@@ -44,9 +44,9 @@ export type BaseEndpointMethodImplementationParams<
         : Readonly<EndpointDefinition>;
     requestHeaders: Readonly<Record<string, string | string[] | undefined>>;
     requestData: EndpointRequestType<Endpoint, Method>;
-    searchParams: NonNullable<RouteSearchParamsType<
-        ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>
-    >>;
+    searchParams: NonNullable<
+        RouteSearchParamsType<ExtractEndpointMethodDefinitionWithNoParam<Endpoint, Method>>
+    >;
     pathParams: Endpoint extends EndpointDefinition
         ? ExtractPathParams<Endpoint['path']>
         : ExtractPathParams;

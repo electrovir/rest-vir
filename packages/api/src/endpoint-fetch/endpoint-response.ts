@@ -31,7 +31,9 @@ export type DefinedEndpointFetchOutputs<
               > as HttpStatusByKey<Status>]: {
                   status: Status;
                   responseData:
-                      | ResolveShapeType<EndpointMethod['responses'][Status]['responseData']>
+                      | ResolveShapeType<
+                            NonNullable<EndpointMethod['responses'][Status]>['responseData']
+                        >
                       | (Status extends ErrorHttpStatus ? string | undefined : never);
                   headers: EndpointResponseHeadersType<
                       Endpoint,

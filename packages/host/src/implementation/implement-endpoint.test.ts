@@ -115,7 +115,7 @@ describe('EndpointImplementation', () => {
                 >
             >();
 
-        type Implementation = EndpointImplementation['implementation'][HttpMethod.Get];
+        type Implementation = EndpointImplementation['implementation'][typeof HttpMethod.Get];
 
         assert
             .tsType<Implementation>()
@@ -265,8 +265,10 @@ describe('EndpointMethodImplementationErrorOutput', () => {
                 responseData: undefined,
             },
         };
-        const fullOutput: EndpointMethodImplementationOutput<typeof mockEndpoint, HttpMethod.Get> =
-            errorOutput;
+        const fullOutput: EndpointMethodImplementationOutput<
+            typeof mockEndpoint,
+            typeof HttpMethod.Get
+        > = errorOutput;
         assert.isDefined(fullOutput);
     });
 

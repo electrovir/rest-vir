@@ -148,18 +148,12 @@ export function extractEndpointMethodDefinition<
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const definableHttpMethods = [
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Get}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Put}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Post}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Delete}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Patch}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Trace}`,
+    HttpMethod.Get,
+    HttpMethod.Put,
+    HttpMethod.Post,
+    HttpMethod.Delete,
+    HttpMethod.Patch,
+    HttpMethod.Trace,
 ] as const;
 
 export function extractHttpMethod(rawValue: string): DefinableHttpMethod | undefined {
@@ -189,14 +183,10 @@ export type DefinableHttpMethod = ArrayElement<typeof definableHttpMethods>;
  * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
  */
 export const httpMethodsWithBodies = [
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Post}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Put}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Patch}`,
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-template-expression
-    `${HttpMethod.Delete}`,
+    HttpMethod.Post,
+    HttpMethod.Put,
+    HttpMethod.Patch,
+    HttpMethod.Delete,
 ] as const;
 
 /**
