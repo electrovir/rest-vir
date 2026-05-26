@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/api",
-    "version": "1.7.2",
+    "version": "2.0.0-beta.0",
     "description": "Define a declarative and type safe REST API and connect to it from a client.",
     "keywords": [
         "rest",

@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/large-api-mock",
-    "version": "1.7.2",
+    "version": "2.0.0-beta.0",
     "private": true,
     "description": "Mock data for stress-testing rest-vir's TypeScript types: a large API definition and matching implementation.",
     "homepage": "https://github.com/electrovir/rest-vir",
@@ -27,8 +27,8 @@
     "dependencies": {
         "@augment-vir/assert": "^31.71.0",
         "@augment-vir/common": "^31.71.0",
-        "@rest-vir/api": "^1.7.2",
-        "@rest-vir/host": "^1.7.2",
+        "@rest-vir/api": "*",
+        "@rest-vir/host": "*",
         "structured-render": "^2.7.0"
     },
     "devDependencies": {
