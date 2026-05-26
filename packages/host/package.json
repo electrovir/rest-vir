@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/host",
-    "version": "2.0.0-beta.0",
+    "version": "2.0.0-beta.1",
     "description": "Implement a declarative and type safe REST API and host it.",
     "keywords": [
         "rest",
