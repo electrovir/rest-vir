@@ -197,7 +197,8 @@ describeApi(
                 requestData: 'echo request',
             });
             assert.isTrue(response.ok);
-            assert.strictEquals(await response.text(), 'echo response');
+            /** String `responseData` is JSON-encoded on the wire — read it back via `.json()`. */
+            assert.strictEquals(await response.json(), 'echo response');
         });
 
         it('handles a RejectRequestError', async () => {

@@ -2,6 +2,7 @@ import {assert} from '@augment-vir/assert';
 import {type AnyObject, HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
+import {defineShape} from 'object-shape-tester';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
 import {
     type RunningServerInfo,
@@ -128,7 +129,7 @@ describe(handleEndpointRequest.name, () => {
             statusCode: HttpStatus.BadRequest,
             body: 'Please enter a question.',
             headers: {
-                'content-type': 'application/json',
+                'content-type': 'text/plain',
             },
         });
     });
@@ -181,7 +182,7 @@ describe(handleEndpointRequest.name, () => {
             statusCode: HttpStatus.BadRequest,
             body: undefined,
             headers: {
-                'content-type': 'application/json',
+                'content-type': 'text/plain',
             },
         });
     });
@@ -287,6 +288,148 @@ describe(handleEndpointRequest.name, () => {
                 matchMessage: 'Got response data but none was expected.',
             },
         );
+    });
+
+    it('JSON-encodes a string body on a declared application/json response', async () => {
+        /**
+         * Fastify treats string bodies as pre-serialized JSON when `content-type` is
+         * `application/json` — sending the raw string `'hello'` over the wire as `application/json`
+         * produces an invalid JSON document. The framework must JSON-encode the string itself so
+         * the wire body is a well-formed JSON string literal (`"hello"`).
+         */
+        const stringResponseEndpoint = defineEndpoint({
+            path: '/string-response',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+        const stringResponseApi = defineApi({
+            apiName: 'string-response test api',
+            endpoints: [stringResponseEndpoint],
+            webSockets: [],
+        });
+        const stringResponseImpl: EndpointImplementation = {
+            path: stringResponseEndpoint.path,
+            isEndpoint: true,
+            isWebSocket: false,
+            definition: stringResponseEndpoint,
+            implementation: {
+                [HttpMethod.Get]: () => ({
+                    [HttpStatus.Ok]: {
+                        responseData: 'hello',
+                    },
+                }),
+            },
+        };
+
+        const handled = await handleEndpointRequest({
+            endpoint: stringResponseImpl,
+            request: {
+                method: HttpMethod.Get,
+                originalUrl: '/string-response',
+                params: {},
+                headers: {},
+                restVirContext: {
+                    attach: {
+                        context: undefined,
+                        requestData: undefined,
+                        searchParams: {},
+                        protocols: [],
+                    },
+                },
+            } as AnyObject as ServerRequest,
+            response: {} as ServerResponse,
+            attachId: 'attach',
+            server: {} as RunningServerInfo,
+            serverLogger: silentServerLogger,
+            api: stringResponseApi,
+        });
+
+        assert.deepEquals(handled, {
+            statusCode: HttpStatus.Ok,
+            body: '"hello"',
+            headers: {
+                'content-type': 'application/json',
+            },
+        });
+    });
+
+    it('leaves a string body as-is when content-type is explicitly text/plain', async () => {
+        /**
+         * The JSON-encoding policy only applies to `application/json`. When an implementation
+         * explicitly sets `content-type: text/plain` (or any other non-JSON content-type), the
+         * string body must be sent raw.
+         */
+        const stringResponseEndpoint = defineEndpoint({
+            path: '/string-text',
+            requests: {
+                [HttpMethod.Get]: {
+                    responses: {
+                        [HttpStatus.Ok]: {
+                            responseData: defineShape(''),
+                        },
+                    },
+                },
+            },
+        });
+        const stringResponseApi = defineApi({
+            apiName: 'string-text test api',
+            endpoints: [stringResponseEndpoint],
+            webSockets: [],
+        });
+        const stringResponseImpl: EndpointImplementation = {
+            path: stringResponseEndpoint.path,
+            isEndpoint: true,
+            isWebSocket: false,
+            definition: stringResponseEndpoint,
+            implementation: {
+                [HttpMethod.Get]: () => ({
+                    [HttpStatus.Ok]: {
+                        responseData: 'hello',
+                        headers: {
+                            'content-type': 'text/plain',
+                        },
+                    },
+                }),
+            },
+        };
+
+        const handled = await handleEndpointRequest({
+            endpoint: stringResponseImpl,
+            request: {
+                method: HttpMethod.Get,
+                originalUrl: '/string-text',
+                params: {},
+                headers: {},
+                restVirContext: {
+                    attach: {
+                        context: undefined,
+                        requestData: undefined,
+                        searchParams: {},
+                        protocols: [],
+                    },
+                },
+            } as AnyObject as ServerRequest,
+            response: {} as ServerResponse,
+            attachId: 'attach',
+            server: {} as RunningServerInfo,
+            serverLogger: silentServerLogger,
+            api: stringResponseApi,
+        });
+
+        assert.deepEquals(handled, {
+            statusCode: HttpStatus.Ok,
+            body: 'hello',
+            headers: {
+                'content-type': 'text/plain',
+            },
+        });
     });
 
     it('throws when the implementation returns multiple status entries', async () => {

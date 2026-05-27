@@ -137,7 +137,12 @@ describe(startApiServer.name, () => {
                 method: HttpMethod.Get,
             });
             assert.strictEquals(output.status, HttpStatus.Ok);
-            assert.strictEquals(await output.text(), '');
+            /**
+             * String `responseData` is JSON-encoded on the wire so the body is a well-formed JSON
+             * document (e.g. `""` for the empty string). Clients using `.json()` get the original
+             * value back; only direct `.text()` callers see the surrounding quotes.
+             */
+            assert.strictEquals(await output.json(), '');
         });
         it('rejects an unexpected method', async ({fetchEndpoint}) => {
             assert.strictEquals(
@@ -175,7 +180,8 @@ describe(startApiServer.name, () => {
             });
 
             assert.isTrue(response.ok);
-            assert.strictEquals(await response.text(), 'ok');
+            /** String `responseData` is JSON-encoded on the wire — read it back via `.json()`. */
+            assert.strictEquals(await response.json(), 'ok');
         });
         it('does not parse body when content type is not json', async ({fetchEndpoint}) => {
             assert.strictEquals(
@@ -530,7 +536,8 @@ describe(startApiServer.name, () => {
                 ),
                 {
                     status: HttpStatus.NotAcceptable,
-                    body: 'INTENTIONAL ERROR',
+                    /** String `responseData` is JSON-encoded on the wire — quotes are expected. */
+                    body: '"INTENTIONAL ERROR"',
                     headers: {
                         'access-control-allow-origin': '*',
                         'content-type': 'application/json; charset=utf-8',

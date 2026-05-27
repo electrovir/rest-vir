@@ -165,8 +165,8 @@ export async function handleEndpointRequest(
              * Implementations may return an error status (4xx/5xx) that the endpoint definition did
              * not declare an explicit response shape for — the type system permits this via
              * `DefaultErrorResponseType` (`undefined | string`) on undeclared error statuses. Allow
-             * a string body in that case (it will be JSON-stringified for the wire) and only reject
-             * non-string bodies, which the type contract does not permit.
+             * a string body in that case (sent over the wire as `text/plain`, see below) and only
+             * reject non-string bodies, which the type contract does not permit.
              */
             (!isErrorHttpStatus(statusCode) || check.isNotString(statusResponse.responseData))
         ) {
@@ -184,14 +184,36 @@ export async function handleEndpointRequest(
 
         /**
          * `Content-Type` is single-valued by spec. `readHeaderValue` always returns an array; take
-         * its first entry (if any) for the outgoing header, falling back to `application/json`.
+         * its first entry (if any) for the outgoing header, falling back to a sensible default. For
+         * undeclared error responses (4xx/5xx without a declared response shape — see above),
+         * default to `text/plain` because the body is the raw `DefaultErrorResponseType` string and
+         * fastify does not JSON-encode string bodies; sending such a body as `application/json`
+         * would produce a malformed JSON response (e.g. `"my error"` as `my error` instead of `"my
+         * error"`). For every other case, including declared shapes and `undefined` bodies on
+         * declared statuses, default to `application/json`.
          */
+        const isUndeclaredError = !statusResponseDefinition && isErrorHttpStatus(statusCode);
         const contentType =
-            readHeaderValue(statusResponse.headers || {}, 'content-type')[0] || 'application/json';
+            readHeaderValue(statusResponse.headers || {}, 'content-type')[0] ||
+            (isUndeclaredError ? 'text/plain' : 'application/json');
+
+        /**
+         * Fastify only auto-serializes object bodies for `application/json`; it sends string bodies
+         * as-is on the assumption that they're pre-serialized JSON. That's wrong for our case — a
+         * raw string `'hello'` sent with `Content-Type: application/json` is not valid JSON
+         * (clients calling `response.json()` get `Unexpected token 'h' in JSON ...`). JSON-encode
+         * string bodies ourselves so the wire is well-formed regardless of whether the response
+         * shape is a declared string, an undeclared error string, or anything else string-typed.
+         * `text/plain` (and any other explicit non-JSON content-type) still gets raw strings.
+         */
+        const body =
+            contentType.includes('application/json') && check.isString(statusResponse.responseData)
+                ? JSON.stringify(statusResponse.responseData)
+                : statusResponse.responseData;
 
         return {
             statusCode,
-            body: statusResponse.responseData,
+            body,
             headers: {
                 ...statusResponse.headers,
                 'content-type': contentType,
