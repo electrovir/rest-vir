@@ -1,5 +1,5 @@
 import {assert, assertWrap, check} from '@augment-vir/assert';
-import {ensureErrorAndPrependMessage, filterMap} from '@augment-vir/common';
+import {ensureErrorAndPrependMessage, filterMap, isErrorHttpStatus} from '@augment-vir/common';
 import {
     type ApiDefinition,
     definableHttpMethods,
@@ -159,7 +159,17 @@ export async function handleEndpointRequest(
             assertValidShape(statusResponse.responseData, statusResponseDefinition.responseData, {
                 allowExtraKeys: true,
             });
-        } else if (statusResponse.responseData) {
+        } else if (
+            statusResponse.responseData &&
+            /**
+             * Implementations may return an error status (4xx/5xx) that the endpoint definition did
+             * not declare an explicit response shape for — the type system permits this via
+             * `DefaultErrorResponseType` (`undefined | string`) on undeclared error statuses. Allow
+             * a string body in that case (it will be JSON-stringified for the wire) and only reject
+             * non-string bodies, which the type contract does not permit.
+             */
+            (!isErrorHttpStatus(statusCode) || check.isNotString(statusResponse.responseData))
+        ) {
             throw new RestVirHandlerError(
                 {
                     apiName: api.apiName,
