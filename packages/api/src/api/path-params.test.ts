@@ -1,13 +1,19 @@
 import {assert} from '@augment-vir/assert';
+import {HttpMethod, HttpStatus} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import type {
-    ExtractPathParams,
-    HasWildcardParam,
-    NamedPathParams,
-    PathParams,
-    ResolveNamedParams,
-    ResolveWildcard,
+import {defineEndpoint} from './endpoint.js';
+import {
+    buildRoutePath,
+    type BuildRoutePathOptions,
+    type BuildRoutePathParams,
+    type ExtractPathParams,
+    type HasWildcardParam,
+    type NamedPathParams,
+    type PathParams,
+    type ResolveNamedParams,
+    type ResolveWildcard,
 } from './path-params.js';
+import {defineWebSocket} from './web-socket.js';
 
 describe('NamedPathParams', () => {
     it('extracts a single named param', () => {
@@ -303,5 +309,133 @@ describe('ExtractPathParams', () => {
 
     it('returns no path params', () => {
         assert.tsType<ExtractPathParams<'/health'>>().equals<undefined>();
+    });
+});
+
+describe(buildRoutePath.name, () => {
+    const userFileEndpoint = defineEndpoint({
+        path: '/users/:userId/files/*',
+        requests: {
+            [HttpMethod.Get]: {
+                responses: {
+                    [HttpStatus.Ok]: {
+                        responseData: undefined,
+                    },
+                },
+            },
+        },
+    });
+
+    const roomWebSocket = defineWebSocket({
+        path: '/rooms/:roomId/ws',
+    });
+
+    it('builds an endpoint path', () => {
+        assert.strictEquals(
+            buildRoutePath(userFileEndpoint, {
+                pathParams: {
+                    userId: '42',
+                    wildcard: 'docs/readme.md',
+                },
+            }),
+            '/users/42/files/docs/readme.md',
+        );
+    });
+
+    it('builds a WebSocket path', () => {
+        assert.strictEquals(
+            buildRoutePath(roomWebSocket, {
+                pathParams: {
+                    roomId: 'abc',
+                },
+            }),
+            '/rooms/abc/ws',
+        );
+    });
+
+    it('builds a path with no params', () => {
+        assert.strictEquals(
+            buildRoutePath({
+                path: '/health',
+            }),
+            '/health',
+        );
+    });
+
+    it('allows an empty options object for a path with no params', () => {
+        assert.strictEquals(
+            buildRoutePath(
+                {
+                    path: '/health',
+                },
+                {},
+            ),
+            '/health',
+        );
+    });
+
+    it('requires path params at the type level', () => {
+        assert.tsType<BuildRoutePathOptions<'/users/:userId'>>().equals<
+            Readonly<{
+                pathParams: Readonly<{
+                    wildcard?: undefined;
+                }> &
+                    Readonly<Record<'userId', string>>;
+            }>
+        >();
+
+        assert.tsType<BuildRoutePathParams<'/users/:userId'>>().equals<
+            [
+                Readonly<BuildRoutePathOptions<'/users/:userId'>>,
+            ]
+        >();
+    });
+
+    it('throws when a named path param is missing', () => {
+        assert.throws(
+            () =>
+                buildRoutePath(roomWebSocket, {
+                    // @ts-expect-error: missing path param.
+                    pathParams: {},
+                }),
+            {
+                matchMessage: 'roomId',
+            },
+        );
+    });
+
+    it('throws when a wildcard path param is missing', () => {
+        assert.throws(
+            () =>
+                buildRoutePath(userFileEndpoint, {
+                    // @ts-expect-error: missing wildcard.
+                    pathParams: {
+                        userId: '42',
+                    },
+                }),
+            {
+                matchMessage: 'wildcard',
+            },
+        );
+    });
+
+    it('throws when path params are supplied to a path without params', () => {
+        assert.throws(
+            () =>
+                buildRoutePath(
+                    {
+                        path: '/health',
+                    },
+                    {
+                        // @ts-expect-error: path params are not accepted.
+                        pathParams: {
+                            extra: 'oops',
+                        },
+                    },
+                ),
+            {
+                matchMessage: '/health',
+            },
+        );
     });
 });

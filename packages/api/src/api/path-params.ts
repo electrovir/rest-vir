@@ -1,7 +1,12 @@
-import {type PartialWithUndefined} from '@augment-vir/common';
-import {type IsEqual, type IsNever} from 'type-fest';
+import {check} from '@augment-vir/assert';
+import {addPrefix, type PartialWithUndefined} from '@augment-vir/common';
+import {type HasRequiredKeys, type IsEqual, type IsNever} from 'type-fest';
 import {type NoParam} from '../util/no-param.js';
 import {type BaseRoutePath} from './route.js';
+
+export type RoutePathDefinition<Path extends BaseRoutePath = BaseRoutePath> = Readonly<{
+    path: Path;
+}>;
 
 /**
  * Extracts all named path parameters from an endpoint path.
@@ -99,6 +104,25 @@ export type GenericPathParams =
           Record<string, string | undefined>)
     | undefined;
 
+export type BuildRoutePathOptions<Path extends BaseRoutePath = BaseRoutePath> = (
+    undefined extends ExtractPathParams<NoInfer<Path>>
+        ? Readonly<{
+              pathParams?: ExtractPathParams<NoInfer<Path>> | undefined;
+          }>
+        : Readonly<{
+              pathParams: ExtractPathParams<NoInfer<Path>>;
+          }>
+) extends infer Merged
+    ? {
+          readonly [Key in keyof Merged]: Merged[Key];
+      }
+    : never;
+
+export type BuildRoutePathParams<Path extends BaseRoutePath = BaseRoutePath> =
+    HasRequiredKeys<BuildRoutePathOptions<Path>> extends true
+        ? [Readonly<BuildRoutePathOptions<Path>>]
+        : [Readonly<BuildRoutePathOptions<Path>>?];
+
 /**
  * Converts an endpoint path into the fetch params needed for its to operate.
  *
@@ -129,3 +153,60 @@ export type ExtractPathParams<Path extends PropertyKey | NoParam = NoParam> =
               : /** Fast path: concrete literal with no `:param` or `/*` segments. */
                 undefined
         : GenericPathParams;
+
+/**
+ * Builds the path portion of an endpoint or WebSocket URL by interpolating `:named` path params and
+ * trailing wildcard params.
+ *
+ * @category Client
+ * @category Package : @rest-vir/api
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export function buildRoutePath<const Path extends BaseRoutePath>(
+    route: RoutePathDefinition<Path>,
+    ...restOptions: BuildRoutePathParams<NoInfer<Path>>
+): string;
+export function buildRoutePath(
+    route: RoutePathDefinition,
+    ...restOptions: [
+        Readonly<{
+            pathParams?: unknown;
+        }>?,
+    ]
+) {
+    const genericPathParams: GenericPathParams = restOptions[0]?.pathParams as GenericPathParams;
+    let pathParamsCount = 0;
+
+    const pathname = route.path
+        .replaceAll(/\/:([^/]+)/g, (wholeMatch: string, paramName: string): string => {
+            pathParamsCount++;
+            if (
+                genericPathParams &&
+                check.hasKey(genericPathParams, paramName) &&
+                genericPathParams[paramName]
+            ) {
+                return addPrefix({
+                    value: genericPathParams[paramName],
+                    prefix: '/',
+                });
+            } else {
+                throw new Error(`Missing value for path param '${paramName}'.`);
+            }
+        })
+        .replace(/\/\*$/, () => {
+            pathParamsCount++;
+            if (genericPathParams?.wildcard == undefined) {
+                throw new Error('Missing value for wildcard param.');
+            }
+            return addPrefix({
+                value: genericPathParams.wildcard,
+                prefix: '/',
+            });
+        });
+
+    if (!pathParamsCount && genericPathParams) {
+        throw new Error(`Route '${route.path}' does not allow any path params but some were set.`);
+    }
+
+    return pathname;
+}

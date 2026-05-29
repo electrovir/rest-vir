@@ -1,7 +1,5 @@
 import {assertWrap, check} from '@augment-vir/assert';
 import {
-    addPrefix,
-    HttpMethod,
     HttpStatus,
     isErrorHttpStatus,
     mapObject,
@@ -24,8 +22,13 @@ import {
     type ExtractEndpointMethodDefinition,
     type ResponseStatusDefinition,
 } from './api/endpoint.js';
-import {type ExtractPathParams} from './api/path-params.js';
-import {type RouteSearchParamsType} from './api/route.js';
+import {
+    buildRoutePath,
+    type ExtractPathParams,
+    type GenericPathParams,
+    type RoutePathDefinition,
+} from './api/path-params.js';
+import {type BaseRoutePath, type RouteSearchParamsType} from './api/route.js';
 import {type WebSocketDefinition} from './api/web-socket.js';
 import {parseJsonWithUndefined} from './augments/json.js';
 import {type SetNullishPropertiesAsOptional} from './augments/object.js';
@@ -271,7 +274,6 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             }>
         >,
     ) {
-        let pathParamsCount = 0;
         const genericParams: Readonly<
             SetNullishPropertiesAsOptional<{
                 searchParams: RouteSearchParamsType;
@@ -290,43 +292,18 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             genericParams.searchParams,
         );
 
-        const pathname = endpoint.path
-            .replaceAll(/\/:([^/]+)/g, (wholeMatch, paramName: string): string => {
-                pathParamsCount++;
-                if (
-                    genericParams.pathParams &&
-                    check.hasKey(genericParams.pathParams, paramName) &&
-                    genericParams.pathParams[paramName]
-                ) {
-                    return addPrefix({
-                        value: genericParams.pathParams[paramName],
-                        prefix: '/',
-                    });
-                } else {
-                    throw new Error(`Missing value for path param '${paramName}'.`);
-                }
-            })
-            .replace(/\/\*$/, () => {
-                pathParamsCount++;
-                if (genericParams.pathParams?.wildcard == undefined) {
-                    throw new Error('Missing value for wildcard param.');
-                }
-                return addPrefix({
-                    value: genericParams.pathParams.wildcard,
-                    prefix: '/',
-                });
-            });
+        const pathname = buildRoutePath(
+            endpoint satisfies RoutePathDefinition as RoutePathDefinition,
+            {
+                pathParams:
+                    genericParams.pathParams satisfies GenericPathParams as ExtractPathParams<BaseRoutePath>,
+            },
+        );
 
         const builtUrl = buildUrl(this.baseUrl, {
             search: searchParams,
             pathname,
         }).href;
-
-        if (!pathParamsCount && genericParams.pathParams) {
-            throw new Error(
-                `Endpoint '${endpoint.path}' does not allow any path params but some where set.`,
-            );
-        }
 
         return builtUrl;
     }
@@ -477,26 +454,19 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
         const params: WebSocketConnectParamObject | undefined = webSocketParams;
         const genericWebSocket = webSocket as WebSocketDefinition;
 
-        const httpUrl = this.buildEndpointUrl(
-            {
-                path: genericWebSocket.path as any,
-                requests: {
-                    [HttpMethod.Get]: {
-                        responses: {
-                            [HttpStatus.Ok]: {
-                                responseData: undefined,
-                            },
-                        },
-                        searchParams: genericWebSocket.searchParams,
-                    },
-                },
-            },
-            HttpMethod.Get,
-            {
-                pathParams: params?.pathParams,
-                searchParams: params?.searchParams,
-            },
+        const searchParams = extractSearchParams(
+            genericWebSocket.searchParams,
+            params?.searchParams,
         );
+        const pathname = buildRoutePath(genericWebSocket, {
+            pathParams: params?.pathParams satisfies GenericPathParams as ExtractPathParams<
+                typeof genericWebSocket.path
+            >,
+        });
+        const httpUrl = buildUrl(this.baseUrl, {
+            search: searchParams,
+            pathname,
+        }).href;
 
         return buildUrl(httpUrl, {
             protocol: httpUrl.startsWith('https') ? 'wss' : 'ws',
