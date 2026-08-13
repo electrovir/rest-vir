@@ -1,5 +1,5 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>StartApiServerOutput | rest-vir - v2.3.0</title><meta name="description" content="Documentation for rest-vir"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css?cache=1786592335384"/><link rel="stylesheet" href="../assets/highlight.css?cache=1786592335384"/><script defer src="../assets/main.js?cache=1786592335384"></script><script async src="../assets/icons.js?cache=1786592335384" id="tsd-icons-script"></script><script async src="../assets/search.js?cache=1786592335384" id="tsd-search-script"></script><script async src="../assets/navigation.js?cache=1786592335384" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js?cache=1786592335384" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
-<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">rest-vir - v2.3.0</a>
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>StartApiServerOutput | rest-vir - v2.3.1</title><meta name="description" content="Documentation for rest-vir"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css?cache=1786593914013"/><link rel="stylesheet" href="../assets/highlight.css?cache=1786593914013"/><script defer src="../assets/main.js?cache=1786593914013"></script><script async src="../assets/icons.js?cache=1786593914013" id="tsd-icons-script"></script><script async src="../assets/search.js?cache=1786593914013" id="tsd-search-script"></script><script async src="../assets/navigation.js?cache=1786593914013" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js?cache=1786593914013" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">rest-vir - v2.3.1</a>
 <div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
 <ul role="listbox" id="tsd-search-results"></ul>
 <div id="tsd-search-status" aria-live="polite" aria-atomic="true">
@@ -19,7 +19,7 @@
 </div></div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">type</span> <span class="tsd-kind-type-alias">StartApiServerOutput</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#cluster">cluster</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ClusterManager</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#host">host</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#kill">kill</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">this</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">MaybePromise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#port">port</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#server">server</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">FastifyInstance</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#worker">worker</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">WorkerRunner</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L25">packages/host/src/server/run-api/start-api-server.ts:25</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L25">packages/host/src/server/run-api/start-api-server.ts:25</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -45,7 +45,7 @@ run with a multiple threads (when <code>options.workerCount</code> &gt; 1). It w
 the primary thread.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L47">packages/host/src/server/run-api/start-api-server.ts:47</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L47">packages/host/src/server/run-api/start-api-server.ts:47</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="host"><span>host</span><a href="#host" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">host</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -53,7 +53,7 @@ the primary thread.</p>
 options, merged with the default.)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L35">packages/host/src/server/run-api/start-api-server.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L35">packages/host/src/server/run-api/start-api-server.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="kill"><span>kill</span><a href="#kill" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">kill</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">this</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">MaybePromise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></div>
@@ -63,7 +63,7 @@ Fastify (and its registered plugins) finish their <code>onClose</code> hooks. In
 cleanly. Always <code>await</code> this in production shutdown paths.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L60">packages/host/src/server/run-api/start-api-server.ts:60</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L60">packages/host/src/server/run-api/start-api-server.ts:60</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="port"><span>port</span><a href="#port" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">port</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
@@ -71,7 +71,7 @@ cleanly. Always <code>await</code> this in production shutdown paths.</p>
 <a href="../functions/startApiServer.html" class="tsd-kind-function">startApiServer</a>.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L30">packages/host/src/server/run-api/start-api-server.ts:30</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L30">packages/host/src/server/run-api/start-api-server.ts:30</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="server"><code class="tsd-tag">Optional</code><span>server</span><a href="#server" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">server</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">FastifyInstance</span></div>
@@ -80,7 +80,7 @@ This is populated when the server is run on only a single thread (when <code>opt
 is 1).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L41">packages/host/src/server/run-api/start-api-server.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L41">packages/host/src/server/run-api/start-api-server.ts:41</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="worker"><code class="tsd-tag">Optional</code><span>worker</span><a href="#worker" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">worker</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">WorkerRunner</span></div>
@@ -89,7 +89,7 @@ multiple threads (when <code>options.workerCount</code> &gt; 1). It will only be
 threads.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/68419eb8de741e1b92aca48fc403629090e53788/packages/host/src/server/run-api/start-api-server.ts#L53">packages/host/src/server/run-api/start-api-server.ts:53</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/electrovir/rest-vir/blob/904f45503ebc3501be812f57baae423b19e3fe5e/packages/host/src/server/run-api/start-api-server.ts#L53">packages/host/src/server/run-api/start-api-server.ts:53</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -107,7 +107,7 @@ threads.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
 <div><a href="#cluster"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>cluster</span></a><a href="#host"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>host</span></a><a href="#kill"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>kill</span></a><a href="#port"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>port</span></a><a href="#server"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>server</span></a><a href="#worker"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>worker</span></a></div></details></div></details></div>
 <div class="site-menu">
-<nav class="tsd-navigation"><a href="../modules.html">rest-vir - v2.3.0</a>
+<nav class="tsd-navigation"><a href="../modules.html">rest-vir - v2.3.1</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
 <li>Loading...</li></ul></nav></div></div></div><footer>
 <p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
