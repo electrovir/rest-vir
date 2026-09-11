@@ -26,7 +26,7 @@ import {handleRoute} from '../handle-request/handle-route.js';
 import {preHandler} from '../handle-request/pre-handler.js';
 import {runPostRouteHook} from '../handle-request/run-post-route-hook.js';
 import {RestVirHandlerError} from '../util/handler.error.js';
-import {type RestVirRouteConfig} from '../util/matched-route.js';
+import {extractErrorRoutePath, type RestVirRouteConfig} from '../util/matched-route.js';
 
 /**
  * Context attached to each fastify request object.
@@ -109,6 +109,13 @@ export type ApiServerOptions = {
      * @default false
      */
     disableRestVirApiNameHeader?: boolean | undefined;
+    /**
+     * Names of search params that should never appear in a `RestVirHandlerError`'s message or
+     * stack. Every other search param is included.
+     *
+     * @default undefined // no search params are omitted
+     */
+    excludedErrorSearchParams?: ReadonlyArray<string> | undefined;
 };
 
 /**
@@ -179,7 +186,10 @@ export async function attachApi(
                             {
                                 isEndpoint: false,
                                 isWebSocket: true,
-                                path: request.originalUrl,
+                                path: extractErrorRoutePath({
+                                    request,
+                                    excludedSearchParams: options.excludedErrorSearchParams,
+                                }),
                                 apiName: api.definition.apiName,
                             },
                             extractErrorMessage(error),
@@ -253,7 +263,10 @@ export async function attachApi(
                         {
                             isEndpoint: undefined,
                             isWebSocket: undefined,
-                            path: request.originalUrl,
+                            path: extractErrorRoutePath({
+                                request,
+                                excludedSearchParams: options.excludedErrorSearchParams,
+                            }),
                             apiName: api.definition.apiName,
                         },
                         combineErrorMessages('Unexpected error', extractErrorMessage(error)),

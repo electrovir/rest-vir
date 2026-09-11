@@ -1,11 +1,12 @@
 import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {describe, it} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {defineApi, defineEndpoint} from '@rest-vir/api';
 import {implementApi} from '../../implementation/implement-api.js';
 import {createApiImplementor} from '../../implementation/implementor.js';
 import {silentServerLogger} from '../../implementation/server-logger.js';
 import {startApiServer} from '../run-api/start-api-server.js';
+import {extractErrorRoutePath} from './matched-route.js';
 
 type MatchedRouteContext = {
     contextWasCreated: true;
@@ -159,4 +160,75 @@ describe('matched route lookup', () => {
             await serverOutput.kill();
         }
     });
+});
+
+describe(extractErrorRoutePath.name, () => {
+    itCases(extractErrorRoutePath, [
+        {
+            it: 'omits excluded search params and keeps the rest',
+            input: {
+                request: {
+                    originalUrl: '/user/12345?code=super-secret-credential&page=2',
+                },
+                excludedSearchParams: [
+                    'code',
+                ],
+            },
+            expect: '/user/12345?page=2',
+        },
+        {
+            it: 'omits the whole search string when every param is excluded',
+            input: {
+                request: {
+                    originalUrl: '/user/12345?code=super-secret-credential',
+                },
+                excludedSearchParams: [
+                    'code',
+                ],
+            },
+            expect: '/user/12345',
+        },
+        {
+            it: 'keeps every search param when none are excluded',
+            input: {
+                request: {
+                    originalUrl: '/user/12345?code=super-secret-credential',
+                },
+            },
+            expect: '/user/12345?code=super-secret-credential',
+        },
+        {
+            it: 'keeps a repeated search param and a param with no value',
+            input: {
+                request: {
+                    originalUrl: '/route?flag&sort=a&sort=b&code=super-secret-credential',
+                },
+                excludedSearchParams: [
+                    'code',
+                ],
+            },
+            expect: '/route?flag&sort=a&sort=b',
+        },
+        {
+            it: 'leaves CR/LF percent encoded',
+            input: {
+                request: {
+                    originalUrl: '/route?note=forged%0A%0D',
+                },
+            },
+            expect: '/route?note=forged%0A%0D',
+        },
+        {
+            it: 'handles a url with no search params',
+            input: {
+                request: {
+                    originalUrl: '/route',
+                },
+                excludedSearchParams: [
+                    'code',
+                ],
+            },
+            expect: '/route',
+        },
+    ]);
 });

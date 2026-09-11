@@ -188,6 +188,7 @@ export async function testExistingServer<const Api extends Readonly<ApiImplement
 
     await attachApi(server, api, {
         ...options,
+        excludedErrorSearchParams: options.excludedErrorSearchParams || undefined,
         externalOrigin: fetchOrigin,
     });
 

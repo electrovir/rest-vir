@@ -1,4 +1,6 @@
+import {omitObjectKeys, type SelectFrom} from '@augment-vir/common';
 import {type BaseRoutePath} from '@rest-vir/api';
+import {buildUrl, parseUrl, searchParamsToString} from 'url-vir';
 import {type ServerRequest} from '../../implementation/raw-route-data.js';
 
 /**
@@ -50,4 +52,36 @@ export function extractMatchedRoutePath(
     }
 
     return routeConfig.routePath;
+}
+
+/**
+ * The route path that error messages should name for this request, with each search param listed in
+ * `excludedSearchParams` omitted from its search string.
+ *
+ * @category Internal
+ * @category Package : @rest-vir/host
+ * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
+ */
+export function extractErrorRoutePath(
+    this: void,
+    {
+        request,
+        excludedSearchParams,
+    }: Readonly<{
+        request: Readonly<
+            SelectFrom<
+                ServerRequest,
+                {
+                    originalUrl: true;
+                }
+            >
+        >;
+        excludedSearchParams?: ReadonlyArray<string> | undefined;
+    }>,
+): string {
+    const {searchParams} = parseUrl(request.originalUrl);
+
+    return buildUrl(request.originalUrl, {
+        search: searchParamsToString(omitObjectKeys(searchParams, excludedSearchParams || [])),
+    }).fullPath;
 }

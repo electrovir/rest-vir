@@ -10,6 +10,7 @@ const operationalDefaults = {
     requestTimeout: runApiOptionsShape.default.requestTimeout,
     webSocketMaxPayload: runApiOptionsShape.default.webSocketMaxPayload,
     trustProxy: undefined,
+    excludedErrorSearchParams: undefined,
 };
 
 describe(finalizeOptions.name, () => {

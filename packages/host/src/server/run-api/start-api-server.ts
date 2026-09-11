@@ -189,6 +189,7 @@ async function startServer({
     requestTimeout,
     trustProxy,
     webSocketMaxPayload,
+    excludedErrorSearchParams,
     fastifyPlugins,
     serverOrigin,
 }: Readonly<
@@ -202,6 +203,7 @@ async function startServer({
         | 'requestTimeout'
         | 'trustProxy'
         | 'webSocketMaxPayload'
+        | 'excludedErrorSearchParams'
     > & {
         api: Readonly<ApiImplementation>;
         fastifyPlugins: Readonly<FastifyPlugins>;
@@ -234,6 +236,7 @@ async function startServer({
         externalOrigin: serverOrigin,
         throwErrorsForExternalHandling: false,
         webSocketMaxPayload,
+        excludedErrorSearchParams: excludedErrorSearchParams || undefined,
     });
 
     await server.listen({

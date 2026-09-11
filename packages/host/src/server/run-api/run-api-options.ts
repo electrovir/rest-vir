@@ -105,6 +105,15 @@ export const runApiOptionsShape = defineShape({
             '',
         ]),
     ),
+    /**
+     * Names of search params that should never appear in a `RestVirHandlerError`'s message or
+     * stack. See `ApiServerOptions.excludedErrorSearchParams` for details.
+     *
+     * @default undefined // no search params are omitted
+     */
+    excludedErrorSearchParams: nullableShape([
+        '',
+    ]),
 });
 
 /**
