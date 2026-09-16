@@ -91,7 +91,7 @@ export const VirDemo = defineElement()({
         }
     `,
     render({state, updateState}) {
-        const renderDemoButton = (sectionKey: string, demoRoute: Readonly<BaseDemoRoute>) => {
+        function renderDemoButton(sectionKey: string, demoRoute: Readonly<BaseDemoRoute>) {
             const fetchKey = [
                 sectionKey,
                 demoRoute.demoName,
@@ -147,7 +147,7 @@ export const VirDemo = defineElement()({
                     ${resultTemplate}
                 </li>
             `;
-        };
+        }
 
         const fetchTemplates = getObjectTypedEntries(demoFetchesByEndpoint).map(
             ([

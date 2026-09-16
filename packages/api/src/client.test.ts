@@ -357,7 +357,9 @@ describe('StatusByKey', () => {
 describe(RestVirClient.name, () => {
     describe('constructor', () => {
         it('stores api, baseUrl, and fetchOverride', () => {
-            const fetchOverride = () => Promise.resolve(createMockResponse());
+            function fetchOverride() {
+                return Promise.resolve(createMockResponse());
+            }
             const client = new RestVirClient(fullApi, 'https://example.com', fetchOverride);
 
             assert.strictEquals(client.api, fullApi);
@@ -516,7 +518,7 @@ describe(RestVirClient.name, () => {
                 );
             });
             const result = await client.fetch(simpleEndpoint).GET({
-                fetchOverride: () => {
+                fetchOverride() {
                     return Promise.resolve(
                         createMockResponse({
                             headers: {
@@ -1416,16 +1418,16 @@ describe('RestVirClient.connectWebSocket', () => {
         const socket = await client.connectWebSocket(noClientDataWebSocket, {
             webSocketConstructor: MockWebSocket,
             listeners: {
-                open: ({event}) => {
+                open({event}) {
                     events.push(event.type);
                 },
-                message: ({event}) => {
+                message({event}) {
                     events.push(event.type);
                 },
-                close: ({event}) => {
+                close({event}) {
                     events.push(event.type);
                 },
-                error: ({event}) => {
+                error({event}) {
                     events.push(event.type);
                 },
             },
@@ -1449,9 +1451,9 @@ describe('RestVirClient.connectWebSocket', () => {
         const socket = await client.connectWebSocket(noClientDataWebSocket, {
             webSocketConstructor: MockWebSocket,
         });
-        const listener = ({message}: {message: unknown}) => {
+        function listener({message}: {message: unknown}) {
             messages.push(message);
-        };
+        }
         socket.addEventListener('message', listener);
 
         getLastMockWebSocket().sendFromHost('one');
@@ -1555,7 +1557,9 @@ describe('RestVirClient.connectWebSocket', () => {
             message: [
                 'q',
             ],
-            replyCheck: (msg) => msg[0] === 'c',
+            replyCheck(msg) {
+                return msg[0] === 'c';
+            },
         });
 
         await wait({

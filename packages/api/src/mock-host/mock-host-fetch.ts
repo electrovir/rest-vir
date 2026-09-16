@@ -170,7 +170,7 @@ function extractPathParamsFromUrl(
         }
         if (templateSegment.startsWith(':')) {
             const value = urlSegments[index];
-            if (value !== undefined) {
+            if (value != undefined) {
                 params[templateSegment.slice(1)] = decodeURIComponent(value);
                 hasAny = true;
             }

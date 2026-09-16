@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/host",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "description": "Implement a declarative and type safe REST API and host it.",
     "keywords": [
         "rest",
@@ -38,25 +38,25 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.3",
-        "@augment-vir/common": "^32.2.3",
-        "@augment-vir/node": "^32.2.3",
-        "@augment-vir/test": "^32.2.3",
+        "@augment-vir/assert": "^32.3.1",
+        "@augment-vir/common": "^32.3.1",
+        "@augment-vir/node": "^32.3.1",
+        "@augment-vir/test": "^32.3.1",
         "@fastify/compress": "^9.2.0",
         "@fastify/multipart": "^10.1.1",
         "@fastify/websocket": "^11.3.0",
-        "@rest-vir/api": "^2.3.2",
+        "@rest-vir/api": "^2.3.3",
         "@types/ws": "^8.18.1",
         "cluster-vir": "^1.0.2",
         "date-vir": "^9.1.1",
-        "fastify": "^5.12.1",
+        "fastify": "^5.12.4",
         "find-my-way": "^9.9.0",
         "light-my-request": "^6.6.0",
         "portfinder": "^1.0.38",
-        "url-vir": "^2.2.1"
+        "url-vir": "^2.2.2"
     },
     "devDependencies": {
-        "@types/node": "^26.3.0",
+        "@types/node": "^26.5.1",
         "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "markdown-code-example-inserter": "^3.0.6",

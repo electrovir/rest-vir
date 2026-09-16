@@ -267,7 +267,7 @@ describe(createMockHost.name, () => {
     it('passes a created host context into the implementation', async () => {
         let receivedContext: {user: string} | undefined;
         const client = createMockHost<typeof mockApi, {user: string}>(mockApi, {
-            createHostContext: () => {
+            createHostContext() {
                 return {
                     context: {
                         user: 'alice',
@@ -454,7 +454,7 @@ describe(createMockHost.name, () => {
 
     it('returns the rejected status when createHostContext returns {reject}', async () => {
         const client = createMockHost(mockApi, {
-            createHostContext: () => {
+            createHostContext() {
                 return {
                     reject: {
                         statusCode: HttpStatus.Unauthorized,
@@ -694,7 +694,7 @@ describe(createMockHost.name, () => {
         let closeHandlerRan = false;
         let rejectActive = false;
         const client = createMockHost<typeof mockApi, undefined>(mockApi, {
-            createHostContext: () => {
+            createHostContext() {
                 return rejectActive
                     ? {
                           reject: {
@@ -779,7 +779,7 @@ describe(createMockHost.name, () => {
 
     it('closes the websocket when createHostContext returns {reject}', async () => {
         const client = createMockHost<typeof mockApi, undefined>(mockApi, {
-            createHostContext: () => {
+            createHostContext() {
                 return {
                     reject: {
                         statusCode: HttpStatus.Unauthorized,
@@ -821,7 +821,7 @@ describe(createMockHost.name, () => {
 
     it('emits an error event when createHostContext throws', async () => {
         const client = createMockHost<typeof mockApi, undefined>(mockApi, {
-            createHostContext: () => {
+            createHostContext() {
                 throw new Error('context boom');
             },
             webSockets: {
@@ -954,9 +954,9 @@ describe(createMockHost.name, () => {
         const socket = await client.connectWebSocket(chatWebSocket);
 
         const received: unknown[] = [];
-        const listener = ({message}: {message: unknown}) => {
+        function listener({message}: {message: unknown}) {
             received.push(message);
-        };
+        }
         socket.addEventListener('message', listener);
         socket.removeEventListener('message', listener);
         socket.removeEventListener('close', listener);

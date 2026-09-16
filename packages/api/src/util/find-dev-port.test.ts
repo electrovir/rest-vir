@@ -357,11 +357,15 @@ describe('FindPortOptions', () => {
         const options: FindPortOptions = {
             startOrigin: 'localhost:3000',
             maxScanDistance: 25,
-            isValidResponse: () => true,
+            isValidResponse() {
+                return true;
+            },
             timeout: {
                 seconds: 3,
             } satisfies AnyDuration,
-            fetchOverride: () => createMockResponse(),
+            fetchOverride() {
+                return createMockResponse();
+            },
         };
         assert.strictEquals(options.maxScanDistance, 25);
     });

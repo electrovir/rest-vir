@@ -563,11 +563,11 @@ describe(defineEndpoint.name, () => {
             requiresAuth: boolean;
         };
 
-        const defineAuthEndpoint = <
+        function defineAuthEndpoint<
             const Endpoint extends EndpointDefinitionWithRequiredCustomProps<RequiredCustomProps>,
-        >(
-            endpoint: Readonly<Endpoint>,
-        ): Readonly<Endpoint> => endpoint;
+        >(endpoint: Readonly<Endpoint>): Readonly<Endpoint> {
+            return endpoint;
+        }
 
         const okResult = defineAuthEndpoint({
             path: '/admin',

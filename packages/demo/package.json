@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/demo",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "private": true,
     "homepage": "https://github.com/electrovir/rest-vir",
     "bugs": {
@@ -26,19 +26,19 @@
         "test:coverage": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.3",
-        "@augment-vir/common": "^32.2.3",
+        "@augment-vir/assert": "^32.3.1",
+        "@augment-vir/common": "^32.3.1",
         "@fastify/multipart": "^10.1.1",
-        "@rest-vir/api": "^2.3.2",
-        "@rest-vir/host": "^2.3.2",
-        "element-vir": "^26.17.3",
+        "@rest-vir/api": "^2.3.3",
+        "@rest-vir/host": "^2.3.3",
+        "element-vir": "^27.0.1",
         "object-shape-tester": "^6.15.0",
-        "vira": "^31.31.6"
+        "vira": "^32.1.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.3",
+        "@augment-vir/test": "^32.3.1",
         "typescript": "^6.0.3",
-        "vite": "^8.2.2"
+        "vite": "^8.3.0"
     },
     "engines": {
         "node": ">=22"

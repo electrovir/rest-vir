@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/api",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "description": "Define a declarative and type safe REST API and connect to it from a client.",
     "keywords": [
         "rest",
@@ -38,20 +38,20 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.3",
-        "@augment-vir/common": "^32.2.3",
+        "@augment-vir/assert": "^32.3.1",
+        "@augment-vir/common": "^32.3.1",
         "date-vir": "^9.1.1",
-        "url-vir": "^2.2.1"
+        "url-vir": "^2.2.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.3",
+        "@augment-vir/test": "^32.3.1",
         "@types/ws": "^8.18.1",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-playwright": "^1.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "markdown-code-example-inserter": "^3.0.6",
-        "structured-render": "^2.11.2",
+        "structured-render": "^2.12.0",
         "typedoc": "^0.28.20"
     },
     "peerDependencies": {

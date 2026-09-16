@@ -168,12 +168,12 @@ describe(defineWebSocket.name, () => {
             requiresAuth: boolean;
         };
 
-        const defineAuthWebSocket = <
+        function defineAuthWebSocket<
             const ThisWebSocket extends
                 WebSocketDefinitionWithRequiredCustomProps<RequiredCustomProps>,
-        >(
-            webSocket: Readonly<ThisWebSocket>,
-        ): Readonly<ThisWebSocket> => webSocket;
+        >(webSocket: Readonly<ThisWebSocket>): Readonly<ThisWebSocket> {
+            return webSocket;
+        }
 
         const okResult = defineAuthWebSocket({
             path: '/ws',
