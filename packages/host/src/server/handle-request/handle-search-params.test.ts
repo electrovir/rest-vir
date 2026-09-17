@@ -1,5 +1,6 @@
+import {assert} from '@augment-vir/assert';
 import {HttpMethod, HttpStatus} from '@augment-vir/common';
-import {describe, itCases} from '@augment-vir/test';
+import {describe, it, itCases} from '@augment-vir/test';
 import {defineApi, defineEndpoint, defineWebSocket} from '@rest-vir/api';
 import {defineShape} from 'object-shape-tester';
 import {type EndpointImplementation} from '../../implementation/implement-endpoint.js';
@@ -169,4 +170,41 @@ describe(handleSearchParams.name, () => {
             },
         },
     ]);
+});
+
+describe('excluded search params', () => {
+    it('omits excluded params from the logged failure message', () => {
+        const loggedErrors: Error[] = [];
+
+        handleSearchParams({
+            request: buildRequest({
+                code: 'super-secret-credential',
+                page: '2',
+            }),
+            route: endpointImplementation,
+            serverLogger: {
+                ...silentServerLogger,
+                error(error) {
+                    loggedErrors.push(error);
+                },
+            },
+            api,
+            excludedErrorSearchParams: [
+                'code',
+            ],
+        });
+
+        assert.strictEquals(loggedErrors.length, 1);
+
+        const [loggedError] = loggedErrors;
+        assert.isDefined(loggedError);
+        assert.isFalse(
+            loggedError.message.includes('super-secret-credential'),
+            `logged error leaked an excluded search param value: ${loggedError.message}`,
+        );
+        assert.isTrue(
+            loggedError.message.includes('page'),
+            `logged error dropped a search param that was not excluded: ${loggedError.message}`,
+        );
+    });
 });

@@ -155,3 +155,125 @@ describe(preHandler.name, () => {
         assert.isUndefined(request.restVirContext?.[attachId]?.requestData);
     });
 });
+
+/** Only ever appears in a request's query string. */
+const secretSearchParamValue = 'super-secret-credential';
+
+const rejectingApi = defineApi({
+    apiName: 'pre-handler rejection api',
+    endpoints: [
+        healthEndpoint,
+    ],
+    webSockets: [],
+});
+
+const rejectingImplementor = createApiImplementor<undefined>()(rejectingApi);
+
+const rejectingApiImplementation = implementApi<undefined>()(rejectingApi, {
+    createHostContext() {
+        return {
+            reject: {
+                statusCode: HttpStatus.InternalServerError,
+            },
+        };
+    },
+    clientOriginRequirement: {
+        anyOrigin: true,
+    },
+    endpoints: [
+        rejectingImplementor.implementEndpoint(healthEndpoint, {
+            [HttpMethod.Get]() {
+                return {
+                    [HttpStatus.Ok]: {
+                        responseData: undefined,
+                    },
+                };
+            },
+        }),
+    ],
+});
+
+function buildRejectionRequest(method: HttpMethod) {
+    const attachId = 'test';
+
+    return {
+        originalUrl: `${healthEndpoint.path}?code=${secretSearchParamValue}&page=2`,
+        method,
+        headers: {},
+        body: undefined,
+        params: {},
+        query: {
+            code: secretSearchParamValue,
+            page: '2',
+        },
+        routeOptions: {
+            url: healthEndpoint.path,
+            config: {
+                restVirRoute: {
+                    attachId,
+                    routePath: healthEndpoint.path,
+                },
+            },
+        } as unknown as ServerRequest['routeOptions'],
+    } satisfies Partial<ServerRequest> as unknown as ServerRequest;
+}
+
+async function runRejection(method: HttpMethod) {
+    const loggedErrors: Error[] = [];
+
+    const result = await preHandler({
+        request: buildRejectionRequest(method),
+        response: {
+            raw: {
+                removeHeader() {},
+                setHeader() {},
+            },
+            header() {},
+        } as unknown as ServerResponse,
+        api: rejectingApiImplementation,
+        server: {
+            serviceOrigin: '',
+        },
+        attachId: 'test',
+        serverLogger: {
+            ...silentServerLogger,
+            error(error) {
+                loggedErrors.push(error);
+            },
+        },
+        excludedErrorSearchParams: [
+            'code',
+        ],
+    });
+
+    assert.strictEquals(loggedErrors.length, 1);
+
+    const [loggedError] = loggedErrors;
+    assert.isDefined(loggedError);
+
+    return {
+        result,
+        message: loggedError.message,
+    };
+}
+
+describe('excluded search params', () => {
+    it('omits excluded params from a rejected context message', async () => {
+        const {result, message} = await runRejection(HttpMethod.Get);
+
+        assert.strictEquals(result?.statusCode, HttpStatus.InternalServerError);
+        assert.isTrue(
+            message.includes(`Context creation rejected: '${healthEndpoint.path}?page=2'`),
+            message,
+        );
+        assert.isFalse(message.includes(secretSearchParamValue), message);
+    });
+
+    it('omits excluded params from a method not allowed message', async () => {
+        const {result, message} = await runRejection(HttpMethod.Delete);
+
+        assert.strictEquals(result?.statusCode, HttpStatus.MethodNotAllowed);
+        assert.isTrue(message.includes(`rejected: '${healthEndpoint.path}?page=2'`), message);
+        assert.isFalse(message.includes(secretSearchParamValue), message);
+    });
+});

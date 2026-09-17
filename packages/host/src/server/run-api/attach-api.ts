@@ -220,6 +220,7 @@ export async function attachApi(
                     attachId,
                     serverLogger,
                     disableRestVirApiNameHeader: !!options.disableRestVirApiNameHeader,
+                    excludedErrorSearchParams: options.excludedErrorSearchParams,
                 });
 
                 if (preHandlerResult?.statusCode && postHook) {
