@@ -34,7 +34,7 @@ import {
 import {RejectRequestError} from '../../implementation/reject-request.error.js';
 import {type ServerLogger} from '../../implementation/server-logger.js';
 import {RestVirHandlerError} from '../util/handler.error.js';
-import {extractMatchedRoutePath} from '../util/matched-route.js';
+import {extractErrorRoutePath, extractMatchedRoutePath} from '../util/matched-route.js';
 import {handleHandlerOutputWithoutSending, type HandledOutput} from './endpoint-handler.js';
 import {handleCors} from './handle-cors.js';
 import {handleSearchParams} from './handle-search-params.js';
@@ -55,6 +55,7 @@ export async function preHandler({
     attachId,
     serverLogger,
     disableRestVirApiNameHeader,
+    excludedErrorSearchParams,
 }: {
     request: ServerRequest;
     response: ServerResponse;
@@ -63,6 +64,7 @@ export async function preHandler({
     attachId: string;
     serverLogger: ServerLogger;
     disableRestVirApiNameHeader?: boolean | undefined;
+    excludedErrorSearchParams?: ReadonlyArray<string> | undefined;
 }): Promise<Readonly<HandledOutput>> {
     if (!request.restVirContext) {
         request.restVirContext = {};
@@ -103,6 +105,11 @@ export async function preHandler({
     if (!routeDefinition || !routeImplementation) {
         return undefined;
     }
+
+    const errorRoutePath = extractErrorRoutePath({
+        request,
+        excludedSearchParams: excludedErrorSearchParams,
+    });
 
     const protocols = webSocketDefinition
         ? (request.headers['sec-websocket-protocol'] || '').split(', ')
@@ -189,7 +196,7 @@ export async function preHandler({
                 },
                 buildMethodNotAllowedMessage({
                     method: request.method,
-                    url: request.originalUrl,
+                    url: errorRoutePath,
                 }),
                 HttpStatus.MethodNotAllowed,
             ),
@@ -219,7 +226,7 @@ export async function preHandler({
                     path: routeDefinition.path,
                 },
                 combineErrorMessages(
-                    `Rejected request headers from '${request.originalUrl}'.`,
+                    `Rejected request headers from '${errorRoutePath}'.`,
                     requiredHeaders,
                 ),
                 HttpStatus.BadRequest,
@@ -249,7 +256,7 @@ export async function preHandler({
                     path: routeDefinition.path,
                 },
                 combineErrorMessages(
-                    `Rejected request body from '${request.originalUrl}'.`,
+                    `Rejected request body from '${errorRoutePath}'.`,
                     requestData,
                 ),
                 HttpStatus.BadRequest,
@@ -267,6 +274,7 @@ export async function preHandler({
         serverLogger,
         request,
         route: routeImplementation,
+        excludedErrorSearchParams,
     });
 
     if (!('searchParams' in searchParams)) {
@@ -301,7 +309,7 @@ export async function preHandler({
                         isWebSocket: !!webSocketDefinition,
                         path: routeDefinition.path,
                     },
-                    `Context creation rejected: '${request.originalUrl}'`,
+                    `Context creation rejected: '${errorRoutePath}'`,
                     contextOutput.reject.statusCode,
                 ),
             );
