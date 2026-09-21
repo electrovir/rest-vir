@@ -29,7 +29,7 @@
         "@augment-vir/common": "^32.3.1",
         "@rest-vir/api": "^2.3.3",
         "@rest-vir/host": "^2.3.3",
-        "structured-render": "^2.12.0"
+        "structured-render": "^2.13.2"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.3.1",

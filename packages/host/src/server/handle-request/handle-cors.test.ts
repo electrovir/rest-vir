@@ -242,7 +242,9 @@ describe(handleCors.name, () => {
 
     it('matches when the endpoint origin requirement callback returns true', async () => {
         const {endpointImplementation, apiImplementation} = buildScenario({
-            endpointOriginRequirement: () => true,
+            endpointOriginRequirement() {
+                return true;
+            },
         });
 
         assert.deepEquals(
@@ -265,7 +267,9 @@ describe(handleCors.name, () => {
 
     it('returns AnyOrigin when origin is undefined and the endpoint callback returns true', async () => {
         const {endpointImplementation, apiImplementation} = buildScenario({
-            endpointOriginRequirement: () => true,
+            endpointOriginRequirement() {
+                return true;
+            },
         });
 
         const result = await handleCors({
@@ -280,7 +284,9 @@ describe(handleCors.name, () => {
 
     it('returns AnyOrigin when origin is undefined and the api callback returns true', async () => {
         const {endpointImplementation, apiImplementation} = buildScenario({
-            apiOriginRequirement: () => true,
+            apiOriginRequirement() {
+                return true;
+            },
         });
 
         const result = await handleCors({

@@ -68,6 +68,6 @@ export function createServerLogger(option: UserServerLogger = {}): ServerLogger 
  * @package [`@rest-vir/host`](https://www.npmjs.com/package/@rest-vir/host)
  */
 export const silentServerLogger: ServerLogger = {
-    error: () => {},
-    info: () => {},
+    error() {},
+    info() {},
 };

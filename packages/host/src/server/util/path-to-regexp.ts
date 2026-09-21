@@ -190,7 +190,7 @@ class Iter {
 
     public consume(type: TokenType): string {
         const value = this.tryConsume(type);
-        if (value !== undefined) {
+        if (value != undefined) {
             return value;
         }
         const {type: nextType, index} = this.peek();
@@ -394,7 +394,7 @@ function compileMatch(path: string): MatchFunction {
         const params = Object.create(null);
 
         for (let i = 1; i < m.length; i++) {
-            if (m[i] === undefined) {
+            if (m[i] == undefined) {
                 continue;
             }
 

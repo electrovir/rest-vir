@@ -284,8 +284,6 @@ export type BaseEndpointMethodDefinition<Method extends DefinableHttpMethod = De
         requiredRequestHeaders?: Record<string, Shape | RegExp> | undefined;
     };
 
-type UnknownEndpointRequestData = NonNullable<unknown> | null | undefined;
-
 /**
  * Variant of {@link EndpointMethodDefinition} whose `customProps` field is required and narrowed to
  * the supplied `CustomProps` generic. Composes with
@@ -373,7 +371,7 @@ export type EndpointRequestType<
                     ? EndpointMethod['requestData'] extends Shape
                         ? EndpointMethod['requestData']['runtimeType']
                         : undefined
-                    : UnknownEndpointRequestData
+                    : unknown
                 : undefined
             : any
         : any

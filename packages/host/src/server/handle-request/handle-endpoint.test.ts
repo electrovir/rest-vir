@@ -95,7 +95,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Post]: () => {
+                [HttpMethod.Post]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -149,7 +149,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.BadRequest]: {
                             responseData: 'Please enter a question.',
@@ -205,7 +205,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.BadRequest]: {
                             responseData: undefined,
@@ -259,7 +259,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.BadRequest]: {
                             responseData: {
@@ -315,7 +315,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Accepted]: {
                             responseData: 'string body is not allowed for undeclared success',
@@ -364,7 +364,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: false,
@@ -436,7 +436,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: stringResponseEndpoint,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: 'hello',
@@ -503,7 +503,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: stringResponseEndpoint,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: 'hello',
@@ -573,7 +573,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: falseResponseEndpoint,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: false,
@@ -645,7 +645,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: stringResponseEndpoint,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: 'hello',
@@ -703,7 +703,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: {
                             responseData: undefined,
@@ -755,7 +755,7 @@ describe(handleEndpointRequest.name, () => {
             isWebSocket: false,
             definition: endpointDefinition,
             implementation: {
-                [HttpMethod.Get]: () => {
+                [HttpMethod.Get]() {
                     return {
                         [HttpStatus.Ok]: undefined,
                     } as never;

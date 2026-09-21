@@ -33,7 +33,7 @@
         "@rest-vir/host": "^2.3.3",
         "element-vir": "^27.0.1",
         "object-shape-tester": "^6.15.0",
-        "vira": "^32.1.0"
+        "vira": "^32.2.1"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.3.1",

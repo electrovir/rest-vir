@@ -651,6 +651,7 @@ describe('DefinedEndpointFetchOutputs', () => {
     });
 
     it('returns an empty object for an endpoint with no matching method', () => {
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         type Result = DefinedEndpointFetchOutputs<
             typeof usersCreateEndpoint,
             typeof HttpMethod.Get

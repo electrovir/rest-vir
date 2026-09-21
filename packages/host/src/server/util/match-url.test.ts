@@ -70,7 +70,7 @@ const probePaths = [
     '/user/',
     '/static-route/stuff/',
     '/static-route//stuff',
-    // cspell:word Fstuff
+    // cspell:words fstuff
     '/static-route%2Fstuff',
     '/STATIC-ROUTE/stuff',
     '/user/some-id?extra=1',

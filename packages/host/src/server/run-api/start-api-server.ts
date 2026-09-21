@@ -270,7 +270,7 @@ function installGracefulShutdown(kill: () => Promise<void> | void): void {
         return;
     }
     hasInstalledGracefulShutdown = true;
-    const handler = async (signal: string) => {
+    async function handler(signal: string) {
         try {
             await kill();
         } finally {
@@ -280,7 +280,7 @@ function installGracefulShutdown(kill: () => Promise<void> | void): void {
              */
             process.kill(process.pid, signal);
         }
-    };
+    }
     process.once('SIGTERM', async () => {
         await handler('SIGTERM');
     });

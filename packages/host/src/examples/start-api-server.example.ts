@@ -40,7 +40,7 @@ export const healthImplementation = implementEndpoint(healthEndpoint, {
 });
 
 export const apiImplementation = implementApi<undefined>()(myApi, {
-    createHostContext: () => {
+    createHostContext() {
         return {
             context: undefined,
         };

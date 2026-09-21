@@ -50,7 +50,7 @@ describe('SetNullishPropertiesAsOptional', () => {
     });
 
     it('handles an empty object', () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-generated-empty-object-type
         type Result = SetNullishPropertiesAsOptional<{}>;
 
         // eslint-disable-next-line @typescript-eslint/no-empty-object-type

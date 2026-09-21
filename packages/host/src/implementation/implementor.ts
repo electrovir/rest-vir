@@ -17,16 +17,17 @@ export function createApiImplementor<HostContext>(this: void) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return <Api extends Readonly<ApiDefinition>>(api: Api) => {
         return {
-            implementEndpoint: <
+            implementEndpoint<
                 const Endpoint extends Readonly<EndpointDefinition> & {
                     path: keyof Api['endpoints'];
                 },
             >(
+                this: void,
                 endpoint: Readonly<Endpoint>,
                 implementation: Readonly<
                     EndpointMethodImplementations<NoInfer<Endpoint>, HostContext>
                 >,
-            ): EndpointImplementation<Endpoint, HostContext> => {
+            ): EndpointImplementation<Endpoint, HostContext> {
                 return {
                     path: endpoint.path,
                     implementation,
@@ -35,16 +36,17 @@ export function createApiImplementor<HostContext>(this: void) {
                     isWebSocket: false,
                 } satisfies EndpointImplementation as EndpointImplementation<Endpoint, HostContext>;
             },
-            implementWebSocket: <
+            implementWebSocket<
                 const ThisWebSocket extends Readonly<WebSocketDefinition> & {
                     path: keyof Api['webSockets'];
                 },
             >(
+                this: void,
                 webSocket: Readonly<ThisWebSocket>,
                 implementation: Readonly<
                     WebSocketListenerImplementations<NoInfer<ThisWebSocket>, HostContext>
                 >,
-            ): WebSocketImplementation<ThisWebSocket, HostContext> => {
+            ): WebSocketImplementation<ThisWebSocket, HostContext> {
                 return {
                     path: webSocket.path,
                     implementation,

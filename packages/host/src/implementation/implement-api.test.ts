@@ -75,7 +75,7 @@ const smallApi = defineApi({
 const smallImplementor = createApiImplementor<unknown>()(smallApi);
 
 const pingImplementation = smallImplementor.implementEndpoint(pingEndpoint, {
-    [HttpMethod.Get]: () => {
+    [HttpMethod.Get]() {
         return {
             [HttpStatus.Ok]: {
                 responseData: {
@@ -87,7 +87,7 @@ const pingImplementation = smallImplementor.implementEndpoint(pingEndpoint, {
 });
 
 const usersCreateImplementation = smallImplementor.implementEndpoint(usersCreateEndpoint, {
-    [HttpMethod.Post]: () => {
+    [HttpMethod.Post]() {
         return {
             [HttpStatus.Created]: {
                 responseData: {
