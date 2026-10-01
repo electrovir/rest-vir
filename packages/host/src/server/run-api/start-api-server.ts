@@ -1,7 +1,12 @@
 import {check} from '@augment-vir/assert';
 import {awaitedForEach, ensureErrorAndPrependMessage, type MaybePromise} from '@augment-vir/common';
 import {ClusterManager, runInCluster, type WorkerRunner} from 'cluster-vir';
-import fastify, {type FastifyInstance, type FastifyPluginCallback} from 'fastify';
+import fastify, {
+    type FastifyInstance,
+    type FastifyPluginCallback,
+    type RawServerDefault,
+} from 'fastify';
+import {createServer} from 'node:https';
 import {getPortPromise} from 'portfinder';
 import {type ApiImplementation} from '../../implementation/implement-api.js';
 import {createServerLogger} from '../../implementation/server-logger.js';
@@ -111,6 +116,7 @@ export async function startApiServer(
                   port: finalOptions.port,
               });
     finalOptions.port = port;
+    const protocol = finalOptions.https ? 'https' : 'http';
 
     if (finalOptions.workerCount === 1 || !check.isNumber(port)) {
         /** Only run a single server. */
@@ -123,7 +129,7 @@ export async function startApiServer(
 
         if (finalOptions.port) {
             serverLogger.info(
-                `${api.definition.apiName} started on http://${result.host}:${result.port}`,
+                `${api.definition.apiName} started on ${protocol}://${result.host}:${result.port}`,
             );
         }
 
@@ -154,7 +160,7 @@ export async function startApiServer(
             await manager.startWorkers();
             if (finalOptions.port) {
                 serverLogger.info(
-                    `${api.definition.apiName} started on http://${finalOptions.host}:${finalOptions.port}`,
+                    `${api.definition.apiName} started on ${protocol}://${finalOptions.host}:${finalOptions.port}`,
                 );
             }
 
@@ -190,6 +196,7 @@ async function startServer({
     trustProxy,
     webSocketMaxPayload,
     excludedErrorSearchParams,
+    https,
     fastifyPlugins,
     serverOrigin,
 }: Readonly<
@@ -204,13 +211,14 @@ async function startServer({
         | 'trustProxy'
         | 'webSocketMaxPayload'
         | 'excludedErrorSearchParams'
+        | 'https'
     > & {
         api: Readonly<ApiImplementation>;
         fastifyPlugins: Readonly<FastifyPlugins>;
         serverOrigin: string;
     }
 >): Promise<StartApiServerOutput> {
-    const server = fastify({
+    const server = fastify<RawServerDefault>({
         bodyLimit,
         connectionTimeout,
         keepAliveTimeout,
@@ -220,6 +228,23 @@ async function startServer({
             : {
                   trustProxy,
               }),
+        ...(https
+            ? {
+                  /**
+                   * Fastify's own `https` option types the instance with an https server, which
+                   * {@link attachApi} and {@link StartApiServerOutput} don't accept. A server factory
+                   * keeps the default server type, but Fastify then skips applying its timeout
+                   * options, so they're applied here the same way Fastify does.
+                   */
+                  serverFactory(handler) {
+                      const httpsServer = createServer(https, handler);
+                      httpsServer.keepAliveTimeout = keepAliveTimeout;
+                      httpsServer.requestTimeout = requestTimeout;
+                      httpsServer.setTimeout(connectionTimeout);
+                      return httpsServer;
+                  },
+              }
+            : {}),
     });
 
     await awaitedForEach(

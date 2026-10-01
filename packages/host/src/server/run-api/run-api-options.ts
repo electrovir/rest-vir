@@ -1,6 +1,12 @@
 import {mergeDefinedProperties, type PartialWithUndefined} from '@augment-vir/common';
 import {cpus} from 'node:os';
-import {assertValidShape, defineShape, nullableShape, unionShape} from 'object-shape-tester';
+import {
+    assertValidShape,
+    classShape,
+    defineShape,
+    nullableShape,
+    unionShape,
+} from 'object-shape-tester';
 import {parseUrl} from 'url-vir';
 
 /**
@@ -114,6 +120,16 @@ export const runApiOptionsShape = defineShape({
     excludedErrorSearchParams: nullableShape([
         '',
     ]),
+    /**
+     * Serve https instead of http with this PEM-encoded cert and private key. Forwarded to Node's
+     * `https.createServer`. The server's timeout options still apply.
+     *
+     * @default undefined // serve http
+     */
+    https: nullableShape({
+        cert: unionShape('', classShape(Buffer)),
+        key: unionShape('', classShape(Buffer)),
+    }),
 });
 
 /**

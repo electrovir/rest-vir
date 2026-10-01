@@ -11,6 +11,7 @@ const operationalDefaults = {
     webSocketMaxPayload: runApiOptionsShape.default.webSocketMaxPayload,
     trustProxy: undefined,
     excludedErrorSearchParams: undefined,
+    https: undefined,
 };
 
 describe(finalizeOptions.name, () => {

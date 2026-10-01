@@ -1,5 +1,5 @@
 import {assert, waitUntil} from '@augment-vir/assert';
-import {HttpMethod, HttpStatus} from '@augment-vir/common';
+import {DeferredPromise, HttpMethod, HttpStatus, selectFrom} from '@augment-vir/common';
 import {runShellCommand} from '@augment-vir/node';
 import {describe, it} from '@augment-vir/test';
 import {
@@ -8,7 +8,11 @@ import {
     readResponseHeaders,
     RestVirClient,
 } from '@rest-vir/api';
+import {readFile} from 'node:fs/promises';
+import {get} from 'node:https';
+import {join} from 'node:path';
 import {buildUrl} from 'url-vir';
+import {startApiServerMocksDirPath} from '../util/file-paths.mock.js';
 import {
     arrayOriginEndpoint,
     asyncRejectionEndpoint,
@@ -757,6 +761,59 @@ describe(startApiServer.name, () => {
         });
         assert.isDefined(kill);
         await kill();
+    });
+    it('serves https with its timeout options', async () => {
+        const {mockApiImplementation} = await import('./examples/mock-api-implementation.mock.js');
+        const cert = await readFile(join(startApiServerMocksDirPath, 'localhost-https.mock.cert'));
+        const {kill, server} = await startApiServer(mockApiImplementation, {
+            port: 3890,
+            lockPort: true,
+            workerCount: 1,
+            externalOrigin: 'https://localhost:3890',
+            connectionTimeout: 34_567,
+            keepAliveTimeout: 23_456,
+            requestTimeout: 12_345,
+            https: {
+                cert,
+                key: await readFile(join(startApiServerMocksDirPath, 'localhost-https.mock.key')),
+            },
+        });
+
+        try {
+            assert.isDefined(server);
+            const statusCode = new DeferredPromise<number | undefined>();
+            get(
+                {
+                    host: 'localhost',
+                    port: 3890,
+                    path: healthEndpoint.path,
+                    ca: cert,
+                },
+                (response) => {
+                    response.resume();
+                    statusCode.resolve(response.statusCode);
+                },
+            ).on('error', (error) => statusCode.reject(error));
+
+            assert.deepEquals(
+                {
+                    statusCode: await statusCode.promise,
+                    ...selectFrom(server.server, {
+                        timeout: true,
+                        keepAliveTimeout: true,
+                        requestTimeout: true,
+                    }),
+                },
+                {
+                    statusCode: HttpStatus.Ok,
+                    timeout: 34_567,
+                    keepAliveTimeout: 23_456,
+                    requestTimeout: 12_345,
+                },
+            );
+        } finally {
+            await kill();
+        }
     });
 });
 
