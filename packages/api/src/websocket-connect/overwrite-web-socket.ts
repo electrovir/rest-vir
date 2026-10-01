@@ -314,9 +314,8 @@ export function overwriteWebSocketMethods<
                 WebSocketClass
             >) {
                 if (!deferredReply.isSettled) {
-                    const matchesChecker = replyCheck
-                        ? (await wrapInTry(() => replyCheck(message))) === true
-                        : true;
+                    const matchesChecker =
+                        !replyCheck || (await wrapInTry(() => replyCheck(message))) === true;
                     if (matchesChecker) {
                         deferredReply.resolve(message);
                     }

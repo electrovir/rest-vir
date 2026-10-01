@@ -231,7 +231,7 @@ export async function findLivePort(
         if (
             !check.instanceOf(response, Error) &&
             response.ok &&
-            (isValidResponse ? isValidResponse(response) : true)
+            (!isValidResponse || isValidResponse(response))
         ) {
             foundValidPort = true;
         } else if (findDistance >= maxScanDistance) {
