@@ -23,7 +23,7 @@ export abstract class CommonWebSocket {
      * (https://developer.mozilla.org/docs/Web/API/WebSocket/readyState) and the `ws` package's
      * property (https://github.com/websockets/ws/blob/HEAD/doc/ws.md#websocketreadystate)
      */
-    public abstract readyState: CommonWebSocketState;
+    public abstract readyState: number;
     /**
      * A `WebSocket.addEventListener` method that is compatible with the native method
      * (https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener) and the `ws`

@@ -17,7 +17,7 @@ import {
     type DefaultWebSocketProtocol,
     type WebSocketDefinition,
 } from '../api/web-socket.js';
-import {type CommonWebSocket} from './common-web-socket.js';
+import {CommonWebSocketState, type CommonWebSocket} from './common-web-socket.js';
 import {
     type WebSocketConnectParamObject,
     type WebSocketConnectParams,
@@ -145,7 +145,7 @@ describe('WebSocketConnectWebSocketConstructor', () => {
 
     it('preserves a specific WebSocket class as its instance type', () => {
         class MyMockWebSocket implements CommonWebSocket {
-            public readyState = 0;
+            public readyState = CommonWebSocketState.Connecting;
             public send = () => {};
             public addEventListener = () => {};
             public removeEventListener = () => {};
