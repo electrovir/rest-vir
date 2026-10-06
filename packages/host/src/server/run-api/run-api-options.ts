@@ -127,8 +127,8 @@ export const runApiOptionsShape = defineShape({
      * @default undefined // serve http
      */
     https: nullableShape({
-        cert: unionShape('', classShape(Buffer)),
-        key: unionShape('', classShape(Buffer)),
+        cert: unionShape('', classShape(Buffer, Buffer.alloc(0))),
+        key: unionShape('', classShape(Buffer, Buffer.alloc(0))),
     }),
 });
 
