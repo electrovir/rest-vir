@@ -1,4 +1,4 @@
-import {check} from '@augment-vir/assert';
+import {assertWrap, check} from '@augment-vir/assert';
 import {
     addPrefix,
     type HasRequiredKeys,
@@ -175,6 +175,32 @@ export type ExtractPathParams<Path extends PropertyKey | NoParam = NoParam> =
               : /** Fast path: concrete literal with no `:param` or `/*` segments. */
                 undefined
         : GenericPathParams;
+
+/**
+ * Runtime equivalent of {@link NamedPathParams}: lists the `:named` params of a route path in the
+ * order they appear. Does not include the trailing wildcard.
+ *
+ * @category Util : API
+ * @category Package : @rest-vir/api
+ * @example
+ *
+ * ```ts
+ * import {extractPathParamNames} from '@rest-vir/api';
+ *
+ * extractPathParamNames('/users/:userId/posts/:postId'); // ['userId', 'postId']
+ * ```
+ *
+ * @package [`@rest-vir/api`](https://www.npmjs.com/package/@rest-vir/api)
+ */
+export function extractPathParamNames<const Path extends BaseRoutePath>(
+    path: Path,
+): NamedPathParams<Path>[] {
+    return [
+        ...path.matchAll(/\/:([^/]+)/g),
+    ].map((match) => {
+        return assertWrap.isDefined(match[1]) satisfies string as NamedPathParams<Path>;
+    });
+}
 
 /**
  * Builds the path portion of an endpoint or WebSocket URL by interpolating `:named` path params and

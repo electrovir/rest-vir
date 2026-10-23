@@ -6,6 +6,7 @@ import {
     buildRoutePath,
     type BuildRoutePathOptions,
     type BuildRoutePathParams,
+    extractPathParamNames,
     type ExtractPathParams,
     type HasWildcardParam,
     type NamedPathParams,
@@ -440,5 +441,21 @@ describe(buildRoutePath.name, () => {
                 matchMessage: '/health',
             },
         );
+    });
+});
+
+describe(extractPathParamNames.name, () => {
+    it('lists named params in order', () => {
+        const names = extractPathParamNames('/users/:userId/posts/:postId');
+
+        assert.deepEquals(names, [
+            'userId',
+            'postId',
+        ]);
+        assert.tsType(names).equals<('userId' | 'postId')[]>();
+    });
+
+    it('ignores the wildcard and returns nothing for a param-less path', () => {
+        assert.deepEquals(extractPathParamNames('/files/*'), []);
     });
 });

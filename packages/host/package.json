@@ -1,6 +1,6 @@
 {
     "name": "@rest-vir/host",
-    "version": "2.3.5",
+    "version": "2.4.0",
     "description": "Implement a declarative and type safe REST API and host it.",
     "keywords": [
         "rest",
@@ -45,7 +45,7 @@
         "@fastify/compress": "^9.2.0",
         "@fastify/multipart": "^10.1.2",
         "@fastify/websocket": "^11.3.3",
-        "@rest-vir/api": "^2.3.5",
+        "@rest-vir/api": "^2.4.0",
         "@types/ws": "^8.18.2",
         "cluster-vir": "^1.0.2",
         "date-vir": "^9.4.0",
