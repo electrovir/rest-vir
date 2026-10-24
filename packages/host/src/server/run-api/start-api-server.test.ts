@@ -11,6 +11,7 @@ import {
 import {readFile} from 'node:fs/promises';
 import {get} from 'node:https';
 import {join} from 'node:path';
+import {brotliCompressSync} from 'node:zlib';
 import {buildUrl} from 'url-vir';
 import {startApiServerMocksDirPath} from '../util/file-paths.mock.js';
 import {
@@ -229,6 +230,23 @@ describe(startApiServer.name, () => {
                     testValue: 422,
                 },
             });
+        });
+        it('does not decompress request bodies', async ({fetchEndpoint}) => {
+            const response = await fetchEndpoint(testEndpoint.path, {
+                method: HttpMethod.Post,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Encoding': 'br',
+                },
+                body: brotliCompressSync(
+                    JSON.stringify({
+                        somethingHere: 'value',
+                        testValue: 422,
+                    }),
+                ),
+            });
+
+            assert.strictEquals(response.status, HttpStatus.BadRequest);
         });
         it('rejects a missing origin when CORS is required', async ({fetchEndpoint}) => {
             assert.strictEquals(

@@ -165,6 +165,13 @@ export async function attachApi(
              * the bandwidth saving. 1 KiB matches Fastify's documented "good default."
              */
             threshold: 1024,
+            /**
+             * `@fastify/compress` decompresses request bodies by default, before any handler or
+             * auth runs, which hands every unauthenticated client the zlib decoders (see
+             * CVE-2026-111497, a Brotli decoder RCE). No rest-vir client compresses request
+             * bodies.
+             */
+            globalDecompression: false,
         });
 
         /**
