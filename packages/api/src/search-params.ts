@@ -108,7 +108,7 @@ function validateShape(
     const coercedAsIs = coerceRawValue(rawValue);
     const wrappedInArray = !rawValue || check.isArray(rawValue) ? undefined : [stringify(rawValue)];
     const unwrappedFromArray =
-        !check.isArray(rawValue) || rawValue.length !== 1 ? undefined : String(rawValue[0]);
+        check.isArray(rawValue) && rawValue.length === 1 ? String(rawValue[0]) : undefined;
 
     if (
         checkValidShape(coercedAsIs, shape, {
