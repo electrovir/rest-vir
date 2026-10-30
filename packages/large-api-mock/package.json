@@ -25,14 +25,14 @@
         "test:update": "exit 0"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.6.1",
-        "@augment-vir/common": "^32.6.1",
+        "@augment-vir/assert": "^32.7.0",
+        "@augment-vir/common": "^32.7.0",
         "@rest-vir/api": "^2.4.1",
         "@rest-vir/host": "^2.4.1",
-        "structured-render": "^2.17.0"
+        "structured-render": "^2.17.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.6.1",
+        "@augment-vir/test": "^32.7.0",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-playwright": "^1.0.0",
