@@ -164,6 +164,85 @@ describe(createRouteDefiners.name, () => {
         });
     });
 
+    describe('forcedCustomProps', () => {
+        type AuthCustomProps = {
+            requiredAuth: 'admin';
+            note: string;
+        };
+
+        const {
+            defineCustomEndpoint: defineAdminEndpoint,
+            defineCustomWebSocket: defineAdminWebSocket,
+        } = createRouteDefiners<AuthCustomProps>({
+            forcedCustomProps: {
+                requiredAuth: 'admin',
+            },
+        });
+
+        it('writes forced props over every endpoint method', () => {
+            const result = defineAdminEndpoint({
+                path: '/admin',
+                requests: {
+                    [HttpMethod.Get]: {
+                        customProps: {
+                            requiredAuth: 'admin',
+                            note: 'get',
+                        },
+                        responses: {
+                            [HttpStatus.Ok]: {
+                                responseData: defineShape(''),
+                            },
+                        },
+                    },
+                    [HttpMethod.Post]: {
+                        customProps: {
+                            /** Simulates a caller that bypassed the type check. */
+                            requiredAuth: 'none' as 'admin',
+                            note: 'post',
+                        },
+                        responses: {
+                            [HttpStatus.Ok]: {
+                                responseData: defineShape(''),
+                            },
+                        },
+                    },
+                },
+            });
+
+            assert.deepEquals(
+                {
+                    get: result.requests[HttpMethod.Get].customProps,
+                    post: result.requests[HttpMethod.Post].customProps,
+                },
+                {
+                    get: {
+                        requiredAuth: 'admin',
+                        note: 'get',
+                    },
+                    post: {
+                        requiredAuth: 'admin',
+                        note: 'post',
+                    },
+                },
+            );
+        });
+
+        it('writes forced props over a web socket', () => {
+            const result = defineAdminWebSocket({
+                path: '/ws',
+                customProps: {
+                    requiredAuth: 'none' as 'admin',
+                    note: 'ws',
+                },
+            });
+
+            assert.deepEquals(result.customProps, {
+                requiredAuth: 'admin',
+                note: 'ws',
+            });
+        });
+    });
+
     it('produces independent definers for different CustomProps types', () => {
         type OtherCustomProps = {
             tenantId: string;
