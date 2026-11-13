@@ -8,7 +8,7 @@ import {
 } from '@augment-vir/common';
 import {type EndpointDefinitionMethods} from '@rest-vir/api';
 import {type OutgoingHttpHeaders} from 'node:http';
-import {buildUrl, UrlEncoding} from 'url-vir';
+import {buildUrl, joinUrlPaths, UrlEncoding} from 'url-vir';
 import {type ApiDefinition} from './api/api.js';
 import {
     extractEndpointMethodDefinition,
@@ -230,7 +230,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             this.baseUrl,
             {
                 search: searchParams,
-                pathname,
+                pathname: joinUrlPaths(buildUrl(this.baseUrl).pathname, pathname),
             },
             /**
              * Percent-encode search param keys and values so caller-supplied values containing `&`,
@@ -407,7 +407,7 @@ export class RestVirClient<const ClientApi extends ApiDefinition> {
             this.baseUrl,
             {
                 search: searchParams,
-                pathname,
+                pathname: joinUrlPaths(buildUrl(this.baseUrl).pathname, pathname),
             },
             /** Same query-parameter-injection protection as {@link RestVirClient.buildEndpointUrl}. */
             {

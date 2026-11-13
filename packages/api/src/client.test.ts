@@ -795,6 +795,16 @@ describe(RestVirClient.name, () => {
             });
             assert.strictEquals(url, 'wss://example.com/ws/files/a/b/c');
         });
+
+        it('keeps the base URL path in websocket URLs', () => {
+            const wsClient = new RestVirClient(wsApi, 'https://example.com/api');
+            const url = wsClient.buildWebSocketUrl(wildcardWebSocket, {
+                pathParams: {
+                    wildcard: 'a/b/c',
+                },
+            });
+            assert.strictEquals(url, 'wss://example.com/api/ws/files/a/b/c');
+        });
     });
 
     describe('buildEndpointUrl', () => {
@@ -803,6 +813,24 @@ describe(RestVirClient.name, () => {
         it('builds a URL for a simple path with no params', () => {
             const url = client.buildEndpointUrl(simpleEndpoint, HttpMethod.Get, {});
             assert.strictEquals(url, 'https://example.com/simple');
+        });
+
+        it('joins route paths onto the base URL path', () => {
+            const pathClient = new RestVirClient(fullApi, 'https://example.com/api');
+            assert.deepEquals(
+                [
+                    pathClient.buildEndpointUrl(simpleEndpoint, HttpMethod.Get, {}),
+                    pathClient.buildEndpointUrl(userByIdEndpoint, HttpMethod.Get, {
+                        pathParams: {
+                            userId: '42',
+                        },
+                    }),
+                ],
+                [
+                    'https://example.com/api/simple',
+                    'https://example.com/api/users/42',
+                ],
+            );
         });
 
         it('interpolates a single named path param', () => {
